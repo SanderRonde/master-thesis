@@ -1,0 +1,22 @@
+{
+	"ListItem": 1,
+	"ListItemAction": 1,
+	"PrimaryButtonComponent": 2,
+	"FireworksComponent": 2,
+	"ChartButton": 2,
+	"SecondaryButtonComponent": 2,
+	"TertiaryButtonComponent": 2,
+	"SwitchComponent": 2,
+	"ThemeProviderComponent": 3,
+	"PopupsComponent": 8,
+	"ToastNotificationComponent": 8,
+	"ChartErrorComponent": 10,
+	"PopupComponent": 10,
+	"ToastComponent": 11,
+	"IconComponent": 11,
+	"InputElement": 19,
+	"SwitchOptionComponent": 26,
+	"PopupDateRangePickerComponent": 35,
+	"ModularChartComponent": 58,
+	"LineChartComponent": 87
+}
