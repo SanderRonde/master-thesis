@@ -1,4 +1,6 @@
 import * as path from 'path';
+import glob from 'glob';
+import { IOptions } from 'glob';
 
 /**
  * Run given function if given file is the
@@ -53,4 +55,23 @@ export function sortObjectKeys<O>(obj: O): O {
 			return [oKey, obj[oKey]];
 		})
 	) as unknown) as O;
+}
+
+export function asyncGlob(
+	pattern: string,
+	options?: IOptions
+): Promise<string[]> {
+	return new Promise<string[]>((resolve, reject) => {
+		glob(pattern, options || {}, (err, files) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(files);
+			}
+		});
+	});
+}
+
+export function sum(values: number[]) {
+	return values.reduce((prev, current) => prev + current, 0)
 }

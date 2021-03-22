@@ -1,3 +1,5 @@
+import { sum } from './helpers';
+
 export interface DatasetStats {
 	min: number;
 	max: number;
@@ -8,8 +10,7 @@ export interface DatasetStats {
 }
 
 function standardDeviation(numbers: number[]): number {
-	const avg =
-		numbers.reduce((prev, current) => prev + current, 0) / numbers.length;
+	const avg = sum(numbers);
 
 	var SDprep = 0;
 	for (let i = 0; i < numbers.length; i++) {
@@ -20,7 +21,7 @@ function standardDeviation(numbers: number[]): number {
 }
 
 export function getDatasetStats(dataset: number[]): DatasetStats {
-	const total = dataset.reduce((prev, current) => prev + current, 0);
+	const total = sum(dataset);
 	const sorted = [...dataset].sort();
 	const half = dataset.length / 2;
 	return {

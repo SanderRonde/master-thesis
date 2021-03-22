@@ -5,6 +5,7 @@ import { DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
 import { preserveCommandBuilder } from '../lib/makfy-helper';
 
 import './bundles/dashboard';
+import { dashboardPreMetrics } from './bundles/dashboard';
 
 const __BUNDLES = ['dashboard'] as const;
 const __METRICS = [
@@ -12,18 +13,22 @@ const __METRICS = [
 	'cyclomatic-complexity',
 	'lines-of-code',
 	'maintainability',
+	'size',
 ] as const;
 export type Bundle = typeof __BUNDLES[Extract<keyof typeof __BUNDLES, number>];
 export type Metric = typeof __METRICS[Extract<keyof typeof __METRICS, number>];
 
-const BUNDLES = ['dashboard'] as Bundle[];
+export const BUNDLES = ['dashboard'] as Bundle[];
 
-const METRICS = [
+export const METRICS = [
 	'structural-complexity',
 	'cyclomatic-complexity',
 	'lines-of-code',
 	'maintainability',
+	'size',
 ] as Metric[];
+
+const TIMING_SENSITIVE_METRICS: Metric[] = [];
 
 export const metris = preserveCommandBuilder(
 	cmd('metrics')
@@ -39,7 +44,7 @@ export const metris = preserveCommandBuilder(
 			metric: 'A specific metric to gather. Uses all by default',
 		})
 ).run(async (exec, args) => {
-	const packagesInstalledFile = path.join(DASHBOARD_DIR, 'dist/installed');
+	const packagesInstalledFile = path.join(DASHBOARD_DIR, '.vscode/installed');
 	const bundles: Bundle[] = args.bundle !== 'all' ? [args.bundle] : BUNDLES;
 	const metrics: Metric[] = args.metric !== 'all' ? [args.metric] : METRICS;
 
@@ -57,22 +62,52 @@ export const metris = preserveCommandBuilder(
 			path.join(DASHBOARD_DIR, 'src/environments/version.ts')
 		);
 
+		await exec('? Changing browser target to speed things up');
+		await fs.writeFile(
+			path.join(DASHBOARD_DIR, 'browserslist'),
+			'last 2 Chrome versions\n',
+			{
+				encoding: 'utf8',
+			}
+		);
+
 		await exec('? Installing dashboard dependencies');
 		await exec(`npm install -C ${DASHBOARD_DIR}`);
 
 		await exec('? Marking as installed');
+		await fs.mkdirp(path.dirname(packagesInstalledFile));
 		await fs.writeFile(packagesInstalledFile, '');
 	}
 
-	if (bundles.includes('dashboard')) await exec('? Collecting metrics');
+	if (bundles.includes('dashboard')) {
+		await dashboardPreMetrics(exec, metrics);
+	}
+
+	await exec('? Collecting non time sensitive metrics');
 	await exec(
 		bundles.flatMap((bundle) => {
-			return metrics.map((metric) => {
-				return `ts-node -T ${path.join(
-					METRICS_DIR,
-					`collectors/${bundle}/${metric}.ts`
-				)}`;
-			});
+			return metrics
+				.filter((metric) => !TIMING_SENSITIVE_METRICS.includes(metric))
+				.map((metric) => {
+					return `ts-node -T ${path.join(
+						METRICS_DIR,
+						`collectors/${bundle}/${metric}.ts`
+					)}`;
+				});
 		})
 	);
+
+	await exec('? Collecting time sensitive metrics');
+	for (const bundle of bundles) {
+		for (const metric of metrics.filter((metric) =>
+			TIMING_SENSITIVE_METRICS.includes(metric)
+		)) {
+			await exec(
+				`ts-node -T ${path.join(
+					METRICS_DIR,
+					`collectors/${bundle}/${metric}.ts`
+				)}`
+			);
+		}
+	}
 });
