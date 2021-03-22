@@ -11,7 +11,7 @@ const METRICS = [
 	'lines-of-code',
 ];
 
-cmd('collect')
+cmd('metrics')
 	.desc('Collect metrics')
 	.args({
 		'skip-dashboard': flag(),

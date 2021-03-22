@@ -9,7 +9,7 @@ metrics_install:
 	$(YARN_CMD) install
 
 metrics: metrics_install
-	$(YARN_CMD) collect
+	$(YARN_CMD) metrics
 
 submodules:
 	git submodule update --init
