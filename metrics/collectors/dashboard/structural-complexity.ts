@@ -4,11 +4,11 @@ import * as fs from 'fs-extra';
 
 import { runFunctionIfCalledFromScript } from '../shared/helpers';
 import { storeData } from '../shared/storage';
-import { ReadFile } from './get-components';
+import { ReadFile } from './lib/get-components';
 import { createTSProgram } from '../shared/typescript';
 import { DASHBOARD_DIR } from '../shared/constants';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../shared/settings';
-import { collectDashboardMetrics } from './shared';
+import { collectDashboardMetrics } from './lib/shared';
 
 function isAbsolute(filePath: string): boolean {
 	return path.isAbsolute(filePath) || !filePath.startsWith('.');
@@ -141,7 +141,7 @@ export async function getFileStructuralComplexity(
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
 		['metrics', 'dashboard', 'structural-complexity'],
-		collectDashboardMetrics(
+		await collectDashboardMetrics(
 			getFileStructuralComplexity,
 			async (components) => {
 				const tsProgram = await createTSProgram(

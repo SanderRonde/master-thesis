@@ -1,4 +1,4 @@
-import { sortObjectKeys } from '../shared/helpers';
+import { sortObjectKeys } from '../../shared/helpers';
 import { ComponentFiles, getComponents, ReadFile } from './get-components';
 
 export async function collectDashboardMetrics<R, A>(

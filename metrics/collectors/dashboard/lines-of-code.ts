@@ -3,8 +3,8 @@ import * as fs from 'fs-extra';
 
 import { runFunctionIfCalledFromScript } from '../shared/helpers';
 import { storeData } from '../shared/storage';
-import { ReadFile } from './get-components';
-import { collectDashboardMetrics } from './shared';
+import { ReadFile } from './lib/get-components';
+import { collectDashboardMetrics } from './lib/shared';
 
 export async function getFileLinesOfCode(file: ReadFile): Promise<number> {
 	return calculateLOC(
@@ -17,6 +17,6 @@ export async function getFileLinesOfCode(file: ReadFile): Promise<number> {
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
 		['metrics', 'dashboard', 'lines-of-code'],
-		collectDashboardMetrics(getFileLinesOfCode)
+		await collectDashboardMetrics(getFileLinesOfCode)
 	);
 }, __filename);

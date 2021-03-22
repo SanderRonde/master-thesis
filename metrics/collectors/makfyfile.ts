@@ -9,6 +9,7 @@ const METRICS = [
 	'structural-complexity',
 	'cyclomatic-complexity',
 	'lines-of-code',
+	'halstead-complexity',
 ];
 
 cmd('metrics')
