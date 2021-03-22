@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "metrics": "makfy collect"
+        "metrics": "makfy metrics"
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.8",
