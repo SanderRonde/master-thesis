@@ -49,6 +49,8 @@ export async function storeData(
 	storeName: string = DEFAULT_STORE_NAME
 ): Promise<void> {
 	const store = (await readStore(storeName)) || {};
+	debugger;
+	console.log(store, key, value);
 
 	let currentStore = store;
 	let currentKey = key;
@@ -70,5 +72,7 @@ export async function storeData(
 		currentStore = currentStore[nextKey];
 	}
 
-	await writeStore(storeName, currentStore);
+	console.log(currentStore)
+
+	await writeStore(storeName, store);
 }
