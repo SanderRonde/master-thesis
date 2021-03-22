@@ -53,14 +53,14 @@ cmd('collect')
 		}
 
 		await exec('? Collecting metrics');
-		for (const bundle of bundles) {
-			for (const metric of metrics) {
-				await exec(
-					`ts-node -T ${path.join(
+		await exec(
+			bundles.flatMap((bundle) => {
+				return metrics.map((metric) => {
+					return `ts-node -T ${path.join(
 						METRICS_DIR,
 						`collectors/${bundle}/${metric}.ts`
-					)}`
-				);
-			}
-		}
+					)}`;
+				});
+			})
+		);
 	});
