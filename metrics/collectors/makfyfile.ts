@@ -1,4 +1,4 @@
-import { choice, cmd, flag, str } from 'makfy';
+import { choice, cmd, flag } from 'makfy';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { DASHBOARD_DIR, METRICS_DIR } from './shared/constants';

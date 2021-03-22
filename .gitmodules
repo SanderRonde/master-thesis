@@ -1,6 +1,3 @@
-[submodule "dashboard.30mhz.com"]
-	path = dashboard.30mhz.com
-	url = https://github.com/30MHz/dashboard.30mhz.com
-[submodule "30mhz-dashboard"]
-	path = 30mhz-dashboard
+[submodule "metrics/submodules/30mhz-dashboard"]
+	path = metrics/submodules/30mhz-dashboard
 	url = https://github.com/30MHz/dashboard.30mhz.com
