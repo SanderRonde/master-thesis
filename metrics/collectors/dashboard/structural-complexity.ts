@@ -48,9 +48,6 @@ async function recursivelyGetDependencies(
 	const baseUrl = tsProgram.getCompilerOptions().baseUrl;
 
 	// Import declarations only happen at the root so that makes it a bit easier
-	if (!sourceFile) {
-		debugger;
-	}
 	for (const statement of sourceFile.statements) {
 		if (ts.isImportDeclaration(statement)) {
 			const importPath = statement.moduleSpecifier;
