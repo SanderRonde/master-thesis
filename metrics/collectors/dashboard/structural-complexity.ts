@@ -169,7 +169,6 @@ export async function getStructuralComplexity(): Promise<StructuralComplexityDat
 
 runFunctionIfCalledFromScript(async () => {
 	const structuralComplexictyData = await getStructuralComplexity();
-	console.log(structuralComplexictyData);
 	await storeData(
 		['metrics', 'dashboard', 'structural-complexity'],
 		structuralComplexictyData
