@@ -1,18 +1,13 @@
 import tsComplex from 'ts-complex';
 
-import {
-	runFunctionIfCalledFromScript,
-	sortObjectKeys,
-} from '../shared/helpers';
-import { CyclomaticComplexityData } from '../shared/types';
+import { runFunctionIfCalledFromScript } from '../shared/helpers';
 import { storeData } from '../shared/storage';
-import { ComponentFiles, getComponents } from './get-components';
+import { ReadFile } from './get-components';
+import { collectDashboardMetrics } from './shared';
 
-export function getComponentCyclomaticComplexity(
-	component: ComponentFiles
-): number {
+export function getFileCyclomaticComplexity(file: ReadFile): number {
 	const cyclomaticComplexities = tsComplex.calculateCyclomaticComplexity(
-		component.js.filePath
+		file.filePath
 	);
 	return Object.values(cyclomaticComplexities).reduce(
 		(prev, current) => prev + current,
@@ -20,25 +15,9 @@ export function getComponentCyclomaticComplexity(
 	);
 }
 
-export async function getCyclomaticComplexity(): Promise<CyclomaticComplexityData> {
-	const components = await getComponents();
-
-	const structuralDependencyData: CyclomaticComplexityData = {};
-	await Promise.all(
-		components.map(async (component) => {
-			structuralDependencyData[
-				component.js.componentName
-			] = getComponentCyclomaticComplexity(component);
-		})
-	);
-
-	return sortObjectKeys(structuralDependencyData);
-}
-
 runFunctionIfCalledFromScript(async () => {
-	const cyclomaticComplexity = await getCyclomaticComplexity();
 	await storeData(
 		['metrics', 'dashboard', 'cyclomatic-complexity'],
-		cyclomaticComplexity
+		collectDashboardMetrics(getFileCyclomaticComplexity)
 	);
 }, __filename);

@@ -2,16 +2,13 @@ import * as ts from 'typescript';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import {
-	runFunctionIfCalledFromScript,
-	sortObjectKeys,
-} from '../shared/helpers';
-import { StructuralComplexityData } from '../shared/types';
+import { runFunctionIfCalledFromScript } from '../shared/helpers';
 import { storeData } from '../shared/storage';
-import { ComponentFiles, getComponents, ReadFile } from './get-components';
+import { ReadFile } from './get-components';
 import { createTSProgram } from '../shared/typescript';
 import { DASHBOARD_DIR } from '../shared/constants';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../shared/settings';
+import { collectDashboardMetrics } from './shared';
 
 function isAbsolute(filePath: string): boolean {
 	return path.isAbsolute(filePath) || !filePath.startsWith('.');
@@ -126,47 +123,32 @@ async function getFileDependencies(
 	return await recursivelyGetDependencies(sourceFile, maxLevel, tsProgram);
 }
 
-async function getComponentStructuralComplexity(
-	component: ComponentFiles,
+export async function getFileStructuralComplexity(
+	file: ReadFile,
 	tsProgram: ts.Program
 ): Promise<number> {
-	const dependencies = [
-		...(await getFileDependencies(
-			component.js,
-			STRUCTURAL_COMPLEXITY_DEPTH,
-			tsProgram
-		)),
-		// HTML template files don't have dependencies in this
-		// project
-	];
+	const dependencies = await getFileDependencies(
+		file,
+		STRUCTURAL_COMPLEXITY_DEPTH,
+		tsProgram
+	);
 
 	return dependencies.filter(
 		(dependency, index, arr) => arr.indexOf(dependency) === index
 	).length;
 }
 
-export async function getStructuralComplexity(): Promise<StructuralComplexityData> {
-	const components = await getComponents();
-	const tsProgram = await createTSProgram(
-		components.map((component) => component.js.filePath)
-	);
-
-	const structuralDependencyData: StructuralComplexityData = {};
-	await Promise.all(
-		components.map(async (component) => {
-			structuralDependencyData[
-				component.js.componentName
-			] = await getComponentStructuralComplexity(component, tsProgram);
-		})
-	);
-
-	return sortObjectKeys(structuralDependencyData);
-}
-
 runFunctionIfCalledFromScript(async () => {
-	const structuralComplexictyData = await getStructuralComplexity();
 	await storeData(
 		['metrics', 'dashboard', 'structural-complexity'],
-		structuralComplexictyData
+		collectDashboardMetrics(
+			getFileStructuralComplexity,
+			async (components) => {
+				const tsProgram = await createTSProgram(
+					components.map((component) => component.js.filePath)
+				);
+				return [tsProgram];
+			}
+		)
 	);
 }, __filename);
