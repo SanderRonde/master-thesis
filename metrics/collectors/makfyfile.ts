@@ -12,7 +12,14 @@ cmd('collect')
 		'skip-dashboard': 'Skip installing of dashboard',
 	})
 	.run(async (exec, args) => {
-		if (!args['skip-dashboard']) {
+		const packagesInstalledFile = path.join(
+			DASHBOARD_DIR,
+			'dist/installed'
+		);
+		if (
+			!args['skip-dashboard'] &&
+			!(await fs.pathExists(packagesInstalledFile))
+		) {
 			await exec('? Copying environment files');
 			await fs.copyFile(
 				path.join(DASHBOARD_DIR, 'src/environments/environment.ts.txt'),
@@ -25,6 +32,9 @@ cmd('collect')
 
 			await exec('? Installing dashboard dependencies');
 			await exec(`npm install -C ${DASHBOARD_DIR}`);
+
+			await exec('? Marking as installed');
+			await fs.writeFile(packagesInstalledFile, '');
 		}
 
 		await exec('? Collecting metrics');
