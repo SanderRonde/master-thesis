@@ -2,7 +2,10 @@ import * as ts from 'typescript';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
+import {
+	runFunctionIfCalledFromScript,
+	sortObjectKeys,
+} from '../shared/helpers';
 import { StructuralComplexityData } from '../shared/types';
 import { storeData } from '../shared/storage';
 import { ComponentFiles, getComponents, ReadFile } from './get-components';
@@ -161,7 +164,7 @@ export async function getStructuralComplexity(): Promise<StructuralComplexityDat
 		})
 	);
 
-	return structuralDependencyData;
+	return sortObjectKeys(structuralDependencyData);
 }
 
 runFunctionIfCalledFromScript(async () => {

@@ -44,3 +44,13 @@ export async function runFunctionIfCalledFromScript<R>(
 		}
 	}
 }
+
+export function sortObjectKeys<O>(obj: O): O {
+	const keys = Object.keys(obj).sort();
+	return (Object.fromEntries(
+		keys.map((key) => {
+			const oKey = key as keyof O;
+			return [oKey, obj[oKey]];
+		})
+	) as unknown) as O;
+}
