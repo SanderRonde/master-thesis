@@ -5,7 +5,11 @@ import { DASHBOARD_DIR, METRICS_DIR } from './shared/constants';
 
 const BUNDLES = ['dashboard'];
 
-const METRICS = ['structural-complexity', 'cyclomatic-complexity'];
+const METRICS = [
+	'structural-complexity',
+	'cyclomatic-complexity',
+	'lines-of-code',
+];
 
 cmd('collect')
 	.desc('Collect metrics')

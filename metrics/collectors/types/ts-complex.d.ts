@@ -10,3 +10,7 @@ declare module 'ts-complex' {
 		filePath: string
 	): Record<string, number>;
 }
+
+declare module 'ts-complex/lib/src/services/sloc.service' {
+	export function calculate(sourceCode: string): number;
+}

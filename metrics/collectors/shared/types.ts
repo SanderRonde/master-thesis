@@ -5,3 +5,7 @@ export type StructuralComplexityData = {
 export type CyclomaticComplexityData = {
 	[componentName: string]: number;
 }
+
+export type LinesOfCode = {
+	[componentName: string]: number;
+}

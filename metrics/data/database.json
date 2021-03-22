@@ -44,6 +44,28 @@
 				"ThemeProviderComponent": 4,
 				"ToastComponent": 7,
 				"ToastNotificationComponent": 3
+			},
+			"lines-of-code": {
+				"ChartButton": 24,
+				"ChartErrorComponent": 54,
+				"FireworksComponent": 12,
+				"IconComponent": 106,
+				"InputElement": 51,
+				"LineChartComponent": 1117,
+				"ListItem": 19,
+				"ListItemAction": 21,
+				"ModularChartComponent": 132,
+				"PopupComponent": 56,
+				"PopupDateRangePickerComponent": 326,
+				"PopupsComponent": 48,
+				"PrimaryButtonComponent": 23,
+				"SecondaryButtonComponent": 20,
+				"SwitchComponent": 26,
+				"SwitchOptionComponent": 71,
+				"TertiaryButtonComponent": 51,
+				"ThemeProviderComponent": 28,
+				"ToastComponent": 54,
+				"ToastNotificationComponent": 40
 			}
 		}
 	}
