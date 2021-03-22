@@ -95,7 +95,6 @@ async function recursivelyGetDependencies(
 				}
 				if (path.extname(joinedPath) !== '.ts') {
 					// Can't find or open it, we skip this
-					console.warn(`Skipping ${joinedPath}`);
 					continue;
 				}
 			}

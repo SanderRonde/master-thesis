@@ -12,7 +12,7 @@
 		"experimentalDecorators": true,
 		"target": "ES6",
 		"strict": true,
-		"typeRoots": ["node_modules/@types"],
+		"typeRoots": ["node_modules/@types", "types/"],
 		"lib": ["es2018", "dom", "dom.iterable", "esnext.array", "ESNext"],
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
