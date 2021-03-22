@@ -1,0 +1,17 @@
+import { calculateMaintainability } from 'ts-complex';
+
+import { runFunctionIfCalledFromScript } from '../shared/helpers';
+import { storeData } from '../shared/storage';
+import { ReadFile } from './lib/get-components';
+import { collectDashboardMetrics } from './lib/shared';
+
+export async function getFileMaintainability(file: ReadFile): Promise<number> {
+	return calculateMaintainability(file.filePath).averageMaintainability;
+}
+
+runFunctionIfCalledFromScript(async () => {
+	await storeData(
+		['metrics', 'dashboard', 'maintainability'],
+		await collectDashboardMetrics(getFileMaintainability)
+	);
+}, __filename);
