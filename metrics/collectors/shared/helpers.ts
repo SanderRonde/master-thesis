@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'fs-extra';
 import glob from 'glob';
 import { IOptions } from 'glob';
 
@@ -73,5 +74,42 @@ export function asyncGlob(
 }
 
 export function sum(values: number[]) {
-	return values.reduce((prev, current) => prev + current, 0)
+	return values.reduce((prev, current) => prev + current, 0);
+}
+
+export const getFreePort = (() => {
+	let basePort: number = 1234;
+
+	return () => {
+		return basePort++;
+	};
+})();
+
+export const generateRandomString = (() => {
+	const CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(
+		''
+	);
+	return (length: number = 25) => {
+		return new Array(length)
+			.fill('')
+			.map(() => {
+				return CHARS[Math.floor(Math.random() * CHARS.length)];
+			})
+			.join('');
+	};
+})();
+
+export async function generateTempFileName(extension: string) {
+	let fileName: string;
+	do {
+		fileName = `${generateRandomString()}.${extension}`;
+	} while (await fs.pathExists(fileName));
+
+	return fileName;
+}
+
+export function wait(duration: number) {
+	return new Promise<void>((resolve) => {
+		setTimeout(resolve, duration);
+	});
 }

@@ -7,3 +7,4 @@ export const DASHBOARD_DIR = path.join(
 	'submodules',
 	'30mhz-dashboard'
 );
+export const TEMP_DIR = path.join(METRICS_DIR, 'temp');

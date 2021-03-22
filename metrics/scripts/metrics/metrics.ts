@@ -13,7 +13,9 @@ const __METRICS = [
 	'cyclomatic-complexity',
 	'lines-of-code',
 	'maintainability',
+	'load-time',
 	'size',
+	'number-of-components',
 ] as const;
 export type Bundle = typeof __BUNDLES[Extract<keyof typeof __BUNDLES, number>];
 export type Metric = typeof __METRICS[Extract<keyof typeof __METRICS, number>];
@@ -25,10 +27,12 @@ export const METRICS = [
 	'cyclomatic-complexity',
 	'lines-of-code',
 	'maintainability',
+	'load-time',
 	'size',
+	'number-of-components',
 ] as Metric[];
 
-const TIMING_SENSITIVE_METRICS: Metric[] = [];
+const TIMING_SENSITIVE_METRICS: Metric[] = ['load-time'];
 
 export const metris = preserveCommandBuilder(
 	cmd('metrics')
@@ -89,7 +93,7 @@ export const metris = preserveCommandBuilder(
 			return metrics
 				.filter((metric) => !TIMING_SENSITIVE_METRICS.includes(metric))
 				.map((metric) => {
-					return `ts-node -T ${path.join(
+					return `node --no-deprecation -r ts-node/register/transpile-only ${path.join(
 						METRICS_DIR,
 						`collectors/${bundle}/${metric}.ts`
 					)}`;
@@ -103,7 +107,7 @@ export const metris = preserveCommandBuilder(
 			TIMING_SENSITIVE_METRICS.includes(metric)
 		)) {
 			await exec(
-				`ts-node -T ${path.join(
+				`node --no-deprecation -r ts-node/register/transpile-only ${path.join(
 					METRICS_DIR,
 					`collectors/${bundle}/${metric}.ts`
 				)}`

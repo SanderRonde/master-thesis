@@ -4,7 +4,10 @@ import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 
 import { DASHBOARD_DIR } from '../../../collectors/shared/constants';
 import { Metric } from '../metrics';
-import { DASHBOARD_DIST_DIR, DASHBOARD_EXCLUDED_FILES } from '../../../collectors/dashboard/lib/constants';
+import {
+	DASHBOARD_DIST_DIR,
+	DASHBOARD_EXCLUDED_FILES,
+} from '../../../collectors/dashboard/lib/constants';
 import { asyncGlob } from '../../../collectors/shared/helpers';
 
 async function getDashboardFiles(): Promise<string[]> {
@@ -60,6 +63,15 @@ export async function dashboardPreMetrics(
 		await fs.writeFile(concatenatedFilePath, bundle, {
 			encoding: 'utf8',
 		});
+
+		await exec('? Creating index.html file');
+		await fs.writeFile(
+			path.join(DASHBOARD_DIST_DIR, 'index.html'),
+			'<html><body><script src="bundle.js"></script></body>',
+			{
+				encoding: 'utf8',
+			}
+		);
 
 		await exec('? Bundling');
 		await exec(

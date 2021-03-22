@@ -10,13 +10,13 @@ export interface DatasetStats {
 }
 
 function standardDeviation(numbers: number[]): number {
-	const avg = sum(numbers);
+	const avg = sum(numbers) / numbers.length;
 
-	var SDprep = 0;
+	var stddevTotal = 0;
 	for (let i = 0; i < numbers.length; i++) {
-		SDprep += Math.pow(numbers[i] - avg, 2);
+		stddevTotal += Math.pow(numbers[i] - avg, 2);
 	}
-	var stddev = Math.sqrt(SDprep / numbers.length);
+	var stddev = Math.sqrt(stddevTotal / numbers.length);
 	return stddev;
 }
 
