@@ -12,3 +12,13 @@ export const SLOWDOWN_FACTOR = 10;
  * before generating a report off of the avg
  */
 export const LOAD_TIME_PERFORMANCE_MEASURES = 5;
+/**
+ * How long to wait before assuming a component has been fully
+ * rendered (when gathering data on a fast version of the page)
+ */
+export const INITIAL_RENDER_WAIT_TIME = 5000;
+/**
+ * How long to wait before assuming a component has been fully
+ * rendered (when measuring a slower version of the page)
+ */
+ export const MEASURED_RENDER_WAIT_TIME = 10000;

@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import glob from 'glob';
 import { IOptions } from 'glob';
+import { TEMP_DIR } from './constants';
 
 /**
  * Run given function if given file is the
@@ -99,17 +100,44 @@ export const generateRandomString = (() => {
 	};
 })();
 
+export async function generateTempFolder() {
+	let folderName: string;
+	do {
+		folderName = generateRandomString();
+	} while (await fs.pathExists(folderName));
+
+	return path.join(TEMP_DIR, folderName);
+}
+
 export async function generateTempFileName(extension: string) {
 	let fileName: string;
 	do {
 		fileName = `${generateRandomString()}.${extension}`;
 	} while (await fs.pathExists(fileName));
 
-	return fileName;
+	return path.join(TEMP_DIR, fileName);
 }
 
 export function wait(duration: number) {
 	return new Promise<void>((resolve) => {
 		setTimeout(resolve, duration);
 	});
+}
+
+function capitalize(word: string): string {
+	return `${word[0].toUpperCase()}${word.slice(1)}`;
+}
+
+export function createCamelCaseString(
+	parts: string[],
+	uppercaseFirst = false
+): string {
+	return parts
+		.map((part, index) => {
+			if (index === 0 && !uppercaseFirst) {
+				return `${part[0].toLowerCase()}${part.slice(1)}`;
+			}
+			return capitalize(part);
+		})
+		.join('');
 }

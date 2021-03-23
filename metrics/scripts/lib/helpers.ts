@@ -1,0 +1,1 @@
+export const TS_NODE_COMMAND = 'node --no-deprecation -r ts-node/register/transpile-only'

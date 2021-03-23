@@ -48,3 +48,86 @@ export async function createTSProgram(
 		},
 	});
 }
+
+function createCompilerHost(
+	getSourceFileCode: (fileName: string) => string | void
+): ts.CompilerHost {
+	return {
+		fileExists(fileName) {
+			return !!getSourceFileCode(fileName);
+		},
+		getCanonicalFileName(fileName) {
+			return fileName;
+		},
+		getCurrentDirectory() {
+			return DASHBOARD_DIR;
+		},
+		getDefaultLibFileName() {
+			return 'lib.d.ts';
+		},
+		getNewLine() {
+			return '\n';
+		},
+		getSourceFile: (fileName, _languageVersion) => {
+			const sourceCode = getSourceFileCode(fileName);
+			if (!sourceCode) {
+				return undefined;
+			}
+			return ts.createSourceFile(
+				fileName,
+				sourceCode,
+				ts.ScriptTarget.Latest,
+				true
+			);
+		},
+		readFile: (fileName) => {
+			const sourceCode = getSourceFileCode(fileName);
+			if (!sourceCode) {
+				throw new Error(`Failed to find TS source file "${fileName}"`);
+			}
+			return sourceCode;
+		},
+		useCaseSensitiveFileNames() {
+			return true;
+		},
+		writeFile() {
+			return undefined;
+		},
+	};
+}
+
+interface TSProgram {
+	ast: ts.SourceFile;
+	typeChecker: ts.TypeChecker;
+}
+
+export async function createSingleFileTSProgram(
+	code: string
+): Promise<TSProgram> {
+	const compilerHost = createCompilerHost(() => code);
+
+	const fileName = 'sourcefile.ts';
+	const program = ts.createProgram(
+		[fileName],
+		{
+			noResolve: true,
+			target: ts.ScriptTarget.Latest,
+			experimentalDecorators: true,
+			jsxFactory: 'html.jsx',
+			jsx: ts.JsxEmit.React,
+			jsxFragmentFactory: 'html.Fragment',
+		},
+		compilerHost
+	);
+
+	const ast = program.getSourceFile(fileName);
+	if (!ast) {
+		throw new Error(
+			`Failed to parse file "${fileName}" into typescript AST`
+		);
+	}
+	return {
+		ast,
+		typeChecker: program.getTypeChecker(),
+	};
+}

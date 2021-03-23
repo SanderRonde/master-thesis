@@ -16,6 +16,7 @@ export type LoadTime = {
 	values: number[];
 	stats: DatasetStats;
 };
+export type RenderTime = ByFileNumberStats
 
 export interface Data {
 	metrics: {
