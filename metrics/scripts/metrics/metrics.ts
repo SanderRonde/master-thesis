@@ -66,15 +66,6 @@ export const metris = preserveCommandBuilder(
 			path.join(DASHBOARD_DIR, 'src/environments/version.ts')
 		);
 
-		await exec('? Changing browser target to speed things up');
-		await fs.writeFile(
-			path.join(DASHBOARD_DIR, 'browserslist'),
-			'last 2 Chrome versions\n',
-			{
-				encoding: 'utf8',
-			}
-		);
-
 		await exec('? Installing dashboard dependencies');
 		await exec(`npm install -C ${DASHBOARD_DIR}`);
 

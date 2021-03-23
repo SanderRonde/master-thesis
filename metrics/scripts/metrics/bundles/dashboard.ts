@@ -10,6 +10,14 @@ import {
 } from '../../../collectors/dashboard/lib/constants';
 import { asyncGlob } from '../../../collectors/shared/helpers';
 
+const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
+const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
+
+interface TempDashboardFiles {
+	oldBrowsersList: string;
+	oldProjectFile: string;
+}
+
 async function getDashboardFiles(): Promise<string[]> {
 	const allJsFiles = await asyncGlob('*.js', {
 		cwd: DASHBOARD_DIST_DIR,
@@ -18,6 +26,49 @@ async function getDashboardFiles(): Promise<string[]> {
 		(file) => !DASHBOARD_EXCLUDED_FILES.includes(file)
 	);
 	return files.map((file) => path.join(DASHBOARD_DIST_DIR, file));
+}
+
+async function preDashboardBuild(
+	exec: ExecFunction
+): Promise<TempDashboardFiles> {
+	await exec('? Changing browser target to speed things up');
+	const oldBrowsersList = await fs.readFile(BROWSERS_LIST_FILE, {
+		encoding: 'utf8',
+	});
+	await fs.writeFile(BROWSERS_LIST_FILE, 'last 2 Chrome versions\n', {
+		encoding: 'utf8',
+	});
+
+	await exec('? Changing output dir');
+	const oldProjectFile = await fs.readFile(ANGULAR_PROJECT_FILE, {
+		encoding: 'utf8',
+	});
+	const projectFile = JSON.parse(oldProjectFile);
+	projectFile.projects.zensie.architect.build.options.outputPath =
+		'dist/dashboard';
+	await fs.writeFile(ANGULAR_PROJECT_FILE, JSON.stringify(projectFile), {
+		encoding: 'utf8',
+	});
+
+	return {
+		oldBrowsersList,
+		oldProjectFile,
+	};
+}
+
+async function postDashboardBuild(
+	exec: ExecFunction,
+	files: TempDashboardFiles
+) {
+	await exec('? Changing browser target back');
+	await fs.writeFile(BROWSERS_LIST_FILE, files.oldBrowsersList, {
+		encoding: 'utf8',
+	});
+
+	await exec('? Changing output dir back');
+	await fs.writeFile(ANGULAR_PROJECT_FILE, files.oldProjectFile, {
+		encoding: 'utf8',
+	});
 }
 
 export async function dashboardPreMetrics(
@@ -29,21 +80,12 @@ export async function dashboardPreMetrics(
 		(metrics.includes('size') || metrics.includes('load-time')) &&
 		!(await fs.pathExists(DASHBOARD_DIST_DIR))
 	) {
-		await exec('? Changing output dir');
-		const angularProjectFile = path.join(DASHBOARD_DIR, 'angular.json');
-		const projectFile = JSON.parse(
-			await fs.readFile(angularProjectFile, {
-				encoding: 'utf8',
-			})
-		);
-		projectFile.projects.zensie.architect.build.options.outputPath =
-			'dist/dashboard';
-		await fs.writeFile(angularProjectFile, JSON.stringify(projectFile), {
-			encoding: 'utf8',
-		});
+		const preBuildFiles = await preDashboardBuild(exec);
 
 		await exec('? Building dashboard');
 		await exec(`yarn --cwd ${DASHBOARD_DIR} makfy build`);
+
+		await postDashboardBuild(exec, preBuildFiles);
 
 		await exec('? Concatenating into bundle');
 		const files = await Promise.all(
