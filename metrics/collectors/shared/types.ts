@@ -4,7 +4,11 @@ import { DatasetStats } from './stats';
 
 type ByFileNumberStats = {
 	files: Record<string, number>;
-	stas: DatasetStats;
+	stats: DatasetStats;
+};
+export type FileRenderTimeData = {
+	times: number[];
+	stats: DatasetStats;
 };
 export type StructuralComplexity = ByFileNumberStats;
 export type CyclomaticComplexity = ByFileNumberStats;
@@ -16,7 +20,10 @@ export type LoadTime = {
 	values: number[];
 	stats: DatasetStats;
 };
-export type RenderTime = ByFileNumberStats
+export type RenderTime = {
+	files: Record<string, FileRenderTimeData>;
+	stats: DatasetStats;
+};
 
 export interface Data {
 	metrics: {

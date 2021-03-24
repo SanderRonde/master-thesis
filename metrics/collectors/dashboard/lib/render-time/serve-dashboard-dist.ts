@@ -6,24 +6,25 @@ import {
 	getFreePort,
 	runFunctionIfCalledFromScript,
 } from '../../../shared/helpers';
+import { success } from '../../../shared/log';
 import { DASHBOARD_DIST_DIR } from '../constants';
 
-export function doWithServer(
+export function doWithServer<R>(
 	port: number,
-	callback?: (port: number) => Promise<void>
+	callback?: (port: number) => Promise<R>
 ) {
-	return new Promise<void>((resolve) => {
+	return new Promise<R>((resolve) => {
 		const app = express();
 		app.use(serveStatic(DASHBOARD_DIST_DIR));
 		app.all('*', (_, res) => {
 			res.sendFile(path.join(DASHBOARD_DIST_DIR, 'index.html'));
 		});
 		const server = app.listen(port, async () => {
-			console.log(`Listening on port ${port}`);
+			success('server', `Listening on port ${port}`);
 			if (callback) {
-				await callback(port);
+				const callbackReturnValue = await callback(port);
 				server.close();
-				resolve();
+				resolve(callbackReturnValue);
 			}
 		});
 	});

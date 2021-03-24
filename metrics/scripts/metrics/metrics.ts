@@ -20,21 +20,14 @@ const __METRICS = [
 	'load-time',
 	'size',
 	'number-of-components',
+	'render-time',
 ] as const;
 export type Bundle = typeof __BUNDLES[Extract<keyof typeof __BUNDLES, number>];
 export type Metric = typeof __METRICS[Extract<keyof typeof __METRICS, number>];
 
-export const BUNDLES = ['dashboard'] as Bundle[];
+export const BUNDLES = (__BUNDLES as unknown) as Bundle[];
 
-export const METRICS = [
-	'structural-complexity',
-	'cyclomatic-complexity',
-	'lines-of-code',
-	'maintainability',
-	'load-time',
-	'size',
-	'number-of-components',
-] as Metric[];
+export const METRICS = (__METRICS as unknown) as Metric[];
 
 const bundleMap: {
 	[K in Bundle]: CommandBuilder<{}>;
@@ -48,10 +41,12 @@ export const metris = preserveCommandBuilder(
 		.args({
 			'skip-dashboard': flag(),
 			bundle: choice([...BUNDLES, 'all'], 'all'),
+			'no-cache': flag(),
 		})
 		.argsDesc({
 			'skip-dashboard': 'Skip installing of dashboard',
 			bundle: 'A specific bundle to use. Uses all by default',
+			'no-cache': "Don't use cache and force rebuild",
 		})
 ).run(async (exec, args) => {
 	const packagesInstalledFile = path.join(DASHBOARD_DIR, '.vscode/installed');
@@ -80,6 +75,10 @@ export const metris = preserveCommandBuilder(
 	}
 
 	for (const bundle of bundles) {
-		await exec(getCommandBuilderExec(bundleMap[bundle]));
+		await exec(
+			getCommandBuilderExec(bundleMap[bundle], {
+				'no-cache': args['no-cache'],
+			})
+		);
 	}
 });

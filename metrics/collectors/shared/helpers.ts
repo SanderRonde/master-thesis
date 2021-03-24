@@ -2,7 +2,10 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import glob from 'glob';
 import { IOptions } from 'glob';
+import pngJS from 'pngjs';
+
 import { TEMP_DIR } from './constants';
+import { error } from './log';
 
 /**
  * Run given function if given file is the
@@ -36,8 +39,8 @@ export async function runFunctionIfCalledFromScript<R>(
 		try {
 			return await fn();
 		} catch (e) {
-			console.log(`Script "${scriptFilePath}" failed`);
-			console.log(e);
+			error(scriptFilePath, `Script "${scriptFilePath}" failed`);
+			console.error(e);
 
 			// The version of node we use does not yet exit
 			// on rejected promises. As such throwing an error
@@ -109,12 +112,13 @@ export async function generateTempFolder() {
 	return path.join(TEMP_DIR, folderName);
 }
 
-export async function generateTempFileName(extension: string) {
+export async function generateTempFileName(extension: string, prefix: string = '') {
 	let fileName: string;
 	do {
-		fileName = `${generateRandomString()}.${extension}`;
+		fileName = `${prefix}${generateRandomString()}.${extension}`;
 	} while (await fs.pathExists(fileName));
 
+	await fs.mkdirp(TEMP_DIR);
 	return path.join(TEMP_DIR, fileName);
 }
 
@@ -140,4 +144,16 @@ export function createCamelCaseString(
 			return capitalize(part);
 		})
 		.join('');
+}
+
+export function asyncCreatePNG(data: Buffer) {
+	return new Promise<pngJS.PNG>((resolve, reject) => {
+		const png = new pngJS.PNG().parse(data, (err) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(png);
+			}
+		});
+	});
 }

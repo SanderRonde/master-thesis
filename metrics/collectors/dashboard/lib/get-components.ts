@@ -17,8 +17,21 @@ export interface ComponentFiles {
 	html: CowComponentImport | null;
 }
 
+export const EXCLUDED_COMPONENTS = [
+	'LineChartComponent',
+	'PopupsComponent',
+	'ToastNotificationComponent',
+	'PopupComponent',
+	'ToastComponent',
+	'ThemeProviderComponent',
+	'FireworksComponent',
+	'ChartErrorComponent',
+];
+
 export async function getComponents(): Promise<ComponentFiles[]> {
-	const componentFiles = await getCowComponents('src');
+	const componentFiles = (await getCowComponents('src')).filter(
+		(c) => !EXCLUDED_COMPONENTS.includes(c.componentName)
+	);
 
 	const templateFiles = await getCowComponents('src', 'html');
 

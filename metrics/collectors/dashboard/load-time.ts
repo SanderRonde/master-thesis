@@ -17,6 +17,7 @@ import {
 } from '../shared/settings';
 import { LoadTime } from '../shared/types';
 import { getDatasetStats } from '../shared/stats';
+import { info } from '../shared/log';
 
 const DASHBOARD_DIST_DIR = path.join(DASHBOARD_DIR, 'dist', 'dashboard');
 
@@ -106,11 +107,20 @@ export function getDashboardLoadTime(): Promise<LoadTime> {
 		const server = createServer({
 			root: DASHBOARD_DIST_DIR,
 		});
+		info(__filename, 'Starting server');
 		server.listen(port, async () => {
 			const profiles: PerformanceProfile[] = [];
 			for (let i = 0; i < LOAD_TIME_PERFORMANCE_MEASURES; i++) {
+				info(
+					__filename,
+					`Creating performance profile for iteration ${
+						i + 1
+					}/${LOAD_TIME_PERFORMANCE_MEASURES}`
+				);
 				profiles.push(await createPerformanceProfile(port));
 			}
+
+			info(__filename, 'Extracting load times');
 			const loadTimes = profiles.map((profile) =>
 				getBundleLoadTimeFromProfile(port, profile)
 			);

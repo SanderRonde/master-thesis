@@ -10,7 +10,8 @@ import {
 import { DASHBOARD_DIR } from '../../../shared/constants';
 
 import { runFunctionIfCalledFromScript } from '../../../shared/helpers';
-import { getComponents } from '../get-components';
+import { info, success } from '../../../shared/log';
+import { EXCLUDED_COMPONENTS } from '../get-components';
 import {
 	DEFAULT_VALUE_PREFIX,
 	generateRenderTimeHTML,
@@ -27,10 +28,7 @@ const SHARED_MODULE_FILE_PATH = path.join(
 );
 const APP_MODULE_FILE_PATH = path.join(DASHBOARD_DIR, 'src/app/app.module.ts');
 const NOT_FOUND_COMPONENT_BASE = path.join(DASHBOARD_DIR, 'src/app/shared/404');
-const NOT_FOUND_COMPONENT_SCSS = path.join(
-	NOT_FOUND_COMPONENT_BASE,
-	'404.component.scss'
-);
+const HACK_CSS_FILE_PATH = path.join(DASHBOARD_DIR, 'src/styles/hack.scss');
 const NOT_FOUND_COMPONENT_HTML = path.join(
 	NOT_FOUND_COMPONENT_BASE,
 	'404.component.html'
@@ -46,10 +44,6 @@ const CHART_COMPONENT = path.join(
 const WEBCOMPONENTS_ENV_FILE = path.join(
 	DASHBOARD_DIR,
 	'src/environments/webcomponent.ts'
-);
-const CHARTS_MODULE_FILE = path.join(
-	DASHBOARD_DIR,
-	'src/app/charts/charts.module.ts'
 );
 
 async function addBrowserModule() {
@@ -67,14 +61,14 @@ async function addBrowserModule() {
 	});
 }
 
-async function disableSatellite() {
-	const file = await fs.readFile(NOT_FOUND_COMPONENT_SCSS, {
+async function disableSupportButton() {
+	const file = await fs.readFile(HACK_CSS_FILE_PATH, {
 		encoding: 'utf8',
 	});
 
 	await fs.writeFile(
-		NOT_FOUND_COMPONENT_SCSS,
-		`${file}\n#satellite { display: none; }`,
+		HACK_CSS_FILE_PATH,
+		`${file}\niframe { display: none; }`,
 		{
 			encoding: 'utf8',
 		}
@@ -105,14 +99,8 @@ async function makeChartDeterministic() {
 }
 
 async function writeRenderTimeHTML(html: string) {
-	const file = await fs.readFile(NOT_FOUND_COMPONENT_HTML, {
-		encoding: 'utf8',
-	});
-
-	const replacedFile = file.replace(
-		'<div class="vertical">',
-		`<div class="vertical">\n<div>${html}</div>`
-	);
+	const replacedFile = `<div class="vertical-align">
+		<div class="vertical">${html}</div></div>`;
 	await fs.writeFile(NOT_FOUND_COMPONENT_HTML, replacedFile, {
 		encoding: 'utf8',
 	});
@@ -270,8 +258,10 @@ async function addToAppModule() {
 }
 
 async function getComponentDefs(): Promise<JoinedDefinition[]> {
-	const componentTypes = await getNamedCowComponents(
-		await extractComponentTypes()
+	const componentTypes = (
+		await getNamedCowComponents(await extractComponentTypes())
+	).filter(
+		(component) => !EXCLUDED_COMPONENTS.includes(component.component.name)
 	);
 
 	const components = [
@@ -293,31 +283,31 @@ async function getComponentDefs(): Promise<JoinedDefinition[]> {
  */
 
 runFunctionIfCalledFromScript(async () => {
-	console.log('Getting browser module');
+	info(__filename, 'Getting browser module');
 	await addBrowserModule();
-	console.log('Disabling satellite');
-	await disableSatellite();
-	console.log('Adding to app module');
+	info(__filename, 'Adding to app module');
 	await addToAppModule();
-	console.log('Removing 404 page from shared module');
+	info(__filename, 'Disabling support button');
+	await disableSupportButton();
+	info(__filename, 'Removing 404 page from shared module');
 	await remove404PageFromModule();
-	console.log('Making chart deterministic');
+	info(__filename, 'Making chart deterministic');
 	await makeChartDeterministic();
-	console.log('Getting component defs');
+	info(__filename, 'Getting component defs');
 	const componentDefs = await getComponentDefs();
-	console.log('Generating render timing html');
+	info(__filename, 'Generating render timing html');
 	const renderTimeHTML = await generateRenderTimeHTML(componentDefs);
-	console.log('Writing render timing HTML');
+	info(__filename, 'Writing render timing HTML');
 	await writeRenderTimeHTML(renderTimeHTML);
-	console.log('Adding change detector function');
+	info(__filename, 'Adding change detector function');
 	await addChangeDetectorFunction();
-	console.log('Adding default values to file');
+	info(__filename, 'Adding default values to file');
 	await addDefaultValuesToFile(componentDefs);
-	console.log('Adding default values to class');
+	info(__filename, 'Adding default values to class');
 	await addDefaultValuesToClass(componentDefs);
-	console.log('Disabling authentication');
+	info(__filename, 'Disabling authentication');
 	await disableAuthentication();
-	console.log('Adding toggles to class');
+	info(__filename, 'Adding toggles to class');
 	await addTogglesToClass(componentDefs);
-	console.log('Done generating render timing page');
+	success(__filename, 'Done generating render timing page');
 }, __filename);
