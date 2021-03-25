@@ -65,11 +65,14 @@ function log(rawTag: string, tag: string, ...data: any[]) {
 		)
 	);
 	const sourceLine = getSourceLine();
+	if (!process.stdout.columns) {
+		process.stdout.write(`${formatted}\n`);
+		return;
+	}
 	const padding = new Array(
 		process.stdout.columns -
-			(rawFormatted.replace(ANSI_REGEX, '').length %
-				process.stdout.columns) -
-			sourceLine.length
+			((rawFormatted.replace(ANSI_REGEX, '').length + sourceLine.length) %
+				process.stdout.columns)
 	)
 		.fill(' ')
 		.join('');
