@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
-import { cmd, flag } from 'makfy';
+import { cmd, flag, setEnvVar } from 'makfy';
 import rimraf from 'rimraf';
 
 import {
@@ -138,19 +138,25 @@ export const dashboardMetrics = preserveCommandBuilder(
 		.desc('Collect dashboard metrics')
 		.args({
 			'no-cache': flag(),
+			prod: flag(),
 		})
 		.argsDesc({
 			'no-cache': "Don't use cache and force rebuild",
+			prod: 'Run in production mode',
 		})
 ).run(async (exec, args) => {
 	const dashboardCtx = await exec(`cd ${DASHBOARD_DIR}`);
 	await dashboardCtx.keepContext('git reset --hard');
 
+	const baseCtx = args.prod
+		? (await exec(setEnvVar('ENV', 'production'))).keepContext
+		: exec;
+
 	await exec('? Preparing bundle');
-	await dashboardPreBundleMetrics(exec, args['no-cache']);
+	await dashboardPreBundleMetrics(baseCtx, args['no-cache'] || args.prod);
 
 	await exec('? Collecting non time sensitive metrics');
-	await exec(
+	await baseCtx(
 		[
 			'structural-complexity',
 			'cyclomatic-complexity',
@@ -170,20 +176,20 @@ export const dashboardMetrics = preserveCommandBuilder(
 	await dashboardCtx.keepContext('git reset --hard');
 
 	await exec('? Preparing for load time measuring');
-	await exec(
+	await baseCtx(
 		`${TS_NODE_COMMAND} ${path.join(
 			DASHBOARD_BASE_DIR,
 			`lib/render-time/generate-render-time-page.ts`
 		)}`
 	);
 
-	await buildDashboard(exec, 'render-time', args['no-cache']);
+	await buildDashboard(baseCtx, 'render-time', args['no-cache'] || args.prod);
 
-	await exec(
+	await baseCtx(
 		`${TS_NODE_COMMAND} ${path.join(
 			DASHBOARD_BASE_DIR,
 			`render-time.ts`
-		)} ${ifTrue('--no-cache', args['no-cache'])}`
+		)} ${ifTrue('--no-cache', args['no-cache'] || args.prod)}`
 	);
 
 	await dashboardCtx.keepContext('git reset --hard');

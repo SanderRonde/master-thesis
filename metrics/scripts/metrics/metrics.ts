@@ -53,9 +53,6 @@ export const metris = preserveCommandBuilder(
 ).run(async (exec, args) => {
 	const packagesInstalledFile = path.join(DASHBOARD_DIR, '.vscode/installed');
 	const bundles: Bundle[] = args.bundle !== 'all' ? [args.bundle] : BUNDLES;
-	if (args.prod) {
-		setEnvVar('ENV', 'production');
-	}
 
 	if (
 		!args['skip-dashboard'] &&
@@ -82,7 +79,8 @@ export const metris = preserveCommandBuilder(
 	for (const bundle of bundles) {
 		await exec(
 			getCommandBuilderExec(bundleMap[bundle], {
-				'no-cache': args['no-cache'] || args.prod,
+				'no-cache': args['no-cache'],
+				prod: args.prod,
 			})
 		);
 	}
