@@ -8,3 +8,4 @@ export const DASHBOARD_DIR = path.join(
 	'30mhz-dashboard'
 );
 export const TEMP_DIR = path.join(METRICS_DIR, 'temp');
+export const CACHE_DIR = path.join(METRICS_DIR, 'cache');

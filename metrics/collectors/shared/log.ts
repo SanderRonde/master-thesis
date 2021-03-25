@@ -1,9 +1,17 @@
 import chalk from 'chalk';
+import { format } from 'util';
 import * as path from 'path';
-import { BUNDLES, METRICS } from '../../scripts/metrics/metrics';
-import { METRICS_DIR, ROOT_DIR } from './constants';
 
+import { BUNDLES, METRICS } from '../../scripts/metrics/metrics';
+import { METRICS_DIR } from './constants';
 import { DEVELOPMENT } from './settings';
+
+const ANSI_REGEX = new RegExp(
+	[
+		'[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
+		'(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))',
+	].join('|')
+);
 
 function pathSplit(filePath: string) {
 	const parts: string[] = [];
@@ -36,45 +44,67 @@ function getTagFromFilePath(filePath: string) {
 	return `${bundle}.${metric}`;
 }
 
+function getSourceLine() {
+	const err = new Error();
+	const source = err.stack!.split('\n')[4];
+
+	return path.parse(source.split('at')[1].trim()).base.replace(')', '');
+}
+
+function log(rawTag: string, tag: string, ...data: any[]) {
+	const formatted = format(
+		tag,
+		...data.map((d) =>
+			typeof d === 'string' ? d.replace(/\t/g, '    ') : d
+		)
+	);
+	const rawFormatted = format(
+		rawTag,
+		...data.map((d) =>
+			typeof d === 'string' ? d.replace(/\t/g, '    ') : d
+		)
+	);
+	const sourceLine = getSourceLine();
+	const padding = new Array(
+		process.stdout.columns -
+			(rawFormatted.replace(ANSI_REGEX, '').length %
+				process.stdout.columns) -
+			sourceLine.length
+	)
+		.fill(' ')
+		.join('');
+	process.stdout.write(`${formatted}${padding}${sourceLine}\n`);
+}
+
 export function info(filePath: string, ...data: [any, ...any]) {
-	console.log(chalk.blue(`[ ${getTagFromFilePath(filePath)} ] -`), ...data);
+	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	log(raw, chalk.blue(raw), ...data);
 }
 
 export function success(filePath: string, ...data: [any, ...any]) {
-	console.log(
-		chalk.green(chalk.bold(`[ ${getTagFromFilePath(filePath)} ] -`)),
-		...data
-	);
+	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	log(raw, chalk.green(chalk.bold(raw)), ...data);
 }
 
 export function warning(filePath: string, ...data: [any, ...any]) {
-	console.log(
-		chalk.rgb(
-			255,
-			165,
-			0
-		)(chalk.bold(`[ ${getTagFromFilePath(filePath)} ] -`)),
-		...data
-	);
+	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	log(raw, chalk.rgb(255, 165, 0)(chalk.bold(raw)), ...data);
 }
 
 export function error(filePath: string, ...data: [any, ...any]) {
-	console.log(
-		chalk.red(chalk.bold(`[ ${getTagFromFilePath(filePath)} ] -`)),
-		...data
-	);
+	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	log(raw, chalk.red(chalk.bold(raw)), ...data);
 }
 
 export function debug(filePath: string, ...data: [any, ...any]) {
 	if (!DEVELOPMENT) {
 		return;
 	}
-	console.log(
-		chalk.rgb(
-			255,
-			174,
-			0
-		)(chalk.bold(`[ ${getTagFromFilePath(filePath)} ] -`)),
+	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	log(
+		raw,
+
+		chalk.rgb(255, 174, 0)(chalk.bold(raw)),
 		...data
 	);
 }
@@ -83,12 +113,6 @@ export function tempLog(filePath: string, ...data: [any, ...any]) {
 	if (!DEVELOPMENT) {
 		throw new Error('Temp log still in code');
 	}
-	console.log(
-		chalk.rgb(
-			255,
-			174,
-			0
-		)(chalk.bold(`[ ${getTagFromFilePath(filePath)} ] -`)),
-		...data
-	);
+	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	log(raw, chalk.rgb(255, 174, 0)(chalk.bold(raw)), ...data);
 }

@@ -2,6 +2,8 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { METRICS_DIR } from './constants';
+import { debug } from './log';
+import { DEVELOPMENT } from './settings';
 
 const DEFAULT_STORE_NAME = 'database';
 const STORAGE_DIR = path.join(METRICS_DIR, 'data');
@@ -48,6 +50,10 @@ export async function storeData(
 	value: any,
 	storeName: string = DEFAULT_STORE_NAME
 ): Promise<void> {
+	if (DEVELOPMENT) {
+		debug(__filename, 'Not writing database in debug mode');
+		return;
+	}
 	const store = (await readStore(storeName)) || {};
 
 	let currentStore = store;

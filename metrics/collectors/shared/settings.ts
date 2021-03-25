@@ -1,15 +1,29 @@
 /**
+ * ================================================
+ * 							Development options
+ * ================================================
+ */
+/**
  * Whether this is running in development mode
  */
 const DEVELOPMENT_DEFAULT = true;
 export const DEVELOPMENT = DEVELOPMENT_DEFAULT
 	? !process.argv.includes('--prod') && process.env.ENV !== 'production'
 	: false;
+const OUTPUT_IMAGES_DEFAULT = false;
+/**
+ * Whether to store images taken during the render time tests
+ */
+export const OUTPUT_IMAGES = DEVELOPMENT && OUTPUT_IMAGES_DEFAULT;
 
 /**
- * Metrics
+ * ================================================
+ * 							Metrics
+ * ================================================
  */
-// 2, as used by the paper (A quality model for web components)
+/**
+ * 2, as used by the paper (A quality model for web components)
+ */
 export const STRUCTURAL_COMPLEXITY_DEPTH = 2;
 /**
  * Slowdown factor used for the load time of bundles
@@ -29,7 +43,7 @@ export const INITIAL_RENDER_WAIT_TIME = 5000;
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
  */
-export const MEASURED_RENDER_WAIT_TIME = 5000;
+export const MAX_MEASURED_RENDER_WAIT_TIME = 60000;
 /**
  * The maximum number of pixels a frame is allowed to
  * differ from the target frame before being marked as
@@ -50,7 +64,11 @@ export const RENDER_TIME_HEIGHT = 1080;
  */
 export const RENDER_TIME_WIDTH = 1920;
 /**
- * How many pxiels to crop out from the bottom of the
+ * How many pxiels to crop out from the top of the
  * render time page
  */
-export const RENDER_TIME_CROP = 0;
+export const RENDER_TIME_CROP = 200;
+/**
+ * How many workers to use for image parsing
+ */
+export const NUM_WORKERS = 4;

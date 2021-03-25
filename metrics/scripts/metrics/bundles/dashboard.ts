@@ -15,7 +15,12 @@ import {
 } from '../../../collectors/dashboard/lib/constants';
 import { asyncGlob } from '../../../collectors/shared/helpers';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
-import { cpxAsync, rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
+import {
+	cpxAsync,
+	ifTrue,
+	rimrafAsync,
+	TS_NODE_COMMAND,
+} from '../../lib/helpers';
 
 const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
@@ -175,7 +180,10 @@ export const dashboardMetrics = preserveCommandBuilder(
 	await buildDashboard(exec, 'render-time', args['no-cache']);
 
 	await exec(
-		`${TS_NODE_COMMAND} ${path.join(DASHBOARD_BASE_DIR, `render-time.ts`)}`
+		`${TS_NODE_COMMAND} ${path.join(
+			DASHBOARD_BASE_DIR,
+			`render-time.ts`
+		)} ${ifTrue('--no-cache', args['no-cache'])}`
 	);
 
 	await dashboardCtx.keepContext('git reset --hard');

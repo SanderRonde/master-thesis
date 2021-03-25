@@ -30,7 +30,9 @@ export function getDatasetStats(dataset: number[]): DatasetStats {
 		avg: total / dataset.length,
 		total,
 		median:
-			dataset.length % 2 === 0
+			dataset.length === 1
+				? sorted[0]
+				: dataset.length % 2 === 0
 				? sorted[half]
 				: (sorted[Math.floor(half)] + sorted[Math.ceil(half)]) / 2,
 		stddev: standardDeviation(dataset),

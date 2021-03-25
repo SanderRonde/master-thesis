@@ -112,7 +112,10 @@ export async function generateTempFolder() {
 	return path.join(TEMP_DIR, folderName);
 }
 
-export async function generateTempFileName(extension: string, prefix: string = '') {
+export async function generateTempFileName(
+	extension: string,
+	prefix: string = ''
+) {
 	let fileName: string;
 	do {
 		fileName = `${prefix}${generateRandomString()}.${extension}`;
@@ -146,7 +149,22 @@ export function createCamelCaseString(
 		.join('');
 }
 
-export function asyncCreatePNG(data: Buffer) {
+export function upgradePNG(basePng: pngJS.PNGWithMetadata): Promise<pngJS.PNG> {
+	return new Promise<pngJS.PNG>((resolve, reject) => {
+		const png = new pngJS.PNG({
+			width: basePng.width,
+			height: basePng.height,
+		}).parse(pngJS.PNG.sync.write(basePng), (err) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(png);
+			}
+		});
+	});
+}
+
+export function asyncCreatePNG(data: string | Buffer) {
 	return new Promise<pngJS.PNG>((resolve, reject) => {
 		const png = new pngJS.PNG().parse(data, (err) => {
 			if (err) {
@@ -156,4 +174,26 @@ export function asyncCreatePNG(data: Buffer) {
 			}
 		});
 	});
+}
+
+export function resizeImage(
+	png: pngJS.PNG,
+	{
+		height,
+		width,
+		startX = 0,
+		startY = 0,
+	}: {
+		startX?: number;
+		startY?: number;
+		height: number;
+		width: number;
+	}
+): pngJS.PNG {
+	const dst = new pngJS.PNG({
+		width,
+		height,
+	});
+	png.bitblt(dst, startX, startY, width, height);
+	return dst;
 }

@@ -1,4 +1,3 @@
-import * as glob from 'glob';
 import * as path from 'path';
 
 import { DASHBOARD_DIR } from '../../shared/constants';

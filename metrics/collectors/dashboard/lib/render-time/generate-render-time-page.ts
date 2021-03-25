@@ -68,7 +68,7 @@ async function disableSupportButton() {
 
 	await fs.writeFile(
 		HACK_CSS_FILE_PATH,
-		`${file}\niframe { display: none; }`,
+		`${file}\niframe { display: none; } page-not-found { margin-top: 0!important; }`,
 		{
 			encoding: 'utf8',
 		}
@@ -99,7 +99,8 @@ async function makeChartDeterministic() {
 }
 
 async function writeRenderTimeHTML(html: string) {
-	const replacedFile = `<div class="vertical-align">
+	const replacedFile = `
+	<div class="vertical-align">
 		<div class="vertical">${html}</div></div>`;
 	await fs.writeFile(NOT_FOUND_COMPONENT_HTML, replacedFile, {
 		encoding: 'utf8',
@@ -198,6 +199,25 @@ async function addTogglesToClass(components: JoinedDefinition[]) {
 		})}
 	}`
 	);
+
+	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
+		encoding: 'utf8',
+	});
+}
+
+async function addFrameCounter() {
+	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
+		encoding: 'utf8',
+	});
+
+	file = `${file}\nconst container = document.createElement('div');
+	document.body.insertBefore(container, document.body.children[0]);
+	const startTime = Date.now();
+	const time = () => requestAnimationFrame(() => {
+		container.innerHTML = '' + (Date.now() - startTime);
+		time();
+	});
+	time();`;
 
 	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
 		encoding: 'utf8',
@@ -309,5 +329,7 @@ runFunctionIfCalledFromScript(async () => {
 	await disableAuthentication();
 	info(__filename, 'Adding toggles to class');
 	await addTogglesToClass(componentDefs);
+	info(__filename, 'Adding frame counter to class');
+	await addFrameCounter();
 	success(__filename, 'Done generating render timing page');
 }, __filename);

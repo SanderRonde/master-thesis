@@ -1,7 +1,7 @@
-import { choice, cmd, flag } from 'makfy';
+import { choice, cmd, flag, setEnvVar } from 'makfy';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
+import { DASHBOARD_DIR } from '../../collectors/shared/constants';
 import {
 	getCommandBuilderExec,
 	preserveCommandBuilder,
@@ -42,15 +42,20 @@ export const metris = preserveCommandBuilder(
 			'skip-dashboard': flag(),
 			bundle: choice([...BUNDLES, 'all'], 'all'),
 			'no-cache': flag(),
+			prod: flag(),
 		})
 		.argsDesc({
 			'skip-dashboard': 'Skip installing of dashboard',
 			bundle: 'A specific bundle to use. Uses all by default',
 			'no-cache': "Don't use cache and force rebuild",
+			prod: 'Enable production mode',
 		})
 ).run(async (exec, args) => {
 	const packagesInstalledFile = path.join(DASHBOARD_DIR, '.vscode/installed');
 	const bundles: Bundle[] = args.bundle !== 'all' ? [args.bundle] : BUNDLES;
+	if (args.prod) {
+		setEnvVar('ENV', 'production');
+	}
 
 	if (
 		!args['skip-dashboard'] &&
@@ -77,7 +82,7 @@ export const metris = preserveCommandBuilder(
 	for (const bundle of bundles) {
 		await exec(
 			getCommandBuilderExec(bundleMap[bundle], {
-				'no-cache': args['no-cache'],
+				'no-cache': args['no-cache'] || args.prod,
 			})
 		);
 	}

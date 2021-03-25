@@ -1,3 +1,4 @@
 node_modules
 .vscode
 metrics/temp
+metrics/cache

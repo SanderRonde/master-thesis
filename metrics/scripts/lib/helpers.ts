@@ -31,3 +31,10 @@ export function rimrafAsync(path: string, options?: rimraf.Options) {
 		});
 	});
 }
+
+export function ifTrue(str: string, condition: boolean): string {
+	if (condition) {
+		return str;
+	}
+	return '';
+}
