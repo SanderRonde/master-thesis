@@ -51,7 +51,7 @@ export async function storeData(
 	storeName: string = DEFAULT_STORE_NAME
 ): Promise<void> {
 	if (DEVELOPMENT) {
-		debug(__filename, 'Not writing database in debug mode');
+		debug('storage', 'Not writing database in debug mode');
 		return;
 	}
 	const store = (await readStore(storeName)) || {};
