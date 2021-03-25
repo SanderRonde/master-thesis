@@ -15,15 +15,15 @@ import { storeData } from '../shared/storage';
 import { ComponentFiles, getComponents } from './lib/get-components';
 import { RenderTime } from '../shared/types';
 import {
-	DEVELOPMENT,
 	INITIAL_RENDER_WAIT_TIME,
 	MAX_MEASURED_RENDER_WAIT_TIME,
 	OUTPUT_IMAGES,
+	RENDER_RETRIES,
 	RENDER_TIME_CROP,
 	RENDER_TIME_HEIGHT,
 	RENDER_TIME_MEASURES,
 	RENDER_TIME_WIDTH,
-	SLOWDOWN_FACTOR,
+	SLOWDOWN_FACTOR_RENDER_TIME,
 } from '../shared/settings';
 import { doWithServer } from './lib/render-time/serve-dashboard-dist';
 import { getDatasetStats } from '../shared/stats';
@@ -34,6 +34,7 @@ import { ImageCompareWorkersClass } from './lib/render-time/lib/image-compare-wo
 async function openPage(port: number, slowdownFactor: number) {
 	const browser = await puppeteer.launch({
 		headless: process.argv.includes('--headful') ? false : true,
+		timeout: 0,
 	});
 	const page = await browser.newPage();
 	await page.setViewport({
@@ -130,6 +131,114 @@ async function captureTargetScreenshots(
 	return componentTargets;
 }
 
+async function collectComponentRuntimeScreenshot(
+	components: ComponentFiles[],
+	i: number,
+	targets: Map<string, string>,
+	page: puppeteer.Page,
+	times: Map<string, number>
+) {
+	const component = components[i];
+	const componentName = component.js.componentName;
+	const targetImage = resizeImage(
+		await asyncCreatePNG(
+			Buffer.from(targets.get(component.js.componentName)!, 'base64')
+		),
+		{
+			height: RENDER_TIME_HEIGHT - RENDER_TIME_CROP,
+			width: RENDER_TIME_WIDTH,
+			startY: RENDER_TIME_CROP,
+		}
+	);
+
+	const client = await page.target().createCDPSession();
+	const fileWorker = await new ImageCompareWorkersClass().init(targetImage);
+
+	await Promise.race([
+		new Promise<void>(async (resolve) => {
+			let startTime = 0;
+
+			// Handle incoming frames
+			client.on('Page.screencastFrame', async (frameObject) => {
+				await client.send('Page.screencastFrameAck', {
+					sessionId: frameObject.sessionId,
+				});
+
+				const now = performance.now();
+				fileWorker.pushToQueue(
+					componentName,
+					frameObject.data,
+					now - startTime
+				);
+			});
+
+			// Start capturing
+			await client.send('Page.startScreencast', {
+				format: 'png',
+			});
+
+			// Show current component
+			await page.$eval(
+				'page-not-found',
+				(element, componentName) => {
+					((element as unknown) as NGElement).__ngContext__
+						.find(
+							(c) =>
+								c &&
+								typeof c === 'object' &&
+								'setRenderOption' in c
+						)
+						.setRenderOption(componentName, true);
+				},
+				componentName
+			);
+			startTime = performance.now();
+
+			fileWorker.onStopInput().then(async () => {
+				await client.send('Page.stopScreencast');
+			});
+
+			const result = await fileWorker.onResult();
+			times.set(componentName, result);
+
+			// Debugging
+			debug(
+				__filename,
+				`\tFound perfect frame at ${result} for ${componentName}`
+			);
+			resolve();
+		}),
+		wait(MAX_MEASURED_RENDER_WAIT_TIME),
+	]);
+
+	await fileWorker.stop();
+
+	if (!times.has(componentName)) {
+		return false;
+	}
+
+	// Stop
+	await client.send('Page.stopScreencast');
+
+	// Reset it
+	await page.$eval(
+		'page-not-found',
+		(element, componentName) => {
+			((element as unknown) as NGElement).__ngContext__
+				.find(
+					(c) => c && typeof c === 'object' && 'setRenderOption' in c
+				)
+				.setRenderOption(componentName, false);
+		},
+		component.js.componentName
+	);
+
+	// Wait a short while
+	await wait(500);
+
+	return true;
+}
+
 async function collectRuntimeScreenshots(
 	page: puppeteer.Page,
 	components: ComponentFiles[],
@@ -138,115 +247,40 @@ async function collectRuntimeScreenshots(
 	const times: Map<string, number> = new Map();
 
 	for (let i = 0; i < components.length; i++) {
-		const component = components[i];
-		const componentName = component.js.componentName;
-		const targetImage = resizeImage(
-			await asyncCreatePNG(
-				Buffer.from(targets.get(component.js.componentName)!, 'base64')
-			),
-			{
-				height: RENDER_TIME_HEIGHT - RENDER_TIME_CROP,
-				width: RENDER_TIME_WIDTH,
-				startY: RENDER_TIME_CROP,
-			}
-		);
-
 		info(
 			__filename,
 			`\tCapturing runtime screenshot for ${
-				component.js.componentName
+				components[i].js.componentName
 			} (${i + 1}/${components.length})`
 		);
 
-		const client = await page.target().createCDPSession();
-		const fileWorker = await new ImageCompareWorkersClass().init(
-			targetImage
-		);
-
-		await Promise.race([
-			new Promise<void>(async (resolve) => {
-				let startTime = 0;
-
-				// Handle incoming frames
-				client.on('Page.screencastFrame', async (frameObject) => {
-					await client.send('Page.screencastFrameAck', {
-						sessionId: frameObject.sessionId,
-					});
-
-					const now = performance.now();
-					fileWorker.pushToQueue(
-						componentName,
-						frameObject.data,
-						now - startTime
-					);
-				});
-
-				// Start capturing
-				await client.send('Page.startScreencast', {
-					format: 'png',
-				});
-
-				// Show current component
-				await page.$eval(
-					'page-not-found',
-					(element, componentName) => {
-						((element as unknown) as NGElement).__ngContext__
-							.find(
-								(c) =>
-									c &&
-									typeof c === 'object' &&
-									'setRenderOption' in c
-							)
-							.setRenderOption(componentName, true);
-					},
-					componentName
-				);
-				startTime = performance.now();
-
-				fileWorker.onStopInput().then(async () => {
-					await client.send('Page.stopScreencast');
-				});
-
-				const result = await fileWorker.onResult();
-				times.set(componentName, result);
-
-				// Debugging
-				debug(
-					__filename,
-					`\tFound perfect frame at ${result} for ${componentName}`
-				);
-				resolve();
-			}),
-			wait(MAX_MEASURED_RENDER_WAIT_TIME),
-		]);
-
-		await fileWorker.stop();
-
-		if (!times.has(componentName)) {
-			throw new Error(
-				`Failed to find matching image for ${componentName} in ${MAX_MEASURED_RENDER_WAIT_TIME}ms`
-			);
+		let success: boolean = false;
+		for (let j = 0; j < RENDER_RETRIES + 1; j++) {
+			if (
+				await collectComponentRuntimeScreenshot(
+					components,
+					i,
+					targets,
+					page,
+					times
+				)
+			) {
+				success = true;
+				break;
+			} else if (j !== RENDER_RETRIES - 1) {
+				info(__filename, `\tRetrying...`);
+			}
 		}
 
-		// Stop
-		await client.send('Page.stopScreencast');
-
-		// Reset it
-		await page.$eval(
-			'page-not-found',
-			(element, componentName) => {
-				((element as unknown) as NGElement).__ngContext__
-					.find(
-						(c) =>
-							c && typeof c === 'object' && 'setRenderOption' in c
-					)
-					.setRenderOption(componentName, false);
-			},
-			component.js.componentName
-		);
-
-		// Wait a short while
-		await wait(500);
+		if (!success) {
+			throw new Error(
+				`Failed to find matching image for ${
+					components[i].js.componentName
+				} in ${MAX_MEASURED_RENDER_WAIT_TIME}ms in ${
+					RENDER_RETRIES + 1
+				} attempts`
+			);
+		}
 	}
 
 	return times;
@@ -304,15 +338,17 @@ export async function getRenderTime(
 		await fastPage.close();
 		await fastBrowser.close();
 
-		// Set up a slow browser and page
-		const { page: slowPage } = await openPage(port, SLOWDOWN_FACTOR);
-
 		// Collect runtime info
 		const frames: Map<string, number>[] = [];
 		for (let i = 0; i < RENDER_TIME_MEASURES; i++) {
 			info(
 				__filename,
 				`Collecting frames. ${i + 1}/${RENDER_TIME_MEASURES}`
+			);
+			// Set up a slow browser and page
+			const { page: slowPage } = await openPage(
+				port,
+				SLOWDOWN_FACTOR_RENDER_TIME
 			);
 			frames.push(
 				await collectRuntimeScreenshots(slowPage, components, targets)

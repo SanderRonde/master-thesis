@@ -13,7 +13,7 @@ import {
 import { storeData } from '../shared/storage';
 import {
 	LOAD_TIME_PERFORMANCE_MEASURES,
-	SLOWDOWN_FACTOR,
+	SLOWDOWN_FACTOR_LOAD_TIME,
 } from '../shared/settings';
 import { LoadTime } from '../shared/types';
 import { getDatasetStats } from '../shared/stats';
@@ -57,7 +57,7 @@ async function createPerformanceProfile(
 	const page = await browser.newPage();
 	const client = await page.target().createCDPSession();
 	await client.send('Emulation.setCPUThrottlingRate', {
-		rate: SLOWDOWN_FACTOR,
+		rate: SLOWDOWN_FACTOR_LOAD_TIME,
 	});
 
 	const profilePath = await generateTempFileName('json');
@@ -95,7 +95,7 @@ function getBundleLoadTimeFromProfile(
 			continue;
 		}
 
-		return profileEntry.dur / SLOWDOWN_FACTOR / 1000;
+		return profileEntry.dur / SLOWDOWN_FACTOR_LOAD_TIME / 1000;
 	}
 
 	throw new Error('Failed to find relevant profile entry');
