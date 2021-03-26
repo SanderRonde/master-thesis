@@ -157,12 +157,14 @@ export const dashboardMetrics = preserveCommandBuilder(
 	await dashboardPreBundleMetrics(baseCtx, args['no-cache'] || args.prod);
 
 	await exec('? Collecting non time sensitive metrics');
-	await baseCtx(
+	await Promise.all(
 		omitArr(METRICS, 'render-time').map((metric) => {
-			return `${TS_NODE_COMMAND} ${path.join(
-				DASHBOARD_BASE_DIR,
-				`${metric}.ts`
-			)}`;
+			return baseCtx(
+				`${TS_NODE_COMMAND} ${path.join(
+					DASHBOARD_BASE_DIR,
+					`${metric}.ts`
+				)}`
+			);
 		})
 	);
 

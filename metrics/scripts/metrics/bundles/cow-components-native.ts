@@ -25,9 +25,7 @@ export const cowComponentsNativeMetrics = preserveCommandBuilder(
 		: exec;
 
 	await exec('? Collecting same-as-dashboard metrics');
-	await baseCtx(
-		SAME_AS_DASHBOARD_METRICS.map((metric) => {
-			return `${TS_NODE_COMMAND} ${path.join(BASE_DIR, `${metric}.ts`)}`;
-		})
-	);
+	await Promise.all(SAME_AS_DASHBOARD_METRICS.map((metric) => {
+		return baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `${metric}.ts`)}`);
+	}));
 });
