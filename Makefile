@@ -4,12 +4,11 @@ YARN_CMD:=yarn --cwd $(METRICS_DIR)
 
 .PHONY: metrics
 
+submodules:
+	git submodule update --init
 
 metrics_install:
 	$(YARN_CMD) install
 
-metrics: metrics_install
+metrics: submodules metrics_install
 	$(YARN_CMD) metrics
-
-submodules:
-	git submodule update --init
