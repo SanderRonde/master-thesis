@@ -18,5 +18,7 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"noEmit": false
-	}
+	},
+	"exclude": ["./submodules"],
+	"include": ["scripts", "collectors"]
 }
