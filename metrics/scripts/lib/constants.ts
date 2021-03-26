@@ -2,10 +2,6 @@ const __COW_COMPONENTS_WRAPPERS = [
 	'angular',
 	'react',
 	'native',
-	'vue2',
-	'vue3',
-	'polymer',
-	'lit-element',
 	'svelte',
 ] as const;
 export type CowComponentsWrapper = typeof __COW_COMPONENTS_WRAPPERS[Extract<
@@ -14,12 +10,10 @@ export type CowComponentsWrapper = typeof __COW_COMPONENTS_WRAPPERS[Extract<
 >];
 const COW_COMPONENTS_WRAPPERS = (__COW_COMPONENTS_WRAPPERS as unknown) as CowComponentsWrapper[];
 
-const __BUNDLES = [
-	'dashboard',
-	...COW_COMPONENTS_WRAPPERS.map(
-		(wrapper) => `cow-components-${wrapper}` as const
-	),
-] as const;
+export const COW_COMPONENT_BUNDLES = COW_COMPONENTS_WRAPPERS.map(
+	(wrapper) => `cow-components-${wrapper}` as const
+);
+const __BUNDLES = ['dashboard', ...COW_COMPONENT_BUNDLES] as const;
 const __METRICS = [
 	'structural-complexity',
 	'cyclomatic-complexity',

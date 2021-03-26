@@ -1,12 +1,11 @@
-import * as path from 'path';
 import { cmd, flag, setEnvVar } from 'makfy';
 
-import { METRICS_DIR } from '../../../collectors/shared/constants';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
-import { TS_NODE_COMMAND } from '../../lib/helpers';
-import { SAME_AS_DASHBOARD_METRICS } from '../../lib/cow-components-shared';
-
-const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-svelte`);
+import {
+	collectSameAsDashboardMetrics,
+	collectEmptyBundleMetrics,
+	createEmptyBundle,
+} from '../../lib/cow-components-shared';
 
 export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	cmd('cow-components-svelte-metrics')
@@ -24,8 +23,9 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 		? (await exec(setEnvVar('ENV', 'production'))).keepContext
 		: exec;
 
-	await exec('? Collecting same-as-dashboard metrics');
-	await Promise.all(SAME_AS_DASHBOARD_METRICS.map((metric) => {
-		return baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `${metric}.ts`)}`);
-	}));
+	await collectSameAsDashboardMetrics(baseCtx, 'svelte');
+
+	await createEmptyBundle(baseCtx, 'svelte');
+
+	await collectEmptyBundleMetrics(baseCtx, 'svelte');
 });

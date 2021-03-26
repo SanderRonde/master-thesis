@@ -1,12 +1,11 @@
-import * as path from 'path';
 import { cmd, flag, setEnvVar } from 'makfy';
 
-import { METRICS_DIR } from '../../../collectors/shared/constants';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
-import { TS_NODE_COMMAND } from '../../lib/helpers';
-import { SAME_AS_DASHBOARD_METRICS } from '../../lib/cow-components-shared';
-
-const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-react`);
+import {
+	collectSameAsDashboardMetrics,
+	createEmptyBundle,
+	collectEmptyBundleMetrics,
+} from '../../lib/cow-components-shared';
 
 export const cowComponentsReactMetrics = preserveCommandBuilder(
 	cmd('cow-components-react-metrics')
@@ -24,10 +23,9 @@ export const cowComponentsReactMetrics = preserveCommandBuilder(
 		? (await exec(setEnvVar('ENV', 'production'))).keepContext
 		: exec;
 
-	await exec('? Collecting same-as-dashboard metrics');
-	await baseCtx(
-		SAME_AS_DASHBOARD_METRICS.map((metric) => {
-			return `${TS_NODE_COMMAND} ${path.join(BASE_DIR, `${metric}.ts`)}`;
-		})
-	);
+	await collectSameAsDashboardMetrics(baseCtx, 'react');
+
+	await createEmptyBundle(baseCtx, 'react');
+
+	await collectEmptyBundleMetrics(baseCtx, 'react');
 });

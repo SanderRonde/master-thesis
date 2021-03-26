@@ -3,8 +3,7 @@ import { cmd, flag, setEnvVar } from 'makfy';
 
 import { METRICS_DIR } from '../../../collectors/shared/constants';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
-import { TS_NODE_COMMAND } from '../../lib/helpers';
-import { SAME_AS_DASHBOARD_METRICS } from '../../lib/cow-components-shared';
+import { collectSameAsDashboardMetrics } from '../../lib/cow-components-shared';
 
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-angular`);
 
@@ -24,8 +23,10 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 		? (await exec(setEnvVar('ENV', 'production'))).keepContext
 		: exec;
 
-	await exec('? Collecting same-as-dashboard metrics');
-	await Promise.all(SAME_AS_DASHBOARD_METRICS.map((metric) => {
-		return baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `${metric}.ts`)}`);
-	}));
+	await collectSameAsDashboardMetrics(baseCtx, 'angular');
+
+	// For Angular we use the regular bundle for size and load-time
+	// testing. This is because it will be excluded from the build
+	// if not used. And the few bytes added should not make a big
+	// difference
 });

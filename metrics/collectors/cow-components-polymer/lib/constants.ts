@@ -1,1 +1,0 @@
-export const STORE_NAME = 'cow-components-polymer';

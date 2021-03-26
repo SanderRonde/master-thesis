@@ -10,28 +10,21 @@ import {
 } from '../lib/makfy-helper';
 import './bundles/dashboard';
 import { dashboardMetrics } from './bundles/dashboard';
-import { Bundle, BUNDLES } from '../lib/constants';
+import { Bundle, BUNDLES, COW_COMPONENT_BUNDLES } from '../lib/constants';
 import { cowComponentsAngularMetrics } from './bundles/cow-components-angular';
-import { cowComponentsLitElementMetrics } from './bundles/cow-components-lit-element';
 import { cowComponentsNativeMetrics } from './bundles/cow-components-native';
-import { cowComponentsPolymerMetrics } from './bundles/cow-components-polymer';
 import { cowComponentsReactMetrics } from './bundles/cow-components-react';
 import { cowComponentsSvelteMetrics } from './bundles/cow-components-svelte';
-import { cowComponentsVue2Metrics } from './bundles/cow-components-vue2';
-import { cowComponentsVue3Metrics } from './bundles/cow-components-vue3';
+import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
 
 const bundleMap: {
 	[K in Bundle]: CommandBuilder<{}>;
 } = {
 	dashboard: dashboardMetrics,
 	'cow-components-angular': cowComponentsAngularMetrics,
-	'cow-components-lit-element': cowComponentsLitElementMetrics,
 	'cow-components-native': cowComponentsNativeMetrics,
-	'cow-components-polymer': cowComponentsPolymerMetrics,
 	'cow-components-react': cowComponentsReactMetrics,
 	'cow-components-svelte': cowComponentsSvelteMetrics,
-	'cow-components-vue2': cowComponentsVue2Metrics,
-	'cow-components-vue3': cowComponentsVue3Metrics,
 };
 
 export const metris = preserveCommandBuilder(
@@ -75,7 +68,21 @@ export const metris = preserveCommandBuilder(
 		await fs.writeFile(packagesInstalledFile, '');
 	}
 
+	if (
+		bundles.some((bundle) =>
+			COW_COMPONENT_BUNDLES.includes(bundle as any)
+		) &&
+		!(await fs.pathExists(DEMO_REPO_DIR))
+	) {
+		await exec('? Building design library and wrappers');
+		const dashboardCtx = await exec(`cd ${DASHBOARD_DIR}`);
+		await dashboardCtx.keepContext('makfy demo-repo');
+	}
+
 	for (const bundle of bundles) {
+		if (bundle === 'dashboard') {
+			continue;
+		}
 		await exec(
 			getCommandBuilderExec(bundleMap[bundle], {
 				'no-cache': args['no-cache'],
