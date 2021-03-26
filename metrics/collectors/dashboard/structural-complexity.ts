@@ -138,17 +138,21 @@ export async function getFileStructuralComplexity(
 	).length;
 }
 
+export async function getStructuralComplexityMetrics() {
+	return await collectDashboardMetrics(
+		getFileStructuralComplexity,
+		async (components) => {
+			const tsProgram = await createTSProgram(
+				components.map((component) => component.js.filePath)
+			);
+			return [tsProgram];
+		}
+	);
+}
+
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
 		['metrics', 'dashboard', 'structural-complexity'],
-		await collectDashboardMetrics(
-			getFileStructuralComplexity,
-			async (components) => {
-				const tsProgram = await createTSProgram(
-					components.map((component) => component.js.filePath)
-				);
-				return [tsProgram];
-			}
-		)
+		await getStructuralComplexityMetrics()
 	);
 }, __filename);

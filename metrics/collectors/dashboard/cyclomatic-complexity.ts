@@ -15,9 +15,13 @@ export function getFileCyclomaticComplexity(file: ReadFile): number {
 	);
 }
 
+export async function getCyclomaticComplexityMetrics() {
+	return await collectDashboardMetrics(getFileCyclomaticComplexity);
+}
+
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
 		['metrics', 'dashboard', 'cyclomatic-complexity'],
-		await collectDashboardMetrics(getFileCyclomaticComplexity)
+		await getCyclomaticComplexityMetrics()
 	);
 }, __filename);

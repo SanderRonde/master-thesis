@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import { cmd, flag, setEnvVar } from 'makfy';
-import rimraf from 'rimraf';
 
 import {
 	DASHBOARD_DIR,
@@ -18,9 +17,11 @@ import { preserveCommandBuilder } from '../../lib/makfy-helper';
 import {
 	cpxAsync,
 	ifTrue,
+	omitArr,
 	rimrafAsync,
 	TS_NODE_COMMAND,
 } from '../../lib/helpers';
+import { METRICS } from '../../lib/constants';
 
 const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
@@ -157,15 +158,7 @@ export const dashboardMetrics = preserveCommandBuilder(
 
 	await exec('? Collecting non time sensitive metrics');
 	await baseCtx(
-		[
-			'structural-complexity',
-			'cyclomatic-complexity',
-			'lines-of-code',
-			'maintainability',
-			'load-time',
-			'size',
-			'number-of-components',
-		].map((metric) => {
+		omitArr(METRICS, 'render-time').map((metric) => {
 			return `${TS_NODE_COMMAND} ${path.join(
 				DASHBOARD_BASE_DIR,
 				`${metric}.ts`

@@ -14,9 +14,13 @@ export async function getFileLinesOfCode(file: ReadFile): Promise<number> {
 	);
 }
 
+export async function getLinesOfCodeMetrics() {
+	return await collectDashboardMetrics(getFileLinesOfCode);
+}
+
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
 		['metrics', 'dashboard', 'lines-of-code'],
-		await collectDashboardMetrics(getFileLinesOfCode)
+		await getLinesOfCodeMetrics()
 	);
 }, __filename);

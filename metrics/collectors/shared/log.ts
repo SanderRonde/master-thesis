@@ -2,9 +2,9 @@ import chalk from 'chalk';
 import { format } from 'util';
 import * as path from 'path';
 
-import { BUNDLES, METRICS } from '../../scripts/metrics/metrics';
 import { METRICS_DIR } from './constants';
 import { DEVELOPMENT } from './settings';
+import { BUNDLES, METRICS } from '../../scripts/lib/constants';
 
 const ANSI_REGEX = new RegExp(
 	[

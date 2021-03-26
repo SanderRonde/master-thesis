@@ -9,9 +9,13 @@ export async function getFileMaintainability(file: ReadFile): Promise<number> {
 	return calculateMaintainability(file.filePath).averageMaintainability;
 }
 
+export async function getMaintainabilityMetrics() {
+	return await collectDashboardMetrics(getFileMaintainability);
+}
+
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
 		['metrics', 'dashboard', 'maintainability'],
-		await collectDashboardMetrics(getFileMaintainability)
+		await getMaintainabilityMetrics()
 	);
 }, __filename);

@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "metrics": "makfy metrics"
+        "metrics": "makfy metrics --prod"
     },
     "devDependencies": {
         "@types/cpx": "^1.5.1",

@@ -328,6 +328,798 @@
 					"stddev": 547.2040860131115
 				}
 			}
+		},
+		"cow-components-angular": {
+			"number-of-components": 12,
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-react": {
+			"number-of-components": 12,
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-native": {
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"number-of-components": 12,
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-vue2": {
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"number-of-components": 12,
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-vue3": {
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"number-of-components": 12,
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-polymer": {
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"number-of-components": 12,
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-lit-element": {
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"number-of-components": 12,
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
+		},
+		"cow-components-svelte": {
+			"lines-of-code": {
+				"files": {
+					"ChartButton": 24,
+					"IconComponent": 104,
+					"InputElement": 51,
+					"ListItem": 19,
+					"ListItemAction": 21,
+					"ModularChartComponent": 138,
+					"PopupDateRangePickerComponent": 326,
+					"PrimaryButtonComponent": 23,
+					"SecondaryButtonComponent": 20,
+					"SwitchComponent": 26,
+					"SwitchOptionComponent": 71,
+					"TertiaryButtonComponent": 51
+				},
+				"stats": {
+					"min": 19,
+					"max": 326,
+					"avg": 72.83333333333333,
+					"total": 874,
+					"median": 24,
+					"stddev": 84.51117611824421
+				}
+			},
+			"number-of-components": 12,
+			"maintainability": {
+				"files": {
+					"ChartButton": 98.1,
+					"IconComponent": 71.27,
+					"InputElement": 81.72,
+					"ListItem": 110.05,
+					"ListItemAction": 106.76,
+					"ModularChartComponent": 63.03,
+					"PopupDateRangePickerComponent": 51.6,
+					"PrimaryButtonComponent": 95.85,
+					"SecondaryButtonComponent": 105.1,
+					"SwitchComponent": 97.91,
+					"SwitchOptionComponent": 82.11,
+					"TertiaryButtonComponent": 78.24
+				},
+				"stats": {
+					"min": 51.6,
+					"max": 110.05,
+					"avg": 86.81166666666667,
+					"total": 1041.74,
+					"median": 78.24,
+					"stddev": 17.732237513134717
+				}
+			},
+			"cyclomatic-complexity": {
+				"files": {
+					"ChartButton": 1,
+					"IconComponent": 12,
+					"InputElement": 8,
+					"ListItem": 2,
+					"ListItemAction": 2,
+					"ModularChartComponent": 19,
+					"PopupDateRangePickerComponent": 76,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 11,
+					"TertiaryButtonComponent": 7
+				},
+				"stats": {
+					"min": 1,
+					"max": 76,
+					"avg": 12,
+					"total": 144,
+					"median": 2,
+					"stddev": 20.016659728003237
+				}
+			},
+			"structural-complexity": {
+				"files": {
+					"ChartButton": 2,
+					"IconComponent": 13,
+					"InputElement": 19,
+					"ListItem": 1,
+					"ListItemAction": 1,
+					"ModularChartComponent": 60,
+					"PopupDateRangePickerComponent": 35,
+					"PrimaryButtonComponent": 2,
+					"SecondaryButtonComponent": 2,
+					"SwitchComponent": 2,
+					"SwitchOptionComponent": 26,
+					"TertiaryButtonComponent": 2
+				},
+				"stats": {
+					"min": 1,
+					"max": 60,
+					"avg": 13.75,
+					"total": 165,
+					"median": 2,
+					"stddev": 17.758214061855057
+				}
+			}
 		}
 	}
 }
