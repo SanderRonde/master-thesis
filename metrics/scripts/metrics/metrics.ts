@@ -68,7 +68,7 @@ export const metris = preserveCommandBuilder(
 		);
 
 		await exec('? Installing dashboard dependencies');
-		await exec(`npm install -C ${DASHBOARD_DIR}`);
+		await exec(`npm install -C ${DASHBOARD_DIR} --no-save`);
 
 		await exec('? Marking as installed');
 		await fs.mkdirp(path.dirname(packagesInstalledFile));
