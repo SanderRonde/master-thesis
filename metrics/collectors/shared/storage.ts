@@ -1,4 +1,5 @@
 import * as fs from 'fs-extra';
+import lockfile from 'proper-lockfile';
 import * as path from 'path';
 
 import { METRICS_DIR } from './constants';
@@ -54,6 +55,13 @@ export async function storeData(
 		debug('storage', 'Not writing database in debug mode');
 		return;
 	}
+
+	const relaseLock = await lockfile.lock(
+		path.join(STORAGE_DIR, `${storeName}.json`),
+		{
+			retries: 10,
+		}
+	);
 	const store = (await readStore(storeName)) || {};
 
 	let currentStore = store;
@@ -76,4 +84,5 @@ export async function storeData(
 		currentStore = currentStore[nextKey];
 	}
 	await writeStore(storeName, store);
+	await relaseLock();
 }
