@@ -154,7 +154,7 @@ export const dashboardMetrics = preserveCommandBuilder(
 		: exec;
 
 	await exec('? Preparing bundle');
-	await dashboardPreBundleMetrics(baseCtx, args['no-cache'] || args.prod);
+	await dashboardPreBundleMetrics(baseCtx, args['no-cache']);
 
 	await exec('? Collecting non time sensitive metrics');
 	await Promise.all(
@@ -178,13 +178,13 @@ export const dashboardMetrics = preserveCommandBuilder(
 		)}`
 	);
 
-	await buildDashboard(baseCtx, 'render-time', args['no-cache'] || args.prod);
+	await buildDashboard(baseCtx, 'render-time', args['no-cache']);
 
 	await baseCtx(
 		`${TS_NODE_COMMAND} ${path.join(
 			DASHBOARD_BASE_DIR,
 			`render-time.ts`
-		)} ${ifTrue('--no-cache', args['no-cache'] || args.prod)}`
+		)} ${ifTrue('--no-cache', args['no-cache'])}`
 	);
 
 	await dashboardCtx.keepContext('git reset --hard');

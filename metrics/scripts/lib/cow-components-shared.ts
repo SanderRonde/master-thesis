@@ -79,6 +79,6 @@ export async function collectEmptyBundleMetrics(
 	);
 
 	await exec('? Collecting empty-bundle metrics');
-	exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `load-time.ts`)}`);
-	exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `size.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `load-time.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `size.ts`)}`);
 }

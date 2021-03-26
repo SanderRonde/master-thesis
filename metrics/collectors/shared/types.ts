@@ -1,5 +1,5 @@
 import { Maintainability } from 'ts-complex';
-import { Bundle } from '../../scripts/metrics/metrics';
+import { Bundle } from '../../scripts/lib/constants';
 import { DatasetStats } from './stats';
 
 type ByFileNumberStats = {

@@ -101,12 +101,12 @@ export function getLoadTimeForDir(
 		const server = createServer({
 			root: dirName,
 		});
-		info(__filename, 'Starting server');
+		info('load-time', 'Starting server');
 		server.listen(port, async () => {
 			const profiles: PerformanceProfile[] = [];
 			for (let i = 0; i < LOAD_TIME_PERFORMANCE_MEASURES; i++) {
 				info(
-					__filename,
+					'load-time',
 					`Creating performance profile for iteration ${
 						i + 1
 					}/${LOAD_TIME_PERFORMANCE_MEASURES}`
@@ -114,7 +114,7 @@ export function getLoadTimeForDir(
 				profiles.push(await createPerformanceProfile(port));
 			}
 
-			info(__filename, 'Extracting load times');
+			info('load-time', 'Extracting load times');
 			const loadTimes = profiles.map((profile) =>
 				getBundleLoadTimeFromProfile(port, profile, fileName)
 			);
