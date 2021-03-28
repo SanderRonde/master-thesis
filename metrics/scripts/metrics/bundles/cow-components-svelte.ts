@@ -1,11 +1,27 @@
 import { cmd, flag, setEnvVar } from 'makfy';
+import * as path from 'path';
+import * as fs from 'fs-extra';
 
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	collectEmptyBundleMetrics,
 	createEmptyBundle,
+	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
+import { METRICS_DIR } from '../../../collectors/shared/constants';
+import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
+import { getRenderTimeIndexJsTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-index-js-template';
+import { getRenderTimeIndexHTMLTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-index-html-template';
+import { getRenderTimeSvelteTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-svelte-template';
+
+export const SVELTE_DEMO_DIR = path.join(DEMO_REPO_DIR, 'svelte');
+const DEMO_METRICS_DIR = path.join(SVELTE_DEMO_DIR, 'metrics');
+export const SVELTE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
+	DEMO_METRICS_DIR,
+	'toggleable'
+);
+const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-svelte`);
 
 export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	cmd('cow-components-svelte-metrics')
@@ -28,4 +44,52 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	await createEmptyBundle(baseCtx, 'svelte');
 
 	await collectEmptyBundleMetrics(baseCtx, 'svelte');
+
+	await exec('? Installing dependencies');
+	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
+
+	await rimrafAsync(DEMO_METRICS_DIR);
+	await fs.mkdirp(DEMO_METRICS_DIR);
+	await exec('? Generating toggleable bundle');
+
+	await exec('? Generating index JS');
+	await fs.mkdirp(SVELTE_DEMO_METRICS_TOGGLEABLE_DIR);
+	const indexJsFilePath = path.join(
+		SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
+		'index.ts'
+	);
+	const indexJsContent = await getRenderTimeIndexJsTemplate();
+	await fs.writeFile(indexJsFilePath, indexJsContent, 'utf8');
+
+	await exec('? Generating index HTML');
+	const indexHtmlFilePath = path.join(
+		SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
+		'index.html'
+	);
+	const indexHtmlContent = await getRenderTimeIndexHTMLTemplate();
+	await fs.writeFile(indexHtmlFilePath, indexHtmlContent, 'utf8');
+
+	await exec('? Generating Svelte');
+	const sveltePath = path.join(
+		SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
+		'app.svelte'
+	);
+	const svelteContent = await getRenderTimeSvelteTemplate();
+	await fs.writeFile(sveltePath, svelteContent, 'utf8');
+
+	await exec('? Copying CSS');
+	await fs.copy(
+		path.join(SVELTE_DEMO_DIR, 'packages/svelte/styles/cow-components.css'),
+		path.join(SVELTE_DEMO_METRICS_TOGGLEABLE_DIR, 'index.css')
+	);
+
+	await exec('? Bundling');
+	await exec(
+		`rollup -c ${path.join(BASE_DIR, 'lib/render-time/rollup.config.js')}`
+	);
+
+	await exec('? Collecting render time metrics');
+	await baseCtx(
+		`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`
+	);
 });

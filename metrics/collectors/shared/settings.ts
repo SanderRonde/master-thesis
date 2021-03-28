@@ -10,7 +10,7 @@ const DEVELOPMENT_DEFAULT = true;
 export const DEVELOPMENT = DEVELOPMENT_DEFAULT
 	? !process.argv.includes('--prod') && process.env.ENV !== 'production'
 	: false;
-const KEEP_PROFILES_DEFAULT = true;
+const KEEP_PROFILES_DEFAULT = false;
 /**
  * Whether to store images taken during the render time tests
  */

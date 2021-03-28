@@ -15,7 +15,7 @@ export async function getDashboardRenderTime(
 	return await getRenderTime(
 		components,
 		DASHBOARD_DIST_DIR,
-		'/404',
+		'404',
 		async (component, page) => {
 			await page.$eval(
 				'page-not-found',
