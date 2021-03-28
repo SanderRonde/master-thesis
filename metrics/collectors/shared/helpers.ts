@@ -2,7 +2,6 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import glob from 'glob';
 import { IOptions } from 'glob';
-import pngJS from 'pngjs';
 
 import { TEMP_DIR } from './constants';
 import { error } from './log';
@@ -149,51 +148,26 @@ export function createCamelCaseString(
 		.join('');
 }
 
-export function upgradePNG(basePng: pngJS.PNGWithMetadata): Promise<pngJS.PNG> {
-	return new Promise<pngJS.PNG>((resolve, reject) => {
-		const png = new pngJS.PNG({
-			width: basePng.width,
-			height: basePng.height,
-		}).parse(pngJS.PNG.sync.write(basePng), (err) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(png);
-			}
-		});
-	});
-}
-
-export function asyncCreatePNG(data: string | Buffer) {
-	return new Promise<pngJS.PNG>((resolve, reject) => {
-		const png = new pngJS.PNG().parse(data, (err) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(png);
-			}
-		});
-	});
-}
-
-export function resizeImage(
-	png: pngJS.PNG,
-	{
-		height,
-		width,
-		startX = 0,
-		startY = 0,
-	}: {
-		startX?: number;
-		startY?: number;
-		height: number;
-		width: number;
+export function findLastIndex<I>(
+	arr: I[],
+	predicate: (value: I, index: number, obj: I[]) => boolean
+): number {
+	for (let i = arr.length - 1; i; i--) {
+		if (predicate(arr[i], i, arr)) {
+			return i;
+		}
 	}
-): pngJS.PNG {
-	const dst = new pngJS.PNG({
-		width,
-		height,
-	});
-	png.bitblt(dst, startX, startY, width, height);
-	return dst;
+
+	return -1;
+}
+
+export function findLast<I>(
+	arr: I[],
+	predicate: (value: I, index: number, obj: I[]) => boolean
+): I | undefined {
+	const lastIndex = findLastIndex(arr, predicate);
+	if (lastIndex === -1) {
+		return undefined;
+	}
+	return arr[lastIndex];
 }

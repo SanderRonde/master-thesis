@@ -11,13 +11,14 @@ import { DASHBOARD_DIST_DIR } from '../constants';
 
 export function doWithServer<R>(
 	port: number,
+	root: string,
 	callback?: (port: number) => Promise<R>
 ) {
 	return new Promise<R>((resolve) => {
 		const app = express();
-		app.use(serveStatic(DASHBOARD_DIST_DIR));
+		app.use(serveStatic(root));
 		app.all('*', (_, res) => {
-			res.sendFile(path.join(DASHBOARD_DIST_DIR, 'index.html'));
+			res.sendFile(path.join(root, 'index.html'));
 		});
 		const server = app.listen(port, async () => {
 			success('server', `Listening on port ${port}`);
@@ -31,5 +32,5 @@ export function doWithServer<R>(
 }
 
 runFunctionIfCalledFromScript(async () => {
-	await doWithServer(getFreePort());
+	await doWithServer(getFreePort(), DASHBOARD_DIST_DIR);
 }, __filename);

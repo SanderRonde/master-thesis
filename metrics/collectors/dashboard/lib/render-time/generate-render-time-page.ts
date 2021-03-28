@@ -80,7 +80,7 @@ async function disableSupportButton() {
  * demo line. We want to make this deterministic
  * so we can actually test when it's rendered
  */
-async function makeChartDeterministic() {
+export async function makeChartDeterministic() {
 	const file = await fs.readFile(CHART_COMPONENT, {
 		encoding: 'utf8',
 	});
@@ -205,25 +205,6 @@ async function addTogglesToClass(components: JoinedDefinition[]) {
 	});
 }
 
-async function addFrameCounter() {
-	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
-		encoding: 'utf8',
-	});
-
-	file = `${file}\nconst container = document.createElement('div');
-	document.body.insertBefore(container, document.body.children[0]);
-	const startTime = Date.now();
-	const time = () => requestAnimationFrame(() => {
-		container.innerHTML = '' + (Date.now() - startTime);
-		time();
-	});
-	time();`;
-
-	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
-		encoding: 'utf8',
-	});
-}
-
 async function disableAuthentication() {
 	let file = await fs.readFile(WEBCOMPONENTS_ENV_FILE, {
 		encoding: 'utf8',
@@ -277,7 +258,7 @@ async function addToAppModule() {
 	});
 }
 
-async function getComponentDefs(): Promise<JoinedDefinition[]> {
+export async function getJoinedComponentDefs(): Promise<JoinedDefinition[]> {
 	const componentTypes = (
 		await getNamedCowComponents(await extractComponentTypes())
 	).filter(
@@ -314,7 +295,7 @@ runFunctionIfCalledFromScript(async () => {
 	info(__filename, 'Making chart deterministic');
 	await makeChartDeterministic();
 	info(__filename, 'Getting component defs');
-	const componentDefs = await getComponentDefs();
+	const componentDefs = await getJoinedComponentDefs();
 	info(__filename, 'Generating render timing html');
 	const renderTimeHTML = await generateRenderTimeHTML(componentDefs);
 	info(__filename, 'Writing render timing HTML');
@@ -329,7 +310,5 @@ runFunctionIfCalledFromScript(async () => {
 	await disableAuthentication();
 	info(__filename, 'Adding toggles to class');
 	await addTogglesToClass(componentDefs);
-	info(__filename, 'Adding frame counter to class');
-	await addFrameCounter();
 	success(__filename, 'Done generating render timing page');
 }, __filename);

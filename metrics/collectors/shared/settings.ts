@@ -10,11 +10,11 @@ const DEVELOPMENT_DEFAULT = true;
 export const DEVELOPMENT = DEVELOPMENT_DEFAULT
 	? !process.argv.includes('--prod') && process.env.ENV !== 'production'
 	: false;
-const OUTPUT_IMAGES_DEFAULT = false;
+const KEEP_PROFILES_DEFAULT = true;
 /**
  * Whether to store images taken during the render time tests
  */
-export const OUTPUT_IMAGES = DEVELOPMENT && OUTPUT_IMAGES_DEFAULT;
+export const KEEP_PROFILES = DEVELOPMENT && KEEP_PROFILES_DEFAULT;
 
 /**
  * ================================================
@@ -47,7 +47,7 @@ export const INITIAL_RENDER_WAIT_TIME = 5000;
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
  */
-export const MAX_MEASURED_RENDER_WAIT_TIME = 30000;
+export const MAX_MEASURED_RENDER_WAIT_TIME = 20000;
 /**
  * The maximum number of pixels a frame is allowed to
  * differ from the target frame before being marked as
@@ -59,11 +59,6 @@ export const GOLDEN_FRAME_MAX_DIFF_PIXELS = 0;
  * for the same component, allowing for some stabilization
  */
 export const RENDER_TIME_MEASURES = DEVELOPMENT ? 1 : 5;
-/**
- * How many times to re-try rendering before giving up
- * and timing out
- */
-export const RENDER_RETRIES = 2;
 /**
  * The height of the frame for the render time test
  */

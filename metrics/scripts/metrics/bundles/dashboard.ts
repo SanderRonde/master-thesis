@@ -16,7 +16,6 @@ import { asyncGlob } from '../../../collectors/shared/helpers';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
 import {
 	cpxAsync,
-	ifTrue,
 	omitArr,
 	rimrafAsync,
 	TS_NODE_COMMAND,
@@ -127,7 +126,7 @@ async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
 
 	await exec('? Bundling');
 	await exec(
-		`esbuild ${concatenatedFilePath} --minify --outfile=${path.join(
+		`esbuild ${concatenatedFilePath} --bundle --minify --outfile=${path.join(
 			DASHBOARD_DIST_DIR,
 			'bundle.js'
 		)}`
@@ -181,10 +180,7 @@ export const dashboardMetrics = preserveCommandBuilder(
 	await buildDashboard(baseCtx, 'render-time', args['no-cache']);
 
 	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(
-			DASHBOARD_BASE_DIR,
-			`render-time.ts`
-		)} ${ifTrue('--no-cache', args['no-cache'])}`
+		`${TS_NODE_COMMAND} ${path.join(DASHBOARD_BASE_DIR, `render-time.ts`)}`
 	);
 
 	await dashboardCtx.keepContext('git reset --hard');

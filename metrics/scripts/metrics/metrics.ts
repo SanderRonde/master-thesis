@@ -16,6 +16,7 @@ import { cowComponentsNativeMetrics } from './bundles/cow-components-native';
 import { cowComponentsReactMetrics } from './bundles/cow-components-react';
 import { cowComponentsSvelteMetrics } from './bundles/cow-components-svelte';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
+import { makeChartDeterministic } from '../../collectors/dashboard/lib/render-time/generate-render-time-page';
 
 const bundleMap: {
 	[K in Bundle]: CommandBuilder<{}>;
@@ -69,14 +70,22 @@ export const metris = preserveCommandBuilder(
 	}
 
 	if (
-		bundles.some((bundle) =>
+		(bundles.some((bundle) =>
 			COW_COMPONENT_BUNDLES.includes(bundle as any)
 		) &&
-		!(await fs.pathExists(DEMO_REPO_DIR))
+			!(await fs.pathExists(DEMO_REPO_DIR))) ||
+		args['no-cache']
 	) {
-		await exec('? Building design library and wrappers');
 		const dashboardCtx = await exec(`cd ${DASHBOARD_DIR}`);
+		await dashboardCtx.keepContext('git reset --hard');
+
+		await exec('? Making chart deterministic');
+		await makeChartDeterministic();
+
+		await exec('? Building design library and wrappers');
 		await dashboardCtx.keepContext('makfy demo-repo');
+
+		await dashboardCtx.keepContext('git reset --hard');
 	}
 
 	for (const bundle of bundles) {

@@ -5,6 +5,7 @@ import puppeteer from 'puppeteer';
 import { generateTempFileName, getFreePort } from './helpers';
 import { info } from './log';
 import {
+	KEEP_PROFILES,
 	LOAD_TIME_PERFORMANCE_MEASURES,
 	SLOWDOWN_FACTOR_LOAD_TIME,
 } from './settings';
@@ -20,7 +21,7 @@ interface EvaluateScriptArgs {
 	};
 }
 
-interface PerformanceEvent<A = any> {
+export interface PerformanceEvent<A = any> {
 	cat: string;
 	/**
 	 * Note that this is in microseconds
@@ -35,7 +36,7 @@ interface PerformanceEvent<A = any> {
 	args: A;
 }
 
-interface PerformanceProfile {
+export interface PerformanceProfile {
 	traceEvents: PerformanceEvent[];
 	metadata: Record<string, unknown>;
 }
@@ -61,7 +62,9 @@ async function createPerformanceProfile(
 	const profileContents = await fs.readFile(profilePath, {
 		encoding: 'utf8',
 	});
-	await fs.unlink(profilePath);
+	if (!KEEP_PROFILES) {
+		await fs.unlink(profilePath);
+	}
 	return JSON.parse(profileContents);
 }
 
