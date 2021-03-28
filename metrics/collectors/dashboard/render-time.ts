@@ -54,14 +54,6 @@ interface NGElement {
 	__ngContext__: any[];
 }
 
-type ComponentFrames = {
-	startTime: number;
-	frames: {
-		frame: pngJs.PNG;
-		time: number;
-	}[];
-};
-
 async function captureTargetScreenshots(
 	page: puppeteer.Page,
 	components: ComponentFiles[]
