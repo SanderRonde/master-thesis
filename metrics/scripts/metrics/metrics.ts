@@ -80,9 +80,6 @@ export const metris = preserveCommandBuilder(
 	}
 
 	for (const bundle of bundles) {
-		if (bundle === 'dashboard') {
-			continue;
-		}
 		await exec(
 			getCommandBuilderExec(bundleMap[bundle], {
 				'no-cache': args['no-cache'],
