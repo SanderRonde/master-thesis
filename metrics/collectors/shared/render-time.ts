@@ -26,7 +26,7 @@ import { PerformanceEvent, PerformanceProfile } from './load-time';
 export async function openPage(
 	port: number,
 	slowdownFactor: number,
-	path: string
+	path: string = ''
 ) {
 	const browser = await puppeteer.launch({
 		headless: process.argv.includes('--headful') ? false : true,
@@ -71,12 +71,15 @@ async function collectComponentProfile(
 		path: profilePath,
 	});
 
+	debug('render-time', '\tWaiting for page to load');
+
 	// Wait a little while
 	await wait(2000);
 
 	// Show current component
 	await showComponent(component, page);
 
+	debug('render-time', '\tWaiting for component to render');
 	await wait(MAX_MEASURED_RENDER_WAIT_TIME);
 
 	// Stop profiling
@@ -203,18 +206,15 @@ async function getProfileRenderTime(
 	return microsendsDiff / 1000;
 }
 
-async function collectRuntimeRenderTimes(
-	page: puppeteer.Page,
-	components: ComponentFiles[],
-	showComponent: (
-		component: ComponentFiles,
-		page: puppeteer.Page
-	) => Promise<void>,
-	hideComponent: (
-		component: ComponentFiles,
-		page: puppeteer.Page
-	) => Promise<void>
-): Promise<Map<string, number>> {
+async function collectRuntimeRenderTimes({
+	components,
+	hideComponent,
+	showComponent,
+	urlPath = '',
+	port,
+}: RenderTimeSettings & {
+	port: number;
+}): Promise<Map<string, number>> {
 	const times: Map<string, number> = new Map();
 
 	for (let i = 0; i < components.length; i++) {
@@ -226,18 +226,30 @@ async function collectRuntimeRenderTimes(
 			}/${components.length})`
 		);
 
+		debug('render-time', '\tOpening page');
+		const { page, browser } = await openPage(
+			port,
+			SLOWDOWN_FACTOR_RENDER_TIME,
+			urlPath
+		);
+
 		const performanceProfile = await collectComponentProfile(
 			component,
 			page,
 			showComponent,
 			hideComponent
 		);
+
+		debug('render-time', '\tExtracting render time');
 		const renderTime =
 			(await getProfileRenderTime(
 				component.js.componentName,
 				performanceProfile
 			)) / SLOWDOWN_FACTOR_RENDER_TIME;
 		times.set(component.js.componentName, renderTime);
+
+		await page.close();
+		await browser.close();
 
 		debug(
 			'render-time',
@@ -279,43 +291,44 @@ function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
 	};
 }
 
-export async function getRenderTime(
-	components: ComponentFiles[],
-	sourceRoot: string,
-	urlPath: string,
+interface RenderTimeSettings {
+	components: ComponentFiles[];
+	sourceRoot: string;
+	urlPath?: string;
 	showComponent: (
 		component: ComponentFiles,
 		page: puppeteer.Page
-	) => Promise<void>,
+	) => Promise<void>;
 	hideComponent: (
 		component: ComponentFiles,
 		page: puppeteer.Page
-	) => Promise<void>
-): Promise<RenderTime> {
-	return await doWithServer(getFreePort(), sourceRoot, async (port) => {
-		// Collect runtime info
-		const frames: Map<string, number>[] = [];
-		for (let i = 0; i < RENDER_TIME_MEASURES; i++) {
-			info(
-				'render-time',
-				`Collecting render times. ${i + 1}/${RENDER_TIME_MEASURES}`
-			);
-			// Set up a slow browser and page
-			const { page: slowPage } = await openPage(
-				port,
-				SLOWDOWN_FACTOR_RENDER_TIME,
-				urlPath
-			);
-			frames.push(
-				await collectRuntimeRenderTimes(
-					slowPage,
-					components,
-					showComponent,
-					hideComponent
-				)
-			);
-		}
+	) => Promise<void>;
+}
 
-		return joinMeasuredData(frames);
-	});
+export async function getRenderTime(
+	settings: RenderTimeSettings
+): Promise<RenderTime> {
+	return await doWithServer(
+		getFreePort(),
+		settings.sourceRoot,
+		async (port) => {
+			// Collect runtime info
+			const frames: Map<string, number>[] = [];
+			for (let i = 0; i < RENDER_TIME_MEASURES; i++) {
+				info(
+					'render-time',
+					`Collecting render times. ${i + 1}/${RENDER_TIME_MEASURES}`
+				);
+				// Set up a slow browser and page
+				frames.push(
+					await collectRuntimeRenderTimes({
+						...settings,
+						port,
+					})
+				);
+			}
+
+			return joinMeasuredData(frames);
+		}
+	);
 }

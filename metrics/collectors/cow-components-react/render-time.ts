@@ -15,21 +15,20 @@ declare const window: ExtendedWindow;
 export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
-	return await getRenderTime(
+	return await getRenderTime({
 		components,
-		REACT_DEMO_METRICS_TOGGLEABLE_DIR,
-		'',
-		async (component, page) => {
+		sourceRoot: REACT_DEMO_METRICS_TOGGLEABLE_DIR,
+		showComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
 				window.setVisibleComponent(componentName);
 			}, component.js.componentName);
 		},
-		async (_component, page) => {
+		hideComponent: async (component, page) => {
 			await page.evaluate(() => {
 				window.setVisibleComponent(null);
 			});
-		}
-	);
+		},
+	});
 }
 
 runFunctionIfCalledFromScript(async () => {

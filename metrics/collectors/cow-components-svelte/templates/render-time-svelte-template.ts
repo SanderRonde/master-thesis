@@ -41,7 +41,8 @@ ${components
 				)} = ${getSanitizedComponentName(
 					component
 				)}Defaults.ReferencedTypes['${prop.name}DemoDefaultValue'];`;
-			});
+			})
+			.join('\n');
 	})
 	.join('\n')}
 `;
@@ -103,7 +104,8 @@ const htmlTemplate = (components: JoinedDefinition[]) => `
 					.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
 					`Content </${getComponentName(component)}>`,
 					component.hasChildren
-				)}`;
+				)}
+				{/if}`;
 			})
 			.join('\n\n')}
 `;

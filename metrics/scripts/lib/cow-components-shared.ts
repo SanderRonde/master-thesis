@@ -29,13 +29,9 @@ export async function collectSameAsDashboardMetrics(
 	);
 
 	await exec('? Collecting same-as-dashboard metrics');
-	await Promise.all(
-		SAME_AS_DASHBOARD_METRICS.map((metric) => {
-			return exec(
-				`${TS_NODE_COMMAND} ${path.join(baseDir, `${metric}.ts`)}`
-			);
-		})
-	);
+	for (const metric of SAME_AS_DASHBOARD_METRICS) {
+		await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `${metric}.ts`)}`);
+	}
 }
 
 export async function createEmptyBundle(

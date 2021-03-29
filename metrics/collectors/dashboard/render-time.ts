@@ -12,11 +12,11 @@ interface NGElement {
 export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
-	return await getRenderTime(
+	return await getRenderTime({
 		components,
-		DASHBOARD_DIST_DIR,
-		'404',
-		async (component, page) => {
+		sourceRoot: DASHBOARD_DIST_DIR,
+		urlPath: '404',
+		showComponent: async (component, page) => {
 			await page.$eval(
 				'page-not-found',
 				(element, componentName) => {
@@ -32,7 +32,7 @@ export async function getDashboardRenderTime(
 				component.js.componentName
 			);
 		},
-		async (component, page) => {
+		hideComponent: async (component, page) => {
 			await page.$eval(
 				'page-not-found',
 				(element, componentName) => {
@@ -47,8 +47,8 @@ export async function getDashboardRenderTime(
 				},
 				component.js.componentName
 			);
-		}
-	);
+		},
+	});
 }
 
 runFunctionIfCalledFromScript(async () => {

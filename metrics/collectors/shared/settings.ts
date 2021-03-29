@@ -10,7 +10,7 @@ const DEVELOPMENT_DEFAULT = true;
 export const DEVELOPMENT = DEVELOPMENT_DEFAULT
 	? !process.argv.includes('--prod') && process.env.ENV !== 'production'
 	: false;
-const KEEP_PROFILES_DEFAULT = false;
+const KEEP_PROFILES_DEFAULT = true;
 /**
  * Whether to store images taken during the render time tests
  */
@@ -40,14 +40,9 @@ export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 10;
 export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 5;
 /**
  * How long to wait before assuming a component has been fully
- * rendered (when gathering data on a fast version of the page)
- */
-export const INITIAL_RENDER_WAIT_TIME = 5000;
-/**
- * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
  */
-export const MAX_MEASURED_RENDER_WAIT_TIME = 20000;
+export const MAX_MEASURED_RENDER_WAIT_TIME = 2000 * SLOWDOWN_FACTOR_RENDER_TIME;
 /**
  * The maximum number of pixels a frame is allowed to
  * differ from the target frame before being marked as

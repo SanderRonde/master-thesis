@@ -34,7 +34,8 @@ case '${component.component.name}':
 		${ifTrue(
 			`element.appendChild(document.createTextNode('Content'))`,
 			component.hasChildren
-		)}
+		)};
+		document.getElementById('root').appendChild(element);
 	}
 	break;`;
 

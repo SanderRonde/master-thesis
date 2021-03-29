@@ -72,7 +72,7 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	await exec('? Generating Svelte');
 	const sveltePath = path.join(
 		SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
-		'app.svelte'
+		'App.svelte'
 	);
 	const svelteContent = await getRenderTimeSvelteTemplate();
 	await fs.writeFile(sveltePath, svelteContent, 'utf8');
