@@ -2,3 +2,5 @@ node_modules
 .vscode
 metrics/temp
 metrics/cache
+
+yarn-error.log
