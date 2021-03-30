@@ -53,6 +53,7 @@ export async function storeData(
 ): Promise<void> {
 	if (DEVELOPMENT) {
 		debug('storage', 'Not writing database in debug mode');
+		debug('storage', `Setting "${key.join('.')}" to`, value);
 		return;
 	}
 

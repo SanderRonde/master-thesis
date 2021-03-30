@@ -8,15 +8,18 @@ import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
-import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
+import { cpxAsync, rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
 import { getRenderTimeJsTemplate } from '../../../collectors/cow-components-angular/templates/render-time-js-template';
 import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components-angular/templates/render-time-html-template';
+import { concatIntoBundle } from './dashboard';
 
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-angular`);
 
 export const ANGULAR_DEMO_DIR = path.join(DEMO_REPO_DIR, 'angular');
 const DEMO_METRICS_DIR = path.join(ANGULAR_DEMO_DIR, 'metrics');
 const METRICS_COMPONENT_DIR = path.join(ANGULAR_DEMO_DIR, 'src/app');
+const ANGULAR_DEMO_DIST = path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo');
+export const ANGULAR_METADATA_BUNDLE = path.join(ANGULAR_DEMO_DIST, 'metadata');
 
 export const cowComponentsAngularMetrics = preserveCommandBuilder(
 	cmd('cow-components-angular-metrics')
@@ -51,12 +54,7 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 	await exec('? Installing specific TS version');
 	await demoDirCtx.keepContext('npm install typescript@4.0.7');
 
-	if (
-		!(await fs.pathExists(
-			path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo')
-		)) ||
-		args['no-cache']
-	) {
+	if (!(await fs.pathExists(ANGULAR_DEMO_DIST)) || args['no-cache']) {
 		await rimrafAsync(DEMO_METRICS_DIR);
 		await fs.mkdirp(DEMO_METRICS_DIR);
 		await exec('? Generating toggleable bundle');
@@ -117,5 +115,13 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 		`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`
 	);
 
-	// TODO: collect metrics like size etc from this bundle
+	await exec('? Bundling up built files for measuring');
+	await rimrafAsync(ANGULAR_METADATA_BUNDLE);
+	await fs.mkdirp(ANGULAR_METADATA_BUNDLE);
+	await cpxAsync(`${ANGULAR_DEMO_DIST}/**`, ANGULAR_METADATA_BUNDLE);
+	await concatIntoBundle(exec, ANGULAR_METADATA_BUNDLE);
+
+	await exec('? Collecting bundle metadata metrics');
+	await baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
+	await baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 });

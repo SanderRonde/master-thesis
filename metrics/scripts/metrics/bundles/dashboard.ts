@@ -9,7 +9,7 @@ import {
 } from '../../../collectors/shared/constants';
 import {
 	DASHBOARD_DIST_DIR,
-	DASHBOARD_EXCLUDED_FILES,
+	ANGULAR_EXCLUDED_FILES,
 	DASHBOARD_IGNORED_DIR,
 } from '../../../collectors/dashboard/lib/constants';
 import { asyncGlob } from '../../../collectors/shared/helpers';
@@ -26,14 +26,14 @@ const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
 const DASHBOARD_BASE_DIR = path.join(METRICS_DIR, `collectors/dashboard`);
 
-async function getDashboardFiles(): Promise<string[]> {
+async function getAngularJsFilesInDir(dir: string): Promise<string[]> {
 	const allJsFiles = await asyncGlob('*.js', {
-		cwd: DASHBOARD_DIST_DIR,
+		cwd: dir,
 	});
 	const files = allJsFiles.filter(
-		(file) => !DASHBOARD_EXCLUDED_FILES.includes(file)
+		(file) => !ANGULAR_EXCLUDED_FILES.includes(file)
 	);
-	return files.map((file) => path.join(DASHBOARD_DIST_DIR, file));
+	return files.map((file) => path.join(dir, file));
 }
 
 async function preDashboardBuild(exec: ExecFunction) {
@@ -93,12 +93,10 @@ async function buildDashboard(
 	await cpxAsync(path.join(DASHBOARD_DIST_DIR, '**'), fullCachePath);
 }
 
-async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
-	await buildDashboard(exec, 'pre-metrics', noCache);
-
+export async function concatIntoBundle(exec: ExecFunction, dir: string) {
 	await exec('? Concatenating into bundle');
 	const files = await Promise.all(
-		(await getDashboardFiles()).map((file) => {
+		(await getAngularJsFilesInDir(dir)).map((file) => {
 			return fs.readFile(file, {
 				encoding: 'utf8',
 			});
@@ -107,17 +105,14 @@ async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
 	const bundle = files.reduce((prev, current) => {
 		return `${prev}\n\n${current}`;
 	});
-	const concatenatedFilePath = path.join(
-		DASHBOARD_DIST_DIR,
-		'concatenated.js'
-	);
+	const concatenatedFilePath = path.join(dir, 'concatenated.js');
 	await fs.writeFile(concatenatedFilePath, bundle, {
 		encoding: 'utf8',
 	});
 
 	await exec('? Creating index.html file');
 	await fs.writeFile(
-		path.join(DASHBOARD_DIST_DIR, 'index.html'),
+		path.join(dir, 'index.html'),
 		'<html><body><script src="bundle.js"></script></body>',
 		{
 			encoding: 'utf8',
@@ -125,12 +120,21 @@ async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
 	);
 
 	await exec('? Bundling');
+	try {
+		await fs.unlink(path.join(dir, 'bundle.js'));
+	} catch (e) {}
 	await exec(
 		`esbuild ${concatenatedFilePath} --bundle --minify --outfile=${path.join(
-			DASHBOARD_DIST_DIR,
+			dir,
 			'bundle.js'
 		)}`
 	);
+}
+
+async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
+	await buildDashboard(exec, 'pre-metrics', noCache);
+
+	await concatIntoBundle(exec, DASHBOARD_DIST_DIR);
 }
 
 export const dashboardMetrics = preserveCommandBuilder(
