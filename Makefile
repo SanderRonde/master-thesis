@@ -11,4 +11,7 @@ metrics_install:
 	$(YARN_CMD) install
 
 metrics: submodules metrics_install
-	$(YARN_CMD) metrics
+	$(YARN_CMD) metrics --no-cache
+
+metrics-dev: submodules metrics_install
+	$(YARN_CMD) metrics-dev
