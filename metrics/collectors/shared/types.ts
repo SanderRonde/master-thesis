@@ -35,6 +35,7 @@ export interface Data {
 			size: Size;
 			'load-time': LoadTime;
 			'number-of-components': NumberOfComponents;
+			'render-time': RenderTime
 		};
 	};
 }
