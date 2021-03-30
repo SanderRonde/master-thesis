@@ -32,5 +32,8 @@ export function doWithServer<R>(
 }
 
 runFunctionIfCalledFromScript(async () => {
-	await doWithServer(getFreePort(), DASHBOARD_DIST_DIR);
+	await doWithServer(
+		process.argv[3] ? parseInt(process.argv[3], 10) : getFreePort(),
+		process.argv[2] || DASHBOARD_DIST_DIR
+	);
 }, __filename);
