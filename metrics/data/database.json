@@ -435,218 +435,236 @@
 				"files": {
 					"ChartButton": {
 						"times": [
-							158.9362,
-							227.93919999999997,
-							196.2982,
-							229.82319999999999,
-							149.685
+							130.0548,
+							201.4846,
+							289.0054,
+							222.5962,
+							217.641
 						],
 						"stats": {
-							"min": 149.685,
-							"max": 229.82319999999999,
-							"avg": 192.53636,
-							"total": 962.6818000000001,
-							"median": 212.1187,
-							"stddev": 33.53514801909184
+							"min": 130.0548,
+							"max": 289.0054,
+							"avg": 212.15640000000002,
+							"total": 1060.7820000000002,
+							"median": 220.11860000000001,
+							"stddev": 50.79251736230446
 						}
 					},
 					"PrimaryButtonComponent": {
 						"times": [
-							66.29679999999999,
-							72.6312,
-							69.3126,
-							74.515,
-							77.00280000000001
+							87.2726,
+							71.7322,
+							75.7496,
+							84.2504,
+							75.2018
 						],
 						"stats": {
-							"min": 66.29679999999999,
-							"max": 77.00280000000001,
-							"avg": 71.95168000000001,
-							"total": 359.75840000000005,
-							"median": 73.57310000000001,
-							"stddev": 3.7812321052270823
+							"min": 71.7322,
+							"max": 87.2726,
+							"avg": 78.84132,
+							"total": 394.2066,
+							"median": 80,
+							"stddev": 5.893879103748223
 						}
 					},
 					"SecondaryButtonComponent": {
 						"times": [
-							66.72619999999999,
-							78.0286,
-							72.4222,
-							66.0098,
-							85.5706
+							75.0842,
+							78.7302,
+							72.978,
+							70.2936,
+							80.9162
 						],
 						"stats": {
-							"min": 66.0098,
-							"max": 85.5706,
-							"avg": 73.75148,
-							"total": 368.7574,
-							"median": 75.22540000000001,
-							"stddev": 7.33540055740653
+							"min": 70.2936,
+							"max": 80.9162,
+							"avg": 75.60044,
+							"total": 378.0022,
+							"median": 76.90719999999999,
+							"stddev": 3.830377216724224
 						}
 					},
 					"TertiaryButtonComponent": {
 						"times": [
-							69.977,
-							79.6654,
-							109.60740000000001,
-							74.3286,
-							86.71459999999999
+							85.911,
+							68.5416,
+							75.8126,
+							77.2002,
+							90.627
 						],
 						"stats": {
-							"min": 69.977,
-							"max": 109.60740000000001,
-							"avg": 84.0586,
-							"total": 420.293,
-							"median": 76.997,
-							"stddev": 13.943170961011706
+							"min": 68.5416,
+							"max": 90.627,
+							"avg": 79.61848,
+							"total": 398.09240000000005,
+							"median": 81.5556,
+							"stddev": 7.795041908905941
 						}
 					},
 					"InputElement": {
 						"times": [
-							50.8442,
-							56.77140000000001,
-							66.1206,
-							53.813599999999994,
-							71.11359999999999
+							55.1448,
+							57.370799999999996,
+							77.22619999999999,
+							58.1702,
+							53.0662
 						],
 						"stats": {
-							"min": 50.8442,
-							"max": 71.11359999999999,
-							"avg": 59.73268,
-							"total": 298.6634,
-							"median": 61.446,
-							"stddev": 7.656900495213448
+							"min": 53.0662,
+							"max": 77.22619999999999,
+							"avg": 60.19563999999999,
+							"total": 300.97819999999996,
+							"median": 57.7705,
+							"stddev": 8.700137947779906
 						}
 					},
 					"SwitchOptionComponent": {
 						"times": [
-							75.411,
-							90.1682,
-							65.9962,
-							71.03920000000001,
-							77.0616
+							79.217,
+							76.6806,
+							70.3844,
+							74.10159999999999,
+							81.0498
 						],
 						"stats": {
-							"min": 65.9962,
-							"max": 90.1682,
-							"avg": 75.93524,
-							"total": 379.6762,
-							"median": 76.2363,
-							"stddev": 8.085497988275055
+							"min": 70.3844,
+							"max": 81.0498,
+							"avg": 76.28668,
+							"total": 381.4334,
+							"median": 77.9488,
+							"stddev": 3.7693698202219448
 						}
 					},
 					"ListItem": {
 						"times": [
-							71.7422,
-							41.4308,
-							41.160000000000004,
-							43.5788,
-							51.1626
+							50.0578,
+							42.6006,
+							49.487,
+							53.6722,
+							49.8094
 						],
 						"stats": {
-							"min": 41.160000000000004,
-							"max": 71.7422,
-							"avg": 49.81488,
-							"total": 249.0744,
-							"median": 47.3707,
-							"stddev": 11.547399279560743
+							"min": 42.6006,
+							"max": 53.6722,
+							"avg": 49.1254,
+							"total": 245.627,
+							"median": 49.9336,
+							"stddev": 3.5976210361848837
 						}
 					},
 					"ListItemAction": {
 						"times": [
-							48.4156,
-							49.257999999999996,
-							43.278800000000004,
-							46.4182,
-							44.3688
+							50.7624,
+							48.3838,
+							46.1732,
+							49.492000000000004,
+							53.9698
 						],
 						"stats": {
-							"min": 43.278800000000004,
-							"max": 49.257999999999996,
-							"avg": 46.34788,
-							"total": 231.73940000000002,
-							"median": 47.4169,
-							"stddev": 2.2840848936937497
+							"min": 46.1732,
+							"max": 53.9698,
+							"avg": 49.75624,
+							"total": 248.78119999999998,
+							"median": 50.1272,
+							"stddev": 2.5906769691337432
 						}
 					},
 					"SwitchComponent": {
 						"times": [
-							49.5478,
-							39.5012,
-							42.529,
-							39.0976,
-							45.921800000000005
+							38.829,
+							43.88,
+							48.6776,
+							49.629599999999996,
+							42.522000000000006
 						],
 						"stats": {
-							"min": 39.0976,
-							"max": 49.5478,
-							"avg": 43.31948,
-							"total": 216.5974,
-							"median": 44.22540000000001,
-							"stddev": 3.964654611135756
+							"min": 38.829,
+							"max": 49.629599999999996,
+							"avg": 44.70763999999999,
+							"total": 223.53819999999996,
+							"median": 46.278800000000004,
+							"stddev": 4.000167273302454
 						}
 					},
 					"PopupDateRangePickerComponent": {
 						"times": [
-							174.7524,
-							193.6202,
-							164.7394,
-							230.5712,
-							182.616
+							193.0638,
+							180.1688,
+							170.5904,
+							197.9576,
+							165.53979999999999
 						],
 						"stats": {
-							"min": 164.7394,
-							"max": 230.5712,
-							"avg": 189.25984,
-							"total": 946.2992,
-							"median": 188.11810000000003,
-							"stddev": 22.72223407797746
+							"min": 165.53979999999999,
+							"max": 197.9576,
+							"avg": 181.46408000000002,
+							"total": 907.3204000000001,
+							"median": 186.6163,
+							"stddev": 12.490693068104754
 						}
 					},
 					"IconComponent": {
 						"times": [
-							47.6772,
-							64.0556,
-							51.46319999999999,
-							63.948800000000006,
-							53.525999999999996
+							49.0572,
+							59.4436,
+							59.800599999999996,
+							59.6736,
+							57.1648
 						],
 						"stats": {
-							"min": 47.6772,
-							"max": 64.0556,
-							"avg": 56.134159999999994,
-							"total": 280.6708,
-							"median": 58.7374,
-							"stddev": 6.692657892825542
+							"min": 49.0572,
+							"max": 59.800599999999996,
+							"avg": 57.02795999999999,
+							"total": 285.1398,
+							"median": 59.5586,
+							"stddev": 4.10058533265679
 						}
 					},
 					"ModularChartComponent": {
 						"times": [
-							327.57640000000004,
-							408.238,
-							325.10479999999995,
-							398.64140000000003,
-							368.854
+							361.318,
+							352.81579999999997,
+							378.6884,
+							376.979,
+							348.9678
 						],
 						"stats": {
-							"min": 325.10479999999995,
-							"max": 408.238,
-							"avg": 365.68291999999997,
-							"total": 1828.4145999999998,
-							"median": 383.7477,
-							"stddev": 34.65816693170025
+							"min": 348.9678,
+							"max": 378.6884,
+							"avg": 363.75380000000007,
+							"total": 1818.7690000000002,
+							"median": 369.1485,
+							"stddev": 12.18316013060651
 						}
 					}
 				},
 				"stats": {
-					"min": 39.0976,
-					"max": 408.238,
-					"avg": 109.0437666666667,
-					"total": 6542.626000000002,
-					"median": 50.8442,
-					"stddev": 93.10759921070651
+					"min": 38.829,
+					"max": 378.6884,
+					"avg": 110.71117333333336,
+					"total": 6642.670400000002,
+					"median": 53.6722,
+					"stddev": 93.16798697152342
 				}
-			}
+			},
+			"load-time": {
+				"values": [
+					6107.6419000000005,
+					6186.6281,
+					6520.9828,
+					6363.767,
+					6350.2609
+				],
+				"stats": {
+					"min": 6107.6419000000005,
+					"max": 6520.9828,
+					"avg": 6305.856140000001,
+					"total": 31529.280700000003,
+					"median": 6357.0139500000005,
+					"stddev": 144.98906215323396
+				}
+			},
+			"size": 11519999
 		},
 		"cow-components-react": {
 			"number-of-components": 12,
@@ -729,7 +747,7 @@
 					"InputElement": 19,
 					"ListItem": 1,
 					"ListItemAction": 1,
-					"ModularChartComponent": 60,
+					"ModularChartComponent": 62,
 					"PopupDateRangePickerComponent": 35,
 					"PrimaryButtonComponent": 2,
 					"SecondaryButtonComponent": 2,
@@ -739,245 +757,245 @@
 				},
 				"stats": {
 					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
+					"max": 62,
+					"avg": 13.916666666666666,
+					"total": 167,
 					"median": 2,
-					"stddev": 17.758214061855057
+					"stddev": 18.195504634081708
 				}
 			},
-			"size": 8147152,
+			"size": 8147876,
 			"load-time": {
 				"values": [
-					365.1032,
-					385.8461,
-					365.67,
-					359.6317,
-					362.3302
+					618.7984,
+					654.0992,
+					600.8266,
+					571.8733000000001,
+					622.3856
 				],
 				"stats": {
-					"min": 359.6317,
-					"max": 385.8461,
-					"avg": 367.71624,
-					"total": 1838.5812,
-					"median": 365.38660000000004,
-					"stddev": 9.317468687277664
+					"min": 571.8733000000001,
+					"max": 654.0992,
+					"avg": 613.59662,
+					"total": 3067.9831000000004,
+					"median": 620.592,
+					"stddev": 27.01359847886983
 				}
 			},
 			"render-time": {
 				"files": {
 					"ChartButton": {
 						"times": [
-							335.9512900002301,
-							332.3418640010059,
-							344.34051500074565,
-							378.4440350010991,
-							380.6024650000036
+							232.6692,
+							227.99920000000003,
+							242.4598,
+							239.27399999999997,
+							158.7856
 						],
 						"stats": {
-							"min": 332.3418640010059,
-							"max": 380.6024650000036,
-							"avg": 354.33603380061686,
-							"total": 1771.6801690030843,
-							"median": 361.3922750009224,
-							"stddev": 20.94169924191028
+							"min": 158.7856,
+							"max": 242.4598,
+							"avg": 220.23755999999997,
+							"total": 1101.1878,
+							"median": 235.97159999999997,
+							"stddev": 31.13630072732469
 						}
 					},
 					"PrimaryButtonComponent": {
 						"times": [
-							227.03729899972677,
-							268.5816869996488,
-							262.42669999971986,
-							314.62399600073695,
-							245.89147000014782
+							139.5836,
+							133.0076,
+							204.329,
+							166.3834,
+							130.8422
 						],
 						"stats": {
-							"min": 227.03729899972677,
-							"max": 314.62399600073695,
-							"avg": 263.71223039999603,
-							"total": 1318.5611519999802,
-							"median": 265.50419349968433,
-							"stddev": 29.25748508335594
+							"min": 130.8422,
+							"max": 204.329,
+							"avg": 154.82916,
+							"total": 774.1458,
+							"median": 152.9835,
+							"stddev": 27.81264623365422
 						}
 					},
 					"SecondaryButtonComponent": {
 						"times": [
-							123.16472700051963,
-							134.60198100097477,
-							138.29267199896276,
-							143.5410560015589,
-							162.19034900143743
+							141.8372,
+							182.8346,
+							158.0576,
+							140.2698,
+							142.6702
 						],
 						"stats": {
-							"min": 123.16472700051963,
-							"max": 162.19034900143743,
-							"avg": 140.3581570006907,
-							"total": 701.7907850034535,
-							"median": 140.91686400026083,
-							"stddev": 12.804602916217656
+							"min": 140.2698,
+							"max": 182.8346,
+							"avg": 153.13388,
+							"total": 765.6694,
+							"median": 150.3639,
+							"stddev": 16.18001186382754
 						}
 					},
 					"TertiaryButtonComponent": {
 						"times": [
-							122.90985500067472,
-							130.49805800057948,
-							128.53020399995148,
-							138.9652089998126,
-							162.24799999967217
+							165.5402,
+							175.0712,
+							174.56300000000002,
+							170.76,
+							140.1488
 						],
 						"stats": {
-							"min": 122.90985500067472,
-							"max": 162.24799999967217,
-							"avg": 136.6302652001381,
-							"total": 683.1513260006905,
-							"median": 134.73163350019604,
-							"stddev": 13.807135194771748
+							"min": 140.1488,
+							"max": 175.0712,
+							"avg": 165.21664,
+							"total": 826.0832,
+							"median": 172.6615,
+							"stddev": 12.989972528623767
 						}
 					},
 					"InputElement": {
 						"times": [
-							122.0518180001527,
-							138.07511899992824,
-							155.6593639999628,
-							145.86386500112712,
-							133.291303999722
+							119.728,
+							161.7372,
+							149.7618,
+							137.0358,
+							142.5146
 						],
 						"stats": {
-							"min": 122.0518180001527,
-							"max": 155.6593639999628,
-							"avg": 138.98829400017857,
-							"total": 694.9414700008929,
-							"median": 141.96949200052768,
-							"stddev": 11.360738131588343
+							"min": 119.728,
+							"max": 161.7372,
+							"avg": 142.15547999999998,
+							"total": 710.7774,
+							"median": 146.13819999999998,
+							"stddev": 13.932923682615938
 						}
 					},
 					"SwitchOptionComponent": {
 						"times": [
-							194.5000739991665,
-							224.23482799902558,
-							218.36777199991047,
-							174.14951500110328,
-							239.83485000021756
+							203.6838,
+							194.43800000000002,
+							168.6844,
+							150.23399999999998,
+							144.36759999999998
 						],
 						"stats": {
-							"min": 174.14951500110328,
-							"max": 239.83485000021756,
-							"avg": 210.21740779988468,
-							"total": 1051.0870389994234,
-							"median": 221.30129999946803,
-							"stddev": 23.186361770963508
+							"min": 144.36759999999998,
+							"max": 203.6838,
+							"avg": 172.28155999999998,
+							"total": 861.4078,
+							"median": 181.5612,
+							"stddev": 23.474378097798468
 						}
 					},
 					"ListItem": {
 						"times": [
-							122.6972230002284,
-							129.20834700018167,
-							123.58976400084794,
-							118.64810400083661,
-							141.14210799895227
+							139.5194,
+							174.3478,
+							168.909,
+							172.7288,
+							132.6038
 						],
 						"stats": {
-							"min": 118.64810400083661,
-							"max": 141.14210799895227,
-							"avg": 127.05710920020938,
-							"total": 635.2855460010469,
-							"median": 126.3990555005148,
-							"stddev": 7.807143832209267
+							"min": 132.6038,
+							"max": 174.3478,
+							"avg": 157.62176,
+							"total": 788.1088,
+							"median": 170.81889999999999,
+							"stddev": 17.82682595748329
 						}
 					},
 					"ListItemAction": {
 						"times": [
-							149.7411729991436,
-							143.4375730007887,
-							135.11895699985325,
-							145.9626360014081,
-							129.32519199885428
+							154.6012,
+							171.925,
+							171.5488,
+							115.22940000000001,
+							139.4108
 						],
 						"stats": {
-							"min": 129.32519199885428,
-							"max": 149.7411729991436,
-							"avg": 140.7171062000096,
-							"total": 703.5855310000479,
-							"median": 144.7001045010984,
-							"stddev": 7.4493662514395
+							"min": 115.22940000000001,
+							"max": 171.925,
+							"avg": 150.54304000000002,
+							"total": 752.7152000000001,
+							"median": 163.075,
+							"stddev": 21.381668628392873
 						}
 					},
 					"SwitchComponent": {
 						"times": [
-							121.47502299956977,
-							135.05665499903262,
-							128.14936999976635,
-							137.18362499959767,
-							161.73762500099838
+							186.9678,
+							169.606,
+							150.7654,
+							125.73620000000001,
+							123.0316
 						],
 						"stats": {
-							"min": 121.47502299956977,
-							"max": 161.73762500099838,
-							"avg": 136.72045959979295,
-							"total": 683.6022979989648,
-							"median": 136.12013999931514,
-							"stddev": 13.672806929898966
+							"min": 123.0316,
+							"max": 186.9678,
+							"avg": 151.22140000000002,
+							"total": 756.1070000000001,
+							"median": 160.1857,
+							"stddev": 24.739308030743302
 						}
 					},
 					"PopupDateRangePickerComponent": {
 						"times": [
-							406.9042450003326,
-							388.17180799879134,
-							394.3263410013169,
-							457.11755499988794,
-							432.97393099963665
+							351.6286,
+							302.6114,
+							317.31460000000004,
+							246.76239999999999,
+							249.54720000000003
 						],
 						"stats": {
-							"min": 388.17180799879134,
-							"max": 457.11755499988794,
-							"avg": 415.89877599999306,
-							"total": 2079.4938799999654,
-							"median": 419.9390879999846,
-							"stddev": 25.712273157850724
+							"min": 246.76239999999999,
+							"max": 351.6286,
+							"avg": 293.57284,
+							"total": 1467.8642,
+							"median": 309.963,
+							"stddev": 40.36164583946498
 						}
 					},
 					"IconComponent": {
 						"times": [
-							126.35715300031006,
-							145.1865180004388,
-							137.5413770005107,
-							143.41876600123942,
-							123.33589300140738
+							184.7534,
+							162.4794,
+							138.47539999999998,
+							137.98219999999998,
+							145.2292
 						],
 						"stats": {
-							"min": 123.33589300140738,
-							"max": 145.1865180004388,
-							"avg": 135.16794140078127,
-							"total": 675.8397070039064,
-							"median": 140.48007150087506,
-							"stddev": 8.851085151322385
+							"min": 137.98219999999998,
+							"max": 184.7534,
+							"avg": 153.78392,
+							"total": 768.9196,
+							"median": 153.8543,
+							"stddev": 17.843477451035163
 						}
 					},
 					"ModularChartComponent": {
 						"times": [
-							107.72312299907207,
-							123.22147999890149,
-							120.16941599920392,
-							124.07335900142789,
-							128.42617500014603
+							415.951,
+							416.1848,
+							451.582,
+							403.7716,
+							462.5312
 						],
 						"stats": {
-							"min": 107.72312299907207,
-							"max": 128.42617500014603,
-							"avg": 120.72271059975029,
-							"total": 603.6135529987514,
-							"median": 123.64741950016469,
-							"stddev": 7.015831664067549
+							"min": 403.7716,
+							"max": 462.5312,
+							"avg": 430.00411999999994,
+							"total": 2150.0206,
+							"median": 433.8834,
+							"stddev": 22.804493992053416
 						}
 					}
 				},
 				"stats": {
-					"min": 107.72312299907207,
-					"max": 457.11755499988794,
-					"avg": 193.37720760017012,
-					"total": 11602.632456010208,
-					"median": 143.4375730007887,
-					"stddev": 96.6522594314901
+					"min": 115.22940000000001,
+					"max": 462.5312,
+					"avg": 195.38344666666666,
+					"total": 11723.0068,
+					"median": 168.6844,
+					"stddev": 85.09945337735425
 				}
 			}
 		},
@@ -1062,7 +1080,7 @@
 					"InputElement": 19,
 					"ListItem": 1,
 					"ListItemAction": 1,
-					"ModularChartComponent": 60,
+					"ModularChartComponent": 62,
 					"PopupDateRangePickerComponent": 35,
 					"PrimaryButtonComponent": 2,
 					"SecondaryButtonComponent": 2,
@@ -1072,425 +1090,245 @@
 				},
 				"stats": {
 					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
+					"max": 62,
+					"avg": 13.916666666666666,
+					"total": 167,
 					"median": 2,
-					"stddev": 17.758214061855057
+					"stddev": 18.195504634081708
 				}
 			},
-			"size": 8141267,
+			"size": 8141362,
 			"load-time": {
 				"values": [
-					295.4435,
-					283.6438,
-					303.7441,
-					309.15729999999996,
-					294.8305
+					640.2164,
+					643.0903000000001,
+					592.3823000000001,
+					561.782,
+					590.1703
 				],
 				"stats": {
-					"min": 283.6438,
-					"max": 309.15729999999996,
-					"avg": 297.36384,
-					"total": 1486.8192,
-					"median": 299.5938,
-					"stddev": 8.69641801332019
-				}
-			}
-		},
-		"cow-components-vue2": {
-			"lines-of-code": {
-				"files": {
-					"ChartButton": 24,
-					"IconComponent": 104,
-					"InputElement": 51,
-					"ListItem": 19,
-					"ListItemAction": 21,
-					"ModularChartComponent": 138,
-					"PopupDateRangePickerComponent": 326,
-					"PrimaryButtonComponent": 23,
-					"SecondaryButtonComponent": 20,
-					"SwitchComponent": 26,
-					"SwitchOptionComponent": 71,
-					"TertiaryButtonComponent": 51
-				},
-				"stats": {
-					"min": 19,
-					"max": 326,
-					"avg": 72.83333333333333,
-					"total": 874,
-					"median": 24,
-					"stddev": 84.51117611824421
+					"min": 561.782,
+					"max": 643.0903000000001,
+					"avg": 605.52826,
+					"total": 3027.6413000000002,
+					"median": 616.29935,
+					"stddev": 31.42162430331061
 				}
 			},
-			"number-of-components": 12,
-			"cyclomatic-complexity": {
+			"render-time": {
 				"files": {
-					"ChartButton": 1,
-					"IconComponent": 12,
-					"InputElement": 8,
-					"ListItem": 2,
-					"ListItemAction": 2,
-					"ModularChartComponent": 19,
-					"PopupDateRangePickerComponent": 76,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 11,
-					"TertiaryButtonComponent": 7
+					"ChartButton": {
+						"times": [
+							155.204,
+							138.0238,
+							117.5058,
+							180.1904,
+							186.3686
+						],
+						"stats": {
+							"min": 117.5058,
+							"max": 186.3686,
+							"avg": 155.45852,
+							"total": 777.2926,
+							"median": 167.6972,
+							"stddev": 25.735353625889815
+						}
+					},
+					"PrimaryButtonComponent": {
+						"times": [
+							120.5316,
+							161.79860000000002,
+							149.2794,
+							170.8354,
+							159.004
+						],
+						"stats": {
+							"min": 120.5316,
+							"max": 170.8354,
+							"avg": 152.28979999999999,
+							"total": 761.449,
+							"median": 160.4013,
+							"stddev": 17.303657496841527
+						}
+					},
+					"SecondaryButtonComponent": {
+						"times": [
+							154.8656,
+							132.2462,
+							182.9942,
+							125.7556,
+							162.755
+						],
+						"stats": {
+							"min": 125.7556,
+							"max": 182.9942,
+							"avg": 151.72332,
+							"total": 758.6166,
+							"median": 158.81029999999998,
+							"stddev": 20.799617826719803
+						}
+					},
+					"TertiaryButtonComponent": {
+						"times": [
+							159.022,
+							132.7474,
+							127.5818,
+							160.712,
+							144.723
+						],
+						"stats": {
+							"min": 127.5818,
+							"max": 160.712,
+							"avg": 144.95724,
+							"total": 724.7862,
+							"median": 151.8725,
+							"stddev": 13.394557946509467
+						}
+					},
+					"InputElement": {
+						"times": [
+							162.0612,
+							157.927,
+							161.5614,
+							142.35039999999998,
+							119.9816
+						],
+						"stats": {
+							"min": 119.9816,
+							"max": 162.0612,
+							"avg": 148.77632,
+							"total": 743.8815999999999,
+							"median": 159.74419999999998,
+							"stddev": 16.087943308005535
+						}
+					},
+					"SwitchOptionComponent": {
+						"times": [
+							189.8286,
+							161.38979999999998,
+							178.3252,
+							179.6378,
+							184.8798
+						],
+						"stats": {
+							"min": 161.38979999999998,
+							"max": 189.8286,
+							"avg": 178.81223999999997,
+							"total": 894.0611999999999,
+							"median": 182.2588,
+							"stddev": 9.619102295245648
+						}
+					},
+					"ListItem": {
+						"times": [
+							121.388,
+							119.70519999999999,
+							147.2396,
+							144.4788,
+							105.04839999999999
+						],
+						"stats": {
+							"min": 105.04839999999999,
+							"max": 147.2396,
+							"avg": 127.572,
+							"total": 637.86,
+							"median": 132.9334,
+							"stddev": 16.00059580890662
+						}
+					},
+					"ListItemAction": {
+						"times": [
+							112.3878,
+							140.45340000000002,
+							112.9752,
+							124.1972,
+							139.62539999999998
+						],
+						"stats": {
+							"min": 112.3878,
+							"max": 140.45340000000002,
+							"avg": 125.9278,
+							"total": 629.639,
+							"median": 131.91129999999998,
+							"stddev": 12.269586172646575
+						}
+					},
+					"SwitchComponent": {
+						"times": [
+							142.7714,
+							122.3424,
+							150.7714,
+							103.5998,
+							227.702
+						],
+						"stats": {
+							"min": 103.5998,
+							"max": 227.702,
+							"avg": 149.43739999999997,
+							"total": 747.1869999999999,
+							"median": 146.7714,
+							"stddev": 42.44240173204151
+						}
+					},
+					"PopupDateRangePickerComponent": {
+						"times": [
+							247.8506,
+							258.46619999999996,
+							238.767,
+							357.8154,
+							251.3044
+						],
+						"stats": {
+							"min": 238.767,
+							"max": 357.8154,
+							"avg": 270.84072,
+							"total": 1354.2035999999998,
+							"median": 254.88529999999997,
+							"stddev": 43.94692398274993
+						}
+					},
+					"IconComponent": {
+						"times": [
+							141.893,
+							178.347,
+							179.7238,
+							126.92159999999998,
+							134.2672
+						],
+						"stats": {
+							"min": 126.92159999999998,
+							"max": 179.7238,
+							"avg": 152.23052,
+							"total": 761.1526,
+							"median": 160.12,
+							"stddev": 22.396596123018345
+						}
+					},
+					"ModularChartComponent": {
+						"times": [
+							422.6282,
+							439.35699999999997,
+							401.115,
+							416.1334,
+							405.22860000000003
+						],
+						"stats": {
+							"min": 401.115,
+							"max": 439.35699999999997,
+							"avg": 416.89243999999997,
+							"total": 2084.4622,
+							"median": 419.3808,
+							"stddev": 13.587526021995304
+						}
+					}
 				},
 				"stats": {
-					"min": 1,
-					"max": 76,
-					"avg": 12,
-					"total": 144,
-					"median": 2,
-					"stddev": 20.016659728003237
-				}
-			},
-			"maintainability": {
-				"files": {
-					"ChartButton": 98.1,
-					"IconComponent": 71.27,
-					"InputElement": 81.72,
-					"ListItem": 110.05,
-					"ListItemAction": 106.76,
-					"ModularChartComponent": 63.03,
-					"PopupDateRangePickerComponent": 51.6,
-					"PrimaryButtonComponent": 95.85,
-					"SecondaryButtonComponent": 105.1,
-					"SwitchComponent": 97.91,
-					"SwitchOptionComponent": 82.11,
-					"TertiaryButtonComponent": 78.24
-				},
-				"stats": {
-					"min": 51.6,
-					"max": 110.05,
-					"avg": 86.81166666666667,
-					"total": 1041.74,
-					"median": 78.24,
-					"stddev": 17.732237513134717
-				}
-			},
-			"structural-complexity": {
-				"files": {
-					"ChartButton": 2,
-					"IconComponent": 13,
-					"InputElement": 19,
-					"ListItem": 1,
-					"ListItemAction": 1,
-					"ModularChartComponent": 60,
-					"PopupDateRangePickerComponent": 35,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 26,
-					"TertiaryButtonComponent": 2
-				},
-				"stats": {
-					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
-					"median": 2,
-					"stddev": 17.758214061855057
-				}
-			}
-		},
-		"cow-components-vue3": {
-			"lines-of-code": {
-				"files": {
-					"ChartButton": 24,
-					"IconComponent": 104,
-					"InputElement": 51,
-					"ListItem": 19,
-					"ListItemAction": 21,
-					"ModularChartComponent": 138,
-					"PopupDateRangePickerComponent": 326,
-					"PrimaryButtonComponent": 23,
-					"SecondaryButtonComponent": 20,
-					"SwitchComponent": 26,
-					"SwitchOptionComponent": 71,
-					"TertiaryButtonComponent": 51
-				},
-				"stats": {
-					"min": 19,
-					"max": 326,
-					"avg": 72.83333333333333,
-					"total": 874,
-					"median": 24,
-					"stddev": 84.51117611824421
-				}
-			},
-			"number-of-components": 12,
-			"cyclomatic-complexity": {
-				"files": {
-					"ChartButton": 1,
-					"IconComponent": 12,
-					"InputElement": 8,
-					"ListItem": 2,
-					"ListItemAction": 2,
-					"ModularChartComponent": 19,
-					"PopupDateRangePickerComponent": 76,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 11,
-					"TertiaryButtonComponent": 7
-				},
-				"stats": {
-					"min": 1,
-					"max": 76,
-					"avg": 12,
-					"total": 144,
-					"median": 2,
-					"stddev": 20.016659728003237
-				}
-			},
-			"maintainability": {
-				"files": {
-					"ChartButton": 98.1,
-					"IconComponent": 71.27,
-					"InputElement": 81.72,
-					"ListItem": 110.05,
-					"ListItemAction": 106.76,
-					"ModularChartComponent": 63.03,
-					"PopupDateRangePickerComponent": 51.6,
-					"PrimaryButtonComponent": 95.85,
-					"SecondaryButtonComponent": 105.1,
-					"SwitchComponent": 97.91,
-					"SwitchOptionComponent": 82.11,
-					"TertiaryButtonComponent": 78.24
-				},
-				"stats": {
-					"min": 51.6,
-					"max": 110.05,
-					"avg": 86.81166666666667,
-					"total": 1041.74,
-					"median": 78.24,
-					"stddev": 17.732237513134717
-				}
-			},
-			"structural-complexity": {
-				"files": {
-					"ChartButton": 2,
-					"IconComponent": 13,
-					"InputElement": 19,
-					"ListItem": 1,
-					"ListItemAction": 1,
-					"ModularChartComponent": 60,
-					"PopupDateRangePickerComponent": 35,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 26,
-					"TertiaryButtonComponent": 2
-				},
-				"stats": {
-					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
-					"median": 2,
-					"stddev": 17.758214061855057
-				}
-			}
-		},
-		"cow-components-polymer": {
-			"lines-of-code": {
-				"files": {
-					"ChartButton": 24,
-					"IconComponent": 104,
-					"InputElement": 51,
-					"ListItem": 19,
-					"ListItemAction": 21,
-					"ModularChartComponent": 138,
-					"PopupDateRangePickerComponent": 326,
-					"PrimaryButtonComponent": 23,
-					"SecondaryButtonComponent": 20,
-					"SwitchComponent": 26,
-					"SwitchOptionComponent": 71,
-					"TertiaryButtonComponent": 51
-				},
-				"stats": {
-					"min": 19,
-					"max": 326,
-					"avg": 72.83333333333333,
-					"total": 874,
-					"median": 24,
-					"stddev": 84.51117611824421
-				}
-			},
-			"number-of-components": 12,
-			"cyclomatic-complexity": {
-				"files": {
-					"ChartButton": 1,
-					"IconComponent": 12,
-					"InputElement": 8,
-					"ListItem": 2,
-					"ListItemAction": 2,
-					"ModularChartComponent": 19,
-					"PopupDateRangePickerComponent": 76,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 11,
-					"TertiaryButtonComponent": 7
-				},
-				"stats": {
-					"min": 1,
-					"max": 76,
-					"avg": 12,
-					"total": 144,
-					"median": 2,
-					"stddev": 20.016659728003237
-				}
-			},
-			"maintainability": {
-				"files": {
-					"ChartButton": 98.1,
-					"IconComponent": 71.27,
-					"InputElement": 81.72,
-					"ListItem": 110.05,
-					"ListItemAction": 106.76,
-					"ModularChartComponent": 63.03,
-					"PopupDateRangePickerComponent": 51.6,
-					"PrimaryButtonComponent": 95.85,
-					"SecondaryButtonComponent": 105.1,
-					"SwitchComponent": 97.91,
-					"SwitchOptionComponent": 82.11,
-					"TertiaryButtonComponent": 78.24
-				},
-				"stats": {
-					"min": 51.6,
-					"max": 110.05,
-					"avg": 86.81166666666667,
-					"total": 1041.74,
-					"median": 78.24,
-					"stddev": 17.732237513134717
-				}
-			},
-			"structural-complexity": {
-				"files": {
-					"ChartButton": 2,
-					"IconComponent": 13,
-					"InputElement": 19,
-					"ListItem": 1,
-					"ListItemAction": 1,
-					"ModularChartComponent": 60,
-					"PopupDateRangePickerComponent": 35,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 26,
-					"TertiaryButtonComponent": 2
-				},
-				"stats": {
-					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
-					"median": 2,
-					"stddev": 17.758214061855057
-				}
-			}
-		},
-		"cow-components-lit-element": {
-			"lines-of-code": {
-				"files": {
-					"ChartButton": 24,
-					"IconComponent": 104,
-					"InputElement": 51,
-					"ListItem": 19,
-					"ListItemAction": 21,
-					"ModularChartComponent": 138,
-					"PopupDateRangePickerComponent": 326,
-					"PrimaryButtonComponent": 23,
-					"SecondaryButtonComponent": 20,
-					"SwitchComponent": 26,
-					"SwitchOptionComponent": 71,
-					"TertiaryButtonComponent": 51
-				},
-				"stats": {
-					"min": 19,
-					"max": 326,
-					"avg": 72.83333333333333,
-					"total": 874,
-					"median": 24,
-					"stddev": 84.51117611824421
-				}
-			},
-			"number-of-components": 12,
-			"cyclomatic-complexity": {
-				"files": {
-					"ChartButton": 1,
-					"IconComponent": 12,
-					"InputElement": 8,
-					"ListItem": 2,
-					"ListItemAction": 2,
-					"ModularChartComponent": 19,
-					"PopupDateRangePickerComponent": 76,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 11,
-					"TertiaryButtonComponent": 7
-				},
-				"stats": {
-					"min": 1,
-					"max": 76,
-					"avg": 12,
-					"total": 144,
-					"median": 2,
-					"stddev": 20.016659728003237
-				}
-			},
-			"maintainability": {
-				"files": {
-					"ChartButton": 98.1,
-					"IconComponent": 71.27,
-					"InputElement": 81.72,
-					"ListItem": 110.05,
-					"ListItemAction": 106.76,
-					"ModularChartComponent": 63.03,
-					"PopupDateRangePickerComponent": 51.6,
-					"PrimaryButtonComponent": 95.85,
-					"SecondaryButtonComponent": 105.1,
-					"SwitchComponent": 97.91,
-					"SwitchOptionComponent": 82.11,
-					"TertiaryButtonComponent": 78.24
-				},
-				"stats": {
-					"min": 51.6,
-					"max": 110.05,
-					"avg": 86.81166666666667,
-					"total": 1041.74,
-					"median": 78.24,
-					"stddev": 17.732237513134717
-				}
-			},
-			"structural-complexity": {
-				"files": {
-					"ChartButton": 2,
-					"IconComponent": 13,
-					"InputElement": 19,
-					"ListItem": 1,
-					"ListItemAction": 1,
-					"ModularChartComponent": 60,
-					"PopupDateRangePickerComponent": 35,
-					"PrimaryButtonComponent": 2,
-					"SecondaryButtonComponent": 2,
-					"SwitchComponent": 2,
-					"SwitchOptionComponent": 26,
-					"TertiaryButtonComponent": 2
-				},
-				"stats": {
-					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
-					"median": 2,
-					"stddev": 17.758214061855057
+					"min": 103.5998,
+					"max": 439.35699999999997,
+					"avg": 181.24319333333332,
+					"total": 10874.5916,
+					"median": 157.927,
+					"stddev": 83.09325026574234
 				}
 			}
 		},
@@ -1575,7 +1413,7 @@
 					"InputElement": 19,
 					"ListItem": 1,
 					"ListItemAction": 1,
-					"ModularChartComponent": 60,
+					"ModularChartComponent": 62,
 					"PopupDateRangePickerComponent": 35,
 					"PrimaryButtonComponent": 2,
 					"SecondaryButtonComponent": 2,
@@ -1585,31 +1423,247 @@
 				},
 				"stats": {
 					"min": 1,
-					"max": 60,
-					"avg": 13.75,
-					"total": 165,
+					"max": 62,
+					"avg": 13.916666666666666,
+					"total": 167,
 					"median": 2,
-					"stddev": 17.758214061855057
+					"stddev": 18.195504634081708
 				}
 			},
 			"load-time": {
 				"values": [
-					300.0414,
-					282.92490000000004,
-					292.1067,
-					292.2528,
-					311.2451
+					575.2097,
+					565.263,
+					598.9784000000001,
+					612.051,
+					571.151
 				],
 				"stats": {
-					"min": 282.92490000000004,
-					"max": 311.2451,
-					"avg": 295.71418000000006,
-					"total": 1478.5709000000002,
-					"median": 296.1471,
-					"stddev": 9.470956185602368
+					"min": 565.263,
+					"max": 612.051,
+					"avg": 584.53062,
+					"total": 2922.6531,
+					"median": 587.09405,
+					"stddev": 17.90667263188784
 				}
 			},
-			"size": 8113112
+			"size": 8113114,
+			"render-time": {
+				"files": {
+					"ChartButton": {
+						"times": [
+							257.3978,
+							169.6402,
+							169.707,
+							188.476,
+							229.75459999999998
+						],
+						"stats": {
+							"min": 169.6402,
+							"max": 257.3978,
+							"avg": 202.99512,
+							"total": 1014.9756,
+							"median": 209.1153,
+							"stddev": 34.9490366904955
+						}
+					},
+					"PrimaryButtonComponent": {
+						"times": [
+							169.2774,
+							137.7858,
+							115.3946,
+							147.9024,
+							187.2952
+						],
+						"stats": {
+							"min": 115.3946,
+							"max": 187.2952,
+							"avg": 151.53108000000003,
+							"total": 757.6554000000001,
+							"median": 158.5899,
+							"stddev": 24.90762686619502
+						}
+					},
+					"SecondaryButtonComponent": {
+						"times": [
+							160.7268,
+							129.4584,
+							120.27560000000001,
+							138.1148,
+							149.6426
+						],
+						"stats": {
+							"min": 120.27560000000001,
+							"max": 160.7268,
+							"avg": 139.64364,
+							"total": 698.2182,
+							"median": 143.87869999999998,
+							"stddev": 14.322543598900294
+						}
+					},
+					"TertiaryButtonComponent": {
+						"times": [
+							168.956,
+							130.9548,
+							133.43720000000002,
+							139.75619999999998,
+							201.60039999999998
+						],
+						"stats": {
+							"min": 130.9548,
+							"max": 201.60039999999998,
+							"avg": 154.94092,
+							"total": 774.7046,
+							"median": 154.35609999999997,
+							"stddev": 26.988327807583772
+						}
+					},
+					"InputElement": {
+						"times": [
+							150.1394,
+							122.1674,
+							121.09580000000001,
+							119.44120000000001,
+							152.4986
+						],
+						"stats": {
+							"min": 119.44120000000001,
+							"max": 152.4986,
+							"avg": 133.06848,
+							"total": 665.3424,
+							"median": 136.1534,
+							"stddev": 14.945415649007556
+						}
+					},
+					"SwitchOptionComponent": {
+						"times": [
+							184.261,
+							154.70340000000002,
+							161.4728,
+							155.7174,
+							219.8352
+						],
+						"stats": {
+							"min": 154.70340000000002,
+							"max": 219.8352,
+							"avg": 175.19796000000002,
+							"total": 875.9898000000001,
+							"median": 172.8669,
+							"stddev": 24.74882265236873
+						}
+					},
+					"ListItem": {
+						"times": [
+							100.7384,
+							109.2048,
+							139.5298,
+							110.09939999999999,
+							145.8404
+						],
+						"stats": {
+							"min": 100.7384,
+							"max": 145.8404,
+							"avg": 121.08255999999999,
+							"total": 605.4128,
+							"median": 124.81459999999998,
+							"stddev": 18.049083840416937
+						}
+					},
+					"ListItemAction": {
+						"times": [
+							145.7166,
+							115.57660000000001,
+							128.8906,
+							124.5622,
+							183.81
+						],
+						"stats": {
+							"min": 115.57660000000001,
+							"max": 183.81,
+							"avg": 139.71120000000002,
+							"total": 698.556,
+							"median": 137.30360000000002,
+							"stddev": 24.123952798494688
+						}
+					},
+					"SwitchComponent": {
+						"times": [
+							466.5368,
+							108.19300000000001,
+							121.2808,
+							161.27439999999999,
+							164.8148
+						],
+						"stats": {
+							"min": 108.19300000000001,
+							"max": 466.5368,
+							"avg": 204.41996,
+							"total": 1022.0998000000001,
+							"median": 163.0446,
+							"stddev": 132.8962705377935
+						}
+					},
+					"PopupDateRangePickerComponent": {
+						"times": [
+							274.0548,
+							262.7246,
+							289.348,
+							349.9874,
+							321.1338
+						],
+						"stats": {
+							"min": 262.7246,
+							"max": 349.9874,
+							"avg": 299.44972,
+							"total": 1497.2486000000001,
+							"median": 305.2409,
+							"stddev": 31.999804915055336
+						}
+					},
+					"IconComponent": {
+						"times": [
+							128.7006,
+							129.1002,
+							144.24380000000002,
+							195.7246,
+							161.2824
+						],
+						"stats": {
+							"min": 128.7006,
+							"max": 195.7246,
+							"avg": 151.81032,
+							"total": 759.0516,
+							"median": 152.7631,
+							"stddev": 25.000980865750048
+						}
+					},
+					"ModularChartComponent": {
+						"times": [
+							450.1226,
+							392.3508,
+							427.65420000000006,
+							420.3768,
+							419.25919999999996
+						],
+						"stats": {
+							"min": 392.3508,
+							"max": 450.1226,
+							"avg": 421.95272000000006,
+							"total": 2109.7636,
+							"median": 424.01550000000003,
+							"stddev": 18.504384642176028
+						}
+					}
+				},
+				"stats": {
+					"min": 100.7384,
+					"max": 466.5368,
+					"avg": 191.31697333333338,
+					"total": 11479.018400000003,
+					"median": 155.7174,
+					"stddev": 94.75898796432604
+				}
+			}
 		}
 	}
 }
