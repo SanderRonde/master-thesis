@@ -4,6 +4,7 @@ import * as fs from 'fs-extra';
 
 import { DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
 import { rimrafAsync, TS_NODE_COMMAND } from './helpers';
+import { writeFile } from '../../collectors/shared/files';
 
 /**
  * Metrics that are the same between cow components
@@ -46,13 +47,11 @@ export async function createEmptyBundle(
 	await exec(`yarn --cwd ${DEMO_DIR}`);
 
 	await rimrafAsync(DEMO_METRICS_DIR);
-	await fs.mkdirp(DEMO_METRICS_DIR);
 	await exec('? Generating "empty" bundle');
 
 	const indexJsFile = `import '../../packages/${frameworkName}'`;
-	await fs.mkdirp(DEMO_METRICS_EMPTY_DIR);
 	const emptyJsFilePath = path.join(DEMO_METRICS_EMPTY_DIR, 'index.js');
-	await fs.writeFile(emptyJsFilePath, indexJsFile, 'utf8');
+	await writeFile(emptyJsFilePath, indexJsFile);
 	await exec(
 		`esbuild ${emptyJsFilePath} --bundle --minify --outfile=${path.join(
 			DEMO_METRICS_EMPTY_DIR,
@@ -62,7 +61,7 @@ export async function createEmptyBundle(
 
 	const indexHTMLFile = `<html><head></head><body><script src="index.bundle.js"></script></body></html>`;
 	const emptyHTMLFilePath = path.join(DEMO_METRICS_EMPTY_DIR, 'index.html');
-	await fs.writeFile(emptyHTMLFilePath, indexHTMLFile, 'utf8');
+	await writeFile(emptyHTMLFilePath, indexHTMLFile);
 }
 
 export async function collectEmptyBundleMetrics(

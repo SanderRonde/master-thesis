@@ -12,6 +12,7 @@ import { cpxAsync, rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
 import { getRenderTimeJsTemplate } from '../../../collectors/cow-components-angular/templates/render-time-js-template';
 import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components-angular/templates/render-time-html-template';
 import { concatIntoBundle } from './dashboard';
+import { readFile, writeFile } from '../../../collectors/shared/files';
 
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-angular`);
 
@@ -56,17 +57,15 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 
 	if (!(await fs.pathExists(ANGULAR_DEMO_DIST)) || args['no-cache']) {
 		await rimrafAsync(DEMO_METRICS_DIR);
-		await fs.mkdirp(DEMO_METRICS_DIR);
 		await exec('? Generating toggleable bundle');
 
 		await exec('? Generating JS');
-		await fs.mkdirp(METRICS_COMPONENT_DIR);
 		const jsFilePath = path.join(
 			METRICS_COMPONENT_DIR,
 			'metrics.component.ts'
 		);
 		const jsContent = await getRenderTimeJsTemplate();
-		await fs.writeFile(jsFilePath, jsContent, 'utf8');
+		await writeFile(jsFilePath, jsContent);
 
 		await exec('? Generating HTML');
 		const htmlFilePath = path.join(
@@ -74,7 +73,7 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 			'metrics.component.html'
 		);
 		const htmlContent = await getRenderTimeHTMLTemplate();
-		await fs.writeFile(htmlFilePath, htmlContent, 'utf8');
+		await writeFile(htmlFilePath, htmlContent);
 
 		await exec('? Copying CSS');
 		await fs.copy(
@@ -87,18 +86,16 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 
 		await exec('? Changing demo-project to use new component');
 		const appModulePath = path.join(METRICS_COMPONENT_DIR, 'app.module.ts');
-		const appModuleContent = await fs.readFile(appModulePath, 'utf8');
-		await fs.writeFile(
+		const appModuleContent = await readFile(appModulePath);
+		await writeFile(
 			appModulePath,
-			appModuleContent.replace('./app.component', './metrics.component'),
-			'utf8'
+			appModuleContent.replace('./app.component', './metrics.component')
 		);
 		const mainFilePath = path.join(ANGULAR_DEMO_DIR, 'src/main.ts');
-		const mainFileContent = await fs.readFile(mainFilePath, 'utf8');
-		await fs.writeFile(
+		const mainFileContent = await readFile(mainFilePath);
+		await writeFile(
 			mainFilePath,
-			mainFileContent.replace('/app.component', '/metrics.component'),
-			'utf8'
+			mainFileContent.replace('/app.component', '/metrics.component')
 		);
 
 		await exec('? Bundling');
@@ -106,8 +103,8 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 		await demoCtx.keepContext('ng build angular-demo');
 
 		await exec('? Changing back used component for demo-project');
-		await fs.writeFile(appModulePath, appModuleContent, 'utf8');
-		await fs.writeFile(mainFilePath, mainFileContent, 'utf8');
+		await writeFile(appModulePath, appModuleContent);
+		await writeFile(mainFilePath, mainFileContent);
 	}
 
 	await exec('? Collecting render time metrics');

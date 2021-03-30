@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import { DASHBOARD_DIR } from './constants';
+import { readFile } from './files';
 
 function moduleResolutionToEnum(
 	moduleResolution: string
@@ -24,17 +25,10 @@ export async function createTSProgram(
 	sourceFiles: string[]
 ): Promise<ts.Program> {
 	const rootTSConfig = JSON.parse(
-		await fs.readFile(path.join(DASHBOARD_DIR, 'tsconfig.json'), {
-			encoding: 'utf8',
-		})
+		await readFile(path.join(DASHBOARD_DIR, 'tsconfig.json'))
 	);
 	const appTSConfig = JSON.parse(
-		await fs.readFile(
-			path.join(DASHBOARD_DIR, 'src', 'tsconfig.app.json'),
-			{
-				encoding: 'utf8',
-			}
-		)
+		await readFile(path.join(DASHBOARD_DIR, 'src', 'tsconfig.app.json'))
 	);
 	return ts.createProgram({
 		rootNames: sourceFiles,

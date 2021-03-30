@@ -11,6 +11,7 @@ import {
 } from './settings';
 import { LoadTime } from './types';
 import { getDatasetStats } from './stats';
+import { readFile } from './files';
 
 interface EvaluateScriptArgs {
 	data: {
@@ -59,9 +60,7 @@ async function createPerformanceProfile(
 	await page.tracing.stop();
 	await browser.close();
 
-	const profileContents = await fs.readFile(profilePath, {
-		encoding: 'utf8',
-	});
+	const profileContents = await readFile(profilePath);
 	if (!KEEP_PROFILES) {
 		await fs.unlink(profilePath);
 	}

@@ -3,6 +3,7 @@ import * as fs from 'fs-extra';
 
 import { CACHE_DIR } from './constants';
 import { specialJSONParse, specialJSONStringify } from './special-json';
+import { readFile, writeFile } from './files';
 
 export async function useCache<R>(
 	name: string,
@@ -11,11 +12,10 @@ export async function useCache<R>(
 ): Promise<R> {
 	const cacheFile = path.join(CACHE_DIR, `${name}.json`);
 	if ((await fs.pathExists(cacheFile)) && !disableCache) {
-		return specialJSONParse(await fs.readFile(cacheFile, 'utf8'));
+		return specialJSONParse(await readFile(cacheFile));
 	}
 
 	const result = await fn();
-	await fs.mkdirp(path.dirname(cacheFile));
-	await fs.writeFile(cacheFile, specialJSONStringify(result), 'utf8');
+	await writeFile(cacheFile, specialJSONStringify(result));
 	return result;
 }

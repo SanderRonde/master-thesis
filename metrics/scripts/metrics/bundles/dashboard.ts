@@ -21,6 +21,7 @@ import {
 	TS_NODE_COMMAND,
 } from '../../lib/helpers';
 import { METRICS } from '../../lib/constants';
+import { readFile, writeFile } from '../../../collectors/shared/files';
 
 const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
@@ -38,21 +39,13 @@ async function getAngularJsFilesInDir(dir: string): Promise<string[]> {
 
 async function preDashboardBuild(exec: ExecFunction) {
 	await exec('? Changing browser target to speed things up');
-	await fs.writeFile(BROWSERS_LIST_FILE, 'last 2 Chrome versions\n', {
-		encoding: 'utf8',
-	});
+	await writeFile(BROWSERS_LIST_FILE, 'last 2 Chrome versions\n');
 
 	await exec('? Changing output dir');
-	const projectFile = JSON.parse(
-		await fs.readFile(ANGULAR_PROJECT_FILE, {
-			encoding: 'utf8',
-		})
-	);
+	const projectFile = JSON.parse(await readFile(ANGULAR_PROJECT_FILE));
 	projectFile.projects.zensie.architect.build.options.outputPath =
 		'dist/dashboard';
-	await fs.writeFile(ANGULAR_PROJECT_FILE, JSON.stringify(projectFile), {
-		encoding: 'utf8',
-	});
+	await writeFile(ANGULAR_PROJECT_FILE, JSON.stringify(projectFile));
 }
 
 async function postDashboardBuild(exec: ExecFunction) {
@@ -97,26 +90,19 @@ export async function concatIntoBundle(exec: ExecFunction, dir: string) {
 	await exec('? Concatenating into bundle');
 	const files = await Promise.all(
 		(await getAngularJsFilesInDir(dir)).map((file) => {
-			return fs.readFile(file, {
-				encoding: 'utf8',
-			});
+			return readFile(file);
 		})
 	);
 	const bundle = files.reduce((prev, current) => {
 		return `${prev}\n\n${current}`;
 	});
 	const concatenatedFilePath = path.join(dir, 'concatenated.js');
-	await fs.writeFile(concatenatedFilePath, bundle, {
-		encoding: 'utf8',
-	});
+	await writeFile(concatenatedFilePath, bundle);
 
 	await exec('? Creating index.html file');
-	await fs.writeFile(
+	await writeFile(
 		path.join(dir, 'index.html'),
-		'<html><body><script src="bundle.js"></script></body>',
-		{
-			encoding: 'utf8',
-		}
+		'<html><body><script src="bundle.js"></script></body>'
 	);
 
 	await exec('? Bundling');

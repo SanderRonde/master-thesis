@@ -5,6 +5,7 @@ import * as path from 'path';
 import { METRICS_DIR } from './constants';
 import { debug } from './log';
 import { DEVELOPMENT } from './settings';
+import { readFile, writeFile } from './files';
 
 const DEFAULT_STORE_NAME = 'database';
 const STORAGE_DIR = path.join(METRICS_DIR, 'data');
@@ -14,18 +15,13 @@ async function readStore(storeName: string): Promise<any | null> {
 	if (!(await fs.pathExists(storeFileName))) {
 		return null;
 	}
-	const data = await fs.readFile(storeFileName, {
-		encoding: 'utf8',
-	});
+	const data = await readFile(storeFileName);
 	return JSON.parse(data);
 }
 
 async function writeStore(storeName: string, data: any) {
 	const storeFileName = path.join(STORAGE_DIR, `${storeName}.json`);
-	await fs.mkdirp(path.dirname(storeFileName));
-	await fs.writeFile(storeFileName, JSON.stringify(data, null, '\t'), {
-		encoding: 'utf8',
-	});
+	await writeFile(storeFileName, JSON.stringify(data, null, '\t'));
 }
 
 export async function getData<T>(

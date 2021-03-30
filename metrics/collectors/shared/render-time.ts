@@ -23,6 +23,7 @@ import { RenderTime } from './types';
 import { getDatasetStats } from './stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from './testing';
+import { readFile } from './files';
 
 export async function openPage(
 	port: number,
@@ -89,9 +90,7 @@ async function collectComponentProfile(
 	// Hide component
 	await hideComponent(component, page);
 
-	const profileContents = await fs.readFile(profilePath, {
-		encoding: 'utf8',
-	});
+	const profileContents = await readFile(profilePath);
 	if (!KEEP_PROFILES) {
 		await fs.unlink(profilePath);
 	}

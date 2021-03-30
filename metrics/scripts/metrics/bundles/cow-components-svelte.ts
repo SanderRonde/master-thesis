@@ -14,6 +14,7 @@ import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
 import { getRenderTimeIndexJsTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-index-js-template';
 import { getRenderTimeIndexHTMLTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-index-html-template';
 import { getRenderTimeSvelteTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-svelte-template';
+import { writeFile } from '../../../collectors/shared/files';
 
 export const SVELTE_DEMO_DIR = path.join(DEMO_REPO_DIR, 'svelte');
 const DEMO_METRICS_DIR = path.join(SVELTE_DEMO_DIR, 'metrics');
@@ -49,17 +50,15 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
 
 	await rimrafAsync(DEMO_METRICS_DIR);
-	await fs.mkdirp(DEMO_METRICS_DIR);
 	await exec('? Generating toggleable bundle');
 
 	await exec('? Generating index JS');
-	await fs.mkdirp(SVELTE_DEMO_METRICS_TOGGLEABLE_DIR);
 	const indexJsFilePath = path.join(
 		SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
 		'index.ts'
 	);
 	const indexJsContent = await getRenderTimeIndexJsTemplate();
-	await fs.writeFile(indexJsFilePath, indexJsContent, 'utf8');
+	await writeFile(indexJsFilePath, indexJsContent);
 
 	await exec('? Generating index HTML');
 	const indexHtmlFilePath = path.join(
@@ -67,7 +66,7 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 		'index.html'
 	);
 	const indexHtmlContent = await getRenderTimeIndexHTMLTemplate();
-	await fs.writeFile(indexHtmlFilePath, indexHtmlContent, 'utf8');
+	await writeFile(indexHtmlFilePath, indexHtmlContent);
 
 	await exec('? Generating Svelte');
 	const sveltePath = path.join(
@@ -75,7 +74,7 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 		'App.svelte'
 	);
 	const svelteContent = await getRenderTimeSvelteTemplate();
-	await fs.writeFile(sveltePath, svelteContent, 'utf8');
+	await writeFile(sveltePath, svelteContent);
 
 	await exec('? Copying CSS');
 	await fs.copy(

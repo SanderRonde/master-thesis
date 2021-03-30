@@ -8,6 +8,7 @@ import {
 	getNamespacedPropDemoDefaultValueName,
 } from '../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
 import { DASHBOARD_DIR } from '../../../shared/constants';
+import { transformFile, writeFile } from '../../../shared/files';
 
 import { runFunctionIfCalledFromScript } from '../../../shared/helpers';
 import { info, success } from '../../../shared/log';
@@ -47,32 +48,20 @@ const WEBCOMPONENTS_ENV_FILE = path.join(
 );
 
 async function addBrowserModule() {
-	const file = await fs.readFile(SHARED_MODULE_FILE_PATH, {
-		encoding: 'utf8',
-	});
-
-	const importAdded = `import { BrowserModule } from '@angular/platform-browser';\n${file}`;
-	const importUsed = importAdded.replace(
-		/NgSelectModule,/,
-		'NgSelectModule, BrowserModule,'
-	);
-	await fs.writeFile(SHARED_MODULE_FILE_PATH, importUsed, {
-		encoding: 'utf8',
+	await transformFile(SHARED_MODULE_FILE_PATH, (content) => {
+		const importAdded = `import { BrowserModule } from '@angular/platform-browser';\n${content}`;
+		const importUsed = importAdded.replace(
+			/NgSelectModule,/,
+			'NgSelectModule, BrowserModule,'
+		);
+		return importUsed;
 	});
 }
 
 async function disableSupportButton() {
-	const file = await fs.readFile(HACK_CSS_FILE_PATH, {
-		encoding: 'utf8',
+	await transformFile(HACK_CSS_FILE_PATH, (content) => {
+		return `${content}\niframe { display: none; } page-not-found { margin-top: 0!important; }`;
 	});
-
-	await fs.writeFile(
-		HACK_CSS_FILE_PATH,
-		`${file}\niframe { display: none; } page-not-found { margin-top: 0!important; }`,
-		{
-			encoding: 'utf8',
-		}
-	);
 }
 
 /**
@@ -81,20 +70,17 @@ async function disableSupportButton() {
  * so we can actually test when it's rendered
  */
 export async function makeChartDeterministic() {
-	const file = await fs.readFile(CHART_COMPONENT, {
-		encoding: 'utf8',
-	});
+	await transformFile(CHART_COMPONENT, (content) => {
+		const randomFunctionStart = content.indexOf('private _randomBetween');
+		const randomFunctionEnd =
+			content.slice(randomFunctionStart).indexOf('}') +
+			randomFunctionStart;
 
-	const randomFunctionStart = file.indexOf('private _randomBetween');
-	const randomFunctionEnd =
-		file.slice(randomFunctionStart).indexOf('}') + randomFunctionStart;
-
-	const replacedFunction =
-		file.slice(0, randomFunctionStart) +
-		chartRandomTemplate +
-		file.slice(randomFunctionEnd + 1);
-	await fs.writeFile(CHART_COMPONENT, replacedFunction, {
-		encoding: 'utf8',
+		const replacedFunction =
+			content.slice(0, randomFunctionStart) +
+			chartRandomTemplate +
+			content.slice(randomFunctionEnd + 1);
+		return replacedFunction;
 	});
 }
 
@@ -102,34 +88,27 @@ async function writeRenderTimeHTML(html: string) {
 	const replacedFile = `
 	<div class="vertical-align">
 		<div class="vertical">${html}</div></div>`;
-	await fs.writeFile(NOT_FOUND_COMPONENT_HTML, replacedFile, {
-		encoding: 'utf8',
-	});
+	await writeFile(NOT_FOUND_COMPONENT_HTML, replacedFile);
 }
 
 async function addChangeDetectorFunction() {
-	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
-		encoding: 'utf8',
-	});
+	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+		// Add import
+		content = `import { ChangeDetectorRef } from '@angular/core';\n${content}`;
 
-	// Add import
-	file = `import { ChangeDetectorRef } from '@angular/core';\n${file}`;
+		// Add to constructor
+		content = content.replace(
+			'private _elementRef: ElementRef',
+			'private _elementRef: ElementRef, private _cd: ChangeDetectorRef'
+		);
 
-	// Add to constructor
-	file = file.replace(
-		'private _elementRef: ElementRef',
-		'private _elementRef: ElementRef, private _cd: ChangeDetectorRef'
-	);
-
-	// Add function for setting
-	const classEndIndex = file.lastIndexOf('}');
-	file =
-		file.slice(0, classEndIndex) +
-		SET_RENDER_OPTION_TEMPLATE +
-		file.slice(classEndIndex);
-
-	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
-		encoding: 'utf8',
+		// Add function for setting
+		const classEndIndex = content.lastIndexOf('}');
+		content =
+			content.slice(0, classEndIndex) +
+			SET_RENDER_OPTION_TEMPLATE +
+			content.slice(classEndIndex);
+		return content;
 	});
 }
 
@@ -144,14 +123,8 @@ export function getDefaultValuesString(components: JoinedDefinition[]) {
 }
 
 async function addDefaultValuesToFile(components: JoinedDefinition[]) {
-	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
-		encoding: 'utf8',
-	});
-
-	file = getDefaultValuesString(components) + file;
-
-	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
-		encoding: 'utf8',
+	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+		return getDefaultValuesString(components) + content;
 	});
 }
 
@@ -180,18 +153,12 @@ export function getDefaultValuesClassString(components: JoinedDefinition[]) {
 }
 
 async function addDefaultValuesToClass(components: JoinedDefinition[]) {
-	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
-		encoding: 'utf8',
-	});
-
-	file = file.replace(
-		'satDiv: any;',
-		`satDiv: any;\n
-	${getDefaultValuesClassString(components)}`
-	);
-
-	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
-		encoding: 'utf8',
+	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+		return content.replace(
+			'satDiv: any;',
+			`satDiv: any;\n
+		${getDefaultValuesClassString(components)}`
+		);
 	});
 }
 
@@ -204,71 +171,55 @@ export function getTogglesString(components: JoinedDefinition[]) {
 }
 
 async function addTogglesToClass(components: JoinedDefinition[]) {
-	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
-		encoding: 'utf8',
-	});
-
-	file = file.replace(
-		'satDiv: any;',
-		`satDiv: any;\n
-	${getTogglesString(components)}`
-	);
-
-	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
-		encoding: 'utf8',
+	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+		return content.replace(
+			'satDiv: any;',
+			`satDiv: any;\n
+			${getTogglesString(components)}`
+		);
 	});
 }
 
 async function disableAuthentication() {
-	let file = await fs.readFile(WEBCOMPONENTS_ENV_FILE, {
-		encoding: 'utf8',
-	});
-
-	file = file.replace(
-		'USE_AUTHENTICATION = true;',
-		'USE_AUTHENTICATION = false;'
-	);
-
-	await fs.writeFile(WEBCOMPONENTS_ENV_FILE, file, {
-		encoding: 'utf8',
+	await transformFile(WEBCOMPONENTS_ENV_FILE, (content) => {
+		return content.replace(
+			'USE_AUTHENTICATION = true;',
+			'USE_AUTHENTICATION = false;'
+		);
 	});
 }
 
 async function remove404PageFromModule() {
-	let file = await fs.readFile(SHARED_MODULE_FILE_PATH, {
-		encoding: 'utf8',
-	});
-
-	file = file.replace(/PageNotFoundComponent,/g, '');
-
-	await fs.writeFile(SHARED_MODULE_FILE_PATH, file, {
-		encoding: 'utf8',
+	await transformFile(SHARED_MODULE_FILE_PATH, (content) => {
+		return content.replace(/PageNotFoundComponent,/g, '');
 	});
 }
 
 async function addToAppModule() {
-	let file = await fs.readFile(APP_MODULE_FILE_PATH, {
-		encoding: 'utf8',
-	});
+	await transformFile(APP_MODULE_FILE_PATH, (content) => {
+		// Add imports
+		content = `import { PageNotFoundComponent } from './shared/404/404.component';\n${content}`;
+		content = `import { AppsDataService } from './apps/apps-data.service';\n${content}`;
 
-	// Add imports
-	file = `import { PageNotFoundComponent } from './shared/404/404.component';\n${file}`;
-	file = `import { AppsDataService } from './apps/apps-data.service';\n${file}`;
+		// Add to declarations
+		content = content.replace(
+			'[AppComponent]',
+			'[AppComponent, PageNotFoundComponent]'
+		);
 
-	// Add to declarations
-	file = file.replace(
-		'[AppComponent]',
-		'[AppComponent, PageNotFoundComponent]'
-	);
+		// Add to exports
+		content = content.replace(
+			'exports: [],',
+			'exports: [PageNotFoundComponent],'
+		);
 
-	// Add to exports
-	file = file.replace('exports: [],', 'exports: [PageNotFoundComponent],');
+		// Add to providers
+		content = content.replace(
+			'AppReadyGuard,',
+			'AppReadyGuard, AppsDataService,'
+		);
 
-	// Add to providers
-	file = file.replace('AppReadyGuard,', 'AppReadyGuard, AppsDataService,');
-
-	await fs.writeFile(APP_MODULE_FILE_PATH, file, {
-		encoding: 'utf8',
+		return content;
 	});
 }
 

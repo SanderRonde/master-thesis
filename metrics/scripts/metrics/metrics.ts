@@ -17,6 +17,7 @@ import { cowComponentsReactMetrics } from './bundles/cow-components-react';
 import { cowComponentsSvelteMetrics } from './bundles/cow-components-svelte';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
 import { makeChartDeterministic } from '../../collectors/dashboard/lib/render-time/generate-render-time-page';
+import { writeFile } from '../../collectors/shared/files';
 
 const bundleMap: {
 	[K in Bundle]: CommandBuilder<{}>;
@@ -65,8 +66,7 @@ export const metris = preserveCommandBuilder(
 		await exec(`npm install -C ${DASHBOARD_DIR} --no-save`);
 
 		await exec('? Marking as installed');
-		await fs.mkdirp(path.dirname(packagesInstalledFile));
-		await fs.writeFile(packagesInstalledFile, '');
+		await writeFile(packagesInstalledFile, '');
 	}
 
 	if (
