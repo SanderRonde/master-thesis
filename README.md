@@ -43,7 +43,7 @@ type Data = {
 				'stats': DatasetStats;
 			};
 			'number-of-components': number;
-			'RenderTime': {
+			'render-time': {
 				files: {
 					[fileName: string]: {
 						times: number[];
