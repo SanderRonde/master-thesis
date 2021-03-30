@@ -25,30 +25,6 @@ export function getSanitizedComponentName(component: JoinedDefinition) {
 	return component.tagName.replace(/[^a-zA-Z]/g, '');
 }
 
-async function generateComponentHTML(
-	component: JoinedDefinition,
-	cowComponents: ComponentFiles[]
-) {
-	const tagData = await getComponentTag(component, cowComponents);
-	const isSelfClosing = SELF_CLOSING_TAGS.includes(tagData.tagName);
-	return `<${tagData.tagName} ${tagData.attributes.join(
-		' '
-	)} ${component.props
-		.filter((property) => {
-			return !property.isEventListener && property.demoDefaultValue;
-		})
-		.map((property) => {
-			return `[${
-				property.name
-			}]="${DEFAULT_VALUE_PREFIX}.${getSanitizedComponentName(
-				component
-			)}['${property.name}']"`;
-		})
-		.join(' ')} ${isSelfClosing ? '/' : ''}>${
-		component.hasChildren ? 'content' : ''
-	}${isSelfClosing ? '' : `</${tagData.tagName}>`}`;
-}
-
 export async function generateRenderTimeHTML(components: JoinedDefinition[]) {
 	const cowComponents = await getComponents();
 	const componentsHTML = await Promise.all(
@@ -56,7 +32,34 @@ export async function generateRenderTimeHTML(components: JoinedDefinition[]) {
 			async (component) =>
 				[
 					component,
-					await generateComponentHTML(component, cowComponents),
+					await (async () => {
+						const tagData = await getComponentTag(
+							component,
+							cowComponents
+						);
+						const isSelfClosing = SELF_CLOSING_TAGS.includes(
+							tagData.tagName
+						);
+						return `<${tagData.tagName} ${tagData.attributes.join(
+							' '
+						)} ${component.props
+							.filter((property) => {
+								return (
+									!property.isEventListener &&
+									property.demoDefaultValue
+								);
+							})
+							.map((property) => {
+								return `[${
+									property.name
+								}]="${DEFAULT_VALUE_PREFIX}.${getSanitizedComponentName(
+									component
+								)}['${property.name}']"`;
+							})
+							.join(' ')} ${isSelfClosing ? '/' : ''}>${
+							component.hasChildren ? 'content' : ''
+						}${isSelfClosing ? '' : `</${tagData.tagName}>`}`;
+					})(),
 				] as const
 		)
 	);

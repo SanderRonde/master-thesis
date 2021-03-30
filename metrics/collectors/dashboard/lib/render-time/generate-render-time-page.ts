@@ -20,7 +20,7 @@ import {
 } from './lib/generate-render-time-html';
 import { JoinedDefinition } from './lib/get-component-tag';
 import { chartRandomTemplate } from './templates/chart-random';
-import { setRenderOptionTemplate } from './templates/set-render-option';
+import { SET_RENDER_OPTION_TEMPLATE } from './templates/set-render-option';
 
 const SHARED_MODULE_FILE_PATH = path.join(
 	DASHBOARD_DIR,
@@ -125,7 +125,7 @@ async function addChangeDetectorFunction() {
 	const classEndIndex = file.lastIndexOf('}');
 	file =
 		file.slice(0, classEndIndex) +
-		setRenderOptionTemplate +
+		SET_RENDER_OPTION_TEMPLATE +
 		file.slice(classEndIndex);
 
 	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
@@ -133,31 +133,30 @@ async function addChangeDetectorFunction() {
 	});
 }
 
+export function getDefaultValuesString(components: JoinedDefinition[]) {
+	let str: string = '';
+	for (const component of components) {
+		str = `namespace ${getSanitizedComponentName(
+			component
+		)}Default { export ${defaultValuesTemplate(component)} }\n${str}`;
+	}
+	return str;
+}
+
 async function addDefaultValuesToFile(components: JoinedDefinition[]) {
 	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
 		encoding: 'utf8',
 	});
 
-	for (const component of components) {
-		file = `namespace ${getSanitizedComponentName(
-			component
-		)}Default { export ${defaultValuesTemplate(component)} }\n${file}`;
-	}
+	file = getDefaultValuesString(components) + file;
 
 	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
 		encoding: 'utf8',
 	});
 }
 
-async function addDefaultValuesToClass(components: JoinedDefinition[]) {
-	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
-		encoding: 'utf8',
-	});
-
-	file = file.replace(
-		'satDiv: any;',
-		`satDiv: any;\n
-	public ${DEFAULT_VALUE_PREFIX} = {
+export function getDefaultValuesClassString(components: JoinedDefinition[]) {
+	return `public ${DEFAULT_VALUE_PREFIX} = {
 		${components
 			.map((component) => {
 				const sanitizedName = getSanitizedComponentName(component);
@@ -177,12 +176,31 @@ async function addDefaultValuesToClass(components: JoinedDefinition[]) {
 			}`;
 			})
 			.join(',')}
-	}`
+	}`;
+}
+
+async function addDefaultValuesToClass(components: JoinedDefinition[]) {
+	let file = await fs.readFile(NOT_FOUND_COMPONENT_TS, {
+		encoding: 'utf8',
+	});
+
+	file = file.replace(
+		'satDiv: any;',
+		`satDiv: any;\n
+	${getDefaultValuesClassString(components)}`
 	);
 
 	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
 		encoding: 'utf8',
 	});
+}
+
+export function getTogglesString(components: JoinedDefinition[]) {
+	return `public ${VISIBLE_VALUES_PREFIX} = {
+		${components.map((component) => {
+			return `${component.component.name}: false`;
+		})}
+	}`;
 }
 
 async function addTogglesToClass(components: JoinedDefinition[]) {
@@ -193,11 +211,7 @@ async function addTogglesToClass(components: JoinedDefinition[]) {
 	file = file.replace(
 		'satDiv: any;',
 		`satDiv: any;\n
-	public ${VISIBLE_VALUES_PREFIX} = {
-		${components.map((component) => {
-			return `${component.component.name}: false`;
-		})}
-	}`
+	${getTogglesString(components)}`
 	);
 
 	await fs.writeFile(NOT_FOUND_COMPONENT_TS, file, {
