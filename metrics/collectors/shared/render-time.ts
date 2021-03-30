@@ -13,6 +13,7 @@ import { debug, info } from './log';
 import {
 	KEEP_PROFILES,
 	MAX_MEASURED_RENDER_WAIT_TIME,
+	NAVIGATION_TIMEOUT,
 	RENDER_TIME_HEIGHT,
 	RENDER_TIME_MEASURES,
 	RENDER_TIME_WIDTH,
@@ -32,7 +33,7 @@ export async function openPage(
 ) {
 	const browser = await puppeteer.launch({
 		headless: process.argv.includes('--headful') ? false : true,
-		timeout: 0,
+		timeout: NAVIGATION_TIMEOUT,
 	});
 	const page = await browser.newPage();
 	await page.setViewport({

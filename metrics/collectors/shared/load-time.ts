@@ -7,6 +7,7 @@ import { info } from './log';
 import {
 	KEEP_PROFILES,
 	LOAD_TIME_PERFORMANCE_MEASURES,
+	NAVIGATION_TIMEOUT,
 	SLOWDOWN_FACTOR_LOAD_TIME,
 } from './settings';
 import { LoadTime } from './types';
@@ -45,7 +46,9 @@ export interface PerformanceProfile {
 async function createPerformanceProfile(
 	port: number
 ): Promise<PerformanceProfile> {
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({
+		timeout: NAVIGATION_TIMEOUT,
+	});
 	const page = await browser.newPage();
 	const client = await page.target().createCDPSession();
 	await client.send('Emulation.setCPUThrottlingRate', {

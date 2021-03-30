@@ -71,3 +71,12 @@ export const RENDER_TIME_CROP = 200;
  * How many workers to use for image parsing
  */
 export const NUM_WORKERS = 4;
+const PUPPETEER_DEFAULT_NAVIGATION_TIMEOUT = 30000;
+/**
+ * How long puppeteer should wait before a navigation
+ * times out
+ */
+export const NAVIGATION_TIMEOUT = Math.max(
+	PUPPETEER_DEFAULT_NAVIGATION_TIMEOUT,
+	Math.max(SLOWDOWN_FACTOR_LOAD_TIME, SLOWDOWN_FACTOR_RENDER_TIME) * 12000
+);
