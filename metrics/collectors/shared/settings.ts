@@ -30,9 +30,9 @@ export const STRUCTURAL_COMPLEXITY_DEPTH = 2;
  */
 export const SLOWDOWN_FACTOR_LOAD_TIME = DEVELOPMENT ? 1 : 10;
 /**
- * Slowdown factor used for the load time of bundles
+ * Slowdown factor used for the render time of bundles
  */
-export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 10;
+export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 5;
 /**
  * Number of times to measure load time performance
  * before generating a report off of the avg
@@ -42,7 +42,7 @@ export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 5;
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
  */
-export const MAX_MEASURED_RENDER_WAIT_TIME = 2000 * SLOWDOWN_FACTOR_RENDER_TIME;
+export const MAX_MEASURED_RENDER_WAIT_TIME = 800 * SLOWDOWN_FACTOR_RENDER_TIME;
 /**
  * The maximum number of pixels a frame is allowed to
  * differ from the target frame before being marked as
