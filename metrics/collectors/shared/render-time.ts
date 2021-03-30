@@ -161,9 +161,6 @@ async function getProfileRenderTime(
 			return false;
 		}
 
-		if (!(event as ProfileChunkEvent)?.args?.data?.cpuProfile?.nodes) {
-			debugger;
-		}
 		for (const cpuProfileNode of (event as ProfileChunkEvent)?.args?.data
 			?.cpuProfile?.nodes || []) {
 			if (
