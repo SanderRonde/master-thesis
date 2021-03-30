@@ -13,6 +13,7 @@ import {
 import { LoadTime } from './types';
 import { getDatasetStats } from './stats';
 import { readFile } from './files';
+import { createPage } from './render-time';
 
 interface EvaluateScriptArgs {
 	data: {
@@ -46,10 +47,8 @@ export interface PerformanceProfile {
 async function createPerformanceProfile(
 	port: number
 ): Promise<PerformanceProfile> {
-	const browser = await puppeteer.launch({
-		timeout: NAVIGATION_TIMEOUT,
-	});
-	const page = await browser.newPage();
+	const { page, browser } = await createPage();
+
 	const client = await page.target().createCDPSession();
 	await client.send('Emulation.setCPUThrottlingRate', {
 		rate: SLOWDOWN_FACTOR_LOAD_TIME,

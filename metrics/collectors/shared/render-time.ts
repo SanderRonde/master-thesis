@@ -26,20 +26,32 @@ import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from './testing';
 import { readFile } from './files';
 
+export async function createPage() {
+	const browser = await puppeteer.launch({
+		timeout: NAVIGATION_TIMEOUT,
+	});
+	const page = await browser.newPage();
+	page.setDefaultTimeout(NAVIGATION_TIMEOUT);
+	page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT);
+
+	return {
+		browser,
+		page,
+	};
+}
+
 export async function openPage(
 	port: number,
 	slowdownFactor: number,
 	path: string = ''
 ) {
-	const browser = await puppeteer.launch({
-		headless: process.argv.includes('--headful') ? false : true,
-		timeout: NAVIGATION_TIMEOUT,
-	});
-	const page = await browser.newPage();
+	const { browser, page } = await createPage();
+
 	await page.setViewport({
 		width: RENDER_TIME_WIDTH,
 		height: RENDER_TIME_HEIGHT,
 	});
+
 	const client = await page.target().createCDPSession();
 	await client.send('Emulation.setCPUThrottlingRate', {
 		rate: slowdownFactor,
