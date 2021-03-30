@@ -51,6 +51,13 @@ export async function runFunctionIfCalledFromScript<R>(
 	}
 }
 
+if (parseInt(process.version.split('.')[0], 10) <= 12) {
+	process.on('unhandledRejection', (err) => {
+		console.error(err);
+		throw err;
+	});
+}
+
 export function sortObjectKeys<O>(obj: O): O {
 	const keys = Object.keys(obj).sort();
 	return (Object.fromEntries(
