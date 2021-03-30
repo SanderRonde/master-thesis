@@ -22,6 +22,7 @@ import { doWithServer } from '../dashboard/lib/render-time/serve-dashboard-dist'
 import { RenderTime } from './types';
 import { getDatasetStats } from './stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';
+import { assert } from './testing';
 
 export async function openPage(
 	port: number,
@@ -175,17 +176,16 @@ async function getProfileRenderTime(
 		return false;
 	});
 
-	if (!startEvent) {
-		throw new Error(`Failed to find start event for ${componentName}`);
-	}
+	assert(!!startEvent, `Failed to find start event for ${componentName}`);
 
 	const lastPaintEventIndex = findLastIndex(profile.traceEvents, (event) => {
 		return event.name === 'Paint';
 	});
 
-	if (lastPaintEventIndex === -1) {
-		throw new Error(`Failed to find last paint event for ${componentName}`);
-	}
+	assert(
+		lastPaintEventIndex !== -1,
+		`Failed to find last paint event for ${componentName}`
+	);
 
 	const stopEvent = profile.traceEvents
 		.slice(lastPaintEventIndex)
@@ -193,13 +193,16 @@ async function getProfileRenderTime(
 			return event.name === 'CompositeLayers';
 		});
 
-	if (!stopEvent) {
-		throw new Error(
-			`Failed to find last CompositeLayers event for ${componentName}`
-		);
-	}
+	assert(
+		!!stopEvent,
+		`Failed to find last CompositeLayers event for ${componentName}`
+	);
 
 	const microsendsDiff = stopEvent.ts - startEvent.ts;
+	assert(
+		microsendsDiff > 0,
+		'Stop event is before start event, are you sure your MAX_MEASURED_RENDER_WAIT_TIME is high enough?'
+	);
 	return microsendsDiff / 1000;
 }
 
