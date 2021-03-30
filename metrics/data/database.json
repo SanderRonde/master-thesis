@@ -2,7 +2,7 @@
 	"metrics": {
 		"dashboard": {
 			"lines-of-code": {
-				"files": {
+				"components": {
 					"ChartButton": 24,
 					"IconComponent": 104,
 					"InputElement": 51,
@@ -26,7 +26,7 @@
 				}
 			},
 			"cyclomatic-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 1,
 					"IconComponent": 12,
 					"InputElement": 8,
@@ -50,7 +50,7 @@
 				}
 			},
 			"maintainability": {
-				"files": {
+				"components": {
 					"ChartButton": 98.1,
 					"IconComponent": 71.27,
 					"InputElement": 81.72,
@@ -74,7 +74,7 @@
 				}
 			},
 			"structural-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 2,
 					"IconComponent": 13,
 					"InputElement": 19,
@@ -117,7 +117,7 @@
 			},
 			"number-of-components": 12,
 			"render-time": {
-				"files": {
+				"components": {
 					"ChartButton": {
 						"times": [
 							42.5344,
@@ -336,7 +336,7 @@
 		"cow-components-angular": {
 			"number-of-components": 12,
 			"lines-of-code": {
-				"files": {
+				"components": {
 					"ChartButton": 24,
 					"IconComponent": 104,
 					"InputElement": 51,
@@ -360,7 +360,7 @@
 				}
 			},
 			"cyclomatic-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 1,
 					"IconComponent": 12,
 					"InputElement": 8,
@@ -384,7 +384,7 @@
 				}
 			},
 			"maintainability": {
-				"files": {
+				"components": {
 					"ChartButton": 98.1,
 					"IconComponent": 71.27,
 					"InputElement": 81.72,
@@ -408,7 +408,7 @@
 				}
 			},
 			"structural-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 2,
 					"IconComponent": 13,
 					"InputElement": 19,
@@ -432,7 +432,7 @@
 				}
 			},
 			"render-time": {
-				"files": {
+				"components": {
 					"ChartButton": {
 						"times": [
 							130.0548,
@@ -669,7 +669,7 @@
 		"cow-components-react": {
 			"number-of-components": 12,
 			"lines-of-code": {
-				"files": {
+				"components": {
 					"ChartButton": 24,
 					"IconComponent": 104,
 					"InputElement": 51,
@@ -693,7 +693,7 @@
 				}
 			},
 			"cyclomatic-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 1,
 					"IconComponent": 12,
 					"InputElement": 8,
@@ -717,7 +717,7 @@
 				}
 			},
 			"maintainability": {
-				"files": {
+				"components": {
 					"ChartButton": 98.1,
 					"IconComponent": 71.27,
 					"InputElement": 81.72,
@@ -741,7 +741,7 @@
 				}
 			},
 			"structural-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 2,
 					"IconComponent": 13,
 					"InputElement": 19,
@@ -783,7 +783,7 @@
 				}
 			},
 			"render-time": {
-				"files": {
+				"components": {
 					"ChartButton": {
 						"times": [
 							232.6692,
@@ -1001,7 +1001,7 @@
 		},
 		"cow-components-native": {
 			"lines-of-code": {
-				"files": {
+				"components": {
 					"ChartButton": 24,
 					"IconComponent": 104,
 					"InputElement": 51,
@@ -1026,7 +1026,7 @@
 			},
 			"number-of-components": 12,
 			"cyclomatic-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 1,
 					"IconComponent": 12,
 					"InputElement": 8,
@@ -1050,7 +1050,7 @@
 				}
 			},
 			"maintainability": {
-				"files": {
+				"components": {
 					"ChartButton": 98.1,
 					"IconComponent": 71.27,
 					"InputElement": 81.72,
@@ -1074,7 +1074,7 @@
 				}
 			},
 			"structural-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 2,
 					"IconComponent": 13,
 					"InputElement": 19,
@@ -1116,7 +1116,7 @@
 				}
 			},
 			"render-time": {
-				"files": {
+				"components": {
 					"ChartButton": {
 						"times": [
 							155.204,
@@ -1334,7 +1334,7 @@
 		},
 		"cow-components-svelte": {
 			"lines-of-code": {
-				"files": {
+				"components": {
 					"ChartButton": 24,
 					"IconComponent": 104,
 					"InputElement": 51,
@@ -1359,7 +1359,7 @@
 			},
 			"number-of-components": 12,
 			"maintainability": {
-				"files": {
+				"components": {
 					"ChartButton": 98.1,
 					"IconComponent": 71.27,
 					"InputElement": 81.72,
@@ -1383,7 +1383,7 @@
 				}
 			},
 			"cyclomatic-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 1,
 					"IconComponent": 12,
 					"InputElement": 8,
@@ -1407,7 +1407,7 @@
 				}
 			},
 			"structural-complexity": {
-				"files": {
+				"components": {
 					"ChartButton": 2,
 					"IconComponent": 13,
 					"InputElement": 19,
@@ -1449,7 +1449,7 @@
 			},
 			"size": 8113114,
 			"render-time": {
-				"files": {
+				"components": {
 					"ChartButton": {
 						"times": [
 							257.3978,

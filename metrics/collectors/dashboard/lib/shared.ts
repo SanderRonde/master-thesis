@@ -6,7 +6,7 @@ export async function collectDashboardMetrics<A>(
 	getFileMetrics: (file: ReadFile, ...args: A[]) => number | Promise<number>,
 	getArgs?: (components: ComponentFiles[]) => A[] | Promise<A[]>
 ): Promise<{
-	files: Record<string, number>;
+	components: Record<string, number>;
 	stats: DatasetStats;
 }> {
 	const components = await getComponents();
@@ -24,7 +24,7 @@ export async function collectDashboardMetrics<A>(
 
 	const stats = getDatasetStats(Object.values(data));
 	return {
-		files: sortObjectKeys(data),
+		components: sortObjectKeys(data),
 		stats,
 	};
 }

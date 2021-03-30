@@ -2,18 +2,17 @@ import { Maintainability } from 'ts-complex';
 import { Bundle } from '../../scripts/lib/constants';
 import { DatasetStats } from './stats';
 
-type ByFileNumberStats = {
-	files: Record<string, number>;
+type ByComponentNumberStats = {
+	components: Record<string, number>;
 	stats: DatasetStats;
 };
-export type FileRenderTimeData = {
+export type ComponentRenderTimeData = {
 	times: number[];
 	stats: DatasetStats;
 };
-export type StructuralComplexity = ByFileNumberStats;
-export type CyclomaticComplexity = ByFileNumberStats;
-export type LinesOfCode = ByFileNumberStats;
-export type HalsteadComplexity = ByFileNumberStats;
+export type StructuralComplexity = ByComponentNumberStats;
+export type CyclomaticComplexity = ByComponentNumberStats;
+export type LinesOfCode = ByComponentNumberStats;
 export type Size = number;
 export type NumberOfComponents = number;
 export type LoadTime = {
@@ -21,7 +20,7 @@ export type LoadTime = {
 	stats: DatasetStats;
 };
 export type RenderTime = {
-	files: Record<string, FileRenderTimeData>;
+	components: Record<string, ComponentRenderTimeData>;
 	stats: DatasetStats;
 };
 

@@ -285,7 +285,7 @@ function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
 		}
 	}
 
-	const renderTimesPerFile: RenderTime['files'] = {};
+	const renderTimesPerFile: RenderTime['components'] = {};
 	for (const [componentName, measurements] of joinedComponentMap) {
 		renderTimesPerFile[componentName] = {
 			times: measurements,
@@ -294,7 +294,7 @@ function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
 	}
 
 	return {
-		files: renderTimesPerFile,
+		components: renderTimesPerFile,
 		stats: getDatasetStats(
 			Object.values(renderTimesPerFile).flatMap(
 				(renderTimes) => renderTimes.times

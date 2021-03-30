@@ -14,9 +14,9 @@ interface DatasetStats {
 	stddev: number;
 }
 
-interface ByFileNumberStats = {
-	files: {
-		[fileName: string]: number;
+interface ByComponentNumberStats = {
+	components: {
+		[componentName: string]: number;
 	};
 	stats: DatasetStats;
 };
@@ -30,13 +30,13 @@ type Bundles = 'dashboard'
 type Data = {
 	metrics: {
 		[bundleName in Bundles]: {
-			'lines-of-code': ByFileNumberStats;
-			'cyclomatic-complexity': ByFileNumberStats;
+			'lines-of-code': ByComponentNumberStats;
+			'cyclomatic-complexity': ByComponentNumberStats;
 			'maintainability': {
 				'averageMaintainability': number;
 				'minMaintainability': number;
 			};
-			'structural-complexity': ByFileNumberStats;
+			'structural-complexity': ByComponentNumberStats;
 			'size': number;
 			'load-time': {
 				'values': number[];
@@ -44,8 +44,8 @@ type Data = {
 			};
 			'number-of-components': number;
 			'render-time': {
-				files: {
-					[fileName: string]: {
+				components: {
+					[componentName: string]: {
 						times: number[];
 						stats: DatasetStats;
 					};
