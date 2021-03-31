@@ -1,3 +1,6 @@
 [submodule "metrics/submodules/30mhz-dashboard"]
 	path = metrics/submodules/30mhz-dashboard
 	url = https://github.com/30MHz/dashboard.30mhz.com
+[submodule "metrics/submodules/svelte-material-ui"]
+	path = metrics/submodules/svelte-material-ui
+	url = https://github.com/hperrin/svelte-material-ui
