@@ -17,6 +17,14 @@ export interface ComponentFiles {
 	html: CowComponentImport | null;
 }
 
+export class TextOnlyComponentFile implements CowComponentImport {
+	public get filePath(): string {
+		throw new Error('Can not get file path of text-only component file');
+	}
+
+	constructor(public componentName: string, public content: string) {}
+}
+
 export const EXCLUDED_COMPONENTS = [
 	'LineChartComponent',
 	'PopupsComponent',

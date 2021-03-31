@@ -1,0 +1,11 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@smui/button": "^2.0.0-beta.1",
+    "@smui/switch": "^2.0.0-beta.1",
+    "@smui/textfield": "^2.0.0-beta.1"
+  }
+}

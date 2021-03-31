@@ -178,3 +178,14 @@ export function findLast<I>(
 	}
 	return arr[lastIndex];
 }
+
+export function toCamelCase(str: string, capitalizeFirst: boolean = false) {
+	const arr = str.split('-');
+	const words = arr.map((item, index) =>
+		capitalizeFirst || index > 0
+			? capitalize(item.toLowerCase())
+			: item.toLowerCase()
+	);
+
+	return words.join('');
+}
