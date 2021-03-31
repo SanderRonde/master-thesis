@@ -48,7 +48,7 @@
 -   [Onsen](https://onsen.io/) (AngularJS, Angular, React, Vue)
 -   [Syncfusion](https://www.syncfusion.com/) (Angular, React, Vue)
 
-## CSS frameworks
+# CSS frameworks (pure CSS that always uses classes to apply tags)
 
 -   [Groundwork CSS](https://groundworkcss.github.io/groundwork/?url=docs/home)
 -   [Materialize CSS](https://materializecss.com/)
