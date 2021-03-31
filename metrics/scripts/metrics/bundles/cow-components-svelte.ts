@@ -5,8 +5,6 @@ import * as fs from 'fs-extra';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
-	collectEmptyBundleMetrics,
-	createEmptyBundle,
 	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
 import { METRICS_DIR } from '../../../collectors/shared/constants';
@@ -41,10 +39,6 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 		: exec;
 
 	await collectSameAsDashboardMetrics(baseCtx, 'svelte');
-
-	await createEmptyBundle(baseCtx, 'svelte');
-
-	await collectEmptyBundleMetrics(baseCtx, 'svelte');
 
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
@@ -86,6 +80,10 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	await exec(
 		`rollup -c ${path.join(BASE_DIR, 'lib/render-time/rollup.config.js')}`
 	);
+
+	await exec('? Collecting bundle metadata metrics');
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 
 	await exec('? Collecting render time metrics');
 	await baseCtx(

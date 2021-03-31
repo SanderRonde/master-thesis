@@ -5,8 +5,6 @@ import * as path from 'path';
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
-	createEmptyBundle,
-	collectEmptyBundleMetrics,
 	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
 import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
@@ -41,10 +39,6 @@ export const cowComponentsReactMetrics = preserveCommandBuilder(
 
 	await collectSameAsDashboardMetrics(baseCtx, 'react');
 
-	await createEmptyBundle(baseCtx, 'react');
-
-	await collectEmptyBundleMetrics(baseCtx, 'react');
-
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
 
@@ -52,7 +46,10 @@ export const cowComponentsReactMetrics = preserveCommandBuilder(
 	await exec('? Generating toggleable bundle');
 
 	await exec('? Generating JS');
-	const indexJsFilePath = path.join(REACT_DEMO_METRICS_TOGGLEABLE_DIR, 'index.tsx');
+	const indexJsFilePath = path.join(
+		REACT_DEMO_METRICS_TOGGLEABLE_DIR,
+		'index.tsx'
+	);
 	const indexJsContent = await getRenderTimeJsTemplate();
 	await writeFile(indexJsFilePath, indexJsContent);
 
@@ -77,6 +74,10 @@ export const cowComponentsReactMetrics = preserveCommandBuilder(
 			'index.bundle.js'
 		)} --define:process.env.NODE_ENV=\\"production\\"`
 	);
+
+	await exec('? Collecting bundle metadata metrics');
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 
 	await exec('? Collecting render time metrics');
 	await baseCtx(

@@ -3,8 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import { DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
-import { rimrafAsync, TS_NODE_COMMAND } from './helpers';
-import { writeFile } from '../../collectors/shared/files';
+import { TS_NODE_COMMAND } from './helpers';
 
 /**
  * Metrics that are the same between cow components
@@ -33,47 +32,4 @@ export async function collectSameAsDashboardMetrics(
 	for (const metric of SAME_AS_DASHBOARD_METRICS) {
 		await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `${metric}.ts`)}`);
 	}
-}
-
-export async function createEmptyBundle(
-	exec: ExecFunction,
-	frameworkName: string
-) {
-	const DEMO_DIR = path.join(DEMO_REPO_DIR, frameworkName);
-	const DEMO_METRICS_DIR = path.join(DEMO_DIR, 'metrics');
-	const DEMO_METRICS_EMPTY_DIR = path.join(DEMO_METRICS_DIR, 'empty');
-
-	await exec('? Installing dependencies');
-	await exec(`yarn --cwd ${DEMO_DIR}`);
-
-	await rimrafAsync(DEMO_METRICS_DIR);
-	await exec('? Generating "empty" bundle');
-
-	const indexJsFile = `import '../../packages/${frameworkName}'`;
-	const emptyJsFilePath = path.join(DEMO_METRICS_EMPTY_DIR, 'index.js');
-	await writeFile(emptyJsFilePath, indexJsFile);
-	await exec(
-		`esbuild ${emptyJsFilePath} --bundle --minify --outfile=${path.join(
-			DEMO_METRICS_EMPTY_DIR,
-			'index.bundle.js'
-		)} --define:process.env.NODE_ENV=\\"production\\"`
-	);
-
-	const indexHTMLFile = `<html><head></head><body><script src="index.bundle.js"></script></body></html>`;
-	const emptyHTMLFilePath = path.join(DEMO_METRICS_EMPTY_DIR, 'index.html');
-	await writeFile(emptyHTMLFilePath, indexHTMLFile);
-}
-
-export async function collectEmptyBundleMetrics(
-	exec: ExecFunction,
-	frameworkName: string
-) {
-	const baseDir = path.join(
-		METRICS_DIR,
-		`collectors/cow-components-${frameworkName}`
-	);
-
-	await exec('? Collecting empty-bundle metrics');
-	await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `load-time.ts`)}`);
-	await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `size.ts`)}`);
 }

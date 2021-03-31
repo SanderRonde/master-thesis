@@ -4,9 +4,7 @@ import * as path from 'path';
 
 import { preserveCommandBuilder } from '../../lib/makfy-helper';
 import {
-	collectEmptyBundleMetrics,
 	collectSameAsDashboardMetrics,
-	createEmptyBundle,
 	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
 import { METRICS_DIR } from '../../../collectors/shared/constants';
@@ -41,10 +39,6 @@ export const cowComponentsNativeMetrics = preserveCommandBuilder(
 
 	await collectSameAsDashboardMetrics(baseCtx, 'native');
 
-	await createEmptyBundle(baseCtx, 'native');
-
-	await collectEmptyBundleMetrics(baseCtx, 'native');
-
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
 
@@ -52,7 +46,10 @@ export const cowComponentsNativeMetrics = preserveCommandBuilder(
 	await exec('? Generating toggleable bundle');
 
 	await exec('? Generating JS');
-	const indexJsFilePath = path.join(NATIVE_DEMO_METRICS_TOGGLEABLE_DIR, 'index.ts');
+	const indexJsFilePath = path.join(
+		NATIVE_DEMO_METRICS_TOGGLEABLE_DIR,
+		'index.ts'
+	);
 	const indexJsContent = await getRenderTimeJsTemplate();
 	await writeFile(indexJsFilePath, indexJsContent);
 
@@ -77,6 +74,10 @@ export const cowComponentsNativeMetrics = preserveCommandBuilder(
 			'index.bundle.js'
 		)}`
 	);
+
+	await exec('? Collecting bundle metadata metrics');
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 
 	await exec('? Collecting render time metrics');
 	await baseCtx(
