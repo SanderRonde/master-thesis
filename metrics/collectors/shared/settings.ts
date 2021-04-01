@@ -44,6 +44,11 @@ export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 5;
  */
 export const MAX_MEASURED_RENDER_WAIT_TIME = 800 * SLOWDOWN_FACTOR_RENDER_TIME;
 /**
+ * How long to wait after the `requestIdleCallback` callback
+ * has been fired by the browser
+ */
+export const WAIT_AFTER_IDLE_TIME = 1000;
+/**
  * The maximum number of pixels a frame is allowed to
  * differ from the target frame before being marked as
  * the same

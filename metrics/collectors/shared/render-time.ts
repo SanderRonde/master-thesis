@@ -18,6 +18,7 @@ import {
 	RENDER_TIME_MEASURES,
 	RENDER_TIME_WIDTH,
 	SLOWDOWN_FACTOR_RENDER_TIME,
+	WAIT_AFTER_IDLE_TIME,
 } from './settings';
 import { doWithServer } from '../dashboard/lib/render-time/serve-dashboard-dist';
 import { RenderTime } from './types';
@@ -25,6 +26,16 @@ import { getDatasetStats } from './stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from './testing';
 import { readFile } from './files';
+
+interface PuppeteerWindow extends Window {
+	requestIdleCallback(
+		callback: () => void,
+		options?: {
+			timeout?: number;
+		}
+	): void;
+}
+declare const window: PuppeteerWindow;
 
 export async function createPage() {
 	const browser = await puppeteer.launch({
@@ -95,7 +106,22 @@ async function collectComponentProfile(
 	await showComponent(component, page);
 
 	debug('render-time', '\tWaiting for component to render');
-	await wait(MAX_MEASURED_RENDER_WAIT_TIME);
+	/**
+	 * Why not await and use an async function here? Because
+	 * typescript will compile it and reference the globally
+	 * defined `__awaiter` function. This is not globally
+	 * defined in the browser scope, and as such will fail.
+	 */
+	await page.evaluate((maxWaitTime) => {
+		return new Promise((resolve) => {
+			window.requestIdleCallback(resolve as any, {
+				timeout: maxWaitTime,
+			});
+		});
+	}, MAX_MEASURED_RENDER_WAIT_TIME);
+
+	// Wait just a little bit longer
+	await wait(WAIT_AFTER_IDLE_TIME);
 
 	// Stop profiling
 	await page.tracing.stop();
