@@ -20,11 +20,9 @@ export const NATIVE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-native`);
 
-export const cowComponentsNativeMetrics = registerMetricsCommand(
+export const cowComponentsNativeSetup = registerMetricsCommand(
 	'cow-components-native'
 ).run(async (exec) => {
-	await collectSameAsDashboardMetrics(exec, 'native');
-
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
 
@@ -60,6 +58,12 @@ export const cowComponentsNativeMetrics = registerMetricsCommand(
 			'index.bundle.js'
 		)}`
 	);
+});
+
+export const cowComponentsNativeMetrics = registerMetricsCommand(
+	'cow-components-native'
+).run(async (exec) => {
+	await collectSameAsDashboardMetrics(exec, 'native');
 
 	await exec('? Collecting bundle metadata metrics');
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);

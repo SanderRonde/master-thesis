@@ -13,15 +13,36 @@ import {
 import './bundles/dashboard';
 import { dashboardMetrics } from './bundles/dashboard';
 import { Bundle, BUNDLES, COW_COMPONENT_BUNDLES } from '../lib/constants';
-import { cowComponentsAngularMetrics } from './bundles/cow-components-angular';
-import { cowComponentsNativeMetrics } from './bundles/cow-components-native';
-import { cowComponentsReactMetrics } from './bundles/cow-components-react';
-import { cowComponentsSvelteMetrics } from './bundles/cow-components-svelte';
+import {
+	cowComponentsAngularMetrics,
+	cowComponentsAngularSetup,
+} from './bundles/cow-components-angular';
+import {
+	cowComponentsNativeMetrics,
+	cowComponentsNativeSetup,
+} from './bundles/cow-components-native';
+import {
+	cowComponentsReactMetrics,
+	cowComponentsReactSetup,
+} from './bundles/cow-components-react';
+import {
+	cowComponentsSvelteMetrics,
+	cowComponentsSvelteSetup,
+} from './bundles/cow-components-svelte';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
 import { makeChartDeterministic } from '../../collectors/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';
 
-const bundleMap: {
+const parallelBundleMap: {
+	[K in Bundle]?: CommandBuilder<typeof METRICS_COMMAND_ARGS>;
+} = {
+	'cow-components-angular': cowComponentsAngularSetup,
+	'cow-components-native': cowComponentsNativeSetup,
+	'cow-components-react': cowComponentsReactSetup,
+	'cow-components-svelte': cowComponentsSvelteSetup,
+};
+
+const serialBundleMap: {
 	[K in Bundle]: CommandBuilder<typeof METRICS_COMMAND_ARGS>;
 } = {
 	dashboard: dashboardMetrics,
@@ -88,13 +109,29 @@ export const metris = preserveCommandBuilder(
 		await dashboardCtx.keepContext('git reset --hard');
 	}
 
+	const execArgs = {
+		'no-cache': args['no-cache'],
+		prod: args.prod,
+		'log-debug': args['log-debug'],
+	};
+
+	// First do dashboard by itself if we need to
+	// because it's a bit of a special case
+	if (bundles.includes('dashboard')) {
+		await exec(getCommandBuilderExec(serialBundleMap.dashboard, execArgs));
+	}
+
+	// Run all parallel tasks
+	await exec(
+		bundles
+			.filter((bundle) => parallelBundleMap[bundle])
+			.map((bundle) =>
+				getCommandBuilderExec(parallelBundleMap[bundle]!, execArgs)
+			)
+	);
+
+	// Run all sync tasks
 	for (const bundle of bundles) {
-		await exec(
-			getCommandBuilderExec(bundleMap[bundle], {
-				'no-cache': args['no-cache'],
-				prod: args.prod,
-				'log-debug': args['log-debug'],
-			})
-		);
+		await exec(getCommandBuilderExec(serialBundleMap[bundle], execArgs));
 	}
 });

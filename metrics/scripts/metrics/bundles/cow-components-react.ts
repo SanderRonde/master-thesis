@@ -24,11 +24,9 @@ export const REACT_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-react`);
 
-export const cowComponentsReactMetrics = registerMetricsCommand(
+export const cowComponentsReactSetup = registerMetricsCommand(
 	'cow-components-react'
 ).run(async (exec) => {
-	await collectSameAsDashboardMetrics(exec, 'react');
-
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
 
@@ -64,6 +62,12 @@ export const cowComponentsReactMetrics = registerMetricsCommand(
 			'index.bundle.js'
 		)} --define:process.env.NODE_ENV=\\"production\\"`
 	);
+});
+
+export const cowComponentsReactMetrics = registerMetricsCommand(
+	'cow-components-react'
+).run(async (exec) => {
+	await collectSameAsDashboardMetrics(exec, 'react');
 
 	await exec('? Collecting bundle metadata metrics');
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);

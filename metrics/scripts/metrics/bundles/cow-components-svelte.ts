@@ -21,11 +21,9 @@ export const SVELTE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-svelte`);
 
-export const cowComponentsSvelteMetrics = registerMetricsCommand(
+export const cowComponentsSvelteSetup = registerMetricsCommand(
 	'cow-components-svelte'
 ).run(async (exec, args) => {
-	await collectSameAsDashboardMetrics(exec, 'svelte');
-
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
 
@@ -66,6 +64,12 @@ export const cowComponentsSvelteMetrics = registerMetricsCommand(
 	await exec(
 		`rollup -c ${path.join(BASE_DIR, 'lib/render-time/rollup.config.js')}`
 	);
+});
+
+export const cowComponentsSvelteMetrics = registerMetricsCommand(
+	'cow-components-svelte'
+).run(async (exec, args) => {
+	await collectSameAsDashboardMetrics(exec, 'svelte');
 
 	await exec('? Collecting bundle metadata metrics');
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);

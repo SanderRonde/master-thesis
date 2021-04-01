@@ -21,11 +21,9 @@ const METRICS_COMPONENT_DIR = path.join(ANGULAR_DEMO_DIR, 'src/app');
 const ANGULAR_DEMO_DIST = path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo');
 export const ANGULAR_METADATA_BUNDLE = path.join(ANGULAR_DEMO_DIST, 'metadata');
 
-export const cowComponentsAngularMetrics = registerMetricsCommand(
+export const cowComponentsAngularSetup = registerMetricsCommand(
 	'cow-components-angular'
 ).run(async (exec, args) => {
-	await collectSameAsDashboardMetrics(exec, 'angular');
-
 	// For Angular we use the regular bundle for size and load-time
 	// testing. This is because it will be excluded from the build
 	// if not used. And the few bytes added should not make a big
@@ -93,14 +91,20 @@ export const cowComponentsAngularMetrics = registerMetricsCommand(
 		await writeFile(mainFilePath, mainFileContent);
 	}
 
-	await exec('? Collecting render time metrics');
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
-
 	await exec('? Bundling up built files for measuring');
 	await rimrafAsync(ANGULAR_METADATA_BUNDLE);
 	await fs.mkdirp(ANGULAR_METADATA_BUNDLE);
 	await cpxAsync(`${ANGULAR_DEMO_DIST}/**`, ANGULAR_METADATA_BUNDLE);
 	await concatIntoBundle(exec, ANGULAR_METADATA_BUNDLE);
+});
+
+export const cowComponentsAngularMetrics = registerMetricsCommand(
+	'cow-components-angular'
+).run(async (exec) => {
+	await collectSameAsDashboardMetrics(exec, 'angular');
+
+	await exec('? Collecting render time metrics');
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
 
 	await exec('? Collecting bundle metadata metrics');
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
