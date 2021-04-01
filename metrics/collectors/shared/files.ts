@@ -26,3 +26,18 @@ export async function transformFile(
 		newContent,
 	};
 }
+
+export async function createCopies(
+	paths: {
+		[targetPath: string]: string;
+	},
+	rootPath: string
+) {
+	for (const target in paths) {
+		const targetPath = path.join(rootPath, target);
+		if (await fs.pathExists(targetPath)) {
+			await fs.unlink(targetPath);
+		}
+		await fs.copyFile(paths[target], targetPath);
+	}
+}

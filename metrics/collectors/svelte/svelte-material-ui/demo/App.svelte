@@ -3,8 +3,8 @@
 	import Textfield from '@smui/textfield';
 	import Switch from '@smui/switch';
 
-	window.setVisibleComponent = (componentName, visible) => {
-		visible[componentName] = visible;
+	window.setVisibleComponent = (componentName, isVisible) => {
+		visible[componentName] = isVisible;
 	};
 	window.avilableComponents = ['Button', 'Input', 'Switch'];
 

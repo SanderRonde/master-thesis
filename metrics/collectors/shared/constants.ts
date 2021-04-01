@@ -10,3 +10,5 @@ export const DASHBOARD_DIR = path.join(
 export const TEMP_DIR = path.join(METRICS_DIR, 'temp');
 export const CACHE_DIR = path.join(METRICS_DIR, 'cache');
 export const SUBMODULES_DIR = path.join(METRICS_DIR, 'submodules')
+export const COLLECTORS_DIR = path.join(METRICS_DIR, 'collectors');
+export const TEMPLATES_DIR = path.join(COLLECTORS_DIR, 'shared/template-files');
