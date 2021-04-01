@@ -1,5 +1,5 @@
 import { getJoinedComponentDefs } from '../../dashboard/lib/render-time/generate-render-time-page';
-import { getComponentSelector } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/angular/scripts/lib/templates/component-template';
+import { getComponentSelector } from '../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/angular/scripts/lib/templates/component-template';
 import {
 	DEFAULT_VALUE_PREFIX,
 	getSanitizedComponentName,

@@ -8,9 +8,9 @@ import {
 } from '../../lib/cow-components-shared';
 import { METRICS_DIR } from '../../../collectors/shared/constants';
 import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
-import { getRenderTimeIndexJsTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-index-js-template';
-import { getRenderTimeIndexHTMLTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-index-html-template';
-import { getRenderTimeSvelteTemplate } from '../../../collectors/cow-components-svelte/templates/render-time-svelte-template';
+import { getRenderTimeIndexJsTemplate } from '../../../collectors/cow-components/cow-components-svelte/templates/render-time-index-js-template';
+import { getRenderTimeIndexHTMLTemplate } from '../../../collectors/cow-components/cow-components-svelte/templates/render-time-index-html-template';
+import { getRenderTimeSvelteTemplate } from '../../../collectors/cow-components/cow-components-svelte/templates/render-time-svelte-template';
 import { writeFile } from '../../../collectors/shared/files';
 
 export const SVELTE_DEMO_DIR = path.join(DEMO_REPO_DIR, 'svelte');
@@ -19,7 +19,10 @@ export const SVELTE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 	DEMO_METRICS_DIR,
 	'toggleable'
 );
-const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-svelte`);
+const BASE_DIR = path.join(
+	METRICS_DIR,
+	`collectors/cow-components/cow-components-svelte`
+);
 
 export const cowComponentsSvelteSetup = registerMetricsCommand(
 	'cow-components-svelte'

@@ -1,6 +1,6 @@
 import { getStructuralComplexityMetrics } from '../dashboard/structural-complexity';
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
 import { STORE_NAME } from './lib/constants';
 
 runFunctionIfCalledFromScript(async () => {
