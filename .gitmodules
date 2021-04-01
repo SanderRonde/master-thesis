@@ -7,3 +7,6 @@
 [submodule "metrics/submodules/smelte"]
 	path = metrics/submodules/smelte
 	url = https://github.com/matyunya/smelte
+[submodule "metrics/submodules/svelte-mui"]
+	path = metrics/submodules/svelte-mui
+	url = https://github.com/vikignt/svelte-mui
