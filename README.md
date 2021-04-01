@@ -21,37 +21,35 @@ interface ByComponentNumberStats = {
 	stats: DatasetStats;
 };
 
-type Bundles = 'dashboard'
-	|'cow-components-angular'
-	|'cow-components-native'
-	|'cow-components-react'
-	|'cow-components-svelte';
+type BundleCategories = 'cow-components'|'svelte';
 
 type Data = {
 	metrics: {
-		[bundleName in Bundles]: {
-			'lines-of-code': ByComponentNumberStats;
-			'cyclomatic-complexity': ByComponentNumberStats;
-			'maintainability': {
-				'averageMaintainability': number;
-				'minMaintainability': number;
-			};
-			'structural-complexity': ByComponentNumberStats;
-			'size': number;
-			'load-time': {
-				'values': number[];
-				'stats': DatasetStats;
-			};
-			'number-of-components': number;
-			'render-time': {
-				components: {
-					[componentName: string]: {
-						times: number[];
-						stats: DatasetStats;
-					};
+		[bundleCategory in BundleCategories]: {
+			[bundleName in Bundles[bundleCategory]]: {
+				'lines-of-code': ByComponentNumberStats;
+				'cyclomatic-complexity': ByComponentNumberStats;
+				'maintainability': {
+					'averageMaintainability': number;
+					'minMaintainability': number;
+				};
+				'structural-complexity': ByComponentNumberStats;
+				'size': number;
+				'load-time': {
+					'values': number[];
+					'stats': DatasetStats;
+				};
+				'number-of-components': number;
+				'render-time': {
+					components: {
+						[componentName: string]: {
+							times: number[];
+							stats: DatasetStats;
+						};
+					}
+					stats: DatasetStats;
 				}
-				stats: DatasetStats;
-			}
+			};
 		};
 	};
 };
