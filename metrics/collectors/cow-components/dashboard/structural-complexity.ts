@@ -10,7 +10,7 @@ import { DASHBOARD_DIR } from '../../shared/constants';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../../shared/settings';
 import { collectDashboardMetrics } from './lib/shared';
 
-function isAbsolute(filePath: string): boolean {
+export function isAbsolute(filePath: string): boolean {
 	return path.isAbsolute(filePath) || !filePath.startsWith('.');
 }
 
@@ -25,7 +25,7 @@ async function getSourceFile(
 	return (await createTSProgram([filePath])).getSourceFile(filePath)!;
 }
 
-async function createFilePath(base: string, ends: string[]) {
+export async function findFilePath(base: string, ends: string[]) {
 	for (const end of ends) {
 		if (await fs.pathExists(path.join(base, end))) {
 			return path.join(base, end);
@@ -62,7 +62,7 @@ async function recursivelyGetDependencies(
 					imports.push(importPath.text);
 					continue;
 				}
-				joinedPath = await createFilePath(
+				joinedPath = await findFilePath(
 					path.join(DASHBOARD_DIR, baseUrl),
 					[
 						`${importPath.text}/index.ts`,
@@ -75,7 +75,7 @@ async function recursivelyGetDependencies(
 					continue;
 				}
 			} else {
-				joinedPath = await createFilePath(
+				joinedPath = await findFilePath(
 					path.dirname(sourceFile.fileName),
 					[
 						`${importPath.text}/index.ts`,

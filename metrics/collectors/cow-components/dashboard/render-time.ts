@@ -13,9 +13,9 @@ export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
 	return await getRenderTime({
-		components,
+		getComponents: () => components.map((c) => c.js.componentName),
 		sourceRoot: DASHBOARD_DIST_DIR,
-		urlPath: '404',
+		urlPath: '/404',
 		showComponent: async (component, page) => {
 			await page.$eval(
 				'page-not-found',
@@ -29,7 +29,7 @@ export async function getDashboardRenderTime(
 						)
 						.setRenderOption(componentName, true);
 				},
-				component.js.componentName
+				component
 			);
 		},
 		hideComponent: async (component, page) => {
@@ -45,7 +45,7 @@ export async function getDashboardRenderTime(
 						)
 						.setRenderOption(componentName, false);
 				},
-				component.js.componentName
+				component
 			);
 		},
 	});

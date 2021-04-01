@@ -1,19 +1,7 @@
-const __COW_COMPONENTS_WRAPPERS = [
-	'angular',
-	'react',
-	'native',
-	'svelte',
-] as const;
-export type CowComponentsWrapper = typeof __COW_COMPONENTS_WRAPPERS[Extract<
-	keyof typeof __COW_COMPONENTS_WRAPPERS,
-	number
->];
-const COW_COMPONENTS_WRAPPERS = (__COW_COMPONENTS_WRAPPERS as unknown) as CowComponentsWrapper[];
+import { cowComponentBundles } from '../metrics/bundles/cow-components';
+import { svelteBundles } from '../metrics/bundles/svelte';
 
-export const COW_COMPONENT_BUNDLES = COW_COMPONENTS_WRAPPERS.map(
-	(wrapper) => `cow-components-${wrapper}` as const
-);
-const __BUNDLES = ['dashboard', ...COW_COMPONENT_BUNDLES] as const;
+const __BUNDLES = [...cowComponentBundles, ...svelteBundles] as const;
 const __METRICS = [
 	'structural-complexity',
 	'cyclomatic-complexity',

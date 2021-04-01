@@ -17,7 +17,7 @@ export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
 	return await getRenderTime({
-		components,
+		getComponents: () => components.map(c => c.js.componentName),
 		sourceRoot: path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo'),
 		showComponent: async (component, page) => {
 			await page.$eval(
@@ -28,7 +28,7 @@ export async function getDashboardRenderTime(
 						true
 					);
 				},
-				component.js.componentName
+				component
 			);
 		},
 		hideComponent: async (component, page) => {
@@ -40,7 +40,7 @@ export async function getDashboardRenderTime(
 						false
 					);
 				},
-				component.js.componentName
+				component
 			);
 		},
 	});

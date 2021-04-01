@@ -1,9 +1,8 @@
 import puppeteer from 'puppeteer';
 import * as fs from 'fs-extra';
 
-import { ComponentFiles } from '../cow-components/dashboard/lib/get-components';
 import { findLastIndex, generateTempFileName, wait } from './helpers';
-import { debug, info } from './log';
+import { debug, info, warning } from './log';
 
 import {
 	KEEP_PROFILES,
@@ -11,6 +10,7 @@ import {
 	NAVIGATION_TIMEOUT,
 	RENDER_TIME_HEIGHT,
 	RENDER_TIME_MEASURES,
+	RENDER_TIME_TRIES,
 	RENDER_TIME_WIDTH,
 	SLOWDOWN_FACTOR_RENDER_TIME,
 	WAIT_AFTER_IDLE_TIME,
@@ -73,7 +73,7 @@ export async function createPage() {
 export async function openPage(
 	port: number,
 	slowdownFactor: number,
-	path: string = ''
+	path: string = '/'
 ) {
 	const { browser, page } = await createPage();
 
@@ -86,7 +86,8 @@ export async function openPage(
 	await client.send('Emulation.setCPUThrottlingRate', {
 		rate: slowdownFactor,
 	});
-	await page.goto(`http://localhost:${port}/${path}`);
+	console.log('Goto', `http://localhost:${port}${path}`);
+	await page.goto(`http://localhost:${port}${path}`);
 
 	// Wait for the page to load
 	await wait(2000);
@@ -95,21 +96,18 @@ export async function openPage(
 }
 
 async function collectComponentProfile(
-	component: ComponentFiles,
+	componentName: string,
 	page: puppeteer.Page,
 	showComponent: (
-		component: ComponentFiles,
+		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>,
 	hideComponent: (
-		component: ComponentFiles,
+		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>
 ): Promise<PerformanceProfile> {
-	const profilePath = await generateTempFileName(
-		'json',
-		component.js.componentName
-	);
+	const profilePath = await generateTempFileName('json', componentName);
 
 	// Start profiling
 	await page.tracing.start({
@@ -122,7 +120,7 @@ async function collectComponentProfile(
 	await wait(2000);
 
 	// Show current component
-	await showComponent(component, page);
+	await showComponent(componentName, page);
 
 	debug('render-time', '\tWaiting for component to render');
 	/**
@@ -146,7 +144,7 @@ async function collectComponentProfile(
 	await page.tracing.stop();
 
 	// Hide component
-	await hideComponent(component, page);
+	await hideComponent(componentName, page);
 
 	const profileContents = await readFile(profilePath);
 	if (!KEEP_PROFILES) {
@@ -264,7 +262,7 @@ async function getProfileRenderTime(
 }
 
 async function collectRuntimeRenderTimes({
-	components,
+	getComponents,
 	hideComponent,
 	showComponent,
 	urlPath = '',
@@ -274,44 +272,66 @@ async function collectRuntimeRenderTimes({
 }): Promise<Map<string, number>> {
 	const times: Map<string, number> = new Map();
 
+	// Create a page for gathering the components
+	const { page: componentPage, browser: componentBrowser } = await openPage(
+		port,
+		1,
+		urlPath
+	);
+	const components = await getComponents(componentPage);
+	await componentPage.close();
+	await componentBrowser.close();
+
 	for (let i = 0; i < components.length; i++) {
-		const component = components[i];
+		const componentName = components[i];
 		info(
 			'render-time',
-			`\tCapturing render times for ${component.js.componentName} (${
-				i + 1
-			}/${components.length})`
+			`\tCapturing render times for ${componentName} (${i + 1}/${
+				components.length
+			})`
 		);
 
-		debug('render-time', '\tOpening page');
-		const { page, browser } = await openPage(
-			port,
-			SLOWDOWN_FACTOR_RENDER_TIME,
-			urlPath
-		);
+		for (let j = 0; j < RENDER_TIME_TRIES; j++) {
+			try {
+				debug('render-time', '\tOpening page');
+				const { page, browser } = await openPage(
+					port,
+					SLOWDOWN_FACTOR_RENDER_TIME,
+					urlPath
+				);
 
-		const performanceProfile = await collectComponentProfile(
-			component,
-			page,
-			showComponent,
-			hideComponent
-		);
+				const performanceProfile = await collectComponentProfile(
+					componentName,
+					page,
+					showComponent,
+					hideComponent
+				);
 
-		debug('render-time', '\tExtracting render time');
-		const renderTime =
-			(await getProfileRenderTime(
-				component.js.componentName,
-				performanceProfile
-			)) / SLOWDOWN_FACTOR_RENDER_TIME;
-		times.set(component.js.componentName, renderTime);
+				debug('render-time', '\tExtracting render time');
+				const renderTime =
+					(await getProfileRenderTime(
+						componentName,
+						performanceProfile
+					)) / SLOWDOWN_FACTOR_RENDER_TIME;
+				times.set(componentName, renderTime);
 
-		await page.close();
-		await browser.close();
+				await page.close();
+				await browser.close();
 
-		debug(
-			'render-time',
-			`\tRender time for ${component.js.componentName} is ${renderTime}ms`
-		);
+				debug(
+					'render-time',
+					`\tRender time for ${componentName} is ${renderTime}ms`
+				);
+				break;
+			} catch (e) {
+				warning(
+					'render-time',
+					`'\tFailed to find render time, retrying (${j + 1}/${
+						RENDER_TIME_TRIES - 1
+					})`
+				);
+			}
+		}
 	}
 
 	return times;
@@ -349,15 +369,15 @@ function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
 }
 
 interface RenderTimeSettings {
-	components: ComponentFiles[];
+	getComponents: (page: puppeteer.Page) => Promise<string[]> | string[];
 	sourceRoot: string;
 	urlPath?: string;
 	showComponent: (
-		component: ComponentFiles,
+		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>;
 	hideComponent: (
-		component: ComponentFiles,
+		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>;
 }

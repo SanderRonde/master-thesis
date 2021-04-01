@@ -33,12 +33,21 @@ export function splitSvelteIntoParts(
 
 export function createComponentFileFromSvelte(
 	svelteCode: string,
-	componentName: string
+	componentName: string,
+	filePath: string
 ): ComponentFiles {
 	const { html, js } = splitSvelteIntoParts(svelteCode);
 
 	return {
-		html: new TextOnlyComponentFile(componentName, html),
-		js: new TextOnlyComponentFile(componentName, js),
+		html: {
+			componentName,
+			content: html,
+			filePath: filePath,
+		},
+		js: {
+			componentName,
+			content: js,
+			filePath: filePath,
+		},
 	};
 }

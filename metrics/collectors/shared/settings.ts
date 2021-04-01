@@ -85,3 +85,8 @@ export const NAVIGATION_TIMEOUT = Math.max(
 	PUPPETEER_DEFAULT_NAVIGATION_TIMEOUT,
 	Math.max(SLOWDOWN_FACTOR_LOAD_TIME, SLOWDOWN_FACTOR_RENDER_TIME) * 12000
 );
+/**
+ * How many times to try testing the render time
+ * before failing
+ */
+export const RENDER_TIME_TRIES = 3;

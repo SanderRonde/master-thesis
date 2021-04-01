@@ -1,5 +1,4 @@
 import { choice, cmd, flag } from 'makfy';
-import { CommandBuilder } from 'makfy/dist/lib/schema/commands';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
@@ -10,46 +9,29 @@ import {
 	METRICS_COMMAND_ARG_DESCRIPTIONS,
 	preserveCommandBuilder,
 } from '../lib/makfy-helper';
-import './bundles/dashboard';
-import { dashboardMetrics } from './bundles/cow-components/dashboard';
-import { Bundle, BUNDLES, COW_COMPONENT_BUNDLES } from '../lib/constants';
-import {
-	cowComponentsAngularMetrics,
-	cowComponentsAngularSetup,
-} from './bundles/cow-components/cow-components-angular';
-import {
-	cowComponentsNativeMetrics,
-	cowComponentsNativeSetup,
-} from './bundles/cow-components/cow-components-native';
-import {
-	cowComponentsReactMetrics,
-	cowComponentsReactSetup,
-} from './bundles/cow-components/cow-components-react';
-import {
-	cowComponentsSvelteMetrics,
-	cowComponentsSvelteSetup,
-} from './bundles/cow-components/cow-components-svelte';
+import { Bundle, BUNDLES } from '../lib/constants';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
 import { makeChartDeterministic } from '../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';
+import {
+	cowComponentsParallelBundleMap,
+	cowComponentsSerialBundleMap,
+	COW_COMPONENT_BUNDLES,
+} from './bundles/cow-components';
+import { ParallelBundleMap, SerialBundleMap } from '../lib/types';
+import {
+	svelteParallelBundleMap,
+	svelteSerialBundleMap,
+} from './bundles/svelte';
 
-const parallelBundleMap: {
-	[K in Bundle]?: CommandBuilder<typeof METRICS_COMMAND_ARGS>;
-} = {
-	'cow-components-angular': cowComponentsAngularSetup,
-	'cow-components-native': cowComponentsNativeSetup,
-	'cow-components-react': cowComponentsReactSetup,
-	'cow-components-svelte': cowComponentsSvelteSetup,
+const parallelBundleMap: ParallelBundleMap<Bundle> = {
+	...cowComponentsParallelBundleMap,
+	...svelteParallelBundleMap,
 };
 
-const serialBundleMap: {
-	[K in Bundle]: CommandBuilder<typeof METRICS_COMMAND_ARGS>;
-} = {
-	dashboard: dashboardMetrics,
-	'cow-components-angular': cowComponentsAngularMetrics,
-	'cow-components-native': cowComponentsNativeMetrics,
-	'cow-components-react': cowComponentsReactMetrics,
-	'cow-components-svelte': cowComponentsSvelteMetrics,
+const serialBundleMap: SerialBundleMap<Bundle> = {
+	...cowComponentsSerialBundleMap,
+	...svelteSerialBundleMap,
 };
 
 export const metris = preserveCommandBuilder(
@@ -70,6 +52,9 @@ export const metris = preserveCommandBuilder(
 	const bundles: Bundle[] = args.bundle !== 'all' ? [args.bundle] : BUNDLES;
 
 	if (
+		bundles.some((bundle) =>
+			COW_COMPONENT_BUNDLES.includes(bundle as any)
+		) &&
 		!args['skip-dashboard'] &&
 		!(await fs.pathExists(packagesInstalledFile))
 	) {

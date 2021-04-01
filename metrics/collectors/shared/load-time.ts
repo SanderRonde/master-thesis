@@ -43,7 +43,8 @@ export interface PerformanceProfile {
 }
 
 async function createPerformanceProfile(
-	port: number
+	port: number,
+	rootPath: string = '/index.html'
 ): Promise<PerformanceProfile> {
 	const { page, browser } = await createPage();
 
@@ -56,7 +57,8 @@ async function createPerformanceProfile(
 	await page.tracing.start({
 		path: profilePath,
 	});
-	await page.goto(`http://localhost:${port}/index.html`);
+	console.log('Goto', `http://localhost:${port}${rootPath}`);
+	await page.goto(`http://localhost:${port}${rootPath}`);
 	await page.tracing.stop();
 	await browser.close();
 
@@ -96,7 +98,8 @@ function getBundleLoadTimeFromProfile(
 
 export function getLoadTimeForDir(
 	dirName: string,
-	fileName: string = 'index.bundle.js'
+	fileName: string = 'index.bundle.js',
+	rootPath?: string
 ): Promise<LoadTime> {
 	info('load-time', 'Starting server');
 	return doWithServer(0, dirName, async (port) => {
@@ -108,7 +111,7 @@ export function getLoadTimeForDir(
 					i + 1
 				}/${LOAD_TIME_PERFORMANCE_MEASURES}`
 			);
-			profiles.push(await createPerformanceProfile(port));
+			profiles.push(await createPerformanceProfile(port, rootPath));
 		}
 
 		info('load-time', 'Extracting load times');

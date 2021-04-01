@@ -16,17 +16,17 @@ export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
 	return await getRenderTime({
-		components,
+		getComponents: () => components.map((c) => c.js.componentName),
 		sourceRoot: SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
 		showComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
 				window.setVisibleComponent(componentName, true);
-			}, component.js.componentName);
+			}, component);
 		},
 		hideComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
 				window.setVisibleComponent(componentName, false);
-			}, component.js.componentName);
+			}, component);
 		},
 	});
 }

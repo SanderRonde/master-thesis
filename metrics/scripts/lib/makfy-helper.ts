@@ -79,7 +79,7 @@ interface BundleCommandReturn {
 	run(runFn: CommandRunFn<MetricsArgDefinitions>): CommandBuilder<MetricsArgDefinitions>;
 }
 
-export function registerBundeCommand(
+export function registerBundleCommand(
 	name: string,
 	postfix: string
 ): BundleCommandReturn {
@@ -109,11 +109,11 @@ export function registerBundeCommand(
 export function registerMetricsCommand(
 	name: string,
 ): BundleCommandReturn {
-	return registerBundeCommand(name, 'metrics');
+	return registerBundleCommand(name, 'metrics');
 }
 
 export function registerSetupCommand(
 	name: string,
 ): BundleCommandReturn {
-	return registerBundeCommand(name, 'setup');
+	return registerBundleCommand(name, 'setup');
 }

@@ -16,12 +16,12 @@ export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
 	return await getRenderTime({
-		components,
+		getComponents: () => components.map((c) => c.js.componentName),
 		sourceRoot: REACT_DEMO_METRICS_TOGGLEABLE_DIR,
 		showComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
 				window.setVisibleComponent(componentName);
-			}, component.js.componentName);
+			}, component);
 		},
 		hideComponent: async (component, page) => {
 			await page.evaluate(() => {

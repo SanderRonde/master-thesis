@@ -1,7 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { SvelteMaterialUI } from '.';
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
 import { readFile } from '../../shared/files';
 import { toCamelCase } from '../../shared/helpers';
@@ -16,7 +15,6 @@ function dirNameToComponentName(dirName: string) {
 
 async function getComponentFiles(dir: string) {
 	const componentName = dirNameToComponentName(path.parse(dir).base);
-	console.log(dir, componentName);
 	const mainFile = path.join(
 		dir,
 		`${OVERRIDES.get(componentName) || componentName}.svelte`
@@ -24,12 +22,15 @@ async function getComponentFiles(dir: string) {
 
 	return createComponentFileFromSvelte(
 		await readFile(mainFile),
-		componentName
+		componentName,
+		mainFile
 	);
 }
 
-export async function getComponents(): Promise<ComponentFiles[]> {
-	const packagesPath = path.join(SvelteMaterialUI.submodulePath, 'packages');
+export async function getComponents(
+	submodulePath: string
+): Promise<ComponentFiles[]> {
+	const packagesPath = path.join(submodulePath, 'packages');
 	const dirList = await fs.readdir(packagesPath);
 
 	const components = await Promise.all(
