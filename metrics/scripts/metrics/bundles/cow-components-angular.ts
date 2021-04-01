@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import { METRICS_DIR } from '../../../collectors/shared/constants';
-import { registerMetricsCommand } from '../../lib/makfy-helper';
+import { registerMetricsCommand, registerSetupCommand } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
@@ -21,7 +21,7 @@ const METRICS_COMPONENT_DIR = path.join(ANGULAR_DEMO_DIR, 'src/app');
 const ANGULAR_DEMO_DIST = path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo');
 export const ANGULAR_METADATA_BUNDLE = path.join(ANGULAR_DEMO_DIST, 'metadata');
 
-export const cowComponentsAngularSetup = registerMetricsCommand(
+export const cowComponentsAngularSetup = registerSetupCommand(
 	'cow-components-angular'
 ).run(async (exec, args) => {
 	// For Angular we use the regular bundle for size and load-time

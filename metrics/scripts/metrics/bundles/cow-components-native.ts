@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { registerMetricsCommand } from '../../lib/makfy-helper';
+import { registerMetricsCommand, registerSetupCommand } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
@@ -20,7 +20,7 @@ export const NATIVE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-native`);
 
-export const cowComponentsNativeSetup = registerMetricsCommand(
+export const cowComponentsNativeSetup = registerSetupCommand(
 	'cow-components-native'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');
