@@ -1,5 +1,5 @@
-import { sortObjectKeys } from '../../shared/helpers';
-import { DatasetStats, getDatasetStats } from '../../shared/stats';
+import { sortObjectKeys } from '../../../shared/helpers';
+import { DatasetStats, getDatasetStats } from '../../../shared/stats';
 import { ComponentFiles, getComponents, ReadFile } from './get-components';
 
 export async function collectDashboardMetrics<A>(

@@ -1,17 +1,20 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { METRICS_DIR } from '../../../collectors/shared/constants';
-import { registerMetricsCommand, registerSetupCommand } from '../../lib/makfy-helper';
+import { METRICS_DIR } from '../../../../collectors/shared/constants';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
-} from '../../lib/cow-components-shared';
-import { cpxAsync, rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
-import { getRenderTimeJsTemplate } from '../../../collectors/cow-components/cow-components-angular/templates/render-time-js-template';
-import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components/cow-components-angular/templates/render-time-html-template';
+} from '../../../lib/cow-components-shared';
+import { getRenderTimeHTMLTemplate } from '../../../../collectors/cow-components/cow-components-native/templates/render-time-html-template';
+import { getRenderTimeJsTemplate } from '../../../../collectors/cow-components/cow-components-native/templates/render-time-js-template';
+import { rimrafAsync, cpxAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
+import {
+	registerSetupCommand,
+	registerMetricsCommand,
+} from '../../../lib/makfy-helper';
 import { concatIntoBundle } from './dashboard';
-import { readFile, writeFile } from '../../../collectors/shared/files';
+import { readFile, writeFile } from '../../../../collectors/shared/files';
 
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-angular`);
 

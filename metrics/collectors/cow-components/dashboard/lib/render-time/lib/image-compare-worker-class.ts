@@ -3,7 +3,7 @@ import * as path from 'path';
 import pngJs from 'pngjs';
 import textEncoding from 'text-encoding';
 
-import { NUM_WORKERS } from '../../../../shared/settings';
+import { NUM_WORKERS } from '../../../../../shared/settings';
 
 export class ImageCompareWorkersClass {
 	private _workers: Worker[];

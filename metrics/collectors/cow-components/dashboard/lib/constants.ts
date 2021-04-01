@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { DASHBOARD_DIR } from '../../shared/constants';
+import { DASHBOARD_DIR } from '../../../shared/constants';
 
 export const DASHBOARD_DIST_DIR = path.join(DASHBOARD_DIR, 'dist', 'dashboard');
 export const DASHBOARD_IGNORED_DIR = path.join(DASHBOARD_DIR, 'tmp');

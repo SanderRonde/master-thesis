@@ -11,24 +11,24 @@ import {
 	preserveCommandBuilder,
 } from '../lib/makfy-helper';
 import './bundles/dashboard';
-import { dashboardMetrics } from './bundles/dashboard';
+import { dashboardMetrics } from './bundles/cow-components/dashboard';
 import { Bundle, BUNDLES, COW_COMPONENT_BUNDLES } from '../lib/constants';
 import {
 	cowComponentsAngularMetrics,
 	cowComponentsAngularSetup,
-} from './bundles/cow-components-angular';
+} from './bundles/cow-components/cow-components-angular';
 import {
 	cowComponentsNativeMetrics,
 	cowComponentsNativeSetup,
-} from './bundles/cow-components-native';
+} from './bundles/cow-components/cow-components-native';
 import {
 	cowComponentsReactMetrics,
 	cowComponentsReactSetup,
-} from './bundles/cow-components-react';
+} from './bundles/cow-components/cow-components-react';
 import {
 	cowComponentsSvelteMetrics,
 	cowComponentsSvelteSetup,
-} from './bundles/cow-components-svelte';
+} from './bundles/cow-components/cow-components-svelte';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
 import { makeChartDeterministic } from '../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';

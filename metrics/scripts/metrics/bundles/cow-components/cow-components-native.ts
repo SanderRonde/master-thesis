@@ -1,16 +1,19 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { registerMetricsCommand, registerSetupCommand } from '../../lib/makfy-helper';
+import {
+	registerMetricsCommand,
+	registerSetupCommand,
+} from '../../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
-} from '../../lib/cow-components-shared';
-import { METRICS_DIR } from '../../../collectors/shared/constants';
-import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
-import { getRenderTimeJsTemplate } from '../../../collectors/cow-components/cow-components-native/templates/render-time-js-template';
-import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components/cow-components-native/templates/render-time-html-template';
-import { writeFile } from '../../../collectors/shared/files';
+} from '../../../lib/cow-components-shared';
+import { METRICS_DIR } from '../../../../collectors/shared/constants';
+import { rimrafAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
+import { getRenderTimeJsTemplate } from '../../../../collectors/cow-components/cow-components-native/templates/render-time-js-template';
+import { getRenderTimeHTMLTemplate } from '../../../../collectors/cow-components/cow-components-native/templates/render-time-html-template';
+import { writeFile } from '../../../../collectors/shared/files';
 
 const DEMO_DIR = path.join(DEMO_REPO_DIR, 'native');
 const DEMO_METRICS_DIR = path.join(DEMO_DIR, 'metrics');

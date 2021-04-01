@@ -1,7 +1,7 @@
 import { calculateMaintainability } from 'ts-complex';
 
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
 import { ReadFile } from './lib/get-components';
 import { collectDashboardMetrics } from './lib/shared';
 

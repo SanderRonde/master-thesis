@@ -4,17 +4,17 @@ import * as fs from 'fs-extra';
 import {
 	registerMetricsCommand,
 	registerSetupCommand,
-} from '../../lib/makfy-helper';
+} from '../../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
-} from '../../lib/cow-components-shared';
-import { METRICS_DIR } from '../../../collectors/shared/constants';
-import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
-import { getRenderTimeIndexJsTemplate } from '../../../collectors/cow-components/cow-components-svelte/templates/render-time-index-js-template';
-import { getRenderTimeIndexHTMLTemplate } from '../../../collectors/cow-components/cow-components-svelte/templates/render-time-index-html-template';
-import { getRenderTimeSvelteTemplate } from '../../../collectors/cow-components/cow-components-svelte/templates/render-time-svelte-template';
-import { writeFile } from '../../../collectors/shared/files';
+} from '../../../lib/cow-components-shared';
+import { METRICS_DIR } from '../../../../collectors/shared/constants';
+import { rimrafAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
+import { getRenderTimeIndexJsTemplate } from '../../../../collectors/cow-components/cow-components-svelte/templates/render-time-index-js-template';
+import { getRenderTimeIndexHTMLTemplate } from '../../../../collectors/cow-components/cow-components-svelte/templates/render-time-index-html-template';
+import { getRenderTimeSvelteTemplate } from '../../../../collectors/cow-components/cow-components-svelte/templates/render-time-svelte-template';
+import { writeFile } from '../../../../collectors/shared/files';
 
 export const SVELTE_DEMO_DIR = path.join(DEMO_REPO_DIR, 'svelte');
 const DEMO_METRICS_DIR = path.join(SVELTE_DEMO_DIR, 'metrics');

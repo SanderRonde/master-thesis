@@ -1,4 +1,4 @@
-import { ComponentFiles } from '../../dashboard/lib/get-components';
+import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
 import { UILibraryClass } from '../../shared/shapes';
 import { getComponents } from './get-components';
 

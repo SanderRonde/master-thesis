@@ -1,17 +1,17 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { extractComponentTypes } from '../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-component-types';
-import { getNamedCowComponents } from '../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
-import { createReactComponent } from '../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/react/scripts/lib/create-react-component';
+import { extractComponentTypes } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-component-types';
+import { getNamedCowComponents } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
+import { createReactComponent } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/react/scripts/lib/create-react-component';
 import {
 	defaultValuesTemplate,
 	getNamespacedPropDemoDefaultValueName,
-} from '../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
-import { DASHBOARD_DIR } from '../../../shared/constants';
-import { transformFile, writeFile } from '../../../shared/files';
+} from '../../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
+import { DASHBOARD_DIR } from '../../../../shared/constants';
+import { transformFile, writeFile } from '../../../../shared/files';
 
-import { runFunctionIfCalledFromScript } from '../../../shared/helpers';
-import { info, success } from '../../../shared/log';
+import { runFunctionIfCalledFromScript } from '../../../../shared/helpers';
+import { info, success } from '../../../../shared/log';
 import { EXCLUDED_COMPONENTS } from '../get-components';
 import {
 	DEFAULT_VALUE_PREFIX,

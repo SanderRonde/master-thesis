@@ -9,11 +9,11 @@ import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 import { spawn } from 'child_process';
 
-import {
-	SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
-	SVELTE_DEMO_DIR,
-} from '../../../../scripts/metrics/bundles/cow-components-svelte';
 import { ChildProcessByStdio } from 'node:child_process';
+import {
+	SVELTE_DEMO_DIR,
+	SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
+} from '../../../../../scripts/metrics/bundles/cow-components/cow-components-svelte';
 
 const production = !process.env.ROLLUP_WATCH;
 

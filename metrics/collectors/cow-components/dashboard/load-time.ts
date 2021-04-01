@@ -1,10 +1,10 @@
 import * as path from 'path';
 
-import { DASHBOARD_DIR } from '../shared/constants';
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
-import { LoadTime } from '../shared/types';
-import { getLoadTimeForDir } from '../shared/load-time';
+import { DASHBOARD_DIR } from '../../shared/constants';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
+import { LoadTime } from '../../shared/types';
+import { getLoadTimeForDir } from '../../shared/load-time';
 
 const DASHBOARD_DIST_DIR = path.join(DASHBOARD_DIR, 'dist', 'dashboard');
 

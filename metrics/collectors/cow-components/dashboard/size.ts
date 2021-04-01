@@ -1,8 +1,8 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
 import { DASHBOARD_DIST_DIR } from './lib/constants';
 
 export async function getDashboardSize(): Promise<number> {

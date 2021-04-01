@@ -5,27 +5,30 @@ import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import {
 	DASHBOARD_DIR,
 	METRICS_DIR,
-} from '../../../collectors/shared/constants';
+} from '../../../../collectors/shared/constants';
 import {
 	DASHBOARD_DIST_DIR,
 	ANGULAR_EXCLUDED_FILES,
 	DASHBOARD_IGNORED_DIR,
-} from '../../../collectors/cow-components/dashboard/lib/constants';
-import { asyncGlob } from '../../../collectors/shared/helpers';
-import { registerMetricsCommand } from '../../lib/makfy-helper';
+} from '../../../../collectors/cow-components/dashboard/lib/constants';
+import { asyncGlob } from '../../../../collectors/shared/helpers';
+import { registerMetricsCommand } from '../../../lib/makfy-helper';
 import {
 	cpxAsync,
 	omitArr,
 	rimrafAsync,
 	TS_NODE_COMMAND,
-} from '../../lib/helpers';
-import { METRICS } from '../../lib/constants';
-import { readFile, writeFile } from '../../../collectors/shared/files';
-import { htmlTemplate } from '../../../collectors/shared/templates';
+} from '../../../lib/helpers';
+import { METRICS } from '../../../lib/constants';
+import { readFile, writeFile } from '../../../../collectors/shared/files';
+import { htmlTemplate } from '../../../../collectors/shared/templates';
 
 const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
-const DASHBOARD_BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components/dashboard`);
+const DASHBOARD_BASE_DIR = path.join(
+	METRICS_DIR,
+	`collectors/cow-components/dashboard`
+);
 
 async function getAngularJsFilesInDir(dir: string): Promise<string[]> {
 	const allJsFiles = await asyncGlob('*.js', {

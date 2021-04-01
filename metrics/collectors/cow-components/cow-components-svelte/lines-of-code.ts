@@ -1,5 +1,5 @@
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
 import { getLinesOfCodeMetrics } from '../dashboard/lines-of-code';
 import { STORE_NAME } from './lib/constants';
 

@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { SvelteMaterialUI } from '.';
-import { ComponentFiles } from '../../dashboard/lib/get-components';
+import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
 import { readFile } from '../../shared/files';
 import { toCamelCase } from '../../shared/helpers';
 import { createComponentFileFromSvelte } from '../shared/util';

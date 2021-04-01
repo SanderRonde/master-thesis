@@ -2,7 +2,7 @@ import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
 import { getLoadTimeForDir } from '../../shared/load-time';
 import { STORE_NAME } from './lib/constants';
-import { ANGULAR_METADATA_BUNDLE } from '../../../scripts/metrics/bundles/cow-components-angular';
+import { ANGULAR_METADATA_BUNDLE } from '../../../scripts/metrics/bundles/cow-components/cow-components-angular';
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(

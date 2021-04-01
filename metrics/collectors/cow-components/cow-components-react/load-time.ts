@@ -1,10 +1,10 @@
 import * as path from 'path';
 
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
-import { getLoadTimeForDir } from '../shared/load-time';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
+import { getLoadTimeForDir } from '../../shared/load-time';
 import { STORE_NAME } from './lib/constants';
-import { REACT_DEMO_METRICS_TOGGLEABLE_DIR } from '../../scripts/metrics/bundles/cow-components-react';
+import { REACT_DEMO_METRICS_TOGGLEABLE_DIR } from '../../../scripts/metrics/bundles/cow-components/cow-components-react';
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(

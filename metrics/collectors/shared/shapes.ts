@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { ComponentFiles } from '../dashboard/lib/get-components';
+import { ComponentFiles } from '../cow-components/dashboard/lib/get-components';
 import { METRICS_DIR, SUBMODULES_DIR } from './constants';
 
 export type MaybeThennable<T> = T | Promise<T>;

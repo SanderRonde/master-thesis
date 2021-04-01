@@ -1,4 +1,3 @@
-import { createServer } from 'http-server';
 import * as fs from 'fs-extra';
 
 import { generateTempFileName } from './helpers';
@@ -12,8 +11,7 @@ import { LoadTime } from './types';
 import { getDatasetStats } from './stats';
 import { readFile } from './files';
 import { createPage } from './render-time';
-import { AddressInfo } from 'node:net';
-import { doWithServer } from '../dashboard/lib/render-time/serve-dashboard-dist';
+import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
 
 interface EvaluateScriptArgs {
 	data: {

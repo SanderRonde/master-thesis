@@ -1,7 +1,7 @@
 import {
 	ComponentFiles,
 	TextOnlyComponentFile,
-} from '../../dashboard/lib/get-components';
+} from '../../cow-components/dashboard/lib/get-components';
 
 const SCRIPT_REGEX = /<script>((.|\s)*?)<\/script>/g;
 

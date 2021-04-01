@@ -3,8 +3,8 @@ import { AddressInfo } from 'node:net';
 import * as path from 'path';
 import serveStatic from 'serve-static';
 
-import { runFunctionIfCalledFromScript } from '../../../shared/helpers';
-import { success } from '../../../shared/log';
+import { runFunctionIfCalledFromScript } from '../../../../shared/helpers';
+import { success } from '../../../../shared/log';
 import { DASHBOARD_DIST_DIR } from '../constants';
 
 export function doWithServer<R>(

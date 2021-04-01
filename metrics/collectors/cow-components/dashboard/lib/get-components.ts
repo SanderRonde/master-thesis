@@ -1,7 +1,7 @@
 import {
 	getCowComponents,
 	getMatchingComponent,
-} from '../../../submodules/30mhz-dashboard/src/lib/web-components/scripts/lib/get-cow-components';
+} from '../../../../submodules/30mhz-dashboard/src/lib/web-components/scripts/lib/get-cow-components';
 
 export interface ReadFile {
 	filePath: string;

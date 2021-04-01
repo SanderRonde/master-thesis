@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import * as fs from 'fs-extra';
 
-import { ComponentFiles } from '../dashboard/lib/get-components';
+import { ComponentFiles } from '../cow-components/dashboard/lib/get-components';
 import { findLastIndex, generateTempFileName, wait } from './helpers';
 import { debug, info } from './log';
 
@@ -15,7 +15,7 @@ import {
 	SLOWDOWN_FACTOR_RENDER_TIME,
 	WAIT_AFTER_IDLE_TIME,
 } from './settings';
-import { doWithServer } from '../dashboard/lib/render-time/serve-dashboard-dist';
+import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
 import { RenderTime } from './types';
 import { getDatasetStats } from './stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';

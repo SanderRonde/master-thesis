@@ -6,8 +6,8 @@ import { RenderTime } from '../../shared/types';
 import { getRenderTime } from '../../shared/render-time';
 import { ComponentFiles, getComponents } from '../dashboard/lib/get-components';
 import { STORE_NAME } from './lib/constants';
-import { ANGULAR_DEMO_DIR } from '../../../scripts/metrics/bundles/cow-components-angular';
 import { SET_RENDER_OPTION_FUNCTION_NAME } from '../dashboard/lib/render-time/templates/set-render-option';
+import { ANGULAR_DEMO_DIR } from '../../../scripts/metrics/bundles/cow-components/cow-components-angular';
 
 interface AppRootElement extends HTMLElement {
 	[SET_RENDER_OPTION_FUNCTION_NAME]: (name: string, value: boolean) => void;
