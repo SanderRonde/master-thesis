@@ -100,7 +100,7 @@ export function error(filePath: string, ...data: [any, ...any]) {
 }
 
 export function debug(filePath: string, ...data: [any, ...any]) {
-	if (!DEVELOPMENT) {
+	if (!DEVELOPMENT && !process.argv.includes('--log-debug')) {
 		return;
 	}
 	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
