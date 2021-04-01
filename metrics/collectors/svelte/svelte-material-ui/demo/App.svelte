@@ -6,7 +6,7 @@
 	window.setVisibleComponent = (componentName, isVisible) => {
 		visible[componentName] = isVisible;
 	};
-	window.avilableComponents = ['Button', 'Input', 'Switch'];
+	window.availableComponents = ['Button', 'Input', 'Switch'];
 
 	let visible = {
 		Button: false,

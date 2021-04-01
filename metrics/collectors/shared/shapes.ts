@@ -10,7 +10,7 @@ type BaseComponent = 'Button' | 'Switch' | 'Input' | 'DatePicker';
 
 export interface ComponentVisibilitySetterWindow extends Window {
 	setVisibleComponent(componentName: BaseComponent, visible: boolean): void;
-	avilableComponents: BaseComponent[];
+	availableComponents: BaseComponent[];
 }
 
 export type GetComponentFunction = (

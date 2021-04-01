@@ -24,5 +24,3 @@ export async function getComponents(
 
 	return components;
 }
-
-getComponents(path.join(SUBMODULES_DIR, 'smelte'));

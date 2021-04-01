@@ -237,7 +237,7 @@ async function collectRenderTimes({
 	const renderTimes = await getRenderTime({
 		getComponents: async (page) => {
 			const visibleComponentNames = await page.evaluate(() => {
-				return window.avilableComponents;
+				return window.availableComponents;
 			});
 			return visibleComponentNames;
 		},

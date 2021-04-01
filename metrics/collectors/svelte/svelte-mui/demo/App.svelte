@@ -1,9 +1,5 @@
 <script>
-	import 'smelte/src/tailwind.css';
-	import Button from 'smelte/src/components/Button';
-	import Textfield from 'smelte/src/components/TextField';
-	import Switch from 'smelte/src/components/Switch';
-	import DatePicker from 'smelte/src/components/DatePicker';
+	import { Button, Datepicker, Checkbox, Textfield } from 'svelte-mui';
 
 	window.setVisibleComponent = (componentName, isVisible) => {
 		visible[componentName] = isVisible;
@@ -22,11 +18,11 @@
 	<Button>Content</Button>
 {/if}
 {#if visible.Switch}
-	<Switch />
+	<Checkbox />
 {/if}
 {#if visible.Input}
-	<Textfield label="Label" />
+	<Textfield />
 {/if}
 {#if visible.DatePicker}
-	<DatePicker />
+	<Datepicker />
 {/if}

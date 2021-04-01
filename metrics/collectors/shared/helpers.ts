@@ -179,3 +179,16 @@ export function toCamelCase(str: string, capitalizeFirst: boolean = false) {
 
 	return words.join('');
 }
+
+export async function asyncFilter<I>(
+	arr: I[],
+	filter: (item: I, index: number, arr: I[]) => Promise<boolean>
+) {
+	const items: I[] = [];
+	for (let i = 0; i < arr.length; i++) {
+		if (await filter(arr[i], i, arr)) {
+			items.push(arr[i]);
+		}
+	}
+	return items;
+}
