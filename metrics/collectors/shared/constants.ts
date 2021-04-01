@@ -1,5 +1,7 @@
 import * as path from 'path';
 
+export const MAX_PUPPETEER_BROWSER_LAUNCH_TRIES = 3;
+
 export const ROOT_DIR = path.join(__dirname, '../../../');
 export const METRICS_DIR = path.join(ROOT_DIR, 'metrics');
 export const DASHBOARD_DIR = path.join(
@@ -9,4 +11,4 @@ export const DASHBOARD_DIR = path.join(
 );
 export const TEMP_DIR = path.join(METRICS_DIR, 'temp');
 export const CACHE_DIR = path.join(METRICS_DIR, 'cache');
-export const SUBMODULES_DIR = path.join(METRICS_DIR, 'submodules')
+export const SUBMODULES_DIR = path.join(METRICS_DIR, 'submodules');

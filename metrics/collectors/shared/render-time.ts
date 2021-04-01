@@ -21,6 +21,7 @@ import { getDatasetStats } from './stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from './testing';
 import { readFile } from './files';
+import { MAX_PUPPETEER_BROWSER_LAUNCH_TRIES } from './constants';
 
 interface PuppeteerWindow extends Window {
 	requestIdleCallback(
@@ -32,8 +33,31 @@ interface PuppeteerWindow extends Window {
 }
 declare const window: PuppeteerWindow;
 
+async function tryLaunchPuppeteer(
+	options: puppeteer.LaunchOptions &
+		puppeteer.BrowserLaunchArgumentOptions &
+		puppeteer.BrowserConnectOptions & {
+			product?: puppeteer.Product;
+			extraPrefsFirefox?: Record<string, unknown>;
+		},
+	attemptsLeft: number = MAX_PUPPETEER_BROWSER_LAUNCH_TRIES
+): Promise<puppeteer.Browser> {
+	try {
+		const browser = await puppeteer.launch({
+			timeout: NAVIGATION_TIMEOUT,
+		});
+		return browser;
+	} catch (e) {
+		if (attemptsLeft === 0) {
+			throw e;
+		}
+		await wait(5000);
+		return await tryLaunchPuppeteer(options, attemptsLeft - 1);
+	}
+}
+
 export async function createPage() {
-	const browser = await puppeteer.launch({
+	const browser = await tryLaunchPuppeteer({
 		timeout: NAVIGATION_TIMEOUT,
 	});
 	const page = await browser.newPage();
