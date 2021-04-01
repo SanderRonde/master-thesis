@@ -1,4 +1,7 @@
-import { collectBundleMetrics } from '../../../lib/bundles-shared';
+import {
+	getBundleMetricsCommandCreator,
+	getBundleSetupCommandCreator,
+} from '../../../lib/bundles-shared';
 import {
 	ConstArrItems,
 	ParallelBundleMap,
@@ -13,27 +16,17 @@ export const svelteBundles = [
 	'svelte-mui',
 ] as const;
 
-const {
-	metricsCommand: svelteMaterialUIMetrics,
-	setupCommand: svelteMaterialUISetup,
-} = collectBundleMetrics('svelte', 'svelte-material-ui');
-const {
-	metricsCommand: smelteMetrics,
-	setupCommand: smelteSetup,
-} = collectBundleMetrics('svelte', 'smelte');
-const {
-	metricsCommand: svelteMUIMetrics,
-	setupCommand: svelteMUISetup,
-} = collectBundleMetrics('svelte', 'svelte-mui');
+const setupCreator = getBundleSetupCommandCreator('svelte');
+const metricsCreator = getBundleMetricsCommandCreator('svelte');
 
 export const svelteParallelBundleMap: ParallelBundleMap<SvelteBundles> = {
-	'svelte-material-ui': svelteMaterialUISetup,
-	smelte: smelteSetup,
-	'svelte-mui': svelteMUISetup,
+	'svelte-material-ui': setupCreator('svelte-material-ui'),
+	smelte: setupCreator('smelte'),
+	'svelte-mui': setupCreator('svelte-mui'),
 };
 
 export const svelteSerialBundleMap: SerialBundleMap<SvelteBundles> = {
-	'svelte-material-ui': svelteMaterialUIMetrics,
-	smelte: smelteMetrics,
-	'svelte-mui': svelteMUIMetrics,
+	'svelte-material-ui': metricsCreator('svelte-material-ui'),
+	smelte: metricsCreator('smelte'),
+	'svelte-mui': metricsCreator('svelte-mui'),
 };

@@ -261,13 +261,22 @@ async function collectRenderTimes({
 	);
 }
 
-export function collectBundleMetrics(
-	bundleCategory: string,
-	bundleName: string
-) {
+function getPaths(bundleCategory: string, bundleName: string) {
 	const basePath = path.join(COLLECTORS_DIR, bundleCategory, bundleName);
 	const demoPath = path.join(basePath, 'demo');
 	const submodulePath = path.join(SUBMODULES_DIR, bundleName);
+	return {
+		basePath,
+		demoPath,
+		submodulePath,
+	};
+}
+
+export function getBundleSetupCommand(
+	bundleCategory: string,
+	bundleName: string
+) {
+	const { demoPath } = getPaths(bundleCategory, bundleName);
 
 	const setupCommand = registerSetupCommand(bundleName).run(async (exec) => {
 		await exec('? Installing dependencies');
@@ -276,6 +285,18 @@ export function collectBundleMetrics(
 		await exec('? Building');
 		await exec(`yarn --cwd ${demoPath} build`);
 	});
+
+	return setupCommand;
+}
+
+export function getBundleMetricsCommand(
+	bundleCategory: string,
+	bundleName: string
+) {
+	const { basePath, demoPath, submodulePath } = getPaths(
+		bundleCategory,
+		bundleName
+	);
 
 	const metricsCommand = registerMetricsCommand(bundleName).run(
 		async (exec) => {
@@ -314,8 +335,17 @@ export function collectBundleMetrics(
 		}
 	);
 
-	return {
-		setupCommand,
-		metricsCommand,
+	return metricsCommand;
+}
+
+export function getBundleSetupCommandCreator(bundleCategory: string) {
+	return (bundleName: string) => {
+		return getBundleSetupCommand(bundleCategory, bundleName);
+	};
+}
+
+export function getBundleMetricsCommandCreator(bundleCategory: string) {
+	return (bundleName: string) => {
+		return getBundleMetricsCommand(bundleCategory, bundleName);
 	};
 }
