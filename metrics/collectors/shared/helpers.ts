@@ -174,9 +174,7 @@ export function findLast<I>(
 export function toCamelCase(str: string, capitalizeFirst: boolean = false) {
 	const arr = str.split('-');
 	const words = arr.map((item, index) =>
-		capitalizeFirst || index > 0
-			? capitalize(item.toLowerCase())
-			: item.toLowerCase()
+		capitalizeFirst || index > 0 ? capitalize(item) : item
 	);
 
 	return words.join('');

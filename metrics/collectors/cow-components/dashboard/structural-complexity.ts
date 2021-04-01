@@ -27,8 +27,12 @@ async function getSourceFile(
 
 export async function findFilePath(base: string, ends: string[]) {
 	for (const end of ends) {
-		if (await fs.pathExists(path.join(base, end))) {
-			return path.join(base, end);
+		const foundPath = path.join(base, end);
+		if (
+			(await fs.pathExists(foundPath)) &&
+			!(await fs.stat(foundPath)).isDirectory()
+		) {
+			return foundPath;
 		}
 	}
 	return null;

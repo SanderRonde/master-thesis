@@ -40,10 +40,12 @@ export const metris = preserveCommandBuilder(
 		.args({
 			'skip-dashboard': flag(),
 			bundle: choice([...BUNDLES, 'all'], 'all'),
+			'skip-build': flag(),
 			...METRICS_COMMAND_ARGS,
 		})
 		.argsDesc({
 			'skip-dashboard': 'Skip installing of dashboard',
+			'skip-build': 'Skip the build process of the current bundle',
 			bundle: 'A specific bundle to use. Uses all by default',
 			...METRICS_COMMAND_ARG_DESCRIPTIONS,
 		})
@@ -106,14 +108,16 @@ export const metris = preserveCommandBuilder(
 		await exec(getCommandBuilderExec(serialBundleMap.dashboard, execArgs));
 	}
 
-	// Run all parallel tasks
-	await exec(
-		bundles
-			.filter((bundle) => parallelBundleMap[bundle])
-			.map((bundle) =>
-				getCommandBuilderExec(parallelBundleMap[bundle]!, execArgs)
-			)
-	);
+	if (!args['skip-build']) {
+		// Run all parallel tasks
+		await exec(
+			bundles
+				.filter((bundle) => parallelBundleMap[bundle])
+				.map((bundle) =>
+					getCommandBuilderExec(parallelBundleMap[bundle]!, execArgs)
+				)
+		);
+	}
 
 	// Run all sync tasks
 	for (const bundle of bundles) {

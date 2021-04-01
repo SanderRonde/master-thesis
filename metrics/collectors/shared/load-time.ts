@@ -57,7 +57,6 @@ async function createPerformanceProfile(
 	await page.tracing.start({
 		path: profilePath,
 	});
-	console.log('Goto', `http://localhost:${port}${rootPath}`);
 	await page.goto(`http://localhost:${port}${rootPath}`);
 	await page.tracing.stop();
 	await browser.close();

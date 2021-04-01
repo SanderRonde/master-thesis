@@ -1,4 +1,3 @@
-import * as fs from 'fs-extra';
 import * as path from 'path';
 import { extractComponentTypes } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-component-types';
 import { getNamedCowComponents } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
@@ -249,31 +248,32 @@ export async function getJoinedComponentDefs(): Promise<JoinedDefinition[]> {
  */
 
 runFunctionIfCalledFromScript(async () => {
-	info(__filename, 'Getting browser module');
+	const tagName = 'generate-render-time-page';
+	info(tagName, 'Getting browser module');
 	await addBrowserModule();
-	info(__filename, 'Adding to app module');
+	info(tagName, 'Adding to app module');
 	await addToAppModule();
-	info(__filename, 'Disabling support button');
+	info(tagName, 'Disabling support button');
 	await disableSupportButton();
-	info(__filename, 'Removing 404 page from shared module');
+	info(tagName, 'Removing 404 page from shared module');
 	await remove404PageFromModule();
-	info(__filename, 'Making chart deterministic');
+	info(tagName, 'Making chart deterministic');
 	await makeChartDeterministic();
-	info(__filename, 'Getting component defs');
+	info(tagName, 'Getting component defs');
 	const componentDefs = await getJoinedComponentDefs();
-	info(__filename, 'Generating render timing html');
+	info(tagName, 'Generating render timing html');
 	const renderTimeHTML = await generateRenderTimeHTML(componentDefs);
-	info(__filename, 'Writing render timing HTML');
+	info(tagName, 'Writing render timing HTML');
 	await writeRenderTimeHTML(renderTimeHTML);
-	info(__filename, 'Adding change detector function');
+	info(tagName, 'Adding change detector function');
 	await addChangeDetectorFunction();
-	info(__filename, 'Adding default values to file');
+	info(tagName, 'Adding default values to file');
 	await addDefaultValuesToFile(componentDefs);
-	info(__filename, 'Adding default values to class');
+	info(tagName, 'Adding default values to class');
 	await addDefaultValuesToClass(componentDefs);
-	info(__filename, 'Disabling authentication');
+	info(tagName, 'Disabling authentication');
 	await disableAuthentication();
-	info(__filename, 'Adding toggles to class');
+	info(tagName, 'Adding toggles to class');
 	await addTogglesToClass(componentDefs);
-	success(__filename, 'Done generating render timing page');
+	success(tagName, 'Done generating render timing page');
 }, __filename);

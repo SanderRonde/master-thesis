@@ -2,9 +2,7 @@ import chalk from 'chalk';
 import { format } from 'util';
 import * as path from 'path';
 
-import { METRICS_DIR } from './constants';
 import { DEVELOPMENT } from './settings';
-import { BUNDLES, METRICS } from '../../scripts/lib/constants';
 
 const ANSI_REGEX = new RegExp(
 	[
@@ -12,37 +10,6 @@ const ANSI_REGEX = new RegExp(
 		'(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))',
 	].join('|')
 );
-
-function pathSplit(filePath: string) {
-	const parts: string[] = [];
-	while (true) {
-		const { dir, base } = path.parse(filePath);
-		filePath = dir;
-		parts.push(...base.split('.'));
-
-		if (dir === base) {
-			return [
-				...parts,
-				...(dir !== '' && dir !== '.' ? [dir] : []),
-			].reverse();
-		}
-	}
-}
-
-function getTagFromFilePath(filePath: string) {
-	if (!filePath.includes('/') && !filePath.includes('\\')) {
-		return filePath;
-	}
-
-	const splitPath = pathSplit(
-		path.relative(path.join(METRICS_DIR, 'collectors'), filePath)
-	);
-	const bundle =
-		splitPath.find((part) => BUNDLES.includes(part as any)) || '?';
-	const metric =
-		splitPath.find((part) => METRICS.includes(part as any)) || '?';
-	return `${bundle}.${metric}`;
-}
 
 function getSourceLine() {
 	const err = new Error();
@@ -79,31 +46,31 @@ function log(rawTag: string, tag: string, ...data: any[]) {
 	process.stdout.write(`${formatted}${padding}${sourceLine}\n`);
 }
 
-export function info(filePath: string, ...data: [any, ...any]) {
-	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+export function info(tagName: string, ...data: [any, ...any]) {
+	const raw = `[ ${tagName} ] -`;
 	log(raw, chalk.blue(raw), ...data);
 }
 
-export function success(filePath: string, ...data: [any, ...any]) {
-	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+export function success(tagName: string, ...data: [any, ...any]) {
+	const raw = `[ ${tagName} ] -`;
 	log(raw, chalk.green(chalk.bold(raw)), ...data);
 }
 
-export function warning(filePath: string, ...data: [any, ...any]) {
-	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+export function warning(tagName: string, ...data: [any, ...any]) {
+	const raw = `[ ${tagName} ] -`;
 	log(raw, chalk.rgb(255, 165, 0)(chalk.bold(raw)), ...data);
 }
 
-export function error(filePath: string, ...data: [any, ...any]) {
-	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+export function error(tagName: string, ...data: [any, ...any]) {
+	const raw = `[ ${tagName} ] -`;
 	log(raw, chalk.red(chalk.bold(raw)), ...data);
 }
 
-export function debug(filePath: string, ...data: [any, ...any]) {
+export function debug(tagName: string, ...data: [any, ...any]) {
 	if (!DEVELOPMENT && !process.env.LOG_DEBUG) {
 		return;
 	}
-	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	const raw = `[ ${tagName} ] -`;
 	log(
 		raw,
 
@@ -112,10 +79,10 @@ export function debug(filePath: string, ...data: [any, ...any]) {
 	);
 }
 
-export function tempLog(filePath: string, ...data: [any, ...any]) {
+export function tempLog(tagName: string, ...data: [any, ...any]) {
 	if (!DEVELOPMENT) {
 		throw new Error('Temp log still in code');
 	}
-	const raw = `[ ${getTagFromFilePath(filePath)} ] -`;
+	const raw = `[ ${tagName} ] -`;
 	log(raw, chalk.rgb(255, 174, 0)(chalk.bold(raw)), ...data);
 }

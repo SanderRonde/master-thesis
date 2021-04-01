@@ -7,4 +7,6 @@ metrics/collectors/**/demo/demo.*
 metrics/collectors/**/demo/rollup.config.js
 metrics/collectors/**/demo/yarn.lock
 
+!metrics/collectors/svelte/smelte/demo/rollup.config.js
+
 yarn-error.log

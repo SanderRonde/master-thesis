@@ -44,7 +44,16 @@ interface CollectorArgs {
 
 declare const window: ComponentVisibilitySetterWindow;
 
-const EXTENSIONS = ['/index.ts', '.svelte', '.tsx', '.jsx', '.js', '.ts', ''];
+const EXTENSIONS = [
+	'/index.ts',
+	'/index.js',
+	'.svelte',
+	'.tsx',
+	'.jsx',
+	'.js',
+	'.ts',
+	'',
+];
 
 async function getFileScript(filePath: string) {
 	const extension = path.parse(filePath).ext;
@@ -58,7 +67,9 @@ async function getFileScript(filePath: string) {
 			const code = await readFile(filePath);
 			return createComponentFileFromSvelte(code, '', filePath).js.content;
 		default:
-			throw new Error('Unknown file extension');
+			throw new Error(
+				`Unknown file extension "${extension}" for file "${filePath}"`
+			);
 	}
 }
 
@@ -89,7 +100,6 @@ async function recursivelyGetDependencies(
 					EXTENSIONS.map((ext) => `${importPath.text}${ext}`)
 				);
 				if (!joinedPath) {
-					console.log(filePath, importPath.text);
 					throw new Error(
 						`Failed to find path for "${path.dirname(filePath)}"."${
 							importPath.text
@@ -99,17 +109,16 @@ async function recursivelyGetDependencies(
 			}
 			imports.push(path.resolve(joinedPath));
 
-			imports.push(
-				...(await recursivelyGetDependencies(
-					(
-						await createSingleFileTSProgram(
-							await getFileScript(joinedPath)
-						)
-					).ast,
-					joinedPath,
-					levelsRemaining - 1
-				))
-			);
+			const script = await getFileScript(joinedPath);
+			if (script.length !== 0) {
+				imports.push(
+					...(await recursivelyGetDependencies(
+						(await createSingleFileTSProgram(script)).ast,
+						joinedPath,
+						levelsRemaining - 1
+					))
+				);
+			}
 		}
 	}
 

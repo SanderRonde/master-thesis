@@ -86,7 +86,6 @@ export async function openPage(
 	await client.send('Emulation.setCPUThrottlingRate', {
 		rate: slowdownFactor,
 	});
-	console.log('Goto', `http://localhost:${port}${path}`);
 	await page.goto(`http://localhost:${port}${path}`);
 
 	// Wait for the page to load

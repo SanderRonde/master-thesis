@@ -9,15 +9,18 @@ import { createComponentFileFromSvelte } from '../shared/util';
 const OVERRIDES = new Map([['Chips', 'Chip']]);
 const IGNORED = new Set(['common', 'ripple']);
 
-function dirNameToComponentName(dirName: string) {
+export function dirNameToComponentName(dirName: string) {
 	return toCamelCase(dirName, true);
 }
 
-async function getComponentFiles(dir: string) {
+export async function getComponentFiles(
+	dir: string,
+	overrides: Map<string, string>
+) {
 	const componentName = dirNameToComponentName(path.parse(dir).base);
 	const mainFile = path.join(
 		dir,
-		`${OVERRIDES.get(componentName) || componentName}.svelte`
+		`${overrides.get(componentName) || componentName}.svelte`
 	);
 
 	return createComponentFileFromSvelte(
@@ -36,7 +39,9 @@ export async function getComponents(
 	const components = await Promise.all(
 		dirList
 			.filter((dir) => !IGNORED.has(dir))
-			.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
+			.map((dir) =>
+				getComponentFiles(path.join(packagesPath, dir), OVERRIDES)
+			)
 	);
 
 	return components;
