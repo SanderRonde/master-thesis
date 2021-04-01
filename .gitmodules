@@ -4,3 +4,6 @@
 [submodule "metrics/submodules/svelte-material-ui"]
 	path = metrics/submodules/svelte-material-ui
 	url = https://github.com/hperrin/svelte-material-ui
+[submodule "metrics/submodules/smelte"]
+	path = metrics/submodules/smelte
+	url = https://github.com/matyunya/smelte
