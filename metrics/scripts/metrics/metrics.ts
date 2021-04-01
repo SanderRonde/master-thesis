@@ -30,7 +30,7 @@ import {
 	cowComponentsSvelteSetup,
 } from './bundles/cow-components-svelte';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
-import { makeChartDeterministic } from '../../collectors/dashboard/lib/render-time/generate-render-time-page';
+import { makeChartDeterministic } from '../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';
 
 const parallelBundleMap: {

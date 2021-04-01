@@ -8,8 +8,8 @@ import {
 	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
 import { cpxAsync, rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
-import { getRenderTimeJsTemplate } from '../../../collectors/cow-components-angular/templates/render-time-js-template';
-import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components-angular/templates/render-time-html-template';
+import { getRenderTimeJsTemplate } from '../../../collectors/cow-components/cow-components-angular/templates/render-time-js-template';
+import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components/cow-components-angular/templates/render-time-html-template';
 import { concatIntoBundle } from './dashboard';
 import { readFile, writeFile } from '../../../collectors/shared/files';
 

@@ -10,7 +10,7 @@ import {
 	DASHBOARD_DIST_DIR,
 	ANGULAR_EXCLUDED_FILES,
 	DASHBOARD_IGNORED_DIR,
-} from '../../../collectors/dashboard/lib/constants';
+} from '../../../collectors/cow-components/dashboard/lib/constants';
 import { asyncGlob } from '../../../collectors/shared/helpers';
 import { registerMetricsCommand } from '../../lib/makfy-helper';
 import {
@@ -25,7 +25,7 @@ import { htmlTemplate } from '../../../collectors/shared/templates';
 
 const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
-const DASHBOARD_BASE_DIR = path.join(METRICS_DIR, `collectors/dashboard`);
+const DASHBOARD_BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components/dashboard`);
 
 async function getAngularJsFilesInDir(dir: string): Promise<string[]> {
 	const allJsFiles = await asyncGlob('*.js', {

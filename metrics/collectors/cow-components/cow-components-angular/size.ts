@@ -1,9 +1,9 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { ANGULAR_METADATA_BUNDLE } from '../../scripts/metrics/bundles/cow-components-angular';
+import { ANGULAR_METADATA_BUNDLE } from '../../../scripts/metrics/bundles/cow-components-angular';
 
-import { runFunctionIfCalledFromScript } from '../shared/helpers';
-import { storeData } from '../shared/storage';
+import { runFunctionIfCalledFromScript } from '../../shared/helpers';
+import { storeData } from '../../shared/storage';
 import { STORE_NAME } from './lib/constants';
 
 export async function getDashboardSize(): Promise<number> {
