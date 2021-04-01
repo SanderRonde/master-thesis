@@ -22,6 +22,7 @@ import {
 } from '../../lib/helpers';
 import { METRICS } from '../../lib/constants';
 import { readFile, writeFile } from '../../../collectors/shared/files';
+import { htmlTemplate } from '../../../collectors/shared/templates';
 
 const BROWSERS_LIST_FILE = path.join(DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(DASHBOARD_DIR, 'angular.json');
@@ -102,7 +103,7 @@ export async function concatIntoBundle(exec: ExecFunction, dir: string) {
 	await exec('? Creating index.html file');
 	await writeFile(
 		path.join(dir, 'index.html'),
-		'<html><body><script src="bundle.js"></script></body>'
+		htmlTemplate({ jsPath: 'bundle.js' })
 	);
 
 	await exec('? Bundling');

@@ -1,6 +1,5 @@
-import { getJoinedComponentDefs } from '../../dashboard/lib/render-time/generate-render-time-page';
+import { htmlTemplate } from '../../shared/templates';
 
 export async function getRenderTimeHTMLTemplate() {
-	const components = await getJoinedComponentDefs();
-	return `<html><head><link rel="stylesheet" href="./index.css" /></head><body style="margin: 50px;"><div style="margin-top: 300px;" id="root"></div><script src="index.bundle.js"></script></body></html>`;
+	return htmlTemplate();
 }
