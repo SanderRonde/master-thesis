@@ -15,7 +15,7 @@ export async function getMaintainabilityMetrics() {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'dashboard', 'maintainability'],
+		['metrics', 'cow-components', 'dashboard', 'maintainability'],
 		await getMaintainabilityMetrics()
 	);
 }, __filename);

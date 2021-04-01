@@ -21,7 +21,7 @@ export async function getCyclomaticComplexityMetrics() {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'dashboard', 'cyclomatic-complexity'],
+		['metrics', 'cow-components', 'dashboard', 'cyclomatic-complexity'],
 		await getCyclomaticComplexityMetrics()
 	);
 }, __filename);

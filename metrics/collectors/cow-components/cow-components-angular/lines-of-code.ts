@@ -5,7 +5,7 @@ import { STORE_NAME } from './lib/constants';
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', STORE_NAME, 'lines-of-code'],
+		['metrics','cow-components', STORE_NAME, 'lines-of-code'],
 		await getLinesOfCodeMetrics()
 	);
 }, __filename);

@@ -14,7 +14,7 @@ export function getDashboardLoadTime(): Promise<LoadTime> {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'dashboard', 'load-time'],
+		['metrics', 'cow-components', 'dashboard', 'load-time'],
 		await getDashboardLoadTime()
 	);
 }, __filename);

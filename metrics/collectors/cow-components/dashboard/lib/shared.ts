@@ -2,14 +2,14 @@ import { sortObjectKeys } from '../../../shared/helpers';
 import { DatasetStats, getDatasetStats } from '../../../shared/stats';
 import { ComponentFiles, getComponents, ReadFile } from './get-components';
 
-export async function collectDashboardMetrics<A>(
+export async function collectBundleMetrics<A>(
+	components: ComponentFiles[],
 	getFileMetrics: (file: ReadFile, ...args: A[]) => number | Promise<number>,
 	getArgs?: (components: ComponentFiles[]) => A[] | Promise<A[]>
 ): Promise<{
 	components: Record<string, number>;
 	stats: DatasetStats;
 }> {
-	const components = await getComponents();
 	const args = (await getArgs?.(components)) || [];
 
 	const data: Record<string, number> = {};
@@ -27,4 +27,14 @@ export async function collectDashboardMetrics<A>(
 		components: sortObjectKeys(data),
 		stats,
 	};
+}
+
+export async function collectDashboardMetrics<A>(
+	getFileMetrics: (file: ReadFile, ...args: A[]) => number | Promise<number>,
+	getArgs?: (components: ComponentFiles[]) => A[] | Promise<A[]>
+): Promise<{
+	components: Record<string, number>;
+	stats: DatasetStats;
+}> {
+	return collectBundleMetrics(await getComponents(), getFileMetrics, getArgs);
 }
