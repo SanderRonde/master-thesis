@@ -13,6 +13,7 @@ import { getDatasetStats } from './stats';
 import { readFile } from './files';
 import { createPage } from './render-time';
 import { AddressInfo } from 'node:net';
+import { doWithServer } from '../dashboard/lib/render-time/serve-dashboard-dist';
 
 interface EvaluateScriptArgs {
 	data: {
@@ -99,35 +100,27 @@ export function getLoadTimeForDir(
 	dirName: string,
 	fileName: string = 'index.bundle.js'
 ): Promise<LoadTime> {
-	return new Promise<LoadTime>((resolve) => {
-		const server = createServer({
-			root: dirName,
-		});
-		info('load-time', 'Starting server');
-		server.listen(0, async () => {
-			const port = (server.address() as AddressInfo).port;
-			const profiles: PerformanceProfile[] = [];
-			for (let i = 0; i < LOAD_TIME_PERFORMANCE_MEASURES; i++) {
-				info(
-					'load-time',
-					`Creating performance profile for iteration ${
-						i + 1
-					}/${LOAD_TIME_PERFORMANCE_MEASURES}`
-				);
-				profiles.push(await createPerformanceProfile(port));
-			}
-
-			info('load-time', 'Extracting load times');
-			const loadTimes = profiles.map((profile) =>
-				getBundleLoadTimeFromProfile(port, profile, fileName)
+	info('load-time', 'Starting server');
+	return doWithServer(0, dirName, async (port) => {
+		const profiles: PerformanceProfile[] = [];
+		for (let i = 0; i < LOAD_TIME_PERFORMANCE_MEASURES; i++) {
+			info(
+				'load-time',
+				`Creating performance profile for iteration ${
+					i + 1
+				}/${LOAD_TIME_PERFORMANCE_MEASURES}`
 			);
+			profiles.push(await createPerformanceProfile(port));
+		}
 
-			server.close();
+		info('load-time', 'Extracting load times');
+		const loadTimes = profiles.map((profile) =>
+			getBundleLoadTimeFromProfile(port, profile, fileName)
+		);
 
-			resolve({
-				values: loadTimes,
-				stats: getDatasetStats(loadTimes),
-			});
-		});
+		return {
+			values: loadTimes,
+			stats: getDatasetStats(loadTimes),
+		};
 	});
 }
