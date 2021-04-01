@@ -2,12 +2,7 @@ import puppeteer from 'puppeteer';
 import * as fs from 'fs-extra';
 
 import { ComponentFiles } from '../dashboard/lib/get-components';
-import {
-	findLastIndex,
-	generateTempFileName,
-	getFreePort,
-	wait,
-} from './helpers';
+import { findLastIndex, generateTempFileName, wait } from './helpers';
 import { debug, info } from './log';
 
 import {
@@ -346,27 +341,23 @@ interface RenderTimeSettings {
 export async function getRenderTime(
 	settings: RenderTimeSettings
 ): Promise<RenderTime> {
-	return await doWithServer(
-		getFreePort(),
-		settings.sourceRoot,
-		async (port) => {
-			// Collect runtime info
-			const frames: Map<string, number>[] = [];
-			for (let i = 0; i < RENDER_TIME_MEASURES; i++) {
-				info(
-					'render-time',
-					`Collecting render times. ${i + 1}/${RENDER_TIME_MEASURES}`
-				);
-				// Set up a slow browser and page
-				frames.push(
-					await collectRuntimeRenderTimes({
-						...settings,
-						port,
-					})
-				);
-			}
-
-			return joinMeasuredData(frames);
+	return await doWithServer(0, settings.sourceRoot, async (port) => {
+		// Collect runtime info
+		const frames: Map<string, number>[] = [];
+		for (let i = 0; i < RENDER_TIME_MEASURES; i++) {
+			info(
+				'render-time',
+				`Collecting render times. ${i + 1}/${RENDER_TIME_MEASURES}`
+			);
+			// Set up a slow browser and page
+			frames.push(
+				await collectRuntimeRenderTimes({
+					...settings,
+					port,
+				})
+			);
 		}
-	);
+
+		return joinMeasuredData(frames);
+	});
 }

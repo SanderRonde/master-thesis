@@ -1,19 +1,18 @@
 import { createServer } from 'http-server';
 import * as fs from 'fs-extra';
-import puppeteer from 'puppeteer';
 
-import { generateTempFileName, getFreePort } from './helpers';
+import { generateTempFileName } from './helpers';
 import { info } from './log';
 import {
 	KEEP_PROFILES,
 	LOAD_TIME_PERFORMANCE_MEASURES,
-	NAVIGATION_TIMEOUT,
 	SLOWDOWN_FACTOR_LOAD_TIME,
 } from './settings';
 import { LoadTime } from './types';
 import { getDatasetStats } from './stats';
 import { readFile } from './files';
 import { createPage } from './render-time';
+import { AddressInfo } from 'node:net';
 
 interface EvaluateScriptArgs {
 	data: {
@@ -101,12 +100,12 @@ export function getLoadTimeForDir(
 	fileName: string = 'index.bundle.js'
 ): Promise<LoadTime> {
 	return new Promise<LoadTime>((resolve) => {
-		const port = getFreePort();
 		const server = createServer({
 			root: dirName,
 		});
 		info('load-time', 'Starting server');
-		server.listen(port, async () => {
+		server.listen(0, async () => {
+			const port = (server.address() as AddressInfo).port;
 			const profiles: PerformanceProfile[] = [];
 			for (let i = 0; i < LOAD_TIME_PERFORMANCE_MEASURES; i++) {
 				info(

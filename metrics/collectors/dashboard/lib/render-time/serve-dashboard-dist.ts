@@ -1,11 +1,9 @@
 import express from 'express';
+import { AddressInfo } from 'node:net';
 import * as path from 'path';
 import serveStatic from 'serve-static';
 
-import {
-	getFreePort,
-	runFunctionIfCalledFromScript,
-} from '../../../shared/helpers';
+import { runFunctionIfCalledFromScript } from '../../../shared/helpers';
 import { success } from '../../../shared/log';
 import { DASHBOARD_DIST_DIR } from '../constants';
 
@@ -21,6 +19,7 @@ export function doWithServer<R>(
 			res.sendFile(path.join(root, 'index.html'));
 		});
 		const server = app.listen(port, async () => {
+			port = port === 0 ? (server.address() as AddressInfo).port : port;
 			success('server', `Listening on port ${port}`);
 			if (callback) {
 				const callbackReturnValue = await callback(port);
@@ -33,7 +32,7 @@ export function doWithServer<R>(
 
 runFunctionIfCalledFromScript(async () => {
 	await doWithServer(
-		process.argv[3] ? parseInt(process.argv[3], 10) : getFreePort(),
+		process.argv[3] ? parseInt(process.argv[3], 10) : 1234,
 		process.argv[2] || DASHBOARD_DIST_DIR
 	);
 }, __filename);

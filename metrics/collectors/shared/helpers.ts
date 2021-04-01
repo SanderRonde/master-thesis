@@ -87,14 +87,6 @@ export function sum(values: number[]) {
 	return values.reduce((prev, current) => prev + current, 0);
 }
 
-export const getFreePort = (() => {
-	let basePort: number = 1234;
-
-	return () => {
-		return basePort++;
-	};
-})();
-
 export const generateRandomString = (() => {
 	const CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(
 		''
