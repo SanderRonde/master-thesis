@@ -1,7 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
-import { cmd, flag, setEnvVar } from 'makfy';
 
 import {
 	DASHBOARD_DIR,
@@ -13,7 +12,7 @@ import {
 	DASHBOARD_IGNORED_DIR,
 } from '../../../collectors/dashboard/lib/constants';
 import { asyncGlob } from '../../../collectors/shared/helpers';
-import { preserveCommandBuilder } from '../../lib/makfy-helper';
+import { registerMetricsCommand } from '../../lib/makfy-helper';
 import {
 	cpxAsync,
 	omitArr,
@@ -124,55 +123,45 @@ async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
 	await concatIntoBundle(exec, DASHBOARD_DIST_DIR);
 }
 
-export const dashboardMetrics = preserveCommandBuilder(
-	cmd('dashboard-metrics')
-		.desc('Collect dashboard metrics')
-		.args({
-			'no-cache': flag(),
-			prod: flag(),
-		})
-		.argsDesc({
-			'no-cache': "Don't use cache and force rebuild",
-			prod: 'Run in production mode',
-		})
-).run(async (exec, args) => {
-	const dashboardCtx = await exec(`cd ${DASHBOARD_DIR}`);
-	await dashboardCtx.keepContext('git reset --hard');
+export const dashboardMetrics = registerMetricsCommand('dashboard').run(
+	async (exec, args) => {
+		const dashboardCtx = await exec(`cd ${DASHBOARD_DIR}`);
+		await dashboardCtx.keepContext('git reset --hard');
 
-	const baseCtx = args.prod
-		? (await exec(setEnvVar('ENV', 'production'))).keepContext
-		: exec;
+		await exec('? Preparing bundle');
+		await dashboardPreBundleMetrics(exec, args['no-cache']);
 
-	await exec('? Preparing bundle');
-	await dashboardPreBundleMetrics(baseCtx, args['no-cache']);
+		await exec('? Collecting non time sensitive metrics');
+		await Promise.all(
+			omitArr(METRICS, 'render-time').map((metric) => {
+				return exec(
+					`${TS_NODE_COMMAND} ${path.join(
+						DASHBOARD_BASE_DIR,
+						`${metric}.ts`
+					)}`
+				);
+			})
+		);
 
-	await exec('? Collecting non time sensitive metrics');
-	await Promise.all(
-		omitArr(METRICS, 'render-time').map((metric) => {
-			return baseCtx(
-				`${TS_NODE_COMMAND} ${path.join(
-					DASHBOARD_BASE_DIR,
-					`${metric}.ts`
-				)}`
-			);
-		})
-	);
+		await dashboardCtx.keepContext('git reset --hard');
 
-	await dashboardCtx.keepContext('git reset --hard');
+		await exec('? Preparing for load time measuring');
+		await exec(
+			`${TS_NODE_COMMAND} ${path.join(
+				DASHBOARD_BASE_DIR,
+				`lib/render-time/generate-render-time-page.ts`
+			)}`
+		);
 
-	await exec('? Preparing for load time measuring');
-	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(
-			DASHBOARD_BASE_DIR,
-			`lib/render-time/generate-render-time-page.ts`
-		)}`
-	);
+		await buildDashboard(exec, 'render-time', args['no-cache']);
 
-	await buildDashboard(baseCtx, 'render-time', args['no-cache']);
+		await exec(
+			`${TS_NODE_COMMAND} ${path.join(
+				DASHBOARD_BASE_DIR,
+				`render-time.ts`
+			)}`
+		);
 
-	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(DASHBOARD_BASE_DIR, `render-time.ts`)}`
-	);
-
-	await dashboardCtx.keepContext('git reset --hard');
-});
+		await dashboardCtx.keepContext('git reset --hard');
+	}
+);

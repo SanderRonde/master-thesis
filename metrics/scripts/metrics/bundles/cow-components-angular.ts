@@ -1,9 +1,8 @@
 import * as path from 'path';
-import { cmd, flag, setEnvVar } from 'makfy';
 import * as fs from 'fs-extra';
 
 import { METRICS_DIR } from '../../../collectors/shared/constants';
-import { preserveCommandBuilder } from '../../lib/makfy-helper';
+import { registerMetricsCommand } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
@@ -22,23 +21,10 @@ const METRICS_COMPONENT_DIR = path.join(ANGULAR_DEMO_DIR, 'src/app');
 const ANGULAR_DEMO_DIST = path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo');
 export const ANGULAR_METADATA_BUNDLE = path.join(ANGULAR_DEMO_DIST, 'metadata');
 
-export const cowComponentsAngularMetrics = preserveCommandBuilder(
-	cmd('cow-components-angular-metrics')
-		.desc('Collect cow-components-angular metrics')
-		.args({
-			'no-cache': flag(),
-			prod: flag(),
-		})
-		.argsDesc({
-			'no-cache': "Don't use cache and force rebuild",
-			prod: 'Run in production mode',
-		})
+export const cowComponentsAngularMetrics = registerMetricsCommand(
+	'cow-components-angular'
 ).run(async (exec, args) => {
-	const baseCtx = args.prod
-		? (await exec(setEnvVar('ENV', 'production'))).keepContext
-		: exec;
-
-	await collectSameAsDashboardMetrics(baseCtx, 'angular');
+	await collectSameAsDashboardMetrics(exec, 'angular');
 
 	// For Angular we use the regular bundle for size and load-time
 	// testing. This is because it will be excluded from the build
@@ -108,9 +94,7 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 	}
 
 	await exec('? Collecting render time metrics');
-	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`
-	);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
 
 	await exec('? Bundling up built files for measuring');
 	await rimrafAsync(ANGULAR_METADATA_BUNDLE);
@@ -119,6 +103,6 @@ export const cowComponentsAngularMetrics = preserveCommandBuilder(
 	await concatIntoBundle(exec, ANGULAR_METADATA_BUNDLE);
 
 	await exec('? Collecting bundle metadata metrics');
-	await baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
-	await baseCtx(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 });

@@ -6,6 +6,8 @@ import * as path from 'path';
 import { DASHBOARD_DIR } from '../../collectors/shared/constants';
 import {
 	getCommandBuilderExec,
+	METRICS_COMMAND_ARGS,
+	METRICS_COMMAND_ARG_DESCRIPTIONS,
 	preserveCommandBuilder,
 } from '../lib/makfy-helper';
 import './bundles/dashboard';
@@ -20,7 +22,7 @@ import { makeChartDeterministic } from '../../collectors/dashboard/lib/render-ti
 import { writeFile } from '../../collectors/shared/files';
 
 const bundleMap: {
-	[K in Bundle]: CommandBuilder<{}>;
+	[K in Bundle]: CommandBuilder<typeof METRICS_COMMAND_ARGS>;
 } = {
 	dashboard: dashboardMetrics,
 	'cow-components-angular': cowComponentsAngularMetrics,
@@ -35,14 +37,12 @@ export const metris = preserveCommandBuilder(
 		.args({
 			'skip-dashboard': flag(),
 			bundle: choice([...BUNDLES, 'all'], 'all'),
-			'no-cache': flag(),
-			prod: flag(),
+			...METRICS_COMMAND_ARGS,
 		})
 		.argsDesc({
 			'skip-dashboard': 'Skip installing of dashboard',
 			bundle: 'A specific bundle to use. Uses all by default',
-			'no-cache': "Don't use cache and force rebuild",
-			prod: 'Enable production mode',
+			...METRICS_COMMAND_ARG_DESCRIPTIONS,
 		})
 ).run(async (exec, args) => {
 	const packagesInstalledFile = path.join(DASHBOARD_DIR, '.vscode/installed');
@@ -93,6 +93,7 @@ export const metris = preserveCommandBuilder(
 			getCommandBuilderExec(bundleMap[bundle], {
 				'no-cache': args['no-cache'],
 				prod: args.prod,
+				'log-debug': args['log-debug'],
 			})
 		);
 	}

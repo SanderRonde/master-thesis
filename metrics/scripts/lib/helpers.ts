@@ -1,4 +1,6 @@
 import cpx from 'cpx';
+import { setEnvVar } from 'makfy';
+import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import rimraf from 'rimraf';
 
 export const TS_NODE_COMMAND =
@@ -40,5 +42,18 @@ export function ifTrue(str: string, condition: boolean): string {
 }
 
 export function omitArr<V>(arr: V[], ...toOmit: V[]): V[] {
-	return arr.filter(entry => !toOmit.includes(entry))
+	return arr.filter((entry) => !toOmit.includes(entry));
+}
+
+export async function setContexts(
+	exec: ExecFunction,
+	args: { prod: boolean; 'log-debug': boolean }
+): Promise<ExecFunction> {
+	if (args.prod) {
+		exec = (await exec(setEnvVar('ENV', 'production'))).keepContext;
+	}
+	if (args['log-debug']) {
+		exec = (await exec(setEnvVar('LOG_DEBUG', 'true'))).keepContext;
+	}
+	return exec;
 }

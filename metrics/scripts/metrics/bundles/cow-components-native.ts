@@ -1,8 +1,7 @@
-import { cmd, flag, setEnvVar } from 'makfy';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { preserveCommandBuilder } from '../../lib/makfy-helper';
+import { registerMetricsCommand } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
@@ -21,23 +20,10 @@ export const NATIVE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-native`);
 
-export const cowComponentsNativeMetrics = preserveCommandBuilder(
-	cmd('cow-components-native-metrics')
-		.desc('Collect cow-components-native metrics')
-		.args({
-			'no-cache': flag(),
-			prod: flag(),
-		})
-		.argsDesc({
-			'no-cache': "Don't use cache and force rebuild",
-			prod: 'Run in production mode',
-		})
-).run(async (exec, args) => {
-	const baseCtx = args.prod
-		? (await exec(setEnvVar('ENV', 'production'))).keepContext
-		: exec;
-
-	await collectSameAsDashboardMetrics(baseCtx, 'native');
+export const cowComponentsNativeMetrics = registerMetricsCommand(
+	'cow-components-native'
+).run(async (exec) => {
+	await collectSameAsDashboardMetrics(exec, 'native');
 
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
@@ -80,7 +66,5 @@ export const cowComponentsNativeMetrics = preserveCommandBuilder(
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 
 	await exec('? Collecting render time metrics');
-	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`
-	);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
 });

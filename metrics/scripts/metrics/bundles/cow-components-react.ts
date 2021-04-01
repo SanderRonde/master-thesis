@@ -1,13 +1,16 @@
-import { cmd, flag, setEnvVar } from 'makfy';
+import { cmd, flag, getMakfyContext, setEnvVar } from 'makfy';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import { preserveCommandBuilder } from '../../lib/makfy-helper';
+import {
+	preserveCommandBuilder,
+	registerMetricsCommand,
+} from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
 } from '../../lib/cow-components-shared';
-import { rimrafAsync, TS_NODE_COMMAND } from '../../lib/helpers';
+import { rimrafAsync, setContexts, TS_NODE_COMMAND } from '../../lib/helpers';
 import { getRenderTimeJsTemplate } from '../../../collectors/cow-components-react/templates/render-time-js-template';
 import { getRenderTimeHTMLTemplate } from '../../../collectors/cow-components-react/templates/render-time-html-template';
 import { METRICS_DIR } from '../../../collectors/shared/constants';
@@ -21,23 +24,10 @@ export const REACT_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-react`);
 
-export const cowComponentsReactMetrics = preserveCommandBuilder(
-	cmd('cow-components-react-metrics')
-		.desc('Collect cow-components-react metrics')
-		.args({
-			'no-cache': flag(),
-			prod: flag(),
-		})
-		.argsDesc({
-			'no-cache': "Don't use cache and force rebuild",
-			prod: 'Run in production mode',
-		})
-).run(async (exec, args) => {
-	const baseCtx = args.prod
-		? (await exec(setEnvVar('ENV', 'production'))).keepContext
-		: exec;
-
-	await collectSameAsDashboardMetrics(baseCtx, 'react');
+export const cowComponentsReactMetrics = registerMetricsCommand(
+	'cow-components-react'
+).run(async (exec) => {
+	await collectSameAsDashboardMetrics(exec, 'react');
 
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
@@ -80,7 +70,5 @@ export const cowComponentsReactMetrics = preserveCommandBuilder(
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 
 	await exec('? Collecting render time metrics');
-	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`
-	);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
 });

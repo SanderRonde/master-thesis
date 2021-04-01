@@ -1,8 +1,7 @@
-import { cmd, flag, setEnvVar } from 'makfy';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { preserveCommandBuilder } from '../../lib/makfy-helper';
+import { registerMetricsCommand } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
@@ -22,23 +21,10 @@ export const SVELTE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-svelte`);
 
-export const cowComponentsSvelteMetrics = preserveCommandBuilder(
-	cmd('cow-components-svelte-metrics')
-		.desc('Collect cow-components-svelte metrics')
-		.args({
-			'no-cache': flag(),
-			prod: flag(),
-		})
-		.argsDesc({
-			'no-cache': "Don't use cache and force rebuild",
-			prod: 'Run in production mode',
-		})
+export const cowComponentsSvelteMetrics = registerMetricsCommand(
+	'cow-components-svelte'
 ).run(async (exec, args) => {
-	const baseCtx = args.prod
-		? (await exec(setEnvVar('ENV', 'production'))).keepContext
-		: exec;
-
-	await collectSameAsDashboardMetrics(baseCtx, 'svelte');
+	await collectSameAsDashboardMetrics(exec, 'svelte');
 
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
@@ -86,7 +72,5 @@ export const cowComponentsSvelteMetrics = preserveCommandBuilder(
 	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 
 	await exec('? Collecting render time metrics');
-	await baseCtx(
-		`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`
-	);
+	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
 });
