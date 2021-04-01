@@ -75,17 +75,18 @@ export const METRICS_COMMAND_ARG_DESCRIPTIONS = {
 	'log-debug': 'Whether to log debug messages, even in prod mode',
 };
 
-export function registerMetricsCommand(
-	name: string
-): {
-	run(
-		runFn: CommandRunFn<MetricsArgDefinitions>
-	): CommandBuilder<MetricsArgDefinitions>;
-} {
+interface BundleCommandReturn {
+	run(runFn: CommandRunFn<MetricsArgDefinitions>): CommandBuilder<MetricsArgDefinitions>;
+}
+
+export function registerBundeCommand(
+	name: string,
+	postfix: string
+): BundleCommandReturn {
 	let runHandler: CommandRunFn<MetricsArgDefinitions> | null = null;
 
-	const builder = cmd(`${name}-metrics`)
-		.desc(`Collect ${name} metrics`)
+	const builder = cmd(`${name}-${postfix}`)
+		.desc(`Collect ${name} ${postfix}`)
 		.args(METRICS_COMMAND_ARGS)
 		.argsDesc(METRICS_COMMAND_ARG_DESCRIPTIONS);
 	builder.run(async (exec, args) => {
@@ -103,4 +104,16 @@ export function registerMetricsCommand(
 			return builder;
 		},
 	};
+}
+
+export function registerMetricsCommand(
+	name: string,
+): BundleCommandReturn {
+	return registerBundeCommand(name, 'metrics');
+}
+
+export function registerSetupCommand(
+	name: string,
+): BundleCommandReturn {
+	return registerBundeCommand(name, 'setup');
 }

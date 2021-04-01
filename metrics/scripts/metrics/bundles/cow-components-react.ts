@@ -5,6 +5,7 @@ import * as path from 'path';
 import {
 	preserveCommandBuilder,
 	registerMetricsCommand,
+	registerSetupCommand,
 } from '../../lib/makfy-helper';
 import {
 	collectSameAsDashboardMetrics,
@@ -24,7 +25,7 @@ export const REACT_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 );
 const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components/cow-components-react`);
 
-export const cowComponentsReactSetup = registerMetricsCommand(
+export const cowComponentsReactSetup = registerSetupCommand(
 	'cow-components-react'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');
