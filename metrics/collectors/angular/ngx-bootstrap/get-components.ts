@@ -3,7 +3,6 @@ import * as path from 'path';
 import { glob } from 'glob';
 
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 
@@ -92,5 +91,3 @@ export async function getComponents(
 
 	return flatten(components);
 }
-
-getComponents(path.join(SUBMODULES_DIR, 'ngx-bootstrap')).then(console.log);
