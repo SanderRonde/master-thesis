@@ -3,7 +3,6 @@ import * as path from 'path';
 import { glob } from 'glob';
 
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 import { flatten } from '../../../submodules/30mhz-dashboard/src/lib/web-components/src/api/helpers';
@@ -58,14 +57,8 @@ export async function getComponents(
 	);
 
 	const components = await Promise.all(
-		dirList
-			// .filter((dir) => !IGNORED.has(dir))
-			.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
+		dirList.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
 	);
 
 	return flatten(components);
 }
-
-console.log(
-	getComponents(path.join(SUBMODULES_DIR, 'clarity')).then(console.log)
-);
