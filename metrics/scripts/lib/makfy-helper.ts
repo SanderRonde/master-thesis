@@ -76,7 +76,9 @@ export const METRICS_COMMAND_ARG_DESCRIPTIONS = {
 };
 
 interface BundleCommandReturn {
-	run(runFn: CommandRunFn<MetricsArgDefinitions>): CommandBuilder<MetricsArgDefinitions>;
+	run(
+		runFn: CommandRunFn<MetricsArgDefinitions>
+	): CommandBuilder<MetricsArgDefinitions>;
 }
 
 export function registerBundleCommand(
@@ -106,14 +108,14 @@ export function registerBundleCommand(
 	};
 }
 
-export function registerMetricsCommand(
-	name: string,
-): BundleCommandReturn {
+export function registerMetricsCommand(name: string): BundleCommandReturn {
 	return registerBundleCommand(name, 'metrics');
 }
 
-export function registerSetupCommand(
-	name: string,
-): BundleCommandReturn {
+export function registerSetupCommand(name: string): BundleCommandReturn {
 	return registerBundleCommand(name, 'setup');
+}
+
+export function registerInstallCommand(name: string): BundleCommandReturn {
+	return registerBundleCommand(name, 'install');
 }
