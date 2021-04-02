@@ -8,7 +8,6 @@ import { asyncFilter } from '../../shared/helpers';
 
 const COMPONENT_NAME_REGEX = /export class (\w+)/;
 
-const OVERRIDES = new Map([['buttons', ['checkbox', 'radio']]]);
 const IGNORED = new Set(['test', 'util']);
 
 async function getComponentFiles(dirName: string): Promise<ComponentFiles[]> {
