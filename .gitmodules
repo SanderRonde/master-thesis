@@ -28,3 +28,6 @@
 [submodule "metrics/submodules/ngx-bootstrap"]
 	path = metrics/submodules/ngx-bootstrap
 	url = https://github.com/valor-software/ngx-bootstrap
+[submodule "metrics/submodules/wired-elements"]
+	path = metrics/submodules/wired-elements
+	url = https://github.com/rough-stuff/wired-elements
