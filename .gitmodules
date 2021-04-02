@@ -40,3 +40,6 @@
 [submodule "metrics/submodules/onsen"]
 	path = metrics/submodules/onsen
 	url = https://github.com/OnsenUI/OnsenUI
+[submodule "metrics/submodules/prime-react"]
+	path = metrics/submodules/prime-react
+	url = https://github.com/primefaces/primereact

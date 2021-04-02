@@ -14,5 +14,6 @@ metrics/collectors/**/demo/yarn.lock
 !metrics/collectors/web-components/fast/demo/demo.html
 !metrics/collectors/multi-framework/onsen-react/demo/demo.html
 !metrics/collectors/multi-framework/onsen-web-components/demo/demo.html
+!metrics/collectors/multi-framework/prime-react/demo/demo.html
 
 yarn-error.log
