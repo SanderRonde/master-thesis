@@ -4,8 +4,8 @@ import {
 } from '../../../lib/bundles-shared';
 import {
 	ConstArrItems,
-	ParallelBundleMap,
-	SerialBundleMap,
+	NamedParallelBundleMap,
+	NamedSerialBundleMap,
 } from '../../../lib/types';
 
 type SvelteBundles = ConstArrItems<typeof svelteBundles>;
@@ -19,13 +19,13 @@ export const svelteBundles = [
 const setupCreator = getBundleSetupCommandCreator('svelte');
 const metricsCreator = getBundleMetricsCommandCreator('svelte');
 
-export const svelteParallelBundleMap: ParallelBundleMap<SvelteBundles> = {
+export const svelteParallelBundleMap: NamedParallelBundleMap<SvelteBundles> = {
 	'svelte-material-ui': setupCreator('svelte-material-ui'),
 	smelte: setupCreator('smelte'),
 	'svelte-mui': setupCreator('svelte-mui'),
 };
 
-export const svelteSerialBundleMap: SerialBundleMap<SvelteBundles> = {
+export const svelteSerialBundleMap: NamedSerialBundleMap<SvelteBundles> = {
 	'svelte-material-ui': metricsCreator('svelte-material-ui'),
 	smelte: metricsCreator('smelte'),
 	'svelte-mui': metricsCreator('svelte-mui'),

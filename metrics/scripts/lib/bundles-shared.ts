@@ -34,6 +34,7 @@ import { STRUCTURAL_COMPLEXITY_DEPTH } from '../../collectors/shared/settings';
 import ts from 'typescript';
 import { readFile } from '../../collectors/shared/files';
 import { createComponentFileFromSvelte } from '../../collectors/svelte/shared/util';
+import { CommandBuilderWithName } from './types';
 
 interface CollectorArgs {
 	bundleCategory: string;
@@ -272,10 +273,10 @@ function getPaths(bundleCategory: string, bundleName: string) {
 	};
 }
 
-export function getBundleSetupCommand(
+export function getBundleSetupCommand<N extends string>(
 	bundleCategory: string,
-	bundleName: string
-) {
+	bundleName: N
+): CommandBuilderWithName<N> {
 	const { demoPath } = getPaths(bundleCategory, bundleName);
 
 	const setupCommand = registerSetupCommand(bundleName).run(async (exec) => {
@@ -286,13 +287,13 @@ export function getBundleSetupCommand(
 		await exec(`yarn --cwd ${demoPath} build`);
 	});
 
-	return setupCommand;
+	return setupCommand as CommandBuilderWithName<N>;
 }
 
-export function getBundleMetricsCommand(
+export function getBundleMetricsCommand<N extends string>(
 	bundleCategory: string,
-	bundleName: string
-) {
+	bundleName: N
+): CommandBuilderWithName<N> {
 	const { basePath, demoPath, submodulePath } = getPaths(
 		bundleCategory,
 		bundleName
@@ -335,17 +336,17 @@ export function getBundleMetricsCommand(
 		}
 	);
 
-	return metricsCommand;
+	return metricsCommand as CommandBuilderWithName<N>;
 }
 
 export function getBundleSetupCommandCreator(bundleCategory: string) {
-	return (bundleName: string) => {
+	return <N extends string>(bundleName: N) => {
 		return getBundleSetupCommand(bundleCategory, bundleName);
 	};
 }
 
 export function getBundleMetricsCommandCreator(bundleCategory: string) {
-	return (bundleName: string) => {
+	return <N extends string>(bundleName: N) => {
 		return getBundleMetricsCommand(bundleCategory, bundleName);
 	};
 }
