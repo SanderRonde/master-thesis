@@ -41,6 +41,7 @@ interface CollectorArgs {
 	bundleName: string;
 	components: ComponentFiles[];
 	demoPath: string;
+	basePath: string;
 }
 
 declare const window: ComponentVisibilitySetterWindow;
@@ -203,25 +204,30 @@ async function collectMaintainability({
 	);
 }
 
-async function collectSize({
-	bundleCategory,
-	bundleName,
-	demoPath,
-}: CollectorArgs) {
-	const size = (await fs.stat(path.join(demoPath, 'demo.bundle.js'))).size;
+async function collectSize(
+	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
+	overrides: BundleMetricsOverrides
+) {
+	const size = (
+		await fs.stat(
+			path.join(
+				overrides.demoDir?.(basePath) || demoPath,
+				overrides.indexJsFileName || 'demo.bundle.js'
+			)
+		)
+	).size;
 
 	await storeData(['metrics', bundleCategory, bundleName, 'size'], size);
 }
 
-async function collectLoadTime({
-	bundleCategory,
-	bundleName,
-	demoPath,
-}: CollectorArgs) {
+async function collectLoadTime(
+	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
+	overrides: BundleMetricsOverrides
+) {
 	const loadTime = await getLoadTimeForDir(
-		demoPath,
-		'demo.bundle.js',
-		'/demo.html'
+		overrides.demoDir?.(basePath) || demoPath,
+		overrides.indexJsFileName || 'demo.bundle.js',
+		overrides.urlPath || '/demo.html'
 	);
 
 	await storeData(
@@ -230,11 +236,10 @@ async function collectLoadTime({
 	);
 }
 
-async function collectRenderTimes({
-	bundleCategory,
-	bundleName,
-	demoPath,
-}: CollectorArgs) {
+async function collectRenderTimes(
+	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
+	overrides: BundleMetricsOverrides
+) {
 	const renderTimes = await getRenderTime({
 		getComponents: async (page) => {
 			const visibleComponentNames = await page.evaluate(() => {
@@ -242,8 +247,8 @@ async function collectRenderTimes({
 			});
 			return visibleComponentNames;
 		},
-		sourceRoot: demoPath,
-		urlPath: '/demo.html',
+		sourceRoot: overrides.demoDir?.(basePath) || demoPath,
+		urlPath: overrides.urlPath || '/demo.html',
 		showComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
 				window.setVisibleComponent(componentName, true);
@@ -290,9 +295,16 @@ export function getBundleSetupCommand<N extends string>(
 	return setupCommand as CommandBuilderWithName<N>;
 }
 
+interface BundleMetricsOverrides {
+	indexJsFileName?: string;
+	demoDir?: (basePath: string) => string;
+	urlPath?: string;
+}
+
 export function getBundleMetricsCommand<N extends string>(
 	bundleCategory: string,
-	bundleName: N
+	bundleName: N,
+	overrides: BundleMetricsOverrides = {}
 ): CommandBuilderWithName<N> {
 	const { basePath, demoPath, submodulePath } = getPaths(
 		bundleCategory,
@@ -312,6 +324,7 @@ export function getBundleMetricsCommand<N extends string>(
 				bundleName,
 				components,
 				demoPath,
+				basePath,
 			};
 			await exec('? Collecting structural complexity');
 			await collectStructuralComplexity(collectorArgs);
@@ -326,13 +339,13 @@ export function getBundleMetricsCommand<N extends string>(
 			await collectMaintainability(collectorArgs);
 
 			await exec('? Collecting size');
-			await collectSize(collectorArgs);
+			await collectSize(collectorArgs, overrides);
 
 			await exec('? Collecting load time');
-			await collectLoadTime(collectorArgs);
+			await collectLoadTime(collectorArgs, overrides);
 
 			await exec('? Collecting render times');
-			await collectRenderTimes(collectorArgs);
+			await collectRenderTimes(collectorArgs, overrides);
 		}
 	);
 
@@ -345,8 +358,17 @@ export function getBundleSetupCommandCreator(bundleCategory: string) {
 	};
 }
 
-export function getBundleMetricsCommandCreator(bundleCategory: string) {
-	return <N extends string>(bundleName: N) => {
-		return getBundleMetricsCommand(bundleCategory, bundleName);
+export function getBundleMetricsCommandCreator(
+	bundleCategory: string,
+	creatorOverrides?: BundleMetricsOverrides
+) {
+	return <N extends string>(
+		bundleName: N,
+		overrides?: BundleMetricsOverrides
+	) => {
+		return getBundleMetricsCommand(bundleCategory, bundleName, {
+			...creatorOverrides,
+			...overrides,
+		});
 	};
 }

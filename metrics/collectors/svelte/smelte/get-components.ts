@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { getComponentFiles } from '../svelte-material-ui/get-components';
 
 const OVERRIDES = new Map();

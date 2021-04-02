@@ -1,0 +1,25 @@
+<div style="margin: 50px; margin-top: 300px">
+	<div *ngIf="visibleComponent == 'Button'">
+		<button mat-button>Content</button>
+	</div>
+	<div *ngIf="visibleComponent == 'Input'">
+		<mat-form-field>
+			<mat-label>Label</mat-label>
+			<input matInput placeholder="placeholder" />
+		</mat-form-field>
+	</div>
+	<div *ngIf="visibleComponent == 'Switch'">
+		<mat-checkbox>Checkbox</mat-checkbox>
+	</div>
+	<div *ngIf="visibleComponent == 'DatePicker'">
+		<mat-form-field appearance="fill">
+			<mat-label>Choose a date</mat-label>
+			<input matInput [matDatepicker]="picker" />
+			<mat-datepicker-toggle
+				matSuffix
+				[for]="picker"
+			></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+	</div>
+</div>

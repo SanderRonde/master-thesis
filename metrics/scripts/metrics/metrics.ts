@@ -24,17 +24,23 @@ import {
 	svelteSerialBundleMap,
 } from './bundles/svelte';
 import { reactParallelBundleMap, reactSerialBundleMap } from './bundles/react';
+import {
+	angularParallelBundleMap,
+	angularSerialBundleMap,
+} from './bundles/angular';
 
 const parallelBundleMap: ParallelBundleMap<Bundle> = {
 	...cowComponentsParallelBundleMap,
 	...svelteParallelBundleMap,
 	...reactParallelBundleMap,
+	...angularParallelBundleMap,
 };
 
 const serialBundleMap: SerialBundleMap<Bundle> = {
 	...cowComponentsSerialBundleMap,
 	...svelteSerialBundleMap,
 	...reactSerialBundleMap,
+	...angularSerialBundleMap,
 };
 
 export const metris = preserveCommandBuilder(
