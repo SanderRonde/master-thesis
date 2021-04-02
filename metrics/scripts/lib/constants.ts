@@ -1,7 +1,12 @@
 import { cowComponentBundles } from '../metrics/bundles/cow-components';
+import { reactBundles } from '../metrics/bundles/react';
 import { svelteBundles } from '../metrics/bundles/svelte';
 
-const __BUNDLES = [...cowComponentBundles, ...svelteBundles] as const;
+const __BUNDLES = [
+	...cowComponentBundles,
+	...svelteBundles,
+	...reactBundles,
+] as const;
 const __METRICS = [
 	'structural-complexity',
 	'cyclomatic-complexity',

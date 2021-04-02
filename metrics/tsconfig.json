@@ -18,7 +18,8 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"noEmit": false,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"jsx": "react"
 	},
 	"exclude": ["./submodules"],
 	"include": ["scripts", "collectors", "./types"],

@@ -6,7 +6,7 @@ export type Templates = {
 	[fileName: string]: string;
 };
 
-type BaseComponent = 'Button' | 'Switch' | 'Input' | 'DatePicker';
+export type BaseComponent = 'Button' | 'Switch' | 'Input' | 'DatePicker';
 
 export interface ComponentVisibilitySetterWindow extends Window {
 	setVisibleComponent(componentName: BaseComponent, visible: boolean): void;

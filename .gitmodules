@@ -10,3 +10,6 @@
 [submodule "metrics/submodules/svelte-mui"]
 	path = metrics/submodules/svelte-mui
 	url = https://github.com/vikignt/svelte-mui
+[submodule "metrics/submodules/material-ui"]
+	path = metrics/submodules/material-ui
+	url = https://github.com/mui-org/material-ui
