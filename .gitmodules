@@ -34,3 +34,6 @@
 [submodule "metrics/submodules/clarity"]
 	path = metrics/submodules/clarity
 	url = https://github.com/vmware/clarity
+[submodule "metrics/submodules/fast"]
+	path = metrics/submodules/fast
+	url = https://github.com/microsoft/fast/

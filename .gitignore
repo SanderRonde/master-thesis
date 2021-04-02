@@ -11,5 +11,6 @@ metrics/collectors/**/demo/yarn.lock
 !metrics/collectors/react/react-bootstrap/demo/demo.html
 !metrics/collectors/react/semantic-ui-react/demo/demo.html
 !metrics/collectors/web-components/clarity/demo/demo.html
+!metrics/collectors/web-components/fast/demo/demo.html
 
 yarn-error.log
