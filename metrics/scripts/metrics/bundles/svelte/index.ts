@@ -1,4 +1,5 @@
 import {
+	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
@@ -16,8 +17,15 @@ export const svelteBundles = [
 	'svelte-mui',
 ] as const;
 
+const installCreator = getBundleInstallCommandCreator('svelte');
 const setupCreator = getBundleSetupCommandCreator('svelte');
 const metricsCreator = getBundleMetricsCommandCreator('svelte');
+
+export const svelteInstallBundleMap: NamedSerialBundleMap<SvelteBundles> = {
+	'svelte-material-ui': installCreator('svelte-material-ui'),
+	smelte: installCreator('smelte'),
+	'svelte-mui': installCreator('svelte-mui'),
+};
 
 export const svelteParallelBundleMap: NamedParallelBundleMap<SvelteBundles> = {
 	'svelte-material-ui': setupCreator('svelte-material-ui'),

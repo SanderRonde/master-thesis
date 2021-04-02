@@ -24,9 +24,9 @@ const METRICS_COMPONENT_DIR = path.join(ANGULAR_DEMO_DIR, 'src/app');
 const ANGULAR_DEMO_DIST = path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo');
 export const ANGULAR_METADATA_BUNDLE = path.join(ANGULAR_DEMO_DIST, 'metadata');
 
-export const cowComponentsAngularSetup = registerSetupCommand(
+export const cowComponentsAngularInstall = registerSetupCommand(
 	'cow-components-angular'
-).run(async (exec, args) => {
+).run(async (exec) => {
 	// For Angular we use the regular bundle for size and load-time
 	// testing. This is because it will be excluded from the build
 	// if not used. And the few bytes added should not make a big
@@ -34,12 +34,17 @@ export const cowComponentsAngularSetup = registerSetupCommand(
 	await exec('? Installing dependencies');
 	const demoDirCtx = await exec(`cd ${ANGULAR_DEMO_DIR}`);
 	await demoDirCtx.keepContext('npm install');
+});
 
+export const cowComponentsAngularSetup = registerSetupCommand(
+	'cow-components-angular'
+).run(async (exec, args) => {
 	/**
 	 * The angular compiler requires a TS version
 	 * >= 3.9.2 and < 4.1, so we use 4.0.7
 	 */
 	await exec('? Installing specific TS version');
+	const demoDirCtx = await exec(`cd ${ANGULAR_DEMO_DIR}`);
 	await demoDirCtx.keepContext('npm install typescript@4.0.7');
 
 	if (!(await fs.pathExists(ANGULAR_DEMO_DIST)) || args['no-cache']) {

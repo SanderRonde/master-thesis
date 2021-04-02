@@ -1,5 +1,6 @@
 import * as path from 'path';
 import {
+	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
@@ -19,8 +20,17 @@ export const multiFrameworkBundles = [
 	'prime-ng',
 ] as const;
 
+const installCreator = getBundleInstallCommandCreator('multi-framework');
 const setupCreator = getBundleSetupCommandCreator('multi-framework');
 const metricsCreator = getBundleMetricsCommandCreator('multi-framework');
+
+export const multiFrameworkInstallBundleMap: NamedSerialBundleMap<MultiFrameworkBundles> = {
+	'onsen-react': installCreator('onsen-react'),
+	'onsen-web-components': installCreator('onsen-web-components'),
+	'onsen-angular': installCreator('onsen-angular'),
+	'prime-react': installCreator('prime-react'),
+	'prime-ng': installCreator('prime-ng'),
+};
 
 export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFrameworkBundles> = {
 	'onsen-react': setupCreator('onsen-react'),

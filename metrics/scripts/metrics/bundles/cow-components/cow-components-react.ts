@@ -29,12 +29,16 @@ const BASE_DIR = path.join(
 	`collectors/cow-components/cow-components-react`
 );
 
-export const cowComponentsReactSetup = registerSetupCommand(
+export const cowComponentsReactInstall = registerSetupCommand(
 	'cow-components-react'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
+});
 
+export const cowComponentsReactSetup = registerSetupCommand(
+	'cow-components-react'
+).run(async (exec) => {
 	await rimrafAsync(DEMO_METRICS_DIR);
 	await exec('? Generating toggleable bundle');
 

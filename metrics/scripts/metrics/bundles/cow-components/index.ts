@@ -4,18 +4,22 @@ import {
 	SerialBundleMap,
 } from '../../../lib/types';
 import {
+	cowComponentsAngularInstall,
 	cowComponentsAngularMetrics,
 	cowComponentsAngularSetup,
 } from './cow-components-angular';
 import {
+	cowComponentsNativeInstall,
 	cowComponentsNativeMetrics,
 	cowComponentsNativeSetup,
 } from './cow-components-native';
 import {
+	cowComponentsReactInstall,
 	cowComponentsReactMetrics,
 	cowComponentsReactSetup,
 } from './cow-components-react';
 import {
+	cowComponentsSvelteInstall,
 	cowComponentsSvelteMetrics,
 	cowComponentsSvelteSetup,
 } from './cow-components-svelte';
@@ -43,6 +47,15 @@ export const cowComponentBundles = [
 	'dashboard',
 	...COW_COMPONENT_BUNDLES,
 ] as const;
+
+export const cowComponentsInstallBundleMap: Partial<
+	SerialBundleMap<CowComponentBundle>
+> = {
+	'cow-components-angular': cowComponentsAngularInstall,
+	'cow-components-native': cowComponentsNativeInstall,
+	'cow-components-react': cowComponentsReactInstall,
+	'cow-components-svelte': cowComponentsSvelteInstall,
+};
 
 // Parallel tasks
 export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundle> = {

@@ -26,12 +26,16 @@ const BASE_DIR = path.join(
 	`collectors/cow-components/cow-components-native`
 );
 
-export const cowComponentsNativeSetup = registerSetupCommand(
+export const cowComponentsNativeInstall = registerSetupCommand(
 	'cow-components-native'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${DEMO_DIR}`);
+});
 
+export const cowComponentsNativeSetup = registerSetupCommand(
+	'cow-components-native'
+).run(async (exec) => {
 	await rimrafAsync(DEMO_METRICS_DIR);
 	await exec('? Generating toggleable bundle');
 

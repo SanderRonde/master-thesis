@@ -1,4 +1,5 @@
 import {
+	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
@@ -16,8 +17,16 @@ export const reactBundles = [
 	'semantic-ui-react',
 ] as const;
 
+const installCreator = getBundleInstallCommandCreator('react');
 const setupCreator = getBundleSetupCommandCreator('react');
 const metricsCreator = getBundleMetricsCommandCreator('react');
+
+export const reactInstallBundleMap: NamedSerialBundleMap<ReactBundles> = {
+	'material-ui': installCreator('material-ui'),
+	'react-bootstrap': installCreator('react-bootstrap'),
+	'semantic-ui-react': installCreator('semantic-ui-react'),
+};
+
 
 export const reactParallelBundleMap: NamedParallelBundleMap<ReactBundles> = {
 	'material-ui': setupCreator('material-ui'),

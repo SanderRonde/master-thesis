@@ -1,4 +1,5 @@
 import {
+	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
@@ -10,10 +11,21 @@ import {
 
 type WebComponentsBundles = ConstArrItems<typeof webComponentsBundles>;
 
-export const webComponentsBundles = ['wired-elements', 'clarity', 'fast'] as const;
+export const webComponentsBundles = [
+	'wired-elements',
+	'clarity',
+	'fast',
+] as const;
 
+const installCreator = getBundleInstallCommandCreator('web-components');
 const setupCreator = getBundleSetupCommandCreator('web-components');
 const metricsCreator = getBundleMetricsCommandCreator('web-components');
+
+export const webcomponentsInstallBundleMap: NamedSerialBundleMap<WebComponentsBundles> = {
+	'wired-elements': installCreator('wired-elements'),
+	clarity: installCreator('clarity'),
+	fast: installCreator('fast'),
+};
 
 export const webcomponentsParallelBundleMap: NamedParallelBundleMap<WebComponentsBundles> = {
 	'wired-elements': setupCreator('wired-elements'),

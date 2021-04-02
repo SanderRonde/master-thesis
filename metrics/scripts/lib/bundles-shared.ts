@@ -292,6 +292,22 @@ function getPaths(
 	};
 }
 
+export function getBundleInstallCommand<N extends string>(
+	bundleCategory: string,
+	bundleName: N
+): CommandBuilderWithName<N> {
+	const { demoPath } = getPaths(bundleCategory, bundleName, {});
+
+	const installCommand = registerSetupCommand(bundleName).run(
+		async (exec) => {
+			await exec('? Installing dependencies');
+			await exec(`yarn --cwd ${demoPath}`);
+		}
+	);
+
+	return installCommand as CommandBuilderWithName<N>;
+}
+
 export function getBundleSetupCommand<N extends string>(
 	bundleCategory: string,
 	bundleName: N
@@ -299,9 +315,6 @@ export function getBundleSetupCommand<N extends string>(
 	const { demoPath } = getPaths(bundleCategory, bundleName, {});
 
 	const setupCommand = registerSetupCommand(bundleName).run(async (exec) => {
-		await exec('? Installing dependencies');
-		await exec(`yarn --cwd ${demoPath}`);
-
 		await exec('? Building');
 		await exec(`yarn --cwd ${demoPath} build`);
 	});
@@ -366,6 +379,12 @@ export function getBundleMetricsCommand<N extends string>(
 	);
 
 	return metricsCommand as CommandBuilderWithName<N>;
+}
+
+export function getBundleInstallCommandCreator(bundleCategory: string) {
+	return <N extends string>(bundleName: N) => {
+		return getBundleInstallCommand(bundleCategory, bundleName);
+	};
 }
 
 export function getBundleSetupCommandCreator(bundleCategory: string) {

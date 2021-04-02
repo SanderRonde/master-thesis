@@ -27,12 +27,16 @@ const BASE_DIR = path.join(
 	`collectors/cow-components/cow-components-svelte`
 );
 
-export const cowComponentsSvelteSetup = registerSetupCommand(
+export const cowComponentsSvelteInstall = registerSetupCommand(
 	'cow-components-svelte'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');
 	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
+});
 
+export const cowComponentsSvelteSetup = registerSetupCommand(
+	'cow-components-svelte'
+).run(async (exec) => {
 	await rimrafAsync(DEMO_METRICS_DIR);
 	await exec('? Generating toggleable bundle');
 

@@ -14,28 +14,46 @@ import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
 import { makeChartDeterministic } from '../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';
 import {
+	cowComponentsInstallBundleMap,
 	cowComponentsParallelBundleMap,
 	cowComponentsSerialBundleMap,
 	COW_COMPONENT_BUNDLES,
 } from './bundles/cow-components';
 import { ParallelBundleMap, SerialBundleMap } from '../lib/types';
 import {
+	svelteInstallBundleMap,
 	svelteParallelBundleMap,
 	svelteSerialBundleMap,
 } from './bundles/svelte';
-import { reactParallelBundleMap, reactSerialBundleMap } from './bundles/react';
 import {
+	reactInstallBundleMap,
+	reactParallelBundleMap,
+	reactSerialBundleMap,
+} from './bundles/react';
+import {
+	angularInstallBundleMap,
 	angularParallelBundleMap,
 	angularSerialBundleMap,
 } from './bundles/angular';
 import {
+	webcomponentsInstallBundleMap,
 	webcomponentsParallelBundleMap,
 	webcomponentsSerialBundleMap,
 } from './bundles/web-components';
 import {
+	multiFrameworkInstallBundleMap,
 	multiFrameworkParallelBundleMap,
 	multiFrameworkSerialBundleMap,
 } from './bundles/multi-framework';
+
+const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
+	...cowComponentsInstallBundleMap,
+	...svelteInstallBundleMap,
+	...reactInstallBundleMap,
+	...angularInstallBundleMap,
+	...webcomponentsInstallBundleMap,
+	...multiFrameworkInstallBundleMap,
+};
 
 const parallelBundleMap: ParallelBundleMap<Bundle> = {
 	...cowComponentsParallelBundleMap,
@@ -127,6 +145,15 @@ export const metris = preserveCommandBuilder(
 	// because it's a bit of a special case
 	if (bundles.includes('dashboard')) {
 		await exec(getCommandBuilderExec(serialBundleMap.dashboard, execArgs));
+	}
+
+	// Run all install tasks
+	for (const bundle of bundles) {
+		if (bundle in installCommandMap) {
+			await exec(
+				getCommandBuilderExec(installCommandMap[bundle]!, execArgs)
+			);
+		}
 	}
 
 	if (!args['skip-build']) {
