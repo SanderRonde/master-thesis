@@ -13,3 +13,6 @@
 [submodule "metrics/submodules/material-ui"]
 	path = metrics/submodules/material-ui
 	url = https://github.com/mui-org/material-ui
+[submodule "metrics/submodules/react-bootstrap"]
+	path = metrics/submodules/react-bootstrap
+	url = https://github.com/react-bootstrap/react-bootstrap
