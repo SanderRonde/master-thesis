@@ -7,13 +7,6 @@
 -   [svelte-mui](https://svelte-mui.ibbf.ru/) (237 stars)
 -   ~~[svelteit](https://docs.svelteit.dev/) (51 stars)~~
 
-### Vue Libraries:
-
--   [vuetify](https://vuetifyjs.com/en/) (30k stars)
--   [bootstrap vue](https://bootstrap-vue.org/) (13k stars)
--   [Vue material](https://vuematerial.io/) (9.3k stars)
--   ~~[buefy](https://buefy.org/) (8.5k stars)~~
-
 ### React Libraries:
 
 -   [material UI](https://material-ui.com/) (67.1k stars)
