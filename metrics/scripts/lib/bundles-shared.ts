@@ -65,6 +65,8 @@ async function getFileScript(filePath: string) {
 		case '.svelte':
 			const code = await readFile(filePath);
 			return createComponentFileFromSvelte(code, '', filePath).js.content;
+		case '.svg':
+			return '';
 		default:
 			throw new Error(
 				`Unknown file extension "${extension}" for file "${filePath}"`
@@ -272,10 +274,17 @@ async function collectRenderTimes(
 	);
 }
 
-function getPaths(bundleCategory: string, bundleName: string) {
+function getPaths(
+	bundleCategory: string,
+	bundleName: string,
+	overrides: BundleMetricsOverrides
+) {
 	const basePath = path.join(COLLECTORS_DIR, bundleCategory, bundleName);
 	const demoPath = path.join(basePath, 'demo');
-	const submodulePath = path.join(SUBMODULES_DIR, bundleName);
+	const submodulePath = path.join(
+		SUBMODULES_DIR,
+		overrides.submoduleName || bundleName
+	);
 	return {
 		basePath,
 		demoPath,
@@ -287,7 +296,7 @@ export function getBundleSetupCommand<N extends string>(
 	bundleCategory: string,
 	bundleName: N
 ): CommandBuilderWithName<N> {
-	const { demoPath } = getPaths(bundleCategory, bundleName);
+	const { demoPath } = getPaths(bundleCategory, bundleName, {});
 
 	const setupCommand = registerSetupCommand(bundleName).run(async (exec) => {
 		await exec('? Installing dependencies');
@@ -304,6 +313,7 @@ interface BundleMetricsOverrides {
 	indexJsFileName?: string;
 	demoDir?: (basePath: string) => string;
 	urlPath?: string;
+	submoduleName?: string;
 }
 
 export function getBundleMetricsCommand<N extends string>(
@@ -313,7 +323,8 @@ export function getBundleMetricsCommand<N extends string>(
 ): CommandBuilderWithName<N> {
 	const { basePath, demoPath, submodulePath } = getPaths(
 		bundleCategory,
-		bundleName
+		bundleName,
+		overrides
 	);
 
 	const metricsCommand = registerMetricsCommand(bundleName).run(

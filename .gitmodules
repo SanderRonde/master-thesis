@@ -37,3 +37,6 @@
 [submodule "metrics/submodules/fast"]
 	path = metrics/submodules/fast
 	url = https://github.com/microsoft/fast/
+[submodule "metrics/submodules/onsen"]
+	path = metrics/submodules/onsen
+	url = https://github.com/OnsenUI/OnsenUI

@@ -32,6 +32,10 @@ import {
 	webcomponentsParallelBundleMap,
 	webcomponentsSerialBundleMap,
 } from './bundles/web-components';
+import {
+	multiFrameworkParallelBundleMap,
+	multiFrameworkSerialBundleMap,
+} from './bundles/multi-framework';
 
 const parallelBundleMap: ParallelBundleMap<Bundle> = {
 	...cowComponentsParallelBundleMap,
@@ -39,6 +43,7 @@ const parallelBundleMap: ParallelBundleMap<Bundle> = {
 	...reactParallelBundleMap,
 	...angularParallelBundleMap,
 	...webcomponentsParallelBundleMap,
+	...multiFrameworkParallelBundleMap,
 };
 
 const serialBundleMap: SerialBundleMap<Bundle> = {
@@ -47,6 +52,7 @@ const serialBundleMap: SerialBundleMap<Bundle> = {
 	...reactSerialBundleMap,
 	...angularSerialBundleMap,
 	...webcomponentsSerialBundleMap,
+	...multiFrameworkSerialBundleMap,
 };
 
 export const metris = preserveCommandBuilder(
