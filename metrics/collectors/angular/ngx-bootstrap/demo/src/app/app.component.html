@@ -1,0 +1,27 @@
+<div style="margin: 50px; margin-top: 300px">
+	<div *ngIf="visibleComponent == 'Button'">
+		<button type="button" class="btn btn-primary">Button</button>
+	</div>
+	<div *ngIf="visibleComponent == 'Input'">
+		<input class="form-control" />
+	</div>
+	<div *ngIf="visibleComponent == 'Switch'">
+		<button
+			type="button"
+			class="btn btn-primary"
+			btnCheckbox
+			btnCheckboxTrue="1"
+			btnCheckboxFalse="0"
+		>
+			Checkbox
+		</button>
+	</div>
+	<div *ngIf="visibleComponent == 'DatePicker'">
+		<input
+			type="text"
+			placeholder="Datepicker"
+			class="form-control"
+			bsDatepicker
+		/>
+	</div>
+</div>
