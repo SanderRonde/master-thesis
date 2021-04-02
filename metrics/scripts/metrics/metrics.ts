@@ -28,12 +28,17 @@ import {
 	angularParallelBundleMap,
 	angularSerialBundleMap,
 } from './bundles/angular';
+import {
+	webcomponentsParallelBundleMap,
+	webcomponentsSerialBundleMap,
+} from './bundles/web-components';
 
 const parallelBundleMap: ParallelBundleMap<Bundle> = {
 	...cowComponentsParallelBundleMap,
 	...svelteParallelBundleMap,
 	...reactParallelBundleMap,
 	...angularParallelBundleMap,
+	...webcomponentsParallelBundleMap,
 };
 
 const serialBundleMap: SerialBundleMap<Bundle> = {
@@ -41,6 +46,7 @@ const serialBundleMap: SerialBundleMap<Bundle> = {
 	...svelteSerialBundleMap,
 	...reactSerialBundleMap,
 	...angularSerialBundleMap,
+	...webcomponentsSerialBundleMap,
 };
 
 export const metris = preserveCommandBuilder(

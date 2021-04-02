@@ -1,0 +1,16 @@
+{
+	"name": "demo",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"dependencies": {
+		"wired-elements": "^2.1.2"
+	},
+	"devDependencies": {
+		"esbuild": "^0.11.3",
+		"makfy": "^2.0.4"
+	},
+	"scripts": {
+		"build": "makfy build"
+	}
+}

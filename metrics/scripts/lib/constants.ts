@@ -2,12 +2,14 @@ import { angularBundles } from '../metrics/bundles/angular';
 import { cowComponentBundles } from '../metrics/bundles/cow-components';
 import { reactBundles } from '../metrics/bundles/react';
 import { svelteBundles } from '../metrics/bundles/svelte';
+import { webComponentsBundles } from '../metrics/bundles/web-components';
 
 const __BUNDLES = [
 	...cowComponentBundles,
 	...svelteBundles,
 	...reactBundles,
 	...angularBundles,
+	...webComponentsBundles,
 ] as const;
 const __METRICS = [
 	'structural-complexity',
