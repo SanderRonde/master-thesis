@@ -1,3 +1,4 @@
+import * as path from 'path';
 import {
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
@@ -36,6 +37,9 @@ export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkB
 	}),
 	'onsen-angular': metricsCreator('onsen-angular', {
 		submoduleName: 'onsen',
+		demoDir: (basePath) => path.join(basePath, 'demo/dist/demo'),
+		indexJsFileName: 'index.bundle.js',
+		urlPath: '/index.html',
 	}),
 	'prime-react': metricsCreator('prime-react'),
 };
