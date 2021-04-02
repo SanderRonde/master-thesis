@@ -14,6 +14,7 @@ const IGNORED = new Set([
 	'selectitem',
 	'treenode',
 	'utils',
+	'dom',
 ]);
 
 async function findFileCaseInsensitive(dir: string, fileName: string) {
@@ -25,7 +26,7 @@ async function findFileCaseInsensitive(dir: string, fileName: string) {
 
 export async function getComponentFiles(dir: string): Promise<ComponentFiles> {
 	const componentName = dirNameToComponentName(path.parse(dir).base);
-	const fileName = await findFileCaseInsensitive(dir, `${componentName}.js`);
+	const fileName = await findFileCaseInsensitive(dir, `${componentName}.ts`);
 	if (!fileName) {
 		throw new Error(
 			`Failed to find matching file for "${componentName}" in "${dir}"`
@@ -46,7 +47,7 @@ export async function getComponentFiles(dir: string): Promise<ComponentFiles> {
 export async function getComponents(
 	submodulePath: string
 ): Promise<ComponentFiles[]> {
-	const packagesPath = path.join(submodulePath, 'src/components');
+	const packagesPath = path.join(submodulePath, 'src/app/components');
 	const dirList = await asyncFilter(
 		await fs.readdir(packagesPath),
 		async (dir) => {
@@ -62,3 +63,5 @@ export async function getComponents(
 
 	return components;
 }
+
+getComponents(path.join(SUBMODULES_DIR, 'prime-ng')).then(console.log);

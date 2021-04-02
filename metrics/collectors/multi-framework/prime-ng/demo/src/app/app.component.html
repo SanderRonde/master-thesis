@@ -1,0 +1,11 @@
+<div style="margin: 50px; margin-top: 300px">
+	<div *ngIf="visibleComponent == 'Button'">
+		<p-button>Button</p-button>
+	</div>
+	<div *ngIf="visibleComponent == 'Input'">
+		<input type="text" pInputText />
+	</div>
+	<div *ngIf="visibleComponent == 'Switch'">
+		<p-checkbox></p-checkbox>
+	</div>
+</div>

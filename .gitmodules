@@ -43,3 +43,6 @@
 [submodule "metrics/submodules/prime-react"]
 	path = metrics/submodules/prime-react
 	url = https://github.com/primefaces/primereact
+[submodule "metrics/submodules/prime-ng"]
+	path = metrics/submodules/prime-ng
+	url = https://github.com/primefaces/primeng

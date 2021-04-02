@@ -16,6 +16,7 @@ export const multiFrameworkBundles = [
 	'onsen-web-components',
 	'onsen-angular',
 	'prime-react',
+	'prime-ng',
 ] as const;
 
 const setupCreator = getBundleSetupCommandCreator('multi-framework');
@@ -26,6 +27,7 @@ export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFramew
 	'onsen-web-components': setupCreator('onsen-web-components'),
 	'onsen-angular': setupCreator('onsen-angular'),
 	'prime-react': setupCreator('prime-react'),
+	'prime-ng': setupCreator('prime-ng'),
 };
 
 export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkBundles> = {
@@ -42,4 +44,9 @@ export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkB
 		urlPath: '/index.html',
 	}),
 	'prime-react': metricsCreator('prime-react'),
+	'prime-ng': metricsCreator('prime-ng', {
+		demoDir: (basePath) => path.join(basePath, 'demo/dist/demo'),
+		indexJsFileName: 'index.bundle.js',
+		urlPath: '/index.html',
+	}),
 };
