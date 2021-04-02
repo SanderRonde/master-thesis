@@ -12,7 +12,7 @@ import {
 
 type AngularBundles = ConstArrItems<typeof angularBundles>;
 
-export const angularBundles = ['angular-material'] as const;
+export const angularBundles = ['angular-material', 'ng-bootstrap'] as const;
 
 const setupCreator = getBundleSetupCommandCreator('angular');
 const metricsCreator = getBundleMetricsCommandCreator('angular', {
@@ -23,8 +23,10 @@ const metricsCreator = getBundleMetricsCommandCreator('angular', {
 
 export const angularParallelBundleMap: NamedParallelBundleMap<AngularBundles> = {
 	'angular-material': setupCreator('angular-material'),
+	'ng-bootstrap': setupCreator('ng-bootstrap'),
 };
 
 export const angularSerialBundleMap: NamedSerialBundleMap<AngularBundles> = {
 	'angular-material': metricsCreator('angular-material'),
+	'ng-bootstrap': metricsCreator('ng-bootstrap'),
 };

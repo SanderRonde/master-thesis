@@ -22,3 +22,6 @@
 [submodule "metrics/submodules/angular-material"]
 	path = metrics/submodules/angular-material
 	url = https://github.com/angular/components
+[submodule "metrics/submodules/ng-bootstrap"]
+	path = metrics/submodules/ng-bootstrap
+	url = https://github.com/ng-bootstrap/ng-bootstrap
