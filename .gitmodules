@@ -16,3 +16,6 @@
 [submodule "metrics/submodules/react-bootstrap"]
 	path = metrics/submodules/react-bootstrap
 	url = https://github.com/react-bootstrap/react-bootstrap
+[submodule "metrics/submodules/semantic-ui-react"]
+	path = metrics/submodules/semantic-ui-react
+	url = https://github.com/Semantic-Org/Semantic-UI-React

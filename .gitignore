@@ -9,5 +9,6 @@ metrics/collectors/**/demo/yarn.lock
 
 !metrics/collectors/svelte/smelte/demo/rollup.config.js
 !metrics/collectors/react/react-bootstrap/demo/demo.html
+!metrics/collectors/react/semantic-ui-react/demo/demo.html
 
 yarn-error.log

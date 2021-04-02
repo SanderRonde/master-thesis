@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 
@@ -23,7 +22,7 @@ export async function getComponents(
 	submodulePath: string
 ): Promise<ComponentFiles[]> {
 	const packagesPath = path.join(submodulePath, 'src');
-	const dirList = await asyncFilter(
+	const fileList = await asyncFilter(
 		await fs.readdir(packagesPath),
 		async (dir) => {
 			return !(await fs.stat(path.join(packagesPath, dir))).isDirectory();
@@ -31,9 +30,11 @@ export async function getComponents(
 	);
 
 	const components = await Promise.all(
-		dirList
-			.filter((dir) => dir[0].toLowerCase() !== dir[0])
-			.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
+		fileList
+			.filter((fileName) => fileName[0].toLowerCase() !== fileName[0])
+			.map((fileName) =>
+				getComponentFiles(path.join(packagesPath, fileName))
+			)
 	);
 
 	return components;
