@@ -16,7 +16,6 @@ export async function getComponentFiles(dir: string): Promise<ComponentFiles> {
 
 	const regexMatch = COMPONENT_NAME_REGEX.exec(sourceFileContent);
 	if (!regexMatch) {
-		console.log(sourceFilePath);
 		throw new Error('Failed to find component name');
 	}
 	const componentName = regexMatch[1];
