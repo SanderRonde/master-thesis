@@ -1,0 +1,17 @@
+{
+	"name": "demo",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"dependencies": {
+		"@cds/city": "^1.1.0",
+		"@cds/core": "^5.1.0"
+	},
+	"devDependencies": {
+		"esbuild": "^0.11.3",
+		"makfy": "^2.0.4"
+	},
+	"scripts": {
+		"build": "makfy build"
+	}
+}

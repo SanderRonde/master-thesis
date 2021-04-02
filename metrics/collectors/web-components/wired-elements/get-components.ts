@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 
@@ -52,7 +51,3 @@ export async function getComponents(
 
 	return components;
 }
-
-console.log(
-	getComponents(path.join(SUBMODULES_DIR, 'wired-elements')).then(console.log)
-);

@@ -93,11 +93,19 @@ async function recursivelyGetDependencies(
 			if (isAbsolute(importPath.text)) {
 				// If it's an import of an NPM package, skip it
 				continue;
+			} else if (importPath.text.endsWith('.css.js')) {
+				continue;
 			} else {
-				joinedPath = await findFilePath(
-					path.dirname(filePath),
-					EXTENSIONS.map((ext) => `${importPath.text}${ext}`)
-				);
+				joinedPath = await findFilePath(path.dirname(filePath), [
+					...EXTENSIONS.map((ext) => `${importPath.text}${ext}`),
+					...EXTENSIONS.map(
+						(ext) =>
+							`${(() => {
+								const parsed = path.parse(importPath.text);
+								return path.join(parsed.dir, parsed.name);
+							})()}${ext}`
+					),
+				]);
 				if (!joinedPath) {
 					throw new Error(
 						`Failed to find path for "${path.dirname(filePath)}"."${

@@ -57,7 +57,7 @@ async function getComponentFiles(dirName: string): Promise<ComponentFiles[]> {
 	});
 }
 
-function flatten<A>(arr: A[][]): A[] {
+export function flatten<A>(arr: A[][]): A[] {
 	const result: A[] = [];
 	for (const item of arr) {
 		if (Array.isArray(item)) {

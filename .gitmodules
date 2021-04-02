@@ -31,3 +31,6 @@
 [submodule "metrics/submodules/wired-elements"]
 	path = metrics/submodules/wired-elements
 	url = https://github.com/rough-stuff/wired-elements
+[submodule "metrics/submodules/clarity"]
+	path = metrics/submodules/clarity
+	url = https://github.com/vmware/clarity
