@@ -2,6 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import {
+	registerInstallCommand,
 	registerMetricsCommand,
 	registerSetupCommand,
 } from '../../../lib/makfy-helper';
@@ -9,10 +10,7 @@ import {
 	collectSameAsDashboardMetrics,
 	DEMO_REPO_DIR,
 } from '../../../lib/cow-components-shared';
-import {
-	rimrafAsync,
-	TS_NODE_COMMAND,
-} from '../../../lib/helpers';
+import { rimrafAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
 import { getRenderTimeJsTemplate } from '../../../../collectors/cow-components/cow-components-react/templates/render-time-js-template';
 import { getRenderTimeHTMLTemplate } from '../../../../collectors/cow-components/cow-components-react/templates/render-time-html-template';
 import { METRICS_DIR } from '../../../../collectors/shared/constants';
@@ -29,7 +27,7 @@ const BASE_DIR = path.join(
 	`collectors/cow-components/cow-components-react`
 );
 
-export const cowComponentsReactInstall = registerSetupCommand(
+export const cowComponentsReactInstall = registerInstallCommand(
 	'cow-components-react'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');

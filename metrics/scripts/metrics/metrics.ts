@@ -148,10 +148,7 @@ export const metris = preserveCommandBuilder(
 	}
 
 	// Run all install tasks
-	const nonDashboardBundles = bundles.filter(
-		(bundle) => bundle !== 'dashboard'
-	);
-	for (const bundle of nonDashboardBundles) {
+	for (const bundle of bundles) {
 		if (bundle in installCommandMap) {
 			await exec(
 				getCommandBuilderExec(installCommandMap[bundle]!, execArgs)
@@ -162,7 +159,7 @@ export const metris = preserveCommandBuilder(
 	if (!args['skip-build']) {
 		// Run all parallel tasks
 		await exec(
-			nonDashboardBundles
+			bundles
 				.filter((bundle) => parallelBundleMap[bundle])
 				.map((bundle) =>
 					getCommandBuilderExec(parallelBundleMap[bundle]!, execArgs)
@@ -171,7 +168,7 @@ export const metris = preserveCommandBuilder(
 	}
 
 	// Run all sync tasks
-	for (const bundle of nonDashboardBundles) {
+	for (const bundle of bundles) {
 		await exec(getCommandBuilderExec(serialBundleMap[bundle], execArgs));
 	}
 });

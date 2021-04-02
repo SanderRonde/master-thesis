@@ -12,6 +12,7 @@ import { rimrafAsync, cpxAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
 import {
 	registerSetupCommand,
 	registerMetricsCommand,
+	registerInstallCommand,
 } from '../../../lib/makfy-helper';
 import { concatIntoBundle } from './dashboard';
 import { readFile, writeFile } from '../../../../collectors/shared/files';
@@ -24,7 +25,7 @@ const METRICS_COMPONENT_DIR = path.join(ANGULAR_DEMO_DIR, 'src/app');
 const ANGULAR_DEMO_DIST = path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo');
 export const ANGULAR_METADATA_BUNDLE = path.join(ANGULAR_DEMO_DIST, 'metadata');
 
-export const cowComponentsAngularInstall = registerSetupCommand(
+export const cowComponentsAngularInstall = registerInstallCommand(
 	'cow-components-angular'
 ).run(async (exec) => {
 	// For Angular we use the regular bundle for size and load-time
