@@ -74,7 +74,7 @@ export const cowComponentsSvelteSetup = registerSetupCommand(
 
 export const cowComponentsSvelteMetrics = registerMetricsCommand(
 	'cow-components-svelte'
-).run(async (exec, args) => {
+).run(async (exec) => {
 	await collectSameAsDashboardMetrics(exec, 'svelte');
 
 	await exec('? Collecting bundle metadata metrics');

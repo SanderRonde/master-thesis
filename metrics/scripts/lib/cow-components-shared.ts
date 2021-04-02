@@ -1,6 +1,5 @@
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import * as path from 'path';
-import * as fs from 'fs-extra';
 
 import { DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
 import { TS_NODE_COMMAND } from './helpers';

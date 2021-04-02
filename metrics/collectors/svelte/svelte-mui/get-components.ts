@@ -2,16 +2,11 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 import { createComponentFileFromSvelte } from '../shared/util';
-import {
-	dirNameToComponentName,
-	getComponentFiles,
-} from '../svelte-material-ui/get-components';
+import { dirNameToComponentName } from '../svelte-material-ui/get-components';
 
-const OVERRIDES = new Map();
 const IGNORED = new Set(['Util']);
 
 export async function getComponents(

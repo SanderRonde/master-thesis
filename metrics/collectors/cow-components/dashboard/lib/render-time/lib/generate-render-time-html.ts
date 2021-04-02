@@ -1,4 +1,4 @@
-import { ComponentFiles, getComponents } from '../../get-components';
+import { getComponents } from '../../get-components';
 import { getComponentTag, JoinedDefinition } from './get-component-tag';
 
 export const DEFAULT_VALUE_PREFIX = 'defaultValues';

@@ -19,7 +19,9 @@
 		"allowSyntheticDefaultImports": true,
 		"noEmit": false,
 		"skipLibCheck": true,
-		"jsx": "react"
+		"jsx": "react",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true
 	},
 	"exclude": ["./submodules"],
 	"include": ["scripts", "collectors", "./types"],

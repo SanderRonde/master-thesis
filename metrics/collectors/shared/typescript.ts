@@ -1,6 +1,5 @@
 import * as ts from 'typescript';
 import * as path from 'path';
-import * as fs from 'fs-extra';
 
 import { DASHBOARD_DIR } from './constants';
 import { readFile } from './files';

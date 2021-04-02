@@ -22,10 +22,7 @@ import {
 	GetComponentModule,
 } from '../../collectors/shared/shapes';
 import { storeData } from '../../collectors/shared/storage';
-import {
-	createSingleFileTSProgram,
-	createTSProgram,
-} from '../../collectors/shared/typescript';
+import { createSingleFileTSProgram } from '../../collectors/shared/typescript';
 
 import { registerMetricsCommand, registerSetupCommand } from './makfy-helper';
 import { getLoadTimeForDir } from '../../collectors/shared/load-time';
