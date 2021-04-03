@@ -24,7 +24,7 @@ export async function collectSameAsDashboardMetrics(
 ) {
 	const baseDir = path.join(
 		METRICS_DIR,
-		`collectors/cow-components-${frameworkName}`
+		`collectors/cow-components/cow-components-${frameworkName}`
 	);
 
 	await exec('? Collecting same-as-dashboard metrics');

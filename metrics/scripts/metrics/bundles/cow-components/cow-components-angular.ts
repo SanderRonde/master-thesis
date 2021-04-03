@@ -17,7 +17,10 @@ import {
 import { concatIntoBundle } from './dashboard';
 import { readFile, writeFile } from '../../../../collectors/shared/files';
 
-const BASE_DIR = path.join(METRICS_DIR, `collectors/cow-components-angular`);
+const BASE_DIR = path.join(
+	METRICS_DIR,
+	`collectors/cow-components/cow-components-angular`
+);
 
 export const ANGULAR_DEMO_DIR = path.join(DEMO_REPO_DIR, 'angular');
 const DEMO_METRICS_DIR = path.join(ANGULAR_DEMO_DIR, 'metrics');
