@@ -173,4 +173,7 @@ export const metris = preserveCommandBuilder(
 	for (const bundle of nonDashboardBundles) {
 		await exec(getCommandBuilderExec(serialBundleMap[bundle], execArgs));
 	}
+
+	// Exit manually
+	process.exit(0);
 });
