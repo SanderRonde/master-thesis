@@ -34,7 +34,7 @@ const __METRICS = [
 ] as const;
 export type Bundle = typeof __BUNDLES[Extract<keyof typeof __BUNDLES, number>];
 export type Metric = typeof __METRICS[Extract<keyof typeof __METRICS, number>];
-export type Frameworks =
+export type Framework =
 	| 'cow-components'
 	| 'svelte'
 	| 'react'

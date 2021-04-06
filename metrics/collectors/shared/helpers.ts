@@ -192,3 +192,17 @@ export async function asyncFilter<I>(
 	}
 	return items;
 }
+
+export function fromEntries<V>(
+	entries: [string, V][]
+): {
+	[key: string]: V;
+} {
+	const obj: {
+		[key: string]: V;
+	} = {};
+	for (const [key, value] of entries) {
+		obj[key] = value;
+	}
+	return obj;
+}
