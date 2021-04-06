@@ -1,7 +1,3 @@
-### Metrics to Ivano
-
-Here's the same proposal but with your comments applied:
-
 ## Research questions:
 
 RQ1 How viable is the process of migrating Angular components to Web Components?
