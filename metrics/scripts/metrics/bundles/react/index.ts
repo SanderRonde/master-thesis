@@ -9,7 +9,7 @@ import {
 	NamedSerialBundleMap,
 } from '../../../lib/types';
 
-type ReactBundles = ConstArrItems<typeof reactBundles>;
+export type ReactBundle = ConstArrItems<typeof reactBundles>;
 
 export const reactBundles = [
 	'material-ui',
@@ -21,21 +21,22 @@ const installCreator = getBundleInstallCommandCreator('react');
 const setupCreator = getBundleSetupCommandCreator('react');
 const metricsCreator = getBundleMetricsCommandCreator('react');
 
-export const reactInstallBundleMap: NamedSerialBundleMap<ReactBundles> = {
+export const reactInstallBundleMap: NamedSerialBundleMap<ReactBundle> = {
 	'material-ui': installCreator('material-ui'),
 	'react-bootstrap': installCreator('react-bootstrap'),
 	'semantic-ui-react': installCreator('semantic-ui-react'),
 };
 
-
-export const reactParallelBundleMap: NamedParallelBundleMap<ReactBundles> = {
+export const reactParallelBundleMap: NamedParallelBundleMap<ReactBundle> = {
 	'material-ui': setupCreator('material-ui'),
 	'react-bootstrap': setupCreator('react-bootstrap'),
 	'semantic-ui-react': setupCreator('semantic-ui-react'),
 };
 
-export const reactSerialBundleMap: NamedSerialBundleMap<ReactBundles> = {
+export const reactSerialBundleMap: NamedSerialBundleMap<ReactBundle> = {
 	'material-ui': metricsCreator('material-ui'),
-	'react-bootstrap': metricsCreator('react-bootstrap'),
+	'react-bootstrap': metricsCreator('react-bootstrap', {
+		isCSSFramework: true,
+	}),
 	'semantic-ui-react': metricsCreator('semantic-ui-react'),
 };

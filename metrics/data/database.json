@@ -3367,6 +3367,7 @@
 				}
 			},
 			"react-bootstrap": {
+				"is-css-framework": true,
 				"structural-complexity": {
 					"components": {
 						"AbstractNav": 4,
@@ -4381,6 +4382,7 @@
 				}
 			},
 			"ng-bootstrap": {
+				"is-css-framework": true,
 				"structural-complexity": {
 					"components": {
 						"NgbAlert": 7,
@@ -4605,6 +4607,7 @@
 				}
 			},
 			"ngx-bootstrap": {
+				"is-css-framework": true,
 				"structural-complexity": {
 					"components": {
 						"AccordionComponent": 3,

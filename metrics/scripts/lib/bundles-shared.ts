@@ -243,6 +243,16 @@ async function collectLoadTime(
 	);
 }
 
+async function collectIsCSSFramework(
+	{ bundleCategory, bundleName }: CollectorArgs,
+	overrides: BundleMetricsOverrides
+) {
+	await storeData(
+		['metrics', bundleCategory, bundleName, 'is-css-framework'],
+		overrides.isCSSFramework || false
+	);
+}
+
 async function collectRenderTimes(
 	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
 	overrides: BundleMetricsOverrides
@@ -327,6 +337,7 @@ interface BundleMetricsOverrides {
 	demoDir?: (basePath: string) => string;
 	urlPath?: string;
 	submoduleName?: string;
+	isCSSFramework?: boolean;
 }
 
 export function getBundleMetricsCommand<N extends string>(
@@ -355,6 +366,9 @@ export function getBundleMetricsCommand<N extends string>(
 				demoPath,
 				basePath,
 			};
+			await exec('? Collecting CSS framework status');
+			await collectIsCSSFramework(collectorArgs, overrides);
+
 			await exec('? Collecting structural complexity');
 			await collectStructuralComplexity(collectorArgs);
 
