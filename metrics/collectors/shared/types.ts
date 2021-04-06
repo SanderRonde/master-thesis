@@ -1,5 +1,5 @@
 import { Maintainability } from 'ts-complex';
-import { Bundle } from '../../scripts/lib/constants';
+import { BundlesByFramework } from '../../scripts/lib/constants';
 import { DatasetStats } from './stats';
 
 type ByComponentNumberStats = {
@@ -26,15 +26,18 @@ export type RenderTime = {
 
 export interface Data {
 	metrics: {
-		[bundle in Bundle]: {
-			'lines-of-code': LinesOfCode;
-			'cyclomatic-complexity': CyclomaticComplexity;
-			maintainability: Maintainability;
-			'structural-complexity': StructuralComplexity;
-			size: Size;
-			'load-time': LoadTime;
-			'number-of-components': NumberOfComponents;
-			'render-time': RenderTime
+		[Framework in keyof BundlesByFramework]: {
+			[Bundle in BundlesByFramework[Framework]]: {
+				'is-css-framework': boolean;
+				'lines-of-code': LinesOfCode;
+				'cyclomatic-complexity': CyclomaticComplexity;
+				maintainability: Maintainability;
+				'structural-complexity': StructuralComplexity;
+				size: Size;
+				'load-time': LoadTime;
+				'number-of-components': NumberOfComponents;
+				'render-time': RenderTime;
+			};
 		};
 	};
 }

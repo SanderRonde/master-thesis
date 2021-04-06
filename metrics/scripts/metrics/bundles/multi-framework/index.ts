@@ -10,7 +10,7 @@ import {
 	NamedSerialBundleMap,
 } from '../../../lib/types';
 
-type MultiFrameworkBundles = ConstArrItems<typeof multiFrameworkBundles>;
+export type MultiFrameworkBundle = ConstArrItems<typeof multiFrameworkBundles>;
 
 export const multiFrameworkBundles = [
 	'onsen-react',
@@ -24,7 +24,7 @@ const installCreator = getBundleInstallCommandCreator('multi-framework');
 const setupCreator = getBundleSetupCommandCreator('multi-framework');
 const metricsCreator = getBundleMetricsCommandCreator('multi-framework');
 
-export const multiFrameworkInstallBundleMap: NamedSerialBundleMap<MultiFrameworkBundles> = {
+export const multiFrameworkInstallBundleMap: NamedSerialBundleMap<MultiFrameworkBundle> = {
 	'onsen-react': installCreator('onsen-react'),
 	'onsen-web-components': installCreator('onsen-web-components'),
 	'onsen-angular': installCreator('onsen-angular'),
@@ -32,7 +32,7 @@ export const multiFrameworkInstallBundleMap: NamedSerialBundleMap<MultiFramework
 	'prime-ng': installCreator('prime-ng'),
 };
 
-export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFrameworkBundles> = {
+export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFrameworkBundle> = {
 	'onsen-react': setupCreator('onsen-react'),
 	'onsen-web-components': setupCreator('onsen-web-components'),
 	'onsen-angular': setupCreator('onsen-angular'),
@@ -40,7 +40,7 @@ export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFramew
 	'prime-ng': setupCreator('prime-ng'),
 };
 
-export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkBundles> = {
+export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkBundle> = {
 	'onsen-react': metricsCreator('onsen-react', {
 		submoduleName: 'onsen',
 	}),

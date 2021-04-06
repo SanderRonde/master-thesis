@@ -9,7 +9,7 @@ import {
 	NamedSerialBundleMap,
 } from '../../../lib/types';
 
-type SvelteBundles = ConstArrItems<typeof svelteBundles>;
+export type SvelteBundle = ConstArrItems<typeof svelteBundles>;
 
 export const svelteBundles = [
 	'svelte-material-ui',
@@ -21,19 +21,19 @@ const installCreator = getBundleInstallCommandCreator('svelte');
 const setupCreator = getBundleSetupCommandCreator('svelte');
 const metricsCreator = getBundleMetricsCommandCreator('svelte');
 
-export const svelteInstallBundleMap: NamedSerialBundleMap<SvelteBundles> = {
+export const svelteInstallBundleMap: NamedSerialBundleMap<SvelteBundle> = {
 	'svelte-material-ui': installCreator('svelte-material-ui'),
 	smelte: installCreator('smelte'),
 	'svelte-mui': installCreator('svelte-mui'),
 };
 
-export const svelteParallelBundleMap: NamedParallelBundleMap<SvelteBundles> = {
+export const svelteParallelBundleMap: NamedParallelBundleMap<SvelteBundle> = {
 	'svelte-material-ui': setupCreator('svelte-material-ui'),
 	smelte: setupCreator('smelte'),
 	'svelte-mui': setupCreator('svelte-mui'),
 };
 
-export const svelteSerialBundleMap: NamedSerialBundleMap<SvelteBundles> = {
+export const svelteSerialBundleMap: NamedSerialBundleMap<SvelteBundle> = {
 	'svelte-material-ui': metricsCreator('svelte-material-ui'),
 	smelte: metricsCreator('smelte'),
 	'svelte-mui': metricsCreator('svelte-mui'),

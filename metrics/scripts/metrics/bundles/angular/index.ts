@@ -11,7 +11,7 @@ import {
 	NamedSerialBundleMap,
 } from '../../../lib/types';
 
-type AngularBundles = ConstArrItems<typeof angularBundles>;
+export type AngularBundle = ConstArrItems<typeof angularBundles>;
 
 export const angularBundles = [
 	'angular-material',
@@ -27,20 +27,24 @@ const metricsCreator = getBundleMetricsCommandCreator('angular', {
 	urlPath: '/index.html',
 });
 
-export const angularInstallBundleMap: NamedSerialBundleMap<AngularBundles> = {
+export const angularInstallBundleMap: NamedSerialBundleMap<AngularBundle> = {
 	'angular-material': installCreator('angular-material'),
 	'ngx-bootstrap': installCreator('ngx-bootstrap'),
 	'ng-bootstrap': installCreator('ng-bootstrap'),
 };
 
-export const angularParallelBundleMap: NamedParallelBundleMap<AngularBundles> = {
+export const angularParallelBundleMap: NamedParallelBundleMap<AngularBundle> = {
 	'angular-material': setupCreator('angular-material'),
 	'ngx-bootstrap': setupCreator('ngx-bootstrap'),
 	'ng-bootstrap': setupCreator('ng-bootstrap'),
 };
 
-export const angularSerialBundleMap: NamedSerialBundleMap<AngularBundles> = {
+export const angularSerialBundleMap: NamedSerialBundleMap<AngularBundle> = {
 	'angular-material': metricsCreator('angular-material'),
-	'ngx-bootstrap': metricsCreator('ngx-bootstrap'),
-	'ng-bootstrap': metricsCreator('ng-bootstrap'),
+	'ngx-bootstrap': metricsCreator('ngx-bootstrap', {
+		isCSSFramework: true,
+	}),
+	'ng-bootstrap': metricsCreator('ng-bootstrap', {
+		isCSSFramework: true,
+	}),
 };

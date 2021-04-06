@@ -40,7 +40,7 @@ export const COW_COMPONENT_BUNDLES = COW_COMPONENTS_WRAPPERS.map(
 	(wrapper) => `cow-components-${wrapper}` as const
 );
 
-type CowComponentBundle = ConstArrItems<typeof cowComponentBundles>;
+export type CowComponentBundle = ConstArrItems<typeof cowComponentBundles>;
 
 // Bundles
 export const cowComponentBundles = [
