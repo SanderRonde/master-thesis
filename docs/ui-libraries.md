@@ -1,4 +1,6 @@
-## UI Libraries (libraries that provide components):
+## UI Libraries (libraries that provide components)
+
+We searched for various UI libraries online and categorized them by JS framework. For each, we note the number of stars on github. We select the top 3 UI libraries for each category and use those for our metrics.
 
 ### Svelte Libraries:
 
