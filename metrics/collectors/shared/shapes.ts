@@ -1,11 +1,14 @@
 import { ComponentFiles } from '../cow-components/dashboard/lib/get-components';
 
-export type MaybeThennable<T> = T | Promise<T>;
-
-export type Templates = {
-	[fileName: string]: string;
-};
-
+/**
+ * Available components
+ */
+export enum BASE_COMPONENT {
+	BUTTON = 'Button',
+	SWITCH = 'Switch',
+	INPUT = 'Input',
+	DATE_PICKER = 'DatePicker'
+}
 export type BaseComponent = 'Button' | 'Switch' | 'Input' | 'DatePicker';
 
 export interface ComponentVisibilitySetterWindow extends Window {
@@ -13,6 +16,9 @@ export interface ComponentVisibilitySetterWindow extends Window {
 	availableComponents: BaseComponent[];
 }
 
+/**
+ * Get components function
+ */
 export type GetComponentFunction = (
 	submodulePath: string
 ) => Promise<ComponentFiles[]>;

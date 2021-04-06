@@ -8,13 +8,17 @@
 						"ChartButton": 24,
 						"IconComponent": 104,
 						"InputElement": 51,
+						"Input": 51,
 						"ListItem": 19,
 						"ListItemAction": 21,
 						"ModularChartComponent": 138,
 						"PopupDateRangePickerComponent": 326,
+						"DatePicker": 326,
 						"PrimaryButtonComponent": 23,
+						"Button": 23,
 						"SecondaryButtonComponent": 20,
 						"SwitchComponent": 26,
+						"Switch": 26,
 						"SwitchOptionComponent": 71,
 						"TertiaryButtonComponent": 51
 					},
@@ -33,13 +37,17 @@
 						"ChartButton": 1,
 						"IconComponent": 12,
 						"InputElement": 8,
+						"Input": 8,
 						"ListItem": 2,
 						"ListItemAction": 2,
 						"ModularChartComponent": 19,
 						"PopupDateRangePickerComponent": 76,
+						"DatePicker": 76,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 11,
 						"TertiaryButtonComponent": 7
 					},
@@ -57,13 +65,17 @@
 						"ChartButton": 98.1,
 						"IconComponent": 71.27,
 						"InputElement": 81.72,
+						"Input": 81.72,
 						"ListItem": 110.05,
 						"ListItemAction": 106.76,
 						"ModularChartComponent": 63.03,
 						"PopupDateRangePickerComponent": 51.6,
+						"DatePicker": 51.6,
 						"PrimaryButtonComponent": 95.85,
+						"Button": 95.85,
 						"SecondaryButtonComponent": 105.1,
 						"SwitchComponent": 97.91,
+						"Switch": 97.91,
 						"SwitchOptionComponent": 82.11,
 						"TertiaryButtonComponent": 78.24
 					},
@@ -81,13 +93,17 @@
 						"ChartButton": 2,
 						"IconComponent": 13,
 						"InputElement": 19,
+						"Input": 19,
 						"ListItem": 1,
 						"ListItemAction": 1,
 						"ModularChartComponent": 62,
 						"PopupDateRangePickerComponent": 35,
+						"DatePicker": 35,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 26,
 						"TertiaryButtonComponent": 2
 					},
@@ -137,6 +153,23 @@
 							}
 						},
 						"PrimaryButtonComponent": {
+							"times": [
+								16.214599999999997,
+								12.577200000000001,
+								11.8898,
+								15.9202,
+								13.657599999999999
+							],
+							"stats": {
+								"min": 11.8898,
+								"max": 16.214599999999997,
+								"avg": 14.05188,
+								"total": 70.2594,
+								"median": 14.788899999999998,
+								"stddev": 1.741993408024266
+							}
+						},
+						"Button": {
 							"times": [
 								16.214599999999997,
 								12.577200000000001,
@@ -204,6 +237,23 @@
 								"stddev": 4.908243029679765
 							}
 						},
+						"Input": {
+							"times": [
+								3.3006,
+								5.7362,
+								3.4753999999999996,
+								5.0322000000000005,
+								16.438399999999998
+							],
+							"stats": {
+								"min": 3.3006,
+								"max": 16.438399999999998,
+								"avg": 6.7965599999999995,
+								"total": 33.9828,
+								"median": 4.2538,
+								"stddev": 4.908243029679765
+							}
+						},
 						"SwitchOptionComponent": {
 							"times": [
 								56.401599999999995,
@@ -222,13 +272,7 @@
 							}
 						},
 						"ListItem": {
-							"times": [
-								6.9656,
-								3.8274,
-								5.3614,
-								3.1944,
-								2.9378
-							],
+							"times": [6.9656, 3.8274, 5.3614, 3.1944, 2.9378],
 							"stats": {
 								"min": 2.9378,
 								"max": 6.9656,
@@ -272,7 +316,41 @@
 								"stddev": 1.6213277946177327
 							}
 						},
+						"Switch": {
+							"times": [
+								3.836,
+								3.8274,
+								7.8024000000000004,
+								4.0616,
+								3.4090000000000003
+							],
+							"stats": {
+								"min": 3.4090000000000003,
+								"max": 7.8024000000000004,
+								"avg": 4.58728,
+								"total": 22.9364,
+								"median": 3.9488000000000003,
+								"stddev": 1.6213277946177327
+							}
+						},
 						"PopupDateRangePickerComponent": {
+							"times": [
+								76.44579999999999,
+								84.4496,
+								110.6934,
+								82.7826,
+								64.315
+							],
+							"stats": {
+								"min": 64.315,
+								"max": 110.6934,
+								"avg": 83.73728,
+								"total": 418.6864,
+								"median": 79.6142,
+								"stddev": 15.221313084803164
+							}
+						},
+						"DatePicker": {
 							"times": [
 								76.44579999999999,
 								84.4496,
@@ -340,13 +418,17 @@
 						"ChartButton": 2,
 						"IconComponent": 13,
 						"InputElement": 19,
+						"Input": 19,
 						"ListItem": 1,
 						"ListItemAction": 1,
 						"ModularChartComponent": 62,
 						"PopupDateRangePickerComponent": 35,
+						"DatePicker": 35,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 26,
 						"TertiaryButtonComponent": 2
 					},
@@ -364,13 +446,17 @@
 						"ChartButton": 1,
 						"IconComponent": 12,
 						"InputElement": 8,
+						"Input": 8,
 						"ListItem": 2,
 						"ListItemAction": 2,
 						"ModularChartComponent": 19,
 						"PopupDateRangePickerComponent": 76,
+						"DatePicker": 76,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 11,
 						"TertiaryButtonComponent": 7
 					},
@@ -388,13 +474,17 @@
 						"ChartButton": 24,
 						"IconComponent": 104,
 						"InputElement": 51,
+						"Input": 51,
 						"ListItem": 19,
 						"ListItemAction": 21,
 						"ModularChartComponent": 138,
 						"PopupDateRangePickerComponent": 326,
+						"DatePicker": 326,
 						"PrimaryButtonComponent": 23,
+						"Button": 23,
 						"SecondaryButtonComponent": 20,
 						"SwitchComponent": 26,
+						"Switch": 26,
 						"SwitchOptionComponent": 71,
 						"TertiaryButtonComponent": 51
 					},
@@ -412,13 +502,17 @@
 						"ChartButton": 98.1,
 						"IconComponent": 71.27,
 						"InputElement": 81.72,
+						"Input": 81.72,
 						"ListItem": 110.05,
 						"ListItemAction": 106.76,
 						"ModularChartComponent": 63.03,
 						"PopupDateRangePickerComponent": 51.6,
+						"DatePicker": 51.6,
 						"PrimaryButtonComponent": 95.85,
+						"Button": 95.85,
 						"SecondaryButtonComponent": 105.1,
 						"SwitchComponent": 97.91,
+						"Switch": 97.91,
 						"SwitchOptionComponent": 82.11,
 						"TertiaryButtonComponent": 78.24
 					},
@@ -452,6 +546,23 @@
 							}
 						},
 						"PrimaryButtonComponent": {
+							"times": [
+								34.5796,
+								34.330799999999996,
+								35.0998,
+								33.666399999999996,
+								33.3666
+							],
+							"stats": {
+								"min": 33.3666,
+								"max": 35.0998,
+								"avg": 34.20864,
+								"total": 171.0432,
+								"median": 34.4552,
+								"stddev": 0.624460745283482
+							}
+						},
+						"Button": {
 							"times": [
 								34.5796,
 								34.330799999999996,
@@ -503,6 +614,23 @@
 							}
 						},
 						"InputElement": {
+							"times": [
+								14.706399999999999,
+								14.2452,
+								14.8584,
+								16.444,
+								15.1
+							],
+							"stats": {
+								"min": 14.2452,
+								"max": 16.444,
+								"avg": 15.0708,
+								"total": 75.354,
+								"median": 14.979199999999999,
+								"stddev": 0.7410866831889503
+							}
+						},
+						"Input": {
 							"times": [
 								14.706399999999999,
 								14.2452,
@@ -587,7 +715,41 @@
 								"stddev": 0.8856215137404914
 							}
 						},
+						"Switch": {
+							"times": [
+								16.7012,
+								15.4178,
+								14.2606,
+								15.411000000000001,
+								16.531
+							],
+							"stats": {
+								"min": 14.2606,
+								"max": 16.7012,
+								"avg": 15.664319999999998,
+								"total": 78.32159999999999,
+								"median": 15.9744,
+								"stddev": 0.8856215137404914
+							}
+						},
 						"PopupDateRangePickerComponent": {
+							"times": [
+								108.02000000000001,
+								114.59200000000001,
+								114.72919999999999,
+								108.7018,
+								110.474
+							],
+							"stats": {
+								"min": 108.02000000000001,
+								"max": 114.72919999999999,
+								"avg": 111.30340000000001,
+								"total": 556.517,
+								"median": 112.53300000000002,
+								"stddev": 2.8561490885456213
+							}
+						},
+						"DatePicker": {
 							"times": [
 								108.02000000000001,
 								114.59200000000001,
@@ -673,13 +835,17 @@
 						"ChartButton": 2,
 						"IconComponent": 13,
 						"InputElement": 19,
+						"Input": 19,
 						"ListItem": 1,
 						"ListItemAction": 1,
 						"ModularChartComponent": 62,
 						"PopupDateRangePickerComponent": 35,
+						"DatePicker": 35,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 26,
 						"TertiaryButtonComponent": 2
 					},
@@ -697,13 +863,17 @@
 						"ChartButton": 1,
 						"IconComponent": 12,
 						"InputElement": 8,
+						"Input": 8,
 						"ListItem": 2,
 						"ListItemAction": 2,
 						"ModularChartComponent": 19,
 						"PopupDateRangePickerComponent": 76,
+						"DatePicker": 76,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 11,
 						"TertiaryButtonComponent": 7
 					},
@@ -721,13 +891,17 @@
 						"ChartButton": 24,
 						"IconComponent": 104,
 						"InputElement": 51,
+						"Input": 51,
 						"ListItem": 19,
 						"ListItemAction": 21,
 						"ModularChartComponent": 138,
 						"PopupDateRangePickerComponent": 326,
+						"DatePicker": 326,
 						"PrimaryButtonComponent": 23,
+						"Button": 23,
 						"SecondaryButtonComponent": 20,
 						"SwitchComponent": 26,
+						"Switch": 26,
 						"SwitchOptionComponent": 71,
 						"TertiaryButtonComponent": 51
 					},
@@ -745,13 +919,17 @@
 						"ChartButton": 98.1,
 						"IconComponent": 71.27,
 						"InputElement": 81.72,
+						"Input": 81.72,
 						"ListItem": 110.05,
 						"ListItemAction": 106.76,
 						"ModularChartComponent": 63.03,
 						"PopupDateRangePickerComponent": 51.6,
+						"DatePicker": 51.6,
 						"PrimaryButtonComponent": 95.85,
+						"Button": 95.85,
 						"SecondaryButtonComponent": 105.1,
 						"SwitchComponent": 97.91,
+						"Switch": 97.91,
 						"SwitchOptionComponent": 82.11,
 						"TertiaryButtonComponent": 78.24
 					},
@@ -819,6 +997,23 @@
 								"stddev": 0.5473524553703951
 							}
 						},
+						"Button": {
+							"times": [
+								16.2064,
+								17.1702,
+								15.834399999999999,
+								15.677600000000002,
+								15.7862
+							],
+							"stats": {
+								"min": 15.677600000000002,
+								"max": 17.1702,
+								"avg": 16.13496,
+								"total": 80.67479999999999,
+								"median": 16.0204,
+								"stddev": 0.5473524553703951
+							}
+						},
 						"SecondaryButtonComponent": {
 							"times": [
 								16.7534,
@@ -854,6 +1049,23 @@
 							}
 						},
 						"InputElement": {
+							"times": [
+								16.1276,
+								16.1024,
+								15.567599999999999,
+								17.040399999999998,
+								15.658199999999999
+							],
+							"stats": {
+								"min": 15.567599999999999,
+								"max": 17.040399999999998,
+								"avg": 16.099239999999998,
+								"total": 80.49619999999999,
+								"median": 16.115000000000002,
+								"stddev": 0.5222554532027404
+							}
+						},
+						"Input": {
 							"times": [
 								16.1276,
 								16.1024,
@@ -938,7 +1150,41 @@
 								"stddev": 0.9706181617917529
 							}
 						},
+						"Switch": {
+							"times": [
+								16.4698,
+								17.7856,
+								17.701,
+								16.171799999999998,
+								15.215799999999998
+							],
+							"stats": {
+								"min": 15.215799999999998,
+								"max": 17.7856,
+								"avg": 16.668799999999997,
+								"total": 83.344,
+								"median": 17.0854,
+								"stddev": 0.9706181617917529
+							}
+						},
 						"PopupDateRangePickerComponent": {
+							"times": [
+								110.32480000000001,
+								105.07239999999999,
+								112.0854,
+								96.9426,
+								104.52539999999999
+							],
+							"stats": {
+								"min": 96.9426,
+								"max": 112.0854,
+								"avg": 105.79012,
+								"total": 528.9506,
+								"median": 111.20510000000002,
+								"stddev": 5.302586572758623
+							}
+						},
+						"DatePicker": {
 							"times": [
 								110.32480000000001,
 								105.07239999999999,
@@ -1006,13 +1252,17 @@
 						"ChartButton": 2,
 						"IconComponent": 13,
 						"InputElement": 19,
+						"Input": 19,
 						"ListItem": 1,
 						"ListItemAction": 1,
 						"ModularChartComponent": 62,
 						"PopupDateRangePickerComponent": 35,
+						"DatePicker": 35,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 26,
 						"TertiaryButtonComponent": 2
 					},
@@ -1030,13 +1280,17 @@
 						"ChartButton": 1,
 						"IconComponent": 12,
 						"InputElement": 8,
+						"Input": 8,
 						"ListItem": 2,
 						"ListItemAction": 2,
 						"ModularChartComponent": 19,
 						"PopupDateRangePickerComponent": 76,
+						"DatePicker": 76,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 11,
 						"TertiaryButtonComponent": 7
 					},
@@ -1054,13 +1308,17 @@
 						"ChartButton": 24,
 						"IconComponent": 104,
 						"InputElement": 51,
+						"Input": 51,
 						"ListItem": 19,
 						"ListItemAction": 21,
 						"ModularChartComponent": 138,
 						"PopupDateRangePickerComponent": 326,
+						"DatePicker": 326,
 						"PrimaryButtonComponent": 23,
+						"Button": 23,
 						"SecondaryButtonComponent": 20,
 						"SwitchComponent": 26,
+						"Switch": 26,
 						"SwitchOptionComponent": 71,
 						"TertiaryButtonComponent": 51
 					},
@@ -1078,13 +1336,17 @@
 						"ChartButton": 98.1,
 						"IconComponent": 71.27,
 						"InputElement": 81.72,
+						"Input": 81.72,
 						"ListItem": 110.05,
 						"ListItemAction": 106.76,
 						"ModularChartComponent": 63.03,
 						"PopupDateRangePickerComponent": 51.6,
+						"DatePicker": 51.6,
 						"PrimaryButtonComponent": 95.85,
+						"Button": 95.85,
 						"SecondaryButtonComponent": 105.1,
 						"SwitchComponent": 97.91,
+						"Switch": 97.91,
 						"SwitchOptionComponent": 82.11,
 						"TertiaryButtonComponent": 78.24
 					},
@@ -1099,13 +1361,7 @@
 				},
 				"number-of-components": 12,
 				"load-time": {
-					"values": [
-						417.9262,
-						422.894,
-						402.3643,
-						388.9879,
-						402.1279
-					],
+					"values": [417.9262, 422.894, 402.3643, 388.9879, 402.1279],
 					"stats": {
 						"min": 388.9879,
 						"max": 422.894,
@@ -1136,13 +1392,18 @@
 							}
 						},
 						"PrimaryButtonComponent": {
-							"times": [
-								12.0136,
-								11.116,
-								10.5974,
-								10.1644,
-								11.14
-							],
+							"times": [12.0136, 11.116, 10.5974, 10.1644, 11.14],
+							"stats": {
+								"min": 10.1644,
+								"max": 12.0136,
+								"avg": 11.00628,
+								"total": 55.031400000000005,
+								"median": 11.128,
+								"stddev": 0.6197673576431724
+							}
+						},
+						"Button": {
+							"times": [12.0136, 11.116, 10.5974, 10.1644, 11.14],
 							"stats": {
 								"min": 10.1644,
 								"max": 12.0136,
@@ -1187,13 +1448,18 @@
 							}
 						},
 						"InputElement": {
-							"times": [
-								10.1478,
-								10.231,
-								10.5272,
-								12.256,
-								11.162
-							],
+							"times": [10.1478, 10.231, 10.5272, 12.256, 11.162],
+							"stats": {
+								"min": 10.1478,
+								"max": 12.256,
+								"avg": 10.864799999999999,
+								"total": 54.324,
+								"median": 10.8446,
+								"stddev": 0.7814768684996378
+							}
+						},
+						"Input": {
+							"times": [10.1478, 10.231, 10.5272, 12.256, 11.162],
 							"stats": {
 								"min": 10.1478,
 								"max": 12.256,
@@ -1271,6 +1537,23 @@
 								"stddev": 0.7877794168420493
 							}
 						},
+						"Switch": {
+							"times": [
+								11.0312,
+								10.591800000000001,
+								12.1202,
+								12.7578,
+								12.0646
+							],
+							"stats": {
+								"min": 10.591800000000001,
+								"max": 12.7578,
+								"avg": 11.71312,
+								"total": 58.5656,
+								"median": 12.092400000000001,
+								"stddev": 0.7877794168420493
+							}
+						},
 						"PopupDateRangePickerComponent": {
 							"times": [
 								88.4466,
@@ -1288,14 +1571,25 @@
 								"stddev": 4.408989454466859
 							}
 						},
-						"IconComponent": {
+						"DatePicker": {
 							"times": [
-								24.4144,
-								21.323,
-								22.1716,
-								23.77,
-								23.1978
+								88.4466,
+								91.933,
+								82.14320000000001,
+								95.50359999999999,
+								89.5462
 							],
+							"stats": {
+								"min": 82.14320000000001,
+								"max": 95.50359999999999,
+								"avg": 89.51452,
+								"total": 447.5726,
+								"median": 90.7396,
+								"stddev": 4.408989454466859
+							}
+						},
+						"IconComponent": {
+							"times": [24.4144, 21.323, 22.1716, 23.77, 23.1978],
 							"stats": {
 								"min": 21.323,
 								"max": 24.4144,
@@ -1339,13 +1633,17 @@
 						"ChartButton": 2,
 						"IconComponent": 13,
 						"InputElement": 19,
+						"Input": 19,
 						"ListItem": 1,
 						"ListItemAction": 1,
 						"ModularChartComponent": 62,
 						"PopupDateRangePickerComponent": 35,
+						"DatePicker": 35,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 26,
 						"TertiaryButtonComponent": 2
 					},
@@ -1363,13 +1661,17 @@
 						"ChartButton": 1,
 						"IconComponent": 12,
 						"InputElement": 8,
+						"Input": 8,
 						"ListItem": 2,
 						"ListItemAction": 2,
 						"ModularChartComponent": 19,
 						"PopupDateRangePickerComponent": 76,
+						"DatePicker": 76,
 						"PrimaryButtonComponent": 2,
+						"Button": 2,
 						"SecondaryButtonComponent": 2,
 						"SwitchComponent": 2,
+						"Switch": 2,
 						"SwitchOptionComponent": 11,
 						"TertiaryButtonComponent": 7
 					},
@@ -1387,13 +1689,17 @@
 						"ChartButton": 24,
 						"IconComponent": 104,
 						"InputElement": 51,
+						"Input": 51,
 						"ListItem": 19,
 						"ListItemAction": 21,
 						"ModularChartComponent": 138,
 						"PopupDateRangePickerComponent": 326,
+						"DatePicker": 326,
 						"PrimaryButtonComponent": 23,
+						"Button": 23,
 						"SecondaryButtonComponent": 20,
 						"SwitchComponent": 26,
+						"Switch": 26,
 						"SwitchOptionComponent": 71,
 						"TertiaryButtonComponent": 51
 					},
@@ -1411,13 +1717,17 @@
 						"ChartButton": 98.1,
 						"IconComponent": 71.27,
 						"InputElement": 81.72,
+						"Input": 81.72,
 						"ListItem": 110.05,
 						"ListItemAction": 106.76,
 						"ModularChartComponent": 63.03,
 						"PopupDateRangePickerComponent": 51.6,
+						"DatePicker": 51.6,
 						"PrimaryButtonComponent": 95.85,
+						"Button": 95.85,
 						"SecondaryButtonComponent": 105.1,
 						"SwitchComponent": 97.91,
+						"Switch": 97.91,
 						"SwitchOptionComponent": 82.11,
 						"TertiaryButtonComponent": 78.24
 					},
@@ -1432,13 +1742,7 @@
 				},
 				"number-of-components": 12,
 				"load-time": {
-					"values": [
-						464.382,
-						467.4661,
-						480.6357,
-						443.662,
-						436.7574
-					],
+					"values": [464.382, 467.4661, 480.6357, 443.662, 436.7574],
 					"stats": {
 						"min": 436.7574,
 						"max": 480.6357,
@@ -1469,6 +1773,23 @@
 							}
 						},
 						"PrimaryButtonComponent": {
+							"times": [
+								15.4892,
+								16.536,
+								15.117799999999999,
+								14.710400000000002,
+								16.1672
+							],
+							"stats": {
+								"min": 14.710400000000002,
+								"max": 16.536,
+								"avg": 15.60412,
+								"total": 78.0206,
+								"median": 15.8282,
+								"stddev": 0.6684173259274481
+							}
+						},
+						"Button": {
 							"times": [
 								15.4892,
 								16.536,
@@ -1520,6 +1841,23 @@
 							}
 						},
 						"InputElement": {
+							"times": [
+								15.9678,
+								16.1964,
+								15.869200000000001,
+								15.0338,
+								17.0048
+							],
+							"stats": {
+								"min": 15.0338,
+								"max": 17.0048,
+								"avg": 16.014400000000002,
+								"total": 80.072,
+								"median": 16.0821,
+								"stddev": 0.6322732194233754
+							}
+						},
+						"Input": {
 							"times": [
 								15.9678,
 								16.1964,
@@ -1604,7 +1942,41 @@
 								"stddev": 0.7248915460950006
 							}
 						},
+						"Switch": {
+							"times": [
+								15.8274,
+								16.1186,
+								15.612200000000001,
+								14.484399999999999,
+								16.68
+							],
+							"stats": {
+								"min": 14.484399999999999,
+								"max": 16.68,
+								"avg": 15.74452,
+								"total": 78.7226,
+								"median": 15.973,
+								"stddev": 0.7248915460950006
+							}
+						},
 						"PopupDateRangePickerComponent": {
+							"times": [
+								104.69539999999999,
+								115.83160000000001,
+								97.1596,
+								104.1016,
+								105.54459999999999
+							],
+							"stats": {
+								"min": 97.1596,
+								"max": 115.83160000000001,
+								"avg": 105.46656,
+								"total": 527.3328,
+								"median": 110.68809999999999,
+								"stddev": 5.981697625791532
+							}
+						},
+						"DatePicker": {
 							"times": [
 								104.69539999999999,
 								115.83160000000001,
@@ -1892,13 +2264,7 @@
 							}
 						},
 						"Switch": {
-							"times": [
-								7.0956,
-								6.6196,
-								6.1086,
-								6.0958,
-								6.118
-							],
+							"times": [7.0956, 6.6196, 6.1086, 6.0958, 6.118],
 							"stats": {
 								"min": 6.0958,
 								"max": 7.0956,
@@ -2070,13 +2436,7 @@
 				},
 				"size": 62212,
 				"load-time": {
-					"values": [
-						2.4403,
-						2.65,
-						2.625,
-						2.2996999999999996,
-						2.4344
-					],
+					"values": [2.4403, 2.65, 2.625, 2.2996999999999996, 2.4344],
 					"stats": {
 						"min": 2.2996999999999996,
 						"max": 2.65,
@@ -2282,13 +2642,7 @@
 				},
 				"size": 63991,
 				"load-time": {
-					"values": [
-						2.1931,
-						2.0693,
-						2.0812,
-						2.2715,
-						2.3165
-					],
+					"values": [2.1931, 2.0693, 2.0812, 2.2715, 2.3165],
 					"stats": {
 						"min": 2.0693,
 						"max": 2.3165,
@@ -3723,13 +4077,7 @@
 							}
 						},
 						"Switch": {
-							"times": [
-								8.08,
-								8.1448,
-								6.7354,
-								6.8558,
-								7.6534
-							],
+							"times": [8.08, 8.1448, 6.7354, 6.8558, 7.6534],
 							"stats": {
 								"min": 6.7354,
 								"max": 8.1448,
@@ -4502,13 +4850,7 @@
 				"render-time": {
 					"components": {
 						"Button": {
-							"times": [
-								3.601,
-								3.6306,
-								4.3062,
-								4.2498,
-								3.8282
-							],
+							"times": [3.601, 3.6306, 4.3062, 4.2498, 3.8282],
 							"stats": {
 								"min": 3.601,
 								"max": 4.3062,
@@ -4733,13 +5075,7 @@
 				},
 				"size": 119249,
 				"load-time": {
-					"values": [
-						11.2597,
-						13.1,
-						13.6565,
-						12.792,
-						13.0355
-					],
+					"values": [11.2597, 13.1, 13.6565, 12.792, 13.0355],
 					"stats": {
 						"min": 11.2597,
 						"max": 13.6565,
@@ -5444,13 +5780,7 @@
 				},
 				"size": 506283,
 				"load-time": {
-					"values": [
-						95.4623,
-						84.29,
-						96.1267,
-						98.0972,
-						101.4477
-					],
+					"values": [95.4623, 84.29, 96.1267, 98.0972, 101.4477],
 					"stats": {
 						"min": 84.29,
 						"max": 101.4477,
@@ -5714,13 +6044,7 @@
 				},
 				"size": 2083044,
 				"load-time": {
-					"values": [
-						247.8152,
-						259.1769,
-						242.257,
-						241.4239,
-						239.9483
-					],
+					"values": [247.8152, 259.1769, 242.257, 241.4239, 239.9483],
 					"stats": {
 						"min": 239.9483,
 						"max": 259.1769,
@@ -6197,13 +6521,7 @@
 				},
 				"size": 195285,
 				"load-time": {
-					"values": [
-						34.7618,
-						36.6667,
-						34.0758,
-						34.081,
-						35.1113
-					],
+					"values": [34.7618, 36.6667, 34.0758, 34.081, 35.1113],
 					"stats": {
 						"min": 34.0758,
 						"max": 36.6667,
