@@ -1,5 +1,5 @@
 node_modules
-.vscode
+.vscode/*
 metrics/temp
 metrics/cache
 
@@ -15,5 +15,7 @@ metrics/collectors/**/demo/yarn.lock
 !metrics/collectors/multi-framework/onsen-react/demo/demo.html
 !metrics/collectors/multi-framework/onsen-web-components/demo/demo.html
 !metrics/collectors/multi-framework/prime-react/demo/demo.html
+
+paper/src/main.synctex.gz
 
 yarn-error.log

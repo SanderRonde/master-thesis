@@ -1,0 +1,98 @@
+\documentclass[10pt, conference, compsocconf]{IEEEtran}
+
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{epsfig}
+\usepackage{amsmath,amssymb,amsfonts,latexsym}
+\usepackage{enumerate}
+\usepackage{xspace}
+\usepackage{epsf,picinpar}
+\usepackage{varioref}
+\usepackage{colortbl,multirow,hhline}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{colortbl,multirow,hhline}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{caption}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage{xcolor,colortbl}
+\usepackage{url}
+\usepackage{balance}
+\usepackage{graphicx, subfigure}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{framed}
+\usepackage{morefloats}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{pdfpages}
+\usepackage{fancybox}
+\usepackage{amsmath}
+\usepackage{flushend}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{pbox}
+
+\renewcommand{\ttdefault}{cmr}
+
+\newcommand{\source}[1]{\caption*{Source: {#1}}}
+\newcommand{\limit}[1]{\textcolor{red}{\ding{46}~Page limit:~#1}\\}
+\newcommand{\todo}[1]{\textcolor{blue}{\ding{46}~#1}} 
+\newcommand{\ie}{\emph{i.e.,}\xspace}
+\newcommand{\eg}{\emph{e.g.,}\xspace}
+\newcommand{\etc}{etc.\xspace}
+\newcommand{\etal}{\emph{et~al.}\xspace} 
+    
+\begin{document}
+
+\title{
+	\todo{Title}
+}
+
+\author{
+	\IEEEauthorblockN{Sander Ronde}
+	\IEEEauthorblockA{s.j.p.m.ronde@student.vu.nl\\
+		Student number: 2639938\\
+		Supervisor: Ivano Malavolta\\
+		\\
+		\today
+	}
+}
+
+\maketitle
+
+\begin{abstract}
+	\input{sections/abstract.tex}
+\end{abstract}
+
+\begin{IEEEkeywords}
+	\todo{keywords}
+
+
+\end{IEEEkeywords}
+
+
+\input{sections/introduction.tex}
+\input{sections/background.tex}
+\input{sections/related-work.tex}
+\input{sections/design.tex}
+\input{sections/results.tex}
+\input{sections/threats-to-validity.tex}
+\input{sections/discussion.tex}
+\input{sections/conclusion.tex}
+
+\bibliographystyle{IEEEtran}
+\todo{Include bibliography once used}
+% \bibliography{bib/references}
+
+\end{document}
+
+
+
+
+
+
