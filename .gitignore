@@ -17,5 +17,6 @@ metrics/collectors/**/demo/yarn.lock
 !metrics/collectors/multi-framework/prime-react/demo/demo.html
 
 paper/src/main.synctex.gz
+paper/src/indent.log
 
 yarn-error.log
