@@ -1,0 +1,17 @@
+\section{Related Work}\label{sec:related-work}
+
+There are various fields in which the related work is important to us in this paper. Namely related work in the area of UI Libraries, Angular Elements (and the accompanying process of converting to Web Components), related work on Web Components themselves, and related work on the creation of wrappers around Web Components to target JS frameworks.
+
+\subsection{UI Libraries}
+\todo{UI Libraries}
+
+\subsection{Angular Elements}
+Research on the area of Angular Elements is very sparse. In our search, we only found a single paper on this subject. In~\cite{armengol2020development}, Angular Elements is used to convert form components to Web Components so that they can be rendered dynamically. On the other hand, blog posts on this area are numerous. In~\cite{basal_2019}~\cite{kitson_2019}~\cite{mackey-paulsen_2020}~\cite{nalepa_2020}~\cite{notiz.dev_2020}~\cite{sonara_2020}~\cite{strumpflohner_2019}~\cite{studio_la_cosa_nostra_2020}~\cite{s_2019}~\cite{techiediaries_team_2020}~\cite{vardanyan_2020}~\cite{williams_2020}, the authors explain how to set up Angular Elements and how to use it to create a new component library. These blog posts mostly focus on creating new components or converting simple components through Angular Elements, not so much on converting larger and more complex components. They all use new and empty projects, contrary to~\cite{helgevold_2019} and~\cite{seaman_2019}. The authors use Angular Elements to convert existing AngularJS (an older version of Angular) components to the newer Angular. They do this by converting the source code of existing AngularJS components to Angular source code. By itself, this would break since the application root still runs on AngularJS and is unable to handle Angular code. By using Angular Elements to convert the Angular code into Web Components, the Web Components are able to run inside the AngularJS root. This is thanks to the low-level nature of Web Components, allowing any framework that can render HTML elements to use them. Through this iterative process, they are able to convert components one by one, converting the root component once all of its children have been converted as well.
+
+Unfortunately, we were unable to find any related work on the conversion of complex Angular components to Web Components through Angular Elements. Related work seems to focus mostly on small get-started style projects. In the cases where they do focus on more complex projects, it seems like the only use is the conversion from AngularJS to Angular.
+
+\subsection{Web Components}
+\todo{Web Components section}
+
+\subsection{JS Framework Wrappers}
+We were unable to find any research on JS framework wrappers. This does not seem to be a problem that has been tackled very often, at least in literature. However, in~\cite{remdt_2019}, the author explores options to tackle one of the problems we wish to solve through creating wrappers, namely the passing of non-primitive data to Web Components. They propose some good solutions to this problem.
