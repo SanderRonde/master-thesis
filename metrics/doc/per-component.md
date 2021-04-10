@@ -12,5 +12,5 @@
 
 ## Different between design libraries
 
--   Latency - How fast the component resources load
+-   Latency aka load time - How fast the component resources load
 -   RenderTime - How fast the individual component renders

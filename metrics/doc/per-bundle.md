@@ -14,5 +14,5 @@
 ## Different between design libraries
 
 -   Size - The size of the bundle
--   Latency - How fast the bundle loads
+-   Latency aka load time - How fast the bundle loads
 -   RenderTime - How fast an individual component renders
