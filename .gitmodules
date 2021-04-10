@@ -46,3 +46,9 @@
 [submodule "metrics/submodules/prime-ng"]
 	path = metrics/submodules/prime-ng
 	url = https://github.com/primefaces/primeng
+[submodule "metrics/30mhz-dashboard-basic"]
+	path = metrics/30mhz-dashboard-basic
+	url = https://github.com/30MHz/dashboard.30mhz.com
+[submodule "metrics/submodules/30mhz-dashboard-basic"]
+	path = metrics/submodules/30mhz-dashboard-basic
+	url = https://github.com/30MHz/dashboard.30mhz.com
