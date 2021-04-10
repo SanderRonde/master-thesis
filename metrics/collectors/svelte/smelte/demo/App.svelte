@@ -3,18 +3,16 @@
 	import Button from 'smelte/src/components/Button';
 	import Textfield from 'smelte/src/components/TextField';
 	import Switch from 'smelte/src/components/Switch';
-	import DatePicker from 'smelte/src/components/DatePicker';
 
 	window.setVisibleComponent = (componentName, isVisible) => {
 		visible[componentName] = isVisible;
 	};
-	window.availableComponents = ['Button', 'Input', 'Switch', 'DatePicker'];
+	window.availableComponents = ['Button', 'Input', 'Switch'];
 
 	let visible = {
 		Button: false,
 		Switch: false,
 		Input: false,
-		DatePicker: false,
 	};
 </script>
 
@@ -26,7 +24,4 @@
 {/if}
 {#if visible.Input}
 	<Textfield label="Label" />
-{/if}
-{#if visible.DatePicker}
-	<DatePicker />
 {/if}

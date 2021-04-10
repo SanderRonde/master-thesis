@@ -1,16 +1,15 @@
 <script>
-	import { Button, Datepicker, Checkbox, Textfield } from 'svelte-mui';
+	import { Button, Checkbox, Textfield } from 'svelte-mui';
 
 	window.setVisibleComponent = (componentName, isVisible) => {
 		visible[componentName] = isVisible;
 	};
-	window.availableComponents = ['Button', 'Input', 'Switch', 'DatePicker'];
+	window.availableComponents = ['Button', 'Input', 'Switch'];
 
 	let visible = {
 		Button: false,
 		Switch: false,
 		Input: false,
-		DatePicker: false,
 	};
 </script>
 
@@ -22,7 +21,4 @@
 {/if}
 {#if visible.Input}
 	<Textfield />
-{/if}
-{#if visible.DatePicker}
-	<Datepicker />
 {/if}

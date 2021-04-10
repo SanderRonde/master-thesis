@@ -5,7 +5,7 @@ import { ComponentFiles, getComponents, ReadFile } from './get-components';
 
 /**
  * Add copies of the dashboard's equivalents of the
- * primary button, input, datepicker and switch
+ * primary button, input and switch
  * components. This is basically just a rename
  * and allows us to just do `components.Button`
  * instead of `components.Button || components.PrimaryButtonComponent`
@@ -13,7 +13,6 @@ import { ComponentFiles, getComponents, ReadFile } from './get-components';
 const COMPONENT_NAME_MAP = new Map<string, string>([
 	['PrimaryButtonComponent', BASE_COMPONENT.BUTTON],
 	['InputElement', BASE_COMPONENT.INPUT],
-	['DateRangePickerComponent', BASE_COMPONENT.DATE_PICKER],
 	['SwitchComponent', BASE_COMPONENT.SWITCH],
 ]);
 

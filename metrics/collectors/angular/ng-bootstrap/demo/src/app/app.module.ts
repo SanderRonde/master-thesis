@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {
 	NgbButtonsModule,
-	NgbDatepickerModule,
 	NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,7 +14,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 		BrowserModule,
 		NgbModule,
 		NgbButtonsModule,
-		NgbDatepickerModule,
 		NgbTypeaheadModule,
 	],
 	providers: [],

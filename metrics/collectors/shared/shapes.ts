@@ -7,9 +7,8 @@ export enum BASE_COMPONENT {
 	BUTTON = 'Button',
 	SWITCH = 'Switch',
 	INPUT = 'Input',
-	DATE_PICKER = 'DatePicker'
 }
-export type BaseComponent = 'Button' | 'Switch' | 'Input' | 'DatePicker';
+export type BaseComponent = 'Button' | 'Switch' | 'Input';
 
 export interface ComponentVisibilitySetterWindow extends Window {
 	setVisibleComponent(componentName: BaseComponent, visible: boolean): void;

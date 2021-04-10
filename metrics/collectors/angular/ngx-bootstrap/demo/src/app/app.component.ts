@@ -13,7 +13,6 @@ export class AppComponent {
 	constructor(private _cd: ChangeDetectorRef) {
 		window.availableComponents = [
 			'Button',
-			'DatePicker',
 			'Switch',
 			'Input',
 		];
