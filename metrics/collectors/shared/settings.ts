@@ -72,10 +72,7 @@ export const RENDER_TIME_WIDTH = 1920;
  * render time page
  */
 export const RENDER_TIME_CROP = 200;
-/**
- * How many workers to use for image parsing
- */
-export const NUM_WORKERS = 4;
+
 const PUPPETEER_DEFAULT_NAVIGATION_TIMEOUT = 30000;
 /**
  * How long puppeteer should wait before a navigation
