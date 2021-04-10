@@ -349,7 +349,7 @@ function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
 		}
 	}
 
-	const renderTimesPerFile: RenderTime['components'] = {};
+	const renderTimesPerFile: Partial<RenderTime['components']> = {};
 	for (const [componentName, measurements] of joinedComponentMap) {
 		renderTimesPerFile[componentName] = {
 			times: measurements,
@@ -358,10 +358,10 @@ function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
 	}
 
 	return {
-		components: renderTimesPerFile,
+		components: renderTimesPerFile as RenderTime['components'],
 		stats: getDatasetStats(
 			Object.values(renderTimesPerFile).flatMap(
-				(renderTimes) => renderTimes.times
+				(renderTimes) => renderTimes!.times
 			)
 		),
 	};
