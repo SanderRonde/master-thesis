@@ -21,7 +21,7 @@ interface ByComponentNumberStats = {
 	stats: DatasetStats;
 };
 
-type BundleCategories = 'cow-components'|'svelte';
+type BundleCategories = 'cow-components'|'cow-components-basic'|'svelte'|'angular'|'react'|'web-components'|'multi-framework';
 
 type Data = {
 	metrics: {

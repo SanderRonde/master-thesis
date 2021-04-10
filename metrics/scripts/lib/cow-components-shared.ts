@@ -1,7 +1,7 @@
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import * as path from 'path';
 
-import { DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
+import { BASIC_DASHBOARD_DIR, DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
 import { TS_NODE_COMMAND } from './helpers';
 
 /**
@@ -17,6 +17,7 @@ export const SAME_AS_DASHBOARD_METRICS = [
 ] as const;
 
 export const DEMO_REPO_DIR = path.join(DASHBOARD_DIR, 'dist/demo-repo');
+export const DEMO_REPO_DIR_BASIC = path.join(BASIC_DASHBOARD_DIR, 'dist/demo-repo');
 
 export async function collectSameAsDashboardMetrics(
 	exec: ExecFunction,
@@ -32,3 +33,19 @@ export async function collectSameAsDashboardMetrics(
 		await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `${metric}.ts`)}`);
 	}
 }
+
+export async function collectSameAsDashboardBasicMetrics(
+	exec: ExecFunction,
+	frameworkName: string
+) {
+	const baseDir = path.join(
+		METRICS_DIR,
+		`collectors/cow-components/cow-components-basic-${frameworkName}`
+	);
+
+	await exec('? Collecting same-as-dashboard metrics');
+	for (const metric of SAME_AS_DASHBOARD_METRICS) {
+		await exec(`${TS_NODE_COMMAND} ${path.join(baseDir, `${metric}.ts`)}`);
+	}
+}
+

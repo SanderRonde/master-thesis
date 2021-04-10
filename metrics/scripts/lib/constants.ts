@@ -4,6 +4,10 @@ import {
 	CowComponentBundle,
 } from '../metrics/bundles/cow-components';
 import {
+	cowComponentBasicBundles,
+	CowComponentBasicBundle,
+} from '../metrics/bundles/cow-components-basic';
+import {
 	multiFrameworkBundles,
 	MultiFrameworkBundle,
 } from '../metrics/bundles/multi-framework';
@@ -16,6 +20,7 @@ import {
 
 const __BUNDLES = [
 	...cowComponentBundles,
+	...cowComponentBasicBundles,
 	...svelteBundles,
 	...reactBundles,
 	...angularBundles,
@@ -43,6 +48,7 @@ export type Framework =
 	| 'multi-framework';
 export type BundlesByFramework = {
 	'cow-components': CowComponentBundle;
+	'cow-components-basic': CowComponentBasicBundle;
 	svelte: SvelteBundle;
 	react: ReactBundle;
 	angular: AngularBundle;

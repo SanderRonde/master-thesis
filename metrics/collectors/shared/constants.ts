@@ -9,6 +9,11 @@ export const DASHBOARD_DIR = path.join(
 	'submodules',
 	'30mhz-dashboard'
 );
+export const BASIC_DASHBOARD_DIR = path.join(
+	METRICS_DIR,
+	'submodules',
+	'30mhz-dashboard-basic'
+);
 export const TEMP_DIR = path.join(METRICS_DIR, 'temp');
 export const CACHE_DIR = path.join(METRICS_DIR, 'cache');
 export const SUBMODULES_DIR = path.join(METRICS_DIR, 'submodules')
