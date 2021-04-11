@@ -127,13 +127,15 @@ export const metris = preserveCommandBuilder(
 			dashboardDir,
 			'.vscode/installed'
 		);
+
+		const hasCowComponentBundle = bundles.some((bundle) =>
+			(isBasic
+				? COW_COMPONENT_BASIC_BUNDLES
+				: COW_COMPONENT_BUNDLES
+			).includes(bundle as never)
+		);
 		if (
-			bundles.some((bundle) =>
-				(isBasic
-					? COW_COMPONENT_BASIC_BUNDLES
-					: COW_COMPONENT_BUNDLES
-				).includes(bundle as never)
-			) &&
+			hasCowComponentBundle &&
 			!args['skip-dashboard'] &&
 			!(await fs.pathExists(packagesInstalledFile))
 		) {
@@ -155,14 +157,8 @@ export const metris = preserveCommandBuilder(
 		}
 
 		if (
-			(bundles.some((bundle) =>
-				(isBasic
-					? COW_COMPONENT_BASIC_BUNDLES
-					: COW_COMPONENT_BUNDLES
-				).includes(bundle as never)
-			) &&
-				!(await fs.pathExists(DEMO_REPO_DIR))) ||
-			args['no-cache']
+			hasCowComponentBundle &&
+			(!(await fs.pathExists(DEMO_REPO_DIR)) || args['no-cache'])
 		) {
 			await buildDemoRepo(exec, isBasic);
 		}
