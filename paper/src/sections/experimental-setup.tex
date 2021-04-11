@@ -27,9 +27,14 @@ The tree shaking process is applicable to the UI libraries we are comparing the 
 After these factors are taken care of, the process of capturing the size metric is as easy as getting the size of the resulting bundle.
 
 \subsection{Load Time}
-For the load time metric we will be capturing the parse- and runtime of the JS bundle described in Section~\ref{sec:experimental-setup:size}. We explicitly exclude the network load time of the bundle. In order to collect this metric, we will be using the \(puppeteer\)\footnote{\url{https://github.com/puppeteer/puppeteer}} package. This package allows the running of and programmatic control over a headless browser (a browser without a graphical user interface). We set up an empty webpage containing just the JS bundle whose load time we wish to measure. We then enable the Chrome profiler~\footnote{\url{https://developer.chrome.com/docs/devtools/evaluate-performance/}} for the page. We now load the page, stop the profiler and collect the results. We then look for the \(EvaluateScript\) event in the resulting trace events. This contains the time taken evaluating the given bundle.
+For the load time metric we will be capturing the parse- and runtime of the JS bundle described in Section~\ref{sec:experimental-setup:size}. We explicitly exclude the network load time of the bundle. In order to collect this metric, we will be using the \(puppeteer\)\footnote{\url{https://github.com/puppeteer/puppeteer}} package. This package allows the running of and programmatic control over a headless browser (a browser without a graphical user interface). We set up an empty webpage containing just the JS bundle whose load time we wish to measure. We then enable the Chrome profiler~\footnote{\url{https://developer.chrome.com/docs/devtools/evaluate-performance/}} for the page. We now load the page, stop the profiler and collect the results. We then look for the \(EvaluateScript\) event in the resulting trace events. This contains the time taken evaluating the given bundle. An example of such a trace can be seen in Figure~\ref{fig:experimental-setup:load-time}.
 
-\todo{Add a picture}
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{figures/experimental-setup/load-time.png}
+	\caption{An example of a Chrome profiler trace performed during a bundle load. The orange bar labeled ``Evaluate Script'' indicates the total load time and spans 308.54ms.}
+	\label{fig:experimental-setup:load-time}
+	\centering
+\end{figure}
 
 In order to eliminate variations as much as possible, we artificially slow down the speed of the processor by a factor of \slowdownFactorLoadTime{} by using the \(Emulation.setCPUThrottlingRate\) command~\footnote{\url{https://chromedevtools.github.io/devtools-protocol/tot/Emulation/\#method-setCPUThrottlingRate}}. We also perform this operation \loadTimePerformanceMeasures{} times and average the results.
 
@@ -108,11 +113,23 @@ We chose this specific event for the following reason. The chrome browser update
 	\item \emph{Animation:} If a property that neither layout nor paint changes, only the JavaScript, style, and composite stages run. This pipeline is generally ran when an animation is active.
 \end{itemize}
 
-In capturing the render time, we want to capture the time until a component reaches its final state. While this state is fairly simple and static for most components, it can also be a dynamic final state. For example a loading spinner or a component that contains a canvas will at some reach its final state, but will still be visually changing. The time between the component not being visible and it reaching its final state are spent in the Layout and Paint stages, while the time after it is spent in the Animation stage. Since we want to capture only the time until the final state, we only care about the Layout and Paint stages. The only difference between these two stages and the Animation stage is that the Animation stage ends with a composite event without a paint event before it and the other two do not. We use this to our advantage by looking for the last composite event that has a paint event before it. We can not just take the lasts paint event since the composite event is still part of the pipeline and is technically part of the render stage. When we take the time between the calling of the function that starts the rendering and this event, we are able to perfectly capture the time a component takes to render.
+In capturing the render time, we want to capture the time until a component reaches its final state. While this state is fairly simple and static for most components, it can also be a dynamic final state. For example a loading spinner or a component that contains a canvas will at some reach its final state, but will still be visually changing. The time between the component not being visible and it reaching its final state are spent in the Layout and Paint stages, while the time after it is spent in the Animation stage. Since we want to capture only the time until the final state, we only care about the Layout and Paint stages. The only difference between these two stages and the Animation stage is that the Animation stage ends with a composite event without a paint event before it and the other two do not. We use this to our advantage by looking for the last composite event that has a paint event before it. We can not just take the lasts paint event since the composite event is still part of the pipeline and is technically part of the render stage. When we take the time between the calling of the function that starts the rendering and this event, we are able to perfectly capture the time a component takes to render. An visual representation of this rendering process can be seen in Figure~\ref{fig:experimental-setup:render-time-start} and Figure~\ref{fig:experimental-setup:render-time-end}.
 
 While it has been shown that load time and perceived performance of a web page are not necessarily the same~\cite{nathan2018measuring}~\cite{gao2017perceived}, we are able to use this metric on single components as a way to compare the CC UI library to the various UI libraries in performance.
 
-\todo{Add a picture}
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{figures/experimental-setup/render-time-highlighted.png}
+	\caption{An example of a Chrome profiler trace performed during the render of a component. The bar labeled ``window.setVisibleComponent'' indicates our start time. The end time falls within the red circle, a zoomed in version of which can be seen in Figure~\ref{fig:experimental-setup:render-time-end}}.
+	\label{fig:experimental-setup:render-time-start}
+	\centering
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{figures/experimental-setup/render-time-zoomed.png}
+	\caption{An example of a Chrome profiler trace performed during the render of a component. The bar labeled ``composite layers'' signals our end time. Note that this falls just after a bar labeled ``paint'', signaling the paint event before the last composite event.}
+	\label{fig:experimental-setup:render-time-end}
+	\centering
+\end{figure}
 
 \subsection{Number of Components}
 The number of components is captured separately for the UI library as a whole, and for the bundle described in Section~\ref{sec:experimental-setup:size}. Since the bundles described in Section~\ref{sec:experimental-setup:size} always contain three components, this number will always be three. The only exception is the CC UI library. For the CC UI library and the UI libraries captured as a whole, we will be gathering the number of components by applying the process described in Section~\ref{sec:experimental-setup:gathering-components} to gather components, after which we count the number of them.
