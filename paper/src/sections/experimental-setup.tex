@@ -42,59 +42,59 @@ In order to eliminate variations as much as possible, we artificially slow down 
 We capture the render time metric by using the puppeteer package as well. We prepare a JS bundle containing the three basic components and an exposed function that allows them to be rendered on-demand. This function is JS framework-specific, since every JS framework has a different method of conditional rendering. The rendering methods for the various frameworks can be seen in Listings~\ref{lst:experimental-setup:react-set-visible},\ref{lst:experimental-setup:angular-set-visible-html},~\ref{lst:experimental-setup:angular-set-visible-js},~\ref{lst:experimental-setup:svelte-set-visible},~\ref{lst:experimental-setup:web-components-set-visible}. We then load the page in a puppeteer browser, enable the profiler, and call the function that renders a given component. We wait for a few seconds, after which we assume the component to be fully rendered. We then iterate through the captured performance trace and look for the time difference between two events. The first event is the calling of the function mentioned above. The second event is the last composite event that has a paint event before it.
 
 \begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in ReactJS},label={lst:experimental-setup:react-set-visible}]
-	const App = () => {
-		const [ visibleComponent, setVisibleComponent ] = React.useState(null);
-	
-		window.setVisibleComponent = (componentName) => {
-			setVisibleComponent(componentName);
-		}
+const App = () => {
+	const [ visibleComponent, setVisibleComponent ] = React.useState(null);
 
-		return (
-			{ visibleComponent === 'Button' && <Button />}
-		)
-	};
+	window.setVisibleComponent = (componentName) => {
+		setVisibleComponent(componentName);
+	}
+
+	return (
+		{ visibleComponent === 'Button' && <Button />}
+	)
+};
 \end{lstlisting}
 
 \begin{lstlisting}[language={HTML},caption={The render-on-demand function in Angular (HTML file)},label={lst:experimental-setup:angular-set-visible-html}]
-	<button *ngIf="visibleComponent == 'Button'" />
+<button *ngIf="visibleComponent == 'Button'" />
 \end{lstlisting}
 
 \begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in Angular (JavaScript file)},label={lst:experimental-setup:angular-set-visible-js}]
-	@Component({
-		...
-	})
-	export class AppComponent {
-		constructor(private _cd: ChangeDetectorRef) {
-			window.setVisibleComponent = (componentName) => {
-				this.visibleComponent = componentName;
-				this._cd.detectChanges();
-			}
+@Component({
+	...
+})
+export class AppComponent {
+	constructor(private _cd: ChangeDetectorRef) {
+		window.setVisibleComponent = (componentName) => {
+			this.visibleComponent = componentName;
+			this._cd.detectChanges();
 		}
-
-		public visibleComponent = null;
 	}
+
+	public visibleComponent = null;
+}
 \end{lstlisting}
 
 \begin{lstlisting}[language={HTML},caption={The render-on-demand function in Svelte},label={lst:experimental-setup:svelte-set-visible}]
-	<script>
-		window.setVisibleComponent = (componentName) => {
-			visibleComponent = componentName;
-		}
+<script>
+	window.setVisibleComponent = (componentName) => {
+		visibleComponent = componentName;
+	}
 
-		let visibleComponent = null;
-	</script>
+	let visibleComponent = null;
+</script>
 
-	{#if visibleComponent === 'Button'}
-		<Button />
-	{/if}
+{#if visibleComponent === 'Button'}
+	<Button />
+{/if}
 \end{lstlisting}
 
 \begin{lstlisting}[language={JavaScript}, caption={The render-on-demand function in Web Components},label={lst:experimental-setup:web-components-set-visible}]
-		window.setVisibleComponent = (componentName) => {
-			if (componentName === 'Button') {
-				document.body.appendChild(document.createElement('x-button'));
-			}
-		}
+window.setVisibleComponent = (componentName) => {
+	if (componentName === 'Button') {
+		document.body.appendChild(document.createElement('x-button'));
+	}
+}
 \end{lstlisting}
 
 We chose this specific event for the following reason. The chrome browser updates the view through a pipeline process. The full pipeline can be see in Figure~\ref{fig:experimental-setup:pipeline}. This process always starts with a JS, CSS, or HTML change. Then it performs a different set of pipeline events depending on what changed.
