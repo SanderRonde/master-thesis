@@ -1,2 +1,147 @@
 \section{Case Study}\label{sec:case-study} \todo{Rename?}
 
+In this section we'll first be laying out the steps taken and the issues faced during the conversion from Angular components to Web Components. We'll be splitting this section up into two subsections. The first subsection will consist of issues faced that were not specific to Angular or Angular elements, while the second subsection will contain just Angular-specific issues. Note that because of this split the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities see Table~\ref{tab:case-study:chronological-issues}. After the issue sections we'll discuss the various JS framework wrappers and how they were created. Lastly we'll be listing optimizations performed along with their effectiveness.
+
+\begin{table}[h]
+	\begin{tabularx}{\columnwidth}{X|l}
+		\toprule
+		\textbf{Section} & \textbf{Relative Complexity} \\ \midrule
+		SC               & simple                       \\ \hline
+		CC               & simple                       \\ \hline
+		LOC              & simple                       \\ \hline
+		MA               & simple                       \\ \hline
+		RT               & simple                       \\ \hline
+		SI               & simple                       \\ \hline
+		LT               & simple                       \\ \hline
+		NOC              & simple                       \\
+	\end{tabularx}
+	\caption{Sections in chronological order along with their relative complexities}
+	\label{tab:case-study:chronological-issues}
+\end{table}
+\todo{Fill this in}
+
+\subsection{Web Component Issues}
+
+\subsubsection{Global CSS}
+\problemSolution{
+	Angular components have a property called \emph{encapsulation}\footurl{https://angular.io/guide/view-encapsulation\#view-encapsulation}. This property determines how CSS styles are applied to the component. It has three possible values:
+
+	\begin{itemize}
+		\item \emph{ShadowDom:} Global styles are not applied to the component. Only the component's own styles are applied to it.
+		\item \emph{Emulated (default):} Global styles are applied to the component as well as its own styles. Other components' styles are not applied to it.
+		\item \emph{None:} Global styles, a component's own styles and other components' styles are applied to this component.
+	\end{itemize}
+
+	In the 30MHz codebase the default value is used, meaning that both global and component-specific styles are applied to it. This is done by putting both of them in a global stylesheet.This stylesheet then has component-specific selectors added to it, making sure that styles are always scoped to a specific component. An example of this process can be seen in Listing~\ref{lst:case-study:component-css-source} and Listing~\ref{lst:case-study:component-css-compiled}.
+
+	When converting the Angular components to Web Components, we ensure the components' contents are rendered within a ShadowRoot~\footurl{https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot}. This effectively separates the component from the rest of the DOM, thereby also removing the ability of the global stylesheet to be applied to it.
+
+}{
+	When a component is rendered we find the global stylesheet on the page. We then copy it into a Constructable Stylesheet~\footurl{https://developers.google.com/web/updates/2019/02/constructable-stylesheets} if it hasn't already been copied. We then use the \emph{adoptedStylesheets}~\footurl{https://developers.google.com/web/updates/2019/02/constructable-stylesheets\#using_constructed_stylesheets} property of a ShadowRoot to apply the global stylesheet in the component's own ShadowRoot as well. Because this Constructable Stylesheet is just a reference to a stylesheet that the browser re-uses, the performance impact of this process is minimal compared to copying the stylesheet's source code.
+}
+
+\begin{lstlisting}[language={JavaScript},caption={The source code for a component},label={lst:case-study:component-css-source}]
+// my-component.html
+<my-component></my-component>
+
+// my-component.css
+:host {
+	color: red;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language={JavaScript},caption={An example of compiled code for the component in Listing~\ref{lst:case-study:component-css-source}.},label={lst:case-study:component-css-compiled}]
+// my-component.html
+<my-component _ngcontent-uix-c290></my-component>
+
+// my-component.css
+[_ngcontent-uix-c290] {
+	color: red;
+}
+\end{lstlisting}
+
+\subsubsection{Compatibility}
+\problemSolution{
+	While browser support for Web Components is fairly wide as of this case study~\footurl{https://caniuse.com/?search=components}, it is not yet universal. Additionally, Safari has chosen not to implement support for so-called \emph{Customized Built-In Elements}\footurl{https://www.chromestatus.com/feature/4670146924773376}. This feature allows for the extending of built-in HTML elements, allowing developers to extend already-existing elements such as the \emph{HTMLInputElement} and others. Since the 30MHz dashboard makes use of components that extend native elements (in the form of directives\footurl{https://angular.io/guide/attribute-directives}), we need this feature to make the CC UI library work.
+}{
+	We add so-called polyfills to the final JS bundle. These are files that add support for unsupported features by implementing them in different ways, making use of the builtin feature if there already is support for it. In particular we use the \emph{custom-elements}\footurl{https://www.npmjs.com/package/@ungap/custom-elements} and \emph{custom-elements-builtin}\footurl{https://www.npmjs.com/package/@ungap/custom-elements-builtin} polyfills.
+}
+
+\subsubsection{Tagname renaming}
+\problemSolution{
+	As per the Web Components specification, all Web Components are required to have a hyphen in their tag name~\footurl{https://html.spec.whatwg.org/multipage/custom-elements.html\#custom-elements-core-concepts}. Angular components on the other hand do not have this requirement. Because of this there are some components in the 30MHz codebase without a hyphen in their name. In order to export them as Web Components we need to come up with a tag name with a hyphen in it. In this case we decided to prefix every component with \emph{cow-} (for example \emph{<cow-checkbox>}). However, this renaming leads to an issue with components that are being used inside other components. For example say the \emph{DoubleCheckbox} component renders two checkboxes. Source code for such a component can be seen in Listing~\ref{lst:case-study:double-checkbox}. If such a component is rendered as a Web Component, it will attempt to render the \emph{<checkbox>} HTML tag, not knowing that it has been renamed to \emph{<cow-checkbox>}. The result is an empty component.
+}{
+	We run a pre-build script that replaces the names of components that are going to be used in the UI library with their prefixed variant. We make sure to not replace native HTML elements by matching the found HTML tags against a list of known native HTML elements.
+}
+
+\begin{lstlisting}[language={HTML},caption={The source code for a \emph{DoubleCheckbox} component.},label={lst:case-study:double-checkbox}]
+<checkbox id="checkbox-1"></checkbox>
+<checkbox id="checkbox-2"></checkbox>
+\end{lstlisting}
+
+\subsubsection{Theming}
+\problemSolution{
+	3rd party developers have expressed the wish to apply custom theming to their apps. In order to make this possible we need to find a way to apply a single theme across all components on the page, regardless of ShadowRoots.
+}{
+	We make use of \emph{CSS Custom Properties}\footurl{https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties}. These are effectively CSS variables that are defined for the whole document including ShadowRoots. An example of the application of CSS Custom Properties can be seen in Listing~\ref{lst:case-study:custom-properties-js}. By changing the styles of the underlying Angular components to use CSS Custom Properties when available, we are able to provide theming. An example of this can be seen in Listing~\ref{lst:case-study:custom-properties-css}.
+}
+
+\begin{lstlisting}[language={JavaScript},caption={Applying CSS Custom Properties to the document},label={lst:case-study:custom-properties-js}]
+function setPrimaryColorTheme(color: string) {
+	document.documentElement.style.setProperty('color-primary', color);
+}
+
+setPrimaryColorTheme('red');
+\end{lstlisting}
+
+\begin{lstlisting}[language={CSS},caption={An example of a component making use of CSS Custom Properties},label={lst:case-study:custom-properties-css}]
+my-component {
+	/** 
+		* Tries to use the --color-primary variable if available, 
+		* falls back to blue when it is not defined.
+		*/
+	background-color: var(--color-primary, blue);
+}
+\end{lstlisting}
+
+\subsubsection{Non-string Attributes}
+\problemSolution{
+	As mentioned previously, it is not possible to pass non-string attributes to Web Components using just HTML\@. This presents an issue since some Angular components expect a non-string attribute to be passed. Examples of which include but are not limited to a boolean, a number, a JavaScript object with an \emph{alignment} property, and a \emph{Date} instance. While this is a problem that will be solved by our JS framework wrappers and particularly in Section~\ref{sec:case-study:complex-attributes}, the CC UI library should be at least usable by itself as well.
+}{
+	Because in this scenario there is no access to JavaScript, we can not make use of any solutions to this problem that utilize the setting of attributes or properties through JavaScript. Instead, we need to use just HTML\@. The solution we came up with was to allow developers to optionally pass JSON to components by prefixing the attributes with \emph{json-}. When this is done, the attribute value is parsed through \emph{JSON.parse}, after which the corresponding property is set on the Web Component. This gives developers a way to pass most of the previously presented before. To allow developers to pass Date instances, we make it possible to pass strings, which we parse into Dates. While this is not a great workaround to have, especially since it only takes care of the Date class and not, for example, the \emph{RegExp} class. The only way to fix this issue for all classes is to provide a method similar to Python \emph{pickle}~\footurl{https://docs.python.org/3/library/pickle.html}, which, as mentioned on the documentation page, is not secure. We also feel like this problem is not prevalent enough in our case to warrant such a solution. Currently, all occurrences of classes as Angular component inputs have been taken care of.
+}
+
+\subsubsection{Complex Attributes}
+\label{sec:case-study:complex-attributes}
+\problemApproachesImplementation{
+	Continuing on with the same problem, we now need to come up with a way to solve the problem for even more situations, this time being able to make use of JavaScript since solution will be implemented into the JS framework wrappers. Some of which include the passing of an object reference or an HTML element reference. This will never be possible through JSON since the reference needs to be preserved. Instead, we make use of JavaScript this time. Our goal is to allow a parent component written in the language of the JS framework to be able to pass its properties down to its child. This parent component is essentially just a passthrough component whose set of properties is identical. Its only purpose is to pass on these components and to provide a component native to the JS framework. Another thing to keep in mind is the fact that we need all properties to be defined before the child component performs its first render. This issue is present simply because of the way the original Angular components are written, assuming that they will only receive attributes once and that they'll never change.
+}{
+	There are a few approaches to solving this issue, these can be grouped into three categories.
+
+	\begin{itemize}
+		\item \emph{Parent \(\rightarrow\) child:} The parent node gets a reference to the child during the rendering process. Then the parent sets the properties on the child.
+		\item \emph{Child \(\rightarrow\) parent:} The child gets a reference to the parent during the rendering process. It then requests its properties from the parent.
+		\item \emph{Parent \(\rightarrow\) intermediary \(\rightarrow\) child, Child \(\rightarrow\) intermediary \(\rightarrow\) parent:} An intermediary takes the properties from the parent. The parent then provides the child with some way to find the intermediary, after which the child can get the properties from the intermediary upon rendering.
+	\end{itemize}
+
+	The first approach would be the easiest, however, this approach is not always possible. Many JS frameworks do not provide such low-level access to the to-be-rendered component. Instead, they often provide callbacks with a reference to the element after it has been connected to the DOM\@. Since the properties of our components need to be defined before they've even been rendered, this approach does not work for us.
+
+	The second approach presents similar problems. While in some JS frameworks it is possible to get a reference to the parent component, JS frameworks that use a virtual DOM such as React and Vue~\footurl{https://vuejs.org/} do not have a real parent component instance. Instead, the parent is just an abstract concept.
+
+	This leaves us with the last approach. The creation of an intermediary object which holds the properties. The child is then given some way to get a reference to the intermediary (bypassing the problem of the second approach), after which it can get the to-be-applied properties from the intermediary. As long as we make sure the child has a way to find the intermediary access before it has been rendered to the DOM, we are able to fulfill the requirement of defining all properties before the first render.
+}{
+	Our implementation consists of a number of steps. We start off by creating a class which we'll call \emph{Intermediary}. This class has an instance manager attached to it which we'll call the \emph{IntermediaryManager}. Our JS framework wrapper code will be wrapping around the basic CC UI library. Since the CC UI library does not export the IntermediaryManager, we're unable to get a reference to it from our wrapper (aka the parent). In order to still get a reference to it, we want to store it globally. Because storing such properties on the \emph{window} object can result in collisions and is unreliable, we'll be storing it as a property of the defined Web Components. This means that we're able to call \emph{customElements.get('cow-checkbox').IntermediaryManager} and get a reference to the IntermediaryManager from both the parent side and the child side.
+
+	Now that we've taken care of this issue, we're able to start using it. We make the parent create an instance of an Intermediary. This Intermediary gets a simple string ID\@. We are then able to look up the ID in the IntermediaryManager and get the corresponding Intermediary. This ID is passed to the child, allowing it to look up this Intermediary.
+
+	For passing the actual values we make use of references. For each of the parent's properties, we pass the value to the Intermediary. The Intermediary then generates a unique string representing that value. If the value is already known by the Intermediary, the same string is returned. Internally it maps this string to the value. We then pass this string to the child instead of passing the original complex value (which would not work). The child then receives the value and resolves it back to a complex value by consulting the Intermediary. Through this process the child component is able to receive complex values from its parent through simple HTML string attributes.
+}
+
+\subsection{Angular Issues}
+\todo{}
+
+\subsection{JS Framework Wrappers}
+\todo{}
+
+\subsection{Optimizations}
+\todo{}
