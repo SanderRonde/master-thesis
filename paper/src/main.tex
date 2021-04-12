@@ -39,6 +39,11 @@
 \usepackage[bottom]{footmisc}
 \usepackage{tabularx}
 
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
+
 \renewcommand{\ttdefault}{cmr}
 
 \newcommand{\source}[1]{\caption*{Source: {#1}}}
