@@ -18,5 +18,6 @@ metrics/collectors/**/demo/yarn.lock
 
 paper/src/main.synctex.gz
 paper/src/indent.log
+paper/src/*.cpt
 
 yarn-error.log
