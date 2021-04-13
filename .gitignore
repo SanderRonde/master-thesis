@@ -1,5 +1,6 @@
 node_modules
 .vscode/*
+!.vscode/settings.json
 metrics/temp
 metrics/cache
 
