@@ -3,12 +3,11 @@
 * ~~[ng-deep](#Ng-deep)~~
 * ~~[create-custom-element](#create-custom-element)~~
 * ~~[Event handlers & emitters](#Event-handlers-&-emitters)~~
-* [Angular not supporting hierarchical injectors](#Angular-not-supporting-hierarchical-injectors)
-* [`NgOnInit` being called while inputs are not fully initialized](#`NgOnInit`-being-called-while-inputs-are-not-fully-initialized)
-* [Handling casing in attribute names](#Handling-casing-in-attribute-names)
-* [Bundle along Angular imports](#Bundle-along-Angular-imports)
-* [Making directives work](#Making-directives-work)
-* [Fixing angular <ng-content>](#Fixing-angular-<ng-content>)
+* ~~[Angular not supporting hierarchical injectors](#Angular-not-supporting-hierarchical-injectors)~~
+* ~~[`NgOnInit` being called while inputs are not fully initialized](#`NgOnInit`-being-called-while-inputs-are-not-fully-initialized)~~
+* ~~[Handling casing in attribute names](#Handling-casing-in-attribute-names)~~
+* ~~[Making directives work](#Making-directives-work)~~
+* ~~[Fixing angular <ng-content>](#Fixing-angular-<ng-content>)~~
 
 # Web-Component Generic
 
@@ -277,13 +276,9 @@ See this issue for more info and their reasoning for not fixing it: https://gith
 
 https://github.com/30mhz/dashboard.30mhz.com/pull/1599
 
-## Bundle along Angular imports
-
-https://github.com/30mhz/dashboard.30mhz.com/pull/1654
-
 ## Making directives work
 
-https://github.com/30mhz/dashboard.30mhz.com/pull/1649
+https://github.com//dashboard.30mhz.com/pull/1649
 
 ## Setting values through refs
 
@@ -319,6 +314,9 @@ https://github.com/30mhz/dashboard.30mhz.com/pull/1672
 https://github.com/30mhz/dashboard.30mhz.com/pull/1673
 
 https://github.com/30mhz/dashboard.30mhz.com/pull/1650
+### Bundle along Angular imports
+
+https://github.com/30mhz/dashboard.30mhz.com/pull/1654
 
 ### Disabling AOT and not using ivy
 

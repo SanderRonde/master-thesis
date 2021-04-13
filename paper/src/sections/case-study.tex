@@ -221,12 +221,107 @@ class ChildComponent {
 \end{lstlisting}
 
 \begin{lstlisting}[language={JavaScript},caption={The \code{unwrapEvent} function},label={lst:case-study:event-handler-unwrap-event}]
-	function unwrapEvent(event) {
-		if (event instanceof CustomEvent) {
-			return event.detail;
-		}
-		return event;
+function unwrapEvent(event) {
+	if (event instanceof CustomEvent) {
+		return event.detail;
 	}
+	return event;
+}
+\end{lstlisting}
+
+\subsubsection{Hierarchical Injectors}
+\problemSolution{
+	Angular makes use of a feature called \emph{Dependency Injection}~\footurl{https://angular.io/guide/dependency-injection}. This allows a parent module to provide its children with an instance of a certain dependency class. This class instance is shared among the module and its children. Generally only modules provide their children with dependencies, where modules are simply collections of components that serve some common purpose. However, this dependency injection feature can also be leveraged to have a given component provide its own instance of a class only to its direct children. This means that every instance of that component gets its own separate instance of the dependency, which it then shares with its children, and not one that is shared across all components in the module. This is called \emph{Hierarchical Dependency Injection}\footurl{https://angular.io/guide/hierarchical-dependency-injection} and it is a feature that is utilized by 30MHz in some areas.
+
+	Angular Elements does not support this feature intentionally~\footurl{https://github.com/angular/angular/issues/24824\#issuecomment-404399564}. Instead, it only supports the use case where modules provide their components with dependencies. The reason for this is that every component converted with Angular Elements is mounted to the DOM as its own root. It does not have a concept of a parent component, and as such is unable to look up the injector of its parent. While the pattern of Hierarchical Dependency Injection is not recommended~\footurl{https://github.com/angular/angular/issues/24824\#issuecomment-404399564}, it is still a pattern used by 30MHz, and as such one we need to support in order for the CC UI library to work.
+}{
+	Our goal in fixing this problem is to have a component injector inherit from its parent injector, which will facilitate Hierarchical Dependency Injection. To do this, we need to find the parent when the child is being rendered. After this, we can extract its injector, craft a new injector that combines the child and parent injector, and finally supply this new injector to the child. An example of this process can be found on StackBlitz~\footurl{https://stackblitz.com/edit/ngelements-issue-40104?file=src\%2Fapp\%2Fbar\%2Fbar.component.ts}.
+
+	We first need to find the parent. This process is fairly straightforward. When the child is being rendered, we simply travel up the DOM tree until we find a node that has certain properties that only Angular elements have. We then move on to the next stage of finding its injector.
+
+	While the finding of a node's injector is very simple in development mode since Angular exposes a \code{window.ng.getInjector} function, this process is a lot more complicated in production mode. To find it we first need to find the component's hidden Angular properties. These can be found under the component's \code{\_\_ngContext\_\_} property. Depending on the environment, this can either be an object containing the so-called \code{tNode} and \code{lView} properties or an array that contains them at a magic offset. The \code{tNode} and \code{lView} are internal representations of a bunch of Angular-specific properties for the component.
+
+	We are unable to access the original injector of the parent component since it is hidden in Angular-internal code. Instead we need to use the \code{tNode} and \code{lView} to craft a new injector that will do the same thing as the original injector. However, in order to craft this new injector class instance we need a reference to that very class. While a \code{Injector} class is exported from the Angular package, this is not actually the injector we want. Angular actually has two types of injector, one of which is the previously mentioned \code{Injector} and the other is the so-called \code{NodeInjector}. This \code{NodeInjector} is only used internally, and it is the injector we want. To get a reference to it, we access the \code{injector} property of a fake component created by a \code{ComponentFactory}. Since the \code{ComponentFactory} is also not exported, we need to get a reference to it through the global injector. We now finally have a reference to the \code{NodeInjector} class, which allows us to re-create the parent's injector.
+
+	We now merge this injector with the child injector. This is a fairly simple process. When a request for an injected value comes in we first look for it in the child. If the child does not have it, we look at the parent injector.
+
+	We now need to make sure Angular actually uses this injector we just created. To do so, we need to override the component's default element strategy (\code{NgElementStrategy}). This element strategy is a class provided by Angular that manages the connection between the DOM and the underlying Angular component. Since the \code{NgElementStrategy} class is also not exported by Angular, we need to find a reference to it somewhere. To do so, we create a fake component and read its \code{ngElementStrategy} property. We can now extend the class, replace the injector and provide it to the component. A full code example of this process can be found in Listing~\ref{lst:appendix:hierarchical-injectors}.
+}
+
+\subsubsection{ngOnInit}
+\problemSolution{
+	Angular Elements does intentionally not guarantee the order in which attributes are set on an element (even initial attributes)~\footurl{https://github.com/angular/angular/issues/29050}. This means that attributes can be set on an element both before or after its main init hook (\code{ngOnInit}) is called. An example of this process can be seen in Listing~\ref{lst:case-study:ng-on-init}. While this isn't a problem if attributes are only used to handle visual state, this can cause great problems when they are used for component configuration. For example if a component performs a fetch request to the server and takes a \code{URL} property that determines the target URL, it is essential that this property is set before the component's main hook runs. Quite a few components in the 30MHz codebase have a similar setup. As such, we need to guarantee that a component will always have the full set of initial properties set before its main hook is called.
+}{
+	We know that, while the order of attribute setting is not guaranteed, we are guaranteed the fact that they will run sequentially. Since JavaScript is a single-threaded language and all attribute setting calls are synchronous, we know that all attributes will be set once the main thread is free again. For this we use the global \code{window.requestAnimationFrame} JavaScript function. This function takes a callback and calls it when the main JavaScript thread is free to take on new work. We now firstly replace the component's \code{ngOnInit} function with an empty function, ensuring that when Angular calls it, the component's main hook is not actually ran. We then call \code{window.requestAnimationFrame} and pass it the original \code{ngOnInit} function. Now we can guarantee that the \code{ngOnInit} function is called after all attributes have been set.
+}
+
+\begin{lstlisting}[language={JavaScript},caption={HTML source code and its Angular Elements equivalent},label={lst:case-study:ng-on-init}]
+// HTML source file
+<my-element foo="bar" bar="baz" />
+
+// can be transformed into any of the following:
+// 1
+const element = document.createElement('my-element');
+element.setAttribute('foo', 'bar');
+element.setAttribute('bar', 'baz');
+parent.appendChild(element);
+
+// 2
+const element = document.createElement('my-element');
+parent.appendChild(element);
+element.setAttribute('foo', 'bar');
+element.setAttribute('bar', 'baz');
+
+// 3
+const element = document.createElement('my-element');
+element.setAttribute('foo', 'bar');
+parent.appendChild(element);
+element.setAttribute('bar', 'baz');
+	\end{lstlisting}
+
+\subsubsection{Casing in attribute names}
+\problemSolution{
+	In the process of converting Angular components to Web Components, Angular Elements maps all input properties from camelCase casing to kebab-case. For example the input property \code{myInputProperty} is set through the \code{my-input-property} HTML attribute. The reason for this change is that HTML attributes are case-insensitive. To HTML \code{myInputProperty} is identical to \code{myinputproperty} and \code{MYINPUTPROPERTY}. While this is a good change to make, and one that ensures that name collisions are less likely to happen, it does present some issues. Internal Angular elements still use the camelCase variant to set properties on their child components. Since the Web Component variants do not recognize the camelCase variant of the property anymore, they are ignored.
+}{
+	We solve this issue by making sure the Web Components also accept the camelCase variant. As HTML is case insensitive there is no point in checking the casing of the passed attribute. Instead, we convert it to lowercase and compare it against the lowercase version of the original camelCase input property. In the previous example \code{myInputProperty}, \code{myinputproperty}, \code{MYINPUTPROPERTY}, and \code{my-input-property} would all refer to the input property \code{myInputProperty} on the Angular component.
+}
+
+\subsubsection{Angular directives}
+\problemSolution{
+	Angular has two types of elements that appear in the DOM\@. The first type is the Component, which looks for a given selector or tag name and replaces the original HTML element. For example an \code{AppRootComponent} with the selector \code{'app-root'} will look for an \code{<app-root>} HTML element and replace it with the Angular component instance. The second type is the Directive. Similarly, this look for a selector, but instead of replacing the original HTML element, this simply mounts to it and runs its own code on it. An example of this would be a \code{Blink} directive that looks for the \code{'blink'} HTML class. When mounted it periodically hides and un-hides the component.
+
+	Angular Elements only supports the conversion of Components to Web Components, not the conversion of Directives. Since there are some elements in the 30MHz codebase that use Directives, we need to make sure that these are supported as well.
+}{
+	While this might sound like a tough problem since these are entirely different elements, the fix for this issue is surprisingly easy. Under the hood Angular stores the definition of a Component in the \code{\cmcrv{}cmp} property. This is also the property Angular Elements accesses to do the conversion from Angular components to Web Components. Similarly, the definition of Directives is stored in the \code{\cmcrv{}dir} property. By simply copying the value of the \code{\cmcrv{}dir} property to the \code{\cmcrv{}cmp} property, we are able to trick Angular Elements into thinking a directive is a component. Surprisingly, this actually works and the directive works perfectly.
+}
+
+\subsubsection{<ng-content>}
+\problemSolution{
+	Angular uses the \code{<ng-content>} tag for so-called content projection. Content projection is the ability for a component to take a set of children, which it can then place anywhere in its DOM tree. This is effectively the same as the HTML \code{<slot>} tag~\footurl{https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot}. An example of content projection can be seen in Listing~\ref{lst:case-study:ng-content}. Content projection works fine in most scenarios but sometimes it does not work. The child elements simply do not show up.
+}{
+	Our solution is once again quite simple, we take advantage of the fact that the \code{<ng-content>} and \code{<slot>} tag do the same thing and append a \code{<slot>} tag to every occurrence of an \code{<ng-content>} tag in the source code. This ensures that when the \code{<ng-content>} tag does not work, the \code{<slot>} tag takes over instead.
+}
+
+
+\begin{lstlisting}[language={HTML},caption={HTML source code and its Angular Elements equivalent},label={lst:case-study:ng-content}]
+// parent-component.html
+<child-component>
+	<span id="my-span"></span>
+</child-component>
+
+// child-component.html
+<div id="my-root">
+	<ng-content></ng-content>
+</div>
+
+// Effective DOM tree
+<parent-component>
+	<child-component>
+		<div id="my-root">
+			<span id="my-span"></span>
+		</div>
+	</child-component>
+</parent-component>
 	\end{lstlisting}
 
 \subsection{JS Framework Wrappers}

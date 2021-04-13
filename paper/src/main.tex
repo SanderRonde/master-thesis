@@ -1,5 +1,6 @@
 \documentclass[10pt, conference, compsocconf]{IEEEtran}
 
+\usepackage[utf8]{inputenc}
 \usepackage[bookmarks=true]{hyperref}
 \usepackage{epsfig}
 \usepackage{amsmath,amssymb,amsfonts,latexsym}
@@ -40,6 +41,8 @@
 \usepackage{tabularx}
 \usepackage{fancyvrb}
 \usepackage{cprotect}
+\usepackage{fontspec}
+
 
 \makeatletter
 \g@addto@macro{\UrlBreaks}{\UrlOrds}
@@ -52,6 +55,10 @@
 \newcommand{\eg}{\emph{e.g.,}\xspace}
 \newcommand{\etc}{etc.\xspace}
 \newcommand{\etal}{\emph{et~al.}\xspace} 
+
+\input{lib/commands.tex}
+\input{lib/lst-languages.tex}
+\input{lib/variables.tex}
     
 \begin{document}
 
@@ -82,7 +89,6 @@
 \end{IEEEkeywords}
 
 
-\input{lib/variables.tex}
 \input{sections/introduction.tex} \todo{}
 \input{sections/background.tex}
 \input{sections/related-work.tex}
@@ -94,8 +100,13 @@
 \input{sections/discussion.tex} \todo{}
 \input{sections/conclusion.tex} \todo{}
 
+\clearpage
 \bibliographystyle{IEEEtran}
 \bibliography{bib/references}
+
+\clearpage
+\phantomsection
+\input{sections/appendix.tex}
 
 \end{document}
 

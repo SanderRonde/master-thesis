@@ -1,19 +1,26 @@
 \definecolor{light-gray}{gray}{0.85}
 \newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
 \newcommand{\ver}[1]{\texttt{#1}}
-\newcommand{\problemSolution}[2]{ \hfill\\ \textbf{Problem:}
+\newcommand{\problemSolution}[2]{\hfill{}\\ \indent{}\textbf{Problem:}
 	#1
 	\hfill\\
-	\textbf{Solution:}
-	#2 }
-\newcommand{\problemApproachesImplementation}[3]{ \hfill\\ \textbf{Problem:}
+	\indent{}\textbf{Solution:}
+	#2
+	\hfill\\ }
+\newcommand{\problemApproachesImplementation}[3]{ \indent{}\textbf{Problem:}
 	#1
 	\hfill\\
-	\textbf{Approaches:}
+	\indent{}\textbf{Approaches:}
 	#2
 	\hfill\\
-	\textbf{Implementation:}
-	#3 }
+	\indent{}\textbf{Implementation:}
+	#3
+	\hfill\\ }
 
 \newcommand{\footurl}[1]{\footnote{\url{#1}}}
+
+% The close-mid central rounded vowel (https://en.wikipedia.org/wiki/Close-mid_central_rounded_vowel)
+% This is an internally popular character at Angular
+% used a lot in its codebase.
+\newcommand{\cmcrv}{\setmainfont{Source Code Pro}ɵ\setmainfont{Latin Modern Roman}}
 

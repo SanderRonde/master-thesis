@@ -1,0 +1,99 @@
+\appendix
+\section{Code for creating a Hierarchical Injector in an Angular Elements component}
+
+\begin{lstlisting}[language={JavaScript},caption={The code for creating a Hierarchical Injector in an Angular Elements component},label={lst:appendix:hierarchical-injectors}]
+	// This injector is provided by Angular to the root module
+	var rootInjector = ...;
+	
+	// Create a fake injector
+	const _MOCK_INJECTOR = {
+		get() {
+			return {
+				run() {},
+				resolveComponentFactory() {
+					return {
+						inputs: [],
+					};
+				},
+			};
+		},
+	};
+	
+	// Extract defualt NgElementStrategy
+	function getDefaultNgElementStrategy() {
+		const customElement = createCustomElement(EmptyAngularComponent, {
+			injector: _MOCK_INJECTOR,
+		});
+		const proto = customElement.prototype;
+		const strategyInstance = proto.ngElementStrategy;
+		return strategyInstance.constructor;
+	
+	}
+	
+	// Get the NodeInjector class
+	function getNgInjectorClass(rootInjector) {
+		const componentFactory = rootInjector.get(ComponentFactoryResolver).resolveComponentFactory(EmptyAngularComponent);
+		const componentInstance = componentFactory.create(rootInjector, []);
+		return componentInstance.injector.constructor
+	}
+	
+	// Get given HTML element's nodeinjector
+	function getNodeInjector(rootInjector, host) {
+		const hostContext = host.__ngContext__;
+		const lView = hostContext.lView;
+		const tNode = lView[1].data[hostContext.nodeIndex];
+		const NodeInjectorClass = getNgInjectorClass(rootInjector);
+		return new NodeInjectorClass(tNode, lView);
+	}
+	
+	// Create a custom NgElementStrategy
+	class CustomNgElementStrategy extends getDefaultNgElementStrategy() {
+		originalInjector = this.injector;
+	
+		connect(element): void {
+			if (this.injector === this.originalInjector) {
+				const localRoot = element.getRootNode();
+				const host = localRoot.host;
+				const nodeInjector = getNodeInjector(rootInjector, host);
+	
+				this.injector = Injector.create({
+					providers: [],
+					parent: nodeInjector,
+				});
+	
+				return this._connectSuperWithDelayedInit(element);
+			}
+	
+			return super.connect(element);
+		}
+	}
+	
+	// Create a custom NgElementStrategyFactory that creates
+	// instances of our custom NgElementStrategy
+	class CustomNgElementStrategyFactory {
+		constructor(
+			private _StrategyConstructor,
+			component,
+			injector,
+		) {
+			this.componentFactory = injector
+				.get(ComponentFactoryResolver)
+				.resolveComponentFactory(component);
+		}
+	
+		create(injector) {
+			return new this._StrategyConstructor(this.componentFactory, injector);
+		}
+	}
+	
+	// Provide the CustomNgElementStrategyFactory to the createCustomElement
+	// function and create a new Web Component
+	const WebComponent = createCustomElement(AngularComponent, {
+		injector: rootInjector,
+		strategyFactory: new CustomNgElementStrategyFactory(
+			CustomNgElementStrategy,
+			AngularComponent,
+			rootInjector
+		)
+	})
+		\end{lstlisting}
