@@ -325,6 +325,21 @@ element.setAttribute('bar', 'baz');
 	\end{lstlisting}
 
 \subsection{JS Framework Wrappers}
+We wrote JS framework wrappers for a total of three JS frameworks. The first one is React. Since complex attributes for Web Components do not work natively in React, this wrapper was required in order to get the CC UI library to work in the first place. Since React provides good tooling when it comes to components and their properties, we felt it was a good idea to make use of this by providing typings for the CC UI library React wrapper. The second JS framework is Svelte. While Svelte works perfectly with Web Components out of the box, we created a wrapper simply to provide typings for the developers similar to React. The last JS framework is Angular itself. Angular also provides tooling including built-in checking of component properties, which we felt we had to provide.
+
+We also looked at different JS frameworks but found most of them to have little to no tooling when it came to HTML elements. The UI libraries we looked at were Vue (v2 and v3)~\footurl{https://vuejs.org/}, Polymer~\footurl{https://www.polymer-project.org/}, lit-element~\footurl{https://lit-element.polymer-project.org/}, and wc-lib~\footurl{https://www.npmjs.com/package/wc-lib}.
+
+In creating these wrappers, we started off by extracting the required component and type data from the components' source files. For example, the list of input properties as well as their types and descriptions need to be known. Similarly, all events emitted by the component, their types, and descriptions also need to be known. Finally we also need to collect some metadata on the component itself, such as the name, tag name, and whether it has child elements. We extracted all this data by using the \emph{typescript} package~\footurl{https://www.npmjs.com/package/typescript}. This package allows for the parsing of TypeScript and JavaScript code. This code is turned into an abstract syntax tree (AST) with added type information, after which we are able to iterate through it. We extract all this data and turn it into a common format to be re-used by the various scripts that generate JS framework wrappers.
+
+After collecting this data, we are able to generate the various JS frameworks. The process of which is described in detail below.
+
+\subsubsection{React Wrapper}
+\todo{}
+
+\subsubsection{Svelte Wrapper}
+\todo{}
+
+\subsubsection{Angular Wrapper}
 \todo{}
 
 \subsection{Optimizations}
