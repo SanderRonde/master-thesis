@@ -20,5 +20,9 @@ metrics/collectors/**/demo/yarn.lock
 paper/src/main.synctex.gz
 paper/src/indent.log
 paper/src/*.cpt
+paper/src/*.aux
+paper/src/*.bbl
+paper/src/*.blg
+paper/src/*.fls
 
 yarn-error.log
