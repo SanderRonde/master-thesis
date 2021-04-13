@@ -138,7 +138,95 @@ my-component {
 }
 
 \subsection{Angular Issues}
-\todo{}
+\subsubsection{ng-deep}
+\problemSolution{
+	Angular provides the \emph{ng-deep} CSS selectors~\footurl{https://angular.io/guide/component-styles\#deprecated-deep--and-ng-deep}. Where regular CSS selectors stop at the ShadowDom boundary, meaning that a component will never be able to have a selector apply to the DOM of another component, the ng-deep selector does allow for this. It is an emulated and deprecated selector that does not work outside of Angular environments (including the Web Components environment). As such we need to remove it.
+}{
+	The fix for this issue was fairly simple. Any instance of ng-deep had to be removed. While there has been some talk around browser support for a similar deep selector~\footurl{https://drafts.csswg.org/css-scoping/}, with both \emph{::shadow} and \emph{/deep/} making it into Chrome, they have since both been removed~\footurl{https://developers.google.com/web/updates/2017/10/remove-shadow-piercing}. As such, we had to come up with a workaround. Since the only way to effectively communicate from a component to child components is properties, we changed the code to use properties instead. An example of this change can be seen in Listing~\ref{lst:case-study:ng-deep-before} and Listing~\ref{lst:case-study:ng-deep-after}.
+}
+
+\begin{lstlisting}[language={JavaScript},caption={A component before the ng-deep change},label={lst:case-study:ng-deep-before}]
+// parent-component.html
+<child-component></child-component>
+
+// parent-component.css
+::ng-deep div {
+	color: red;
+}
+
+// child-component.ts
+@Component({
+	...
+})
+class ChildComponent {
+	...
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language={JavaScript},caption={A component after the ng-deep change},label={lst:case-study:ng-deep-after}]
+// parent-component.html
+<child-component red></child-component>
+
+// parent-component.css
+/**
+ * ::ng-deep div {
+ * 	color: red;
+ * }
+*/
+
+// child-component.ts
+@Component({
+	...
+})
+class ChildComponent {
+	@Input() red: boolean;
+
+	constructor(private _elementRef: ElementRef) {
+		if (this.red) {
+			_elementRef.nativeElement.classList.add('red');
+		}
+	}
+}
+
+// child-component.css
+:host[red] {
+	color: red;
+}
+
+\end{lstlisting}
+
+\subsubsection{createCustomElement}
+\problemSolution{
+	The main export of the Angular Elements library is the \emph{createCustomElement} function~\footurl{https://angular.io/api/elements/createCustomElement}. This function takes an Angular component and turns it into a Web Component. It does this by extending an \emph{HTMLElement} base class and applying all Angular component features on top of it. However, this function does not offer the ability to change the base class from an HTMLElement into anything else. As mentioned before, the 30MHz dashboard makes use of some elements that extend native elements. For example the 30MHz input field extends the default HTML input field and only adds styling, preserving any builtin accessibility features provided by the browser. When converting this Angular component to a Web Component, we also wish to preserve these same features. This can be done by extending builtin HTML elements~\footurl{https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements}. However, the createCustomElement function does not provide this option, causing us to be unable to create such an element. There is an open feature request for this option at the time of writing of this paper~\footurl{https://github.com/angular/angular/issues/19108}.
+}{
+	We have no choice but to implement this option ourselves. This means we have to copy the entire source code of the createCustomElement function, along with many of its dependencies since very few of them are exported. After this we change the function to allow us to pass such an option.
+}
+
+\subsubsection{EventEmitters}
+\problemSolution{
+	Angular implements so-called \emph{EventEmitters}~\footurl{https://angular.io/api/core/EventEmitter}. These are classes that are able to emit events, as well as being able to be listened to. When the \emph{emit} function is called, the passed value is sent directly to those functions that added an event listener to it. Note that this behavior is different from regular event emitters, which emit a \emph{CustomEvent}, which contains the actual value in the \emph{detail} property. A lot of our Angular code relies on the value being directly emitted, and it not being wrapped in a CustomEvent.
+
+	When a component is converted to a Web Component however, this emitted value is wrapped in a CustomEvent. Since the Angular code relies on this value being directly emitted, errors occur. In order to get around this issue, we need to make sure that internal code that listens to such EventEmitters receives the value itself, while external code (such as a 3rd party listening to a Web Component) receives the value wrapped in a CustomEvent.
+}{
+	We run a script that iterates over the source files, looking for any location where an event listener is being added to such an EventEmitter. Once we find one, we wrap the callback in an unwrapping function that strips away the CustomEvent and returns just the detail value. An example of this change can be seen in Listing~\ref{lst:case-study:event-handler-change}.
+}
+
+\begin{lstlisting}[language={JavaScript},caption={A change made to an event listener. The definition of \emph{unwrapEvent} can be seen in Listing~\ref{lst:case-study:event-handler-unwrap-event}},label={lst:case-study:event-handler-change}]
+// before
+(valueChanged)="myHandler($event)"
+
+// after
+(valueChanged)="myHandler(unwrapEvent($event))"
+\end{lstlisting}
+
+\begin{lstlisting}[language={JavaScript},caption={The \emph{unwrapEvent} function},label={lst:case-study:event-handler-unwrap-event}]
+	function unwrapEvent(event) {
+		if (event instanceof CustomEvent) {
+			return event.detail;
+		}
+		return event;
+	}
+	\end{lstlisting}
 
 \subsection{JS Framework Wrappers}
 \todo{}

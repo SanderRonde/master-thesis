@@ -1,9 +1,8 @@
 # Angular-specific
 
-* [ng-deep](#Ng-deep)
-* [encapsulation](#encapsulation)
-* [create-custom-element](#create-custom-element)
-* [Event handlers & emitters](#Event-handlers-&-emitters)
+* ~~[ng-deep](#Ng-deep)~~
+* ~~[create-custom-element](#create-custom-element)~~
+* ~~[Event handlers & emitters](#Event-handlers-&-emitters)~~
 * [Angular not supporting hierarchical injectors](#Angular-not-supporting-hierarchical-injectors)
 * [`NgOnInit` being called while inputs are not fully initialized](#`NgOnInit`-being-called-while-inputs-are-not-fully-initialized)
 * [Handling casing in attribute names](#Handling-casing-in-attribute-names)
