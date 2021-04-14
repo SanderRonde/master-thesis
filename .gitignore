@@ -26,5 +26,8 @@ paper/src/**/*.blg
 paper/src/**/*.fls
 paper/src/**/*.log
 paper/src/**/*.synctex
+paper/src/**/*.out
+paper/src/**/*.fdb_latexmk
+paper/src/**/*.synctex(busy)
 
 yarn-error.log
