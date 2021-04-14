@@ -272,7 +272,13 @@
 							}
 						},
 						"ListItem": {
-							"times": [6.9656, 3.8274, 5.3614, 3.1944, 2.9378],
+							"times": [
+								6.9656,
+								3.8274,
+								5.3614,
+								3.1944,
+								2.9378
+							],
 							"stats": {
 								"min": 2.9378,
 								"max": 6.9656,
@@ -1361,7 +1367,13 @@
 				},
 				"number-of-components": 12,
 				"load-time": {
-					"values": [417.9262, 422.894, 402.3643, 388.9879, 402.1279],
+					"values": [
+						417.9262,
+						422.894,
+						402.3643,
+						388.9879,
+						402.1279
+					],
 					"stats": {
 						"min": 388.9879,
 						"max": 422.894,
@@ -1392,7 +1404,13 @@
 							}
 						},
 						"PrimaryButtonComponent": {
-							"times": [12.0136, 11.116, 10.5974, 10.1644, 11.14],
+							"times": [
+								12.0136,
+								11.116,
+								10.5974,
+								10.1644,
+								11.14
+							],
 							"stats": {
 								"min": 10.1644,
 								"max": 12.0136,
@@ -1403,7 +1421,13 @@
 							}
 						},
 						"Button": {
-							"times": [12.0136, 11.116, 10.5974, 10.1644, 11.14],
+							"times": [
+								12.0136,
+								11.116,
+								10.5974,
+								10.1644,
+								11.14
+							],
 							"stats": {
 								"min": 10.1644,
 								"max": 12.0136,
@@ -1448,7 +1472,13 @@
 							}
 						},
 						"InputElement": {
-							"times": [10.1478, 10.231, 10.5272, 12.256, 11.162],
+							"times": [
+								10.1478,
+								10.231,
+								10.5272,
+								12.256,
+								11.162
+							],
 							"stats": {
 								"min": 10.1478,
 								"max": 12.256,
@@ -1459,7 +1489,13 @@
 							}
 						},
 						"Input": {
-							"times": [10.1478, 10.231, 10.5272, 12.256, 11.162],
+							"times": [
+								10.1478,
+								10.231,
+								10.5272,
+								12.256,
+								11.162
+							],
 							"stats": {
 								"min": 10.1478,
 								"max": 12.256,
@@ -1589,7 +1625,13 @@
 							}
 						},
 						"IconComponent": {
-							"times": [24.4144, 21.323, 22.1716, 23.77, 23.1978],
+							"times": [
+								24.4144,
+								21.323,
+								22.1716,
+								23.77,
+								23.1978
+							],
 							"stats": {
 								"min": 21.323,
 								"max": 24.4144,
@@ -1742,7 +1784,13 @@
 				},
 				"number-of-components": 12,
 				"load-time": {
-					"values": [464.382, 467.4661, 480.6357, 443.662, 436.7574],
+					"values": [
+						464.382,
+						467.4661,
+						480.6357,
+						443.662,
+						436.7574
+					],
 					"stats": {
 						"min": 436.7574,
 						"max": 480.6357,
@@ -2037,6 +2085,786 @@
 						"stddev": 70.88799298660638
 					}
 				}
+			},
+			"dashboard-basic": {
+				"size": 5833088,
+				"lines-of-code": {
+					"components": {
+						"Button": 23,
+						"Input": 51,
+						"InputElement": 51,
+						"PrimaryButtonComponent": 23,
+						"Switch": 26,
+						"SwitchComponent": 26
+					},
+					"stats": {
+						"min": 23,
+						"max": 51,
+						"avg": 33.333333333333336,
+						"total": 200,
+						"median": 26,
+						"stddev": 12.552113589175153
+					}
+				},
+				"number-of-components": 3,
+				"cyclomatic-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 8,
+						"InputElement": 8,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 8,
+						"avg": 4,
+						"total": 24,
+						"median": 2,
+						"stddev": 2.8284271247461903
+					}
+				},
+				"maintainability": {
+					"components": {
+						"Button": 95.85,
+						"Input": 81.72,
+						"InputElement": 81.72,
+						"PrimaryButtonComponent": 95.85,
+						"Switch": 97.91,
+						"SwitchComponent": 97.91
+					},
+					"stats": {
+						"min": 81.72,
+						"max": 97.91,
+						"avg": 91.82666666666665,
+						"total": 550.9599999999999,
+						"median": 95.85,
+						"stddev": 7.195805877191394
+					}
+				},
+				"structural-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 19,
+						"InputElement": 19,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 19,
+						"avg": 7.666666666666667,
+						"total": 46,
+						"median": 2,
+						"stddev": 8.013876853447538
+					}
+				},
+				"load-time": {
+					"values": [
+						262.5358,
+						253.5137,
+						238.4036,
+						243.0108,
+						240.4147
+					],
+					"stats": {
+						"min": 238.4036,
+						"max": 262.5358,
+						"avg": 247.57572,
+						"total": 1237.8786,
+						"median": 248.26225,
+						"stddev": 9.113836595287404
+					}
+				},
+				"render-time": {
+					"components": {
+						"PrimaryButtonComponent": {
+							"times": [
+								21.502000000000002,
+								22.6048,
+								13.119399999999999,
+								26.1946,
+								21.7748
+							],
+							"stats": {
+								"min": 13.119399999999999,
+								"max": 26.1946,
+								"avg": 21.039120000000004,
+								"total": 105.19560000000001,
+								"median": 22.189799999999998,
+								"stddev": 4.3013434117261555
+							}
+						},
+						"InputElement": {
+							"times": [
+								5.9508,
+								4.704,
+								25.069200000000002,
+								3.4299999999999997,
+								5.8978
+							],
+							"stats": {
+								"min": 3.4299999999999997,
+								"max": 25.069200000000002,
+								"avg": 9.01036,
+								"total": 45.0518,
+								"median": 5.3009,
+								"stddev": 8.082331760970964
+							}
+						},
+						"SwitchComponent": {
+							"times": [
+								3.9862,
+								4.8606,
+								15.0738,
+								4.2732,
+								5.3244
+							],
+							"stats": {
+								"min": 3.9862,
+								"max": 15.0738,
+								"avg": 6.70364,
+								"total": 33.5182,
+								"median": 4.5669,
+								"stddev": 4.210705323149555
+							}
+						}
+					},
+					"stats": {
+						"min": 3.4299999999999997,
+						"max": 26.1946,
+						"avg": 12.25104,
+						"total": 183.7656,
+						"median": 3.7081,
+						"stddev": 8.56468884173461
+					}
+				}
+			},
+			"cow-components-basic-angular": {
+				"structural-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 19,
+						"InputElement": 19,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 19,
+						"avg": 7.666666666666667,
+						"total": 46,
+						"median": 2,
+						"stddev": 8.013876853447538
+					}
+				},
+				"cyclomatic-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 8,
+						"InputElement": 8,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 8,
+						"avg": 4,
+						"total": 24,
+						"median": 2,
+						"stddev": 2.8284271247461903
+					}
+				},
+				"lines-of-code": {
+					"components": {
+						"Button": 23,
+						"Input": 51,
+						"InputElement": 51,
+						"PrimaryButtonComponent": 23,
+						"Switch": 26,
+						"SwitchComponent": 26
+					},
+					"stats": {
+						"min": 23,
+						"max": 51,
+						"avg": 33.333333333333336,
+						"total": 200,
+						"median": 26,
+						"stddev": 12.552113589175153
+					}
+				},
+				"maintainability": {
+					"components": {
+						"Button": 95.85,
+						"Input": 81.72,
+						"InputElement": 81.72,
+						"PrimaryButtonComponent": 95.85,
+						"Switch": 97.91,
+						"SwitchComponent": 97.91
+					},
+					"stats": {
+						"min": 81.72,
+						"max": 97.91,
+						"avg": 91.82666666666665,
+						"total": 550.9599999999999,
+						"median": 95.85,
+						"stddev": 7.195805877191394
+					}
+				},
+				"number-of-components": 3,
+				"render-time": {
+					"components": {
+						"PrimaryButtonComponent": {
+							"times": [
+								36.97,
+								36.111200000000004,
+								36.3534,
+								36.188,
+								37.701
+							],
+							"stats": {
+								"min": 36.111200000000004,
+								"max": 37.701,
+								"avg": 36.664719999999996,
+								"total": 183.32359999999997,
+								"median": 36.661699999999996,
+								"stddev": 0.5996063055038686
+							}
+						},
+						"InputElement": {
+							"times": [
+								17.677,
+								15.0384,
+								17.0624,
+								21.3722,
+								17.244
+							],
+							"stats": {
+								"min": 15.0384,
+								"max": 21.3722,
+								"avg": 17.678800000000003,
+								"total": 88.394,
+								"median": 17.4605,
+								"stddev": 2.0582477479642725
+							}
+						},
+						"SwitchComponent": {
+							"times": [
+								15.526,
+								18.548,
+								25.308,
+								21.1828,
+								15.479
+							],
+							"stats": {
+								"min": 15.479,
+								"max": 25.308,
+								"avg": 19.208759999999998,
+								"total": 96.04379999999999,
+								"median": 19.8654,
+								"stddev": 3.7150503940592787
+							}
+						}
+					},
+					"stats": {
+						"min": 15.0384,
+						"max": 37.701,
+						"avg": 24.517426666666662,
+						"total": 367.7613999999999,
+						"median": 21.2775,
+						"stddev": 8.961082574738887
+					}
+				},
+				"load-time": {
+					"values": [
+						4651.682599999999,
+						4790.2492,
+						4833.3669,
+						4521.2357999999995,
+						4557.0702
+					],
+					"stats": {
+						"min": 4521.2357999999995,
+						"max": 4833.3669,
+						"avg": 4670.720939999999,
+						"total": 23353.604699999996,
+						"median": 4720.965899999999,
+						"stddev": 123.58435937955274
+					}
+				},
+				"size": 11523222
+			},
+			"cow-components-basic-native": {
+				"structural-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 19,
+						"InputElement": 19,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 19,
+						"avg": 7.666666666666667,
+						"total": 46,
+						"median": 2,
+						"stddev": 8.013876853447538
+					}
+				},
+				"cyclomatic-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 8,
+						"InputElement": 8,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 8,
+						"avg": 4,
+						"total": 24,
+						"median": 2,
+						"stddev": 2.8284271247461903
+					}
+				},
+				"lines-of-code": {
+					"components": {
+						"Button": 23,
+						"Input": 51,
+						"InputElement": 51,
+						"PrimaryButtonComponent": 23,
+						"Switch": 26,
+						"SwitchComponent": 26
+					},
+					"stats": {
+						"min": 23,
+						"max": 51,
+						"avg": 33.333333333333336,
+						"total": 200,
+						"median": 26,
+						"stddev": 12.552113589175153
+					}
+				},
+				"maintainability": {
+					"components": {
+						"Button": 95.85,
+						"Input": 81.72,
+						"InputElement": 81.72,
+						"PrimaryButtonComponent": 95.85,
+						"Switch": 97.91,
+						"SwitchComponent": 97.91
+					},
+					"stats": {
+						"min": 81.72,
+						"max": 97.91,
+						"avg": 91.82666666666665,
+						"total": 550.9599999999999,
+						"median": 95.85,
+						"stddev": 7.195805877191394
+					}
+				},
+				"number-of-components": 3,
+				"load-time": {
+					"values": [
+						481.931,
+						449.343,
+						502.8223,
+						518.6992,
+						440.3364
+					],
+					"stats": {
+						"min": 440.3364,
+						"max": 518.6992,
+						"avg": 478.62638,
+						"total": 2393.1319,
+						"median": 492.37665,
+						"stddev": 30.08598635035254
+					}
+				},
+				"size": 8150099,
+				"render-time": {
+					"components": {
+						"PrimaryButtonComponent": {
+							"times": [
+								10.7958,
+								12.318200000000001,
+								10.799800000000001,
+								11.6578,
+								11.8956
+							],
+							"stats": {
+								"min": 10.7958,
+								"max": 12.318200000000001,
+								"avg": 11.493440000000001,
+								"total": 57.467200000000005,
+								"median": 11.7767,
+								"stddev": 0.606104603513288
+							}
+						},
+						"InputElement": {
+							"times": [
+								13.244399999999999,
+								12.1004,
+								10.541599999999999,
+								11.3696,
+								10.786
+							],
+							"stats": {
+								"min": 10.541599999999999,
+								"max": 13.244399999999999,
+								"avg": 11.6084,
+								"total": 58.041999999999994,
+								"median": 11.735,
+								"stddev": 0.9787736653588508
+							}
+						},
+						"SwitchComponent": {
+							"times": [
+								13.983799999999999,
+								14.9218,
+								12.495000000000001,
+								12.6842,
+								12.263
+							],
+							"stats": {
+								"min": 12.263,
+								"max": 14.9218,
+								"avg": 13.269560000000002,
+								"total": 66.3478,
+								"median": 13.334,
+								"stddev": 1.0193908329978245
+							}
+						}
+					},
+					"stats": {
+						"min": 10.541599999999999,
+						"max": 14.9218,
+						"avg": 12.123800000000001,
+						"total": 181.85700000000003,
+						"median": 12.1817,
+						"stddev": 1.2028127058413263
+					}
+				}
+			},
+			"cow-components-basic-react": {
+				"structural-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 19,
+						"InputElement": 19,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 19,
+						"avg": 7.666666666666667,
+						"total": 46,
+						"median": 2,
+						"stddev": 8.013876853447538
+					}
+				},
+				"cyclomatic-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 8,
+						"InputElement": 8,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 8,
+						"avg": 4,
+						"total": 24,
+						"median": 2,
+						"stddev": 2.8284271247461903
+					}
+				},
+				"lines-of-code": {
+					"components": {
+						"Button": 23,
+						"Input": 51,
+						"InputElement": 51,
+						"PrimaryButtonComponent": 23,
+						"Switch": 26,
+						"SwitchComponent": 26
+					},
+					"stats": {
+						"min": 23,
+						"max": 51,
+						"avg": 33.333333333333336,
+						"total": 200,
+						"median": 26,
+						"stddev": 12.552113589175153
+					}
+				},
+				"maintainability": {
+					"components": {
+						"Button": 95.85,
+						"Input": 81.72,
+						"InputElement": 81.72,
+						"PrimaryButtonComponent": 95.85,
+						"Switch": 97.91,
+						"SwitchComponent": 97.91
+					},
+					"stats": {
+						"min": 81.72,
+						"max": 97.91,
+						"avg": 91.82666666666665,
+						"total": 550.9599999999999,
+						"median": 95.85,
+						"stddev": 7.195805877191394
+					}
+				},
+				"number-of-components": 3,
+				"load-time": {
+					"values": [
+						492.30359999999996,
+						473.8217,
+						495.63190000000003,
+						495.08729999999997,
+						476.18670000000003
+					],
+					"stats": {
+						"min": 473.8217,
+						"max": 495.63190000000003,
+						"avg": 486.60623999999996,
+						"total": 2433.0312,
+						"median": 493.69544999999994,
+						"stddev": 9.569347991916674
+					}
+				},
+				"size": 8284060,
+				"render-time": {
+					"components": {
+						"PrimaryButtonComponent": {
+							"times": [
+								16.8504,
+								18.6234,
+								16.6846,
+								17.1354,
+								18.331200000000003
+							],
+							"stats": {
+								"min": 16.6846,
+								"max": 18.6234,
+								"avg": 17.525,
+								"total": 87.625,
+								"median": 17.7333,
+								"stddev": 0.7961892337880492
+							}
+						},
+						"InputElement": {
+							"times": [
+								17.8004,
+								17.0834,
+								19.4972,
+								17.6632,
+								17.217599999999997
+							],
+							"stats": {
+								"min": 17.0834,
+								"max": 19.4972,
+								"avg": 17.852359999999997,
+								"total": 89.2618,
+								"median": 17.7318,
+								"stddev": 0.8646617502815769
+							}
+						},
+						"SwitchComponent": {
+							"times": [
+								18.644,
+								18.0838,
+								17.311600000000002,
+								17.0338,
+								16.7802
+							],
+							"stats": {
+								"min": 16.7802,
+								"max": 18.644,
+								"avg": 17.57068,
+								"total": 87.8534,
+								"median": 17.6977,
+								"stddev": 0.692174713204693
+							}
+						}
+					},
+					"stats": {
+						"min": 16.6846,
+						"max": 19.4972,
+						"avg": 17.649346666666663,
+						"total": 264.74019999999996,
+						"median": 17.4874,
+						"stddev": 0.8007346675536299
+					}
+				}
+			},
+			"cow-components-basic-svelte": {
+				"structural-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 19,
+						"InputElement": 19,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 19,
+						"avg": 7.666666666666667,
+						"total": 46,
+						"median": 2,
+						"stddev": 8.013876853447538
+					}
+				},
+				"cyclomatic-complexity": {
+					"components": {
+						"Button": 2,
+						"Input": 8,
+						"InputElement": 8,
+						"PrimaryButtonComponent": 2,
+						"Switch": 2,
+						"SwitchComponent": 2
+					},
+					"stats": {
+						"min": 2,
+						"max": 8,
+						"avg": 4,
+						"total": 24,
+						"median": 2,
+						"stddev": 2.8284271247461903
+					}
+				},
+				"lines-of-code": {
+					"components": {
+						"Button": 23,
+						"Input": 51,
+						"InputElement": 51,
+						"PrimaryButtonComponent": 23,
+						"Switch": 26,
+						"SwitchComponent": 26
+					},
+					"stats": {
+						"min": 23,
+						"max": 51,
+						"avg": 33.333333333333336,
+						"total": 200,
+						"median": 26,
+						"stddev": 12.552113589175153
+					}
+				},
+				"maintainability": {
+					"components": {
+						"Button": 95.85,
+						"Input": 81.72,
+						"InputElement": 81.72,
+						"PrimaryButtonComponent": 95.85,
+						"Switch": 97.91,
+						"SwitchComponent": 97.91
+					},
+					"stats": {
+						"min": 81.72,
+						"max": 97.91,
+						"avg": 91.82666666666665,
+						"total": 550.9599999999999,
+						"median": 95.85,
+						"stddev": 7.195805877191394
+					}
+				},
+				"number-of-components": 3,
+				"load-time": {
+					"values": [
+						511.00079999999997,
+						542.4506,
+						544.5476,
+						519.0324,
+						541.7778000000001
+					],
+					"stats": {
+						"min": 511.00079999999997,
+						"max": 544.5476,
+						"avg": 531.7618399999999,
+						"total": 2658.8091999999997,
+						"median": 542.1142,
+						"stddev": 13.936313202795072
+					}
+				},
+				"size": 8711624,
+				"render-time": {
+					"components": {
+						"PrimaryButtonComponent": {
+							"times": [
+								19.4256,
+								22.747999999999998,
+								16.4876,
+								18.349,
+								17.1896
+							],
+							"stats": {
+								"min": 16.4876,
+								"max": 22.747999999999998,
+								"avg": 18.839959999999998,
+								"total": 94.1998,
+								"median": 18.8873,
+								"stddev": 2.1960909941074838
+							}
+						},
+						"InputElement": {
+							"times": [
+								19.769,
+								18.844,
+								15.563999999999998,
+								17.73,
+								15.9816
+							],
+							"stats": {
+								"min": 15.563999999999998,
+								"max": 19.769,
+								"avg": 17.57772,
+								"total": 87.8886,
+								"median": 18.287,
+								"stddev": 1.6143747748277042
+							}
+						},
+						"SwitchComponent": {
+							"times": [
+								16.1406,
+								17.7624,
+								17.3278,
+								16.5056,
+								21.9738
+							],
+							"stats": {
+								"min": 16.1406,
+								"max": 21.9738,
+								"avg": 17.94204,
+								"total": 89.7102,
+								"median": 17.545099999999998,
+								"stddev": 2.0963394740356347
+							}
+						}
+					},
+					"stats": {
+						"min": 15.563999999999998,
+						"max": 22.747999999999998,
+						"avg": 18.119906666666665,
+						"total": 271.79859999999996,
+						"median": 17.7462,
+						"stddev": 2.05489176469765
+					}
+				}
 			}
 		},
 		"svelte": {
@@ -2264,7 +3092,13 @@
 							}
 						},
 						"Switch": {
-							"times": [7.0956, 6.6196, 6.1086, 6.0958, 6.118],
+							"times": [
+								7.0956,
+								6.6196,
+								6.1086,
+								6.0958,
+								6.118
+							],
 							"stats": {
 								"min": 6.0958,
 								"max": 7.0956,
@@ -2436,7 +3270,13 @@
 				},
 				"size": 62212,
 				"load-time": {
-					"values": [2.4403, 2.65, 2.625, 2.2996999999999996, 2.4344],
+					"values": [
+						2.4403,
+						2.65,
+						2.625,
+						2.2996999999999996,
+						2.4344
+					],
 					"stats": {
 						"min": 2.2996999999999996,
 						"max": 2.65,
@@ -2642,7 +3482,13 @@
 				},
 				"size": 63991,
 				"load-time": {
-					"values": [2.1931, 2.0693, 2.0812, 2.2715, 2.3165],
+					"values": [
+						2.1931,
+						2.0693,
+						2.0812,
+						2.2715,
+						2.3165
+					],
 					"stats": {
 						"min": 2.0693,
 						"max": 2.3165,
@@ -4078,7 +4924,13 @@
 							}
 						},
 						"Switch": {
-							"times": [8.08, 8.1448, 6.7354, 6.8558, 7.6534],
+							"times": [
+								8.08,
+								8.1448,
+								6.7354,
+								6.8558,
+								7.6534
+							],
 							"stats": {
 								"min": 6.7354,
 								"max": 8.1448,
@@ -4853,7 +5705,13 @@
 				"render-time": {
 					"components": {
 						"Button": {
-							"times": [3.601, 3.6306, 4.3062, 4.2498, 3.8282],
+							"times": [
+								3.601,
+								3.6306,
+								4.3062,
+								4.2498,
+								3.8282
+							],
 							"stats": {
 								"min": 3.601,
 								"max": 4.3062,
@@ -5078,7 +5936,13 @@
 				},
 				"size": 119249,
 				"load-time": {
-					"values": [11.2597, 13.1, 13.6565, 12.792, 13.0355],
+					"values": [
+						11.2597,
+						13.1,
+						13.6565,
+						12.792,
+						13.0355
+					],
 					"stats": {
 						"min": 11.2597,
 						"max": 13.6565,
@@ -5783,7 +6647,13 @@
 				},
 				"size": 506283,
 				"load-time": {
-					"values": [95.4623, 84.29, 96.1267, 98.0972, 101.4477],
+					"values": [
+						95.4623,
+						84.29,
+						96.1267,
+						98.0972,
+						101.4477
+					],
 					"stats": {
 						"min": 84.29,
 						"max": 101.4477,
@@ -6047,7 +6917,13 @@
 				},
 				"size": 2083044,
 				"load-time": {
-					"values": [247.8152, 259.1769, 242.257, 241.4239, 239.9483],
+					"values": [
+						247.8152,
+						259.1769,
+						242.257,
+						241.4239,
+						239.9483
+					],
 					"stats": {
 						"min": 239.9483,
 						"max": 259.1769,
@@ -6524,7 +7400,13 @@
 				},
 				"size": 195285,
 				"load-time": {
-					"values": [34.7618, 36.6667, 34.0758, 34.081, 35.1113],
+					"values": [
+						34.7618,
+						36.6667,
+						34.0758,
+						34.081,
+						35.1113
+					],
 					"stats": {
 						"min": 34.0758,
 						"max": 36.6667,
