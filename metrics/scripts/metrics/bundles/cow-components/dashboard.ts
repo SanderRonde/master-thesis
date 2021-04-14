@@ -146,9 +146,17 @@ export const dashboardMetrics = registerMetricsCommand('dashboard').run(
 			})
 		);
 
+		await exec('? Collecting load time')
+		await exec(
+			`${TS_NODE_COMMAND} ${path.join(
+				DASHBOARD_BASE_DIR,
+				`load-time.ts`
+			)}`
+		);
+
 		await dashboardCtx.keepContext('git reset --hard');
 
-		await exec('? Preparing for load time measuring');
+		await exec('? Preparing for render time measuring');
 		await exec(
 			`${TS_NODE_COMMAND} ${path.join(
 				DASHBOARD_BASE_DIR,

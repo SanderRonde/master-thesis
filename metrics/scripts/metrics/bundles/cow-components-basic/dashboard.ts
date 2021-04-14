@@ -136,7 +136,7 @@ export const dashboardMetrics = registerMetricsCommand('dashboard-basic').run(
 
 		await exec('? Collecting non time sensitive metrics');
 		await Promise.all(
-			omitArr(METRICS, 'render-time').map((metric) => {
+			omitArr(METRICS, 'render-time', 'load-time').map((metric) => {
 				return exec(
 					`${TS_NODE_COMMAND} ${path.join(
 						DASHBOARD_BASE_DIR,
@@ -146,9 +146,17 @@ export const dashboardMetrics = registerMetricsCommand('dashboard-basic').run(
 			})
 		);
 
+		await exec('? Collecting load time');
+		await exec(
+			`${TS_NODE_COMMAND} ${path.join(
+				DASHBOARD_BASE_DIR,
+				`load-time.ts`
+			)}`
+		);
+
 		await dashboardCtx.keepContext('git reset --hard');
 
-		await exec('? Preparing for load time measuring');
+		await exec('? Preparing for render time measuring');
 		await exec(
 			`${TS_NODE_COMMAND} ${path.join(
 				DASHBOARD_BASE_DIR,
