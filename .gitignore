@@ -24,5 +24,7 @@ paper/src/**/*.aux
 paper/src/**/*.bbl
 paper/src/**/*.blg
 paper/src/**/*.fls
+paper/src/**/*.log
+paper/src/**/*.synctex
 
 yarn-error.log
