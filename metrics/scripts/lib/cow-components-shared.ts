@@ -40,7 +40,7 @@ export async function collectSameAsDashboardBasicMetrics(
 ) {
 	const baseDir = path.join(
 		METRICS_DIR,
-		`collectors/cow-components/cow-components-basic-${frameworkName}`
+		`collectors/cow-components-basic/cow-components-${frameworkName}`
 	);
 
 	await exec('? Collecting same-as-dashboard metrics');
