@@ -12,7 +12,7 @@ Similar to~\cite{martinez-ortiz2016quality}, we only apply this process to the J
 \subsection{Cyclomatic Complexity, Maintainability, Lines of Code}
 In order to capture the cyclomatic complexity, maintainability metrics, and lines of code metrics, we feed the file into the \ver{ts-complex}\footurl{https://www.npmjs.com/package/ts-complex} JS package. This package is able to calculate the cyclomatic complexity, maintainability metrics, and lines of code of a given source file. Note that the lines of code metric does not capture the raw number of lines, but instead filters out any comments, aiming to capture just the lines with actual code.
 
-\subsection{Machine specifications}
+\subsection{Machine specifications}\label{sec:experimental-setup:machine-specs}
 All experiments were performed on a machine with an AMD Ryzen 5 4600H Six-core processor and 16GB of RAM. Since these experiments are partially timing-specific, the timing-specific experiments were ran sequentially and with minimal background tasks. This should eliminate the effect of experiments on each other, and should ensure the CPU is always able to dedicate a single core to the experiment. Since this machine has six cores, it should easily be able to dedicate one of them to the experiments at all times.
 
 \subsection{Size}\label{sec:experimental-setup:size}

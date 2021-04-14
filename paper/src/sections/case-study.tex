@@ -3,17 +3,28 @@
 In this section we'll first be laying out the steps taken and the issues faced during the conversion from Angular components to Web Components. We'll be splitting this section up into two subsections. The first subsection will consist of issues faced that were not specific to Angular or Angular elements, while the second subsection will contain just Angular-specific issues. Note that because of this split the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities see Table~\ref{tab:case-study:chronological-issues}. After the issue sections we'll discuss the various JS framework wrappers and how they were created. Lastly we'll be listing optimizations performed along with their effectiveness.
 
 \begin{table}[h]
-	\begin{tabularx}{\columnwidth}{X|l}
+	\begin{tabularx}{\columnwidth}{l|X|l}
 		\toprule
-		\textbf{Section} & \textbf{Relative Complexity} \\ \midrule
-		SC               & simple                       \\ \hline
-		CC               & simple                       \\ \hline
-		LOC              & simple                       \\ \hline
-		MA               & simple                       \\ \hline
-		RT               & simple                       \\ \hline
-		SI               & simple                       \\ \hline
-		LT               & simple                       \\ \hline
-		NOC              & simple                       \\
+		\textbf{Section}                            & \textbf{Section Name}              & \textbf{Relative Complexity} \\ \midrule
+		\ref{sec:case-study:global-css}             & Global CSS                         & simple                       \\ \hline
+		\ref{sec:case-study:compatibility}          & Compatibility                      & simple                       \\ \hline
+		\ref{sec:case-study:tagname-renaming}       & Tagname renaming                   & simple                       \\ \hline
+		\ref{sec:case-study:theming}                & Theming                            & simple                       \\ \hline
+		\ref{sec:case-study:non-string-attributes}  & Non-string Attributes              & medium                       \\ \hline
+		\ref{sec:case-study:complex-attributes}     & Complex Attributes                 & complex                       \\ \hline
+		\ref{sec:case-study:ng-deep}                & ng-deep                            & simple                       \\ \hline
+		\ref{sec:case-study:create-custom-element}  & createCustomElement                & simple                       \\ \hline
+		\ref{sec:case-study:eventemitters}          & EventEmitters                      & simple                       \\ \hline
+		\ref{sec:case-study:hierarchical-injectors} & Hierarchical Injectors             & hard                       \\ \hline
+		\ref{sec:case-study:ng-on-init}             & ngOnInit                           & medium                       \\ \hline
+		\ref{sec:case-study:casing}                 & Casing in attribute names          & simple                       \\ \hline
+		\ref{sec:case-study:directives}             & Angular directives                 & simple                       \\ \hline
+		\ref{sec:case-study:ng-content}             & <ng-content>                       & simple                       \\ \hline
+		\ref{sec:case-study:attribute-order}        & Angular Attribute Order            & medium                       \\ \hline
+		\ref{sec:case-study:bundling-imports}       & Bundling Angular Imports           & hard                       \\ \hline
+		\ref{sec:case-study:ivy}                    & Angular Ivy                        & hard                       \\ \hline
+		\ref{sec:case-study:searching-for-css}      & Reduce time searching for CSS      & simple                       \\ \hline
+		\ref{sec:case-study:css-initial-load}       & Move CSS searching to initial load & simple                       \\
 	\end{tabularx}
 	\caption{Sections in chronological order along with their relative complexities}
 	\label{tab:case-study:chronological-issues}
@@ -22,7 +33,7 @@ In this section we'll first be laying out the steps taken and the issues faced d
 
 \subsection{Web Component Issues}
 
-\subsubsection{Global CSS}
+\subsubsection{WC1: Global CSS}\label{sec:case-study:global-css}
 \cprotect\problemSolution{
 	Angular components have a property called \code{encapsulation}\footurl{https://angular.io/guide/view-encapsulation\#view-encapsulation}. This property determines how CSS styles are applied to the component. It has three possible values:
 
@@ -61,14 +72,14 @@ In this section we'll first be laying out the steps taken and the issues faced d
 }
 \end{lstlisting}
 
-\subsubsection{Compatibility}
+\subsubsection{WC2: Compatibility}\label{sec:case-study:compatibility}
 \problemSolution{
 	While browser support for Web Components is fairly wide as of this case study~\footurl{https://caniuse.com/?search=components}, it is not yet universal. Additionally, Safari has chosen not to implement support for so-called \emph{Customized Built-In Elements}\footurl{https://www.chromestatus.com/feature/4670146924773376}. This feature allows for the extending of built-in HTML elements, allowing developers to extend already-existing elements such as the \code{HTMLInputElement} and others. Since the 30MHz dashboard makes use of components that extend native elements (in the form of directives\footurl{https://angular.io/guide/attribute-directives}), we need this feature to make the CC UI library work.
 }{
 	We add so-called polyfills to the final JS bundle. These are files that add support for unsupported features by implementing them in different ways, making use of the builtin feature if there already is support for it. In particular we use the \ver{custom-elements}\footurl{https://www.npmjs.com/package/@ungap/custom-elements} and \ver{custom-elements-builtin}\footurl{https://www.npmjs.com/package/@ungap/custom-elements-builtin} polyfills.
 }
 
-\subsubsection{Tagname renaming}
+\subsubsection{WC3: Tagname renaming}\label{sec:case-study:tagname-renaming}
 \problemSolution{
 	As per the Web Components specification, all Web Components are required to have a hyphen in their tag name~\footurl{https://html.spec.whatwg.org/multipage/custom-elements.html\#custom-elements-core-concepts}. Angular components on the other hand do not have this requirement. Because of this there are some components in the 30MHz codebase without a hyphen in their name. In order to export them as Web Components we need to come up with a tag name with a hyphen in it. In this case we decided to prefix every component with \code{cow-} (for example \code{<cow-checkbox>}). However, this renaming leads to an issue with components that are being used inside other components. For example say the \code{DoubleCheckbox} component renders two checkboxes. Source code for such a component can be seen in Listing~\ref{lst:case-study:double-checkbox}. If such a component is rendered as a Web Component, it will attempt to render the \code{<checkbox>} HTML tag, not knowing that it has been renamed to \code{<cow-checkbox>}. The result is an empty component.
 }{
@@ -80,7 +91,7 @@ In this section we'll first be laying out the steps taken and the issues faced d
 <checkbox id="checkbox-2"></checkbox>
 \end{lstlisting}
 
-\subsubsection{Theming}
+\subsubsection{WC4: Theming}\label{sec:case-study:theming}
 \problemSolution{
 	3rd party developers have expressed the wish to apply custom theming to their apps. In order to make this possible we need to find a way to apply a single theme across all components on the page, regardless of ShadowRoots.
 }{
@@ -105,15 +116,14 @@ my-component {
 }
 \end{lstlisting}
 
-\subsubsection{Non-string Attributes}
+\subsubsection{WC5: Non-string Attributes}\label{sec:case-study:non-string-attributes}
 \problemSolution{
 	As mentioned previously, it is not possible to pass non-string attributes to Web Components using just HTML\@. This presents an issue since some Angular components expect a non-string attribute to be passed. Examples of which include but are not limited to a boolean, a number, a JavaScript object with an \code{alignment} property, and a \code{Date} instance. While this is a problem that will be solved by our JS framework wrappers and particularly in Section~\ref{sec:case-study:complex-attributes}, the CC UI library should be at least usable by itself as well.
 }{
 	Because in this scenario there is no access to JavaScript, we can not make use of any solutions to this problem that utilize the setting of attributes or properties through JavaScript. Instead, we need to use just HTML\@. The solution we came up with was to allow developers to optionally pass JSON to components by prefixing the attributes with \code{json-}. When this is done, the attribute value is parsed through \code{JSON.parse}, after which the corresponding property is set on the Web Component. This gives developers a way to pass most of the previously presented before. To allow developers to pass \code{Date} instances, we make it possible to pass strings, which we parse into Dates. While this is not a great workaround to have, especially since it only takes care of the \code{Date} class and not, for example, the \code{RegExp} class. The only way to fix this issue for all classes is to provide a method similar to Python \code{pickle}~\footurl{https://docs.python.org/3/library/pickle.html}, which, as mentioned on the documentation page, is not secure. We also feel like this problem is not prevalent enough in our case to warrant such a solution. Currently, all occurrences of classes as Angular component inputs have been taken care of.
 }
 
-\subsubsection{Complex Attributes}
-\label{sec:case-study:complex-attributes}
+\subsubsection{WC6: Complex Attributes}\label{sec:case-study:complex-attributes}
 \problemApproachesImplementation{
 	Continuing on with the same problem, we now need to come up with a way to solve the problem for even more situations, this time being able to make use of JavaScript since solution will be implemented into the JS framework wrappers. Some of which include the passing of an object reference or an HTML element reference. This will never be possible through JSON since the reference needs to be preserved. Instead, we make use of JavaScript this time. Our goal is to allow a parent component written in the language of the JS framework to be able to pass its properties down to its child. This parent component is essentially just a passthrough component whose set of properties is identical. Its only purpose is to pass on these components and to provide a component native to the JS framework. Another thing to keep in mind is the fact that we need all properties to be defined before the child component performs its first render. This issue is present simply because of the way the original Angular components are written, assuming that they will only receive attributes once and that they'll never change.
 }{
@@ -131,7 +141,7 @@ my-component {
 
 	This leaves us with the last approach. The creation of an intermediary object which holds the properties. The child is then given some way to get a reference to the intermediary (bypassing the problem of the second approach), after which it can get the to-be-applied properties from the intermediary. As long as we make sure the child has a way to find the intermediary access before it has been rendered to the DOM, we are able to fulfill the requirement of defining all properties before the first render.
 }{
-	Our implementation consists of a number of steps. We start off by creating a class which we'll call \emph{Intermediary}. This class has an instance manager attached to it which we'll call the \emph{IntermediaryManager}. Our JS framework wrapper code will be wrapping around the basic CC UI library. Since the CC UI library does not export the IntermediaryManager, we're unable to get a reference to it from our wrapper (aka the parent). In order to still get a reference to it, we want to store it globally. Because storing such properties on the \code{window} object can result in collisions and is unreliable, we'll be storing it as a property of the defined Web Components. This means that we're able to call \code{customElements.get('cow-checkbox').IntermediaryManager} and get a reference to the IntermediaryManager from both the parent side and the child side.
+	Our implementation consists of a number of steps. We start off by creating a class which we'll call \emph{Intermediary}. This class has an instance manager attached to it which we'll call the \emph{IntermediaryManager}. Our JS framework wrapper code will be wrapping around the basic CC UI library. Since the CC UI library does not export the IntermediaryManager, we're unable to get a reference to it from our wrapper (aka the parent). In order to still get a reference to it, we want to store it globally. Because storing such properties on the \code{window} object can result in collisions and is unreliable, we'll be storing it as a property of the defined Web Components. This means that we're able to access the \code{IntermediaryManager} property on the  \code{customElements.get('cow-checkbox')} object and get a reference to the IntermediaryManager from both the parent side and the child side.
 
 	Now that we've taken care of this issue, we're able to start using it. We make the parent create an instance of an Intermediary. This Intermediary gets a simple string ID\@. We are then able to look up the ID in the IntermediaryManager and get the corresponding Intermediary. This ID is passed to the child, allowing it to look up this Intermediary.
 
@@ -139,7 +149,7 @@ my-component {
 }
 
 \subsection{Angular Issues}
-\subsubsection{ng-deep}
+\subsubsection{A1: ng-deep}\label{sec:case-study:ng-deep}
 \problemSolution{
 	Angular provides the \code{ng-deep} CSS selectors~\footurl{https://angular.io/guide/component-styles\#deprecated-deep--and-ng-deep}. Where regular CSS selectors stop at the ShadowDom boundary, meaning that a component will never be able to have a selector apply to the DOM of another component, the ng-deep selector does allow for this. It is an emulated and deprecated selector that does not work outside of Angular environments (including the Web Components environment). As such we need to remove it.
 }{
@@ -196,14 +206,14 @@ class ChildComponent {
 
 \end{lstlisting}
 
-\subsubsection{createCustomElement}
+\subsubsection{A2: createCustomElement}\label{sec:case-study:create-custom-element}
 \problemSolution{
 	The main export of the Angular Elements library is the \code{createCustomElement} function~\footurl{https://angular.io/api/elements/createCustomElement}. This function takes an Angular component and turns it into a Web Component. It does this by extending an \code{HTMLElement} base class and applying all Angular component features on top of it. However, this function does not offer the ability to change the base class from an \code{HTMLElement} into anything else. As mentioned before, the 30MHz dashboard makes use of some elements that extend native elements. For example the 30MHz input field extends the default HTML input field and only adds styling, preserving any builtin accessibility features provided by the browser. When converting this Angular component to a Web Component, we also wish to preserve these same features. This can be done by extending builtin HTML elements~\footurl{https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements}. However, the \code{createCustomElement} function does not provide this option, causing us to be unable to create such an element. There is an open feature request for this option at the time of writing of this paper~\footurl{https://github.com/angular/angular/issues/19108}.
 }{
 	We have no choice but to implement this option ourselves. This means we have to copy the entire source code of the \code{createCustomElement} function, along with many of its dependencies since very few of them are exported. After this we change the function to allow us to pass such an option.
 }
 
-\subsubsection{EventEmitters}
+\subsubsection{A3: EventEmitters}\label{sec:case-study:eventemitters}
 \problemSolution{
 	Angular implements so-called \code{EventEmitters}~\footurl{https://angular.io/api/core/EventEmitter}. These are classes that are able to emit events, as well as being able to be listened to. When the \code{emit} function is called, the passed value is sent directly to those functions that added an event listener to it. Note that this behavior is different from regular event emitters, which emit a \code{CustomEvent}, which contains the actual value in the \code{detail} property. A lot of our Angular code relies on the value being directly emitted, and it not being wrapped in a CustomEvent.
 
@@ -229,7 +239,7 @@ function unwrapEvent(event) {
 }
 \end{lstlisting}
 
-\subsubsection{Hierarchical Injectors}
+\subsubsection{A4: Hierarchical Injectors}\label{sec:case-study:hierarchical-injectors}
 \problemSolution{
 	Angular makes use of a feature called \emph{Dependency Injection}~\footurl{https://angular.io/guide/dependency-injection}. This allows a parent module to provide its children with an instance of a certain dependency class. This class instance is shared among the module and its children. Generally only modules provide their children with dependencies, where modules are simply collections of components that serve some common purpose. However, this dependency injection feature can also be leveraged to have a given component provide its own instance of a class only to its direct children. This means that every instance of that component gets its own separate instance of the dependency, which it then shares with its children, and not one that is shared across all components in the module. This is called \emph{Hierarchical Dependency Injection}\footurl{https://angular.io/guide/hierarchical-dependency-injection} and it is a feature that is utilized by 30MHz in some areas.
 
@@ -248,7 +258,7 @@ function unwrapEvent(event) {
 	We now need to make sure Angular actually uses this injector we just created. To do so, we need to override the component's default element strategy (\code{NgElementStrategy}). This element strategy is a class provided by Angular that manages the connection between the DOM and the underlying Angular component. Since the \code{NgElementStrategy} class is also not exported by Angular, we need to find a reference to it somewhere. To do so, we create a fake component and read its \code{ngElementStrategy} property. We can now extend the class, replace the injector and provide it to the component. A full code example of this process can be found in Listing~\ref{lst:appendix:hierarchical-injectors}.
 }
 
-\subsubsection{ngOnInit}
+\subsubsection{A5: ngOnInit}\label{sec:case-study:ng-on-init}
 \problemSolution{
 	Angular Elements does intentionally not guarantee the order in which attributes are set on an element (even initial attributes)~\footurl{https://github.com/angular/angular/issues/29050}. This means that attributes can be set on an element both before or after its main init hook (\code{ngOnInit}) is called. An example of this process can be seen in Listing~\ref{lst:case-study:ng-on-init}. While this isn't a problem if attributes are only used to handle visual state, this can cause great problems when they are used for component configuration. For example if a component performs a fetch request to the server and takes a \code{URL} property that determines the target URL, it is essential that this property is set before the component's main hook runs. Quite a few components in the 30MHz codebase have a similar setup. As such, we need to guarantee that a component will always have the full set of initial properties set before its main hook is called.
 }{
@@ -279,14 +289,14 @@ parent.appendChild(element);
 element.setAttribute('bar', 'baz');
 	\end{lstlisting}
 
-\subsubsection{Casing in attribute names}
+\subsubsection{A6: Casing in attribute names}\label{sec:case-study:casing}
 \problemSolution{
 	In the process of converting Angular components to Web Components, Angular Elements maps all input properties from camelCase casing to kebab-case. For example the input property \code{myInputProperty} is set through the \code{my-input-property} HTML attribute. The reason for this change is that HTML attributes are case-insensitive. To HTML \code{myInputProperty} is identical to \code{myinputproperty} and \code{MYINPUTPROPERTY}. While this is a good change to make, and one that ensures that name collisions are less likely to happen, it does present some issues. Internal Angular elements still use the camelCase variant to set properties on their child components. Since the Web Component variants do not recognize the camelCase variant of the property anymore, they are ignored.
 }{
 	We solve this issue by making sure the Web Components also accept the camelCase variant. As HTML is case insensitive there is no point in checking the casing of the passed attribute. Instead, we convert it to lowercase and compare it against the lowercase version of the original camelCase input property. In the previous example \code{myInputProperty}, \code{myinputproperty}, \code{MYINPUTPROPERTY}, and \code{my-input-property} would all refer to the input property \code{myInputProperty} on the Angular component.
 }
 
-\subsubsection{Angular directives}
+\subsubsection{A7: Angular directives}\label{sec:case-study:directives}
 \problemSolution{
 	Angular has two types of elements that appear in the DOM\@. The first type is the Component, which looks for a given selector or tag name and replaces the original HTML element. For example an \code{AppRootComponent} with the selector \code{'app-root'} will look for an \code{<app-root>} HTML element and replace it with the Angular component instance. The second type is the Directive. Similarly, this look for a selector, but instead of replacing the original HTML element, this simply mounts to it and runs its own code on it. An example of this would be a \code{Blink} directive that looks for the \code{'blink'} HTML class. When mounted it periodically hides and un-hides the component.
 
@@ -295,7 +305,7 @@ element.setAttribute('bar', 'baz');
 	While this might sound like a tough problem since these are entirely different elements, the fix for this issue is surprisingly easy. Under the hood Angular stores the definition of a Component in the \code{\cmcrv{}cmp} property. This is also the property Angular Elements accesses to do the conversion from Angular components to Web Components. Similarly, the definition of Directives is stored in the \code{\cmcrv{}dir} property. By simply copying the value of the \code{\cmcrv{}dir} property to the \code{\cmcrv{}cmp} property, we are able to trick Angular Elements into thinking a directive is a component. Surprisingly, this actually works and the directive works perfectly.
 }
 
-\subsubsection{<ng-content>}
+\subsubsection{A8: <ng-content>}\label{sec:case-study:ng-content}
 \problemSolution{
 	Angular uses the \code{<ng-content>} tag for so-called content projection. Content projection is the ability for a component to take a set of children, which it can then place anywhere in its DOM tree. This is effectively the same as the HTML \code{<slot>} tag~\footurl{https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot}. An example of content projection can be seen in Listing~\ref{lst:case-study:ng-content}. Content projection works fine in most scenarios but sometimes it does not work. The child elements simply do not show up.
 }{
@@ -331,16 +341,64 @@ We also looked at different JS frameworks but found most of them to have little 
 
 In creating these wrappers, we started off by extracting the required component and type data from the components' source files. For example, the list of input properties as well as their types and descriptions need to be known. Similarly, all events emitted by the component, their types, and descriptions also need to be known. Finally we also need to collect some metadata on the component itself, such as the name, tag name, and whether it has child elements. We extracted all this data by using the \emph{typescript} package~\footurl{https://www.npmjs.com/package/typescript}. This package allows for the parsing of TypeScript and JavaScript code. This code is turned into an abstract syntax tree (AST) with added type information, after which we are able to iterate through it. We extract all this data and turn it into a common format to be re-used by the various scripts that generate JS framework wrappers.
 
-After collecting this data, we are able to generate the various JS frameworks. The process of which is described in detail below.
+After collecting this data, we are able to generate the various JS frameworks. Generating wrappers was a fairly smooth process for most JS frameworks. It consisted of iterating through the extracted component data and generating source files written in the language of the JS framework. These source files were then fed into a bundler and bundled into the wrappers. This process went smoothly for both the React and Svelte wrapper. In the process of creating an Angular wrapper however, we faced a few challenges. These challenges are described in detail below.
 
-\subsubsection{React Wrapper}
-\todo{}
+\subsubsection{A9: Angular Attribute Order}\label{sec:case-study:attribute-order}
+\problemSolution{
+	As previously described in Section~\ref{sec:case-study:ng-on-init}, the order in which Angular attributes are set is unknown. While we have fixed this issue for our Web Components in this section, this same issue presents itself again in the writing of an Angular wrapper. This time the problem is that components will be rendered before they have all of their input properties set. This leads to the obvious issue where the wrong contents are rendered.
 
-\subsubsection{Svelte Wrapper}
-\todo{}
+	Another problem stems from our approach in Section~\ref{sec:case-study:complex-attributes}. We pass a unique ID to the child that is used to find the intermediary. When the child now receives an attribute that starts with the special reference prefix, it looks up given reference by finding the intermediary and reading the attribute value. However, if the child receives such an attribute before having received the unique ID of the intermediary it is unable to resolve the value. Since the order in which Angular attributes are passed is unknown, this situation arises very often.
+}{
+	We get around these issues by handling the appending to the DOM ourselves. Instead of having our Angular wrapper render the actual Web Components, we instead have them render a \emph{Renderer} component. This component is then passed the tag name of the Web Component. We are now able to precisely control when a component is appended to the DOM, as well as which attributes it gets and in what order. Since the \emph{Renderer} takes the place of the Web Component, it now receives all attributes. We wait until it has received the very last attribute before we decide to create the child component. After creating it, we apply all attributes the \emph{Renderer} has received to the child, after which we append it to the DOM\@. Since this process allows us such fine grained control over the rendering cycle, we are able to render the Web Component without any issues.
+}
 
-\subsubsection{Angular Wrapper}
-\todo{}
+\subsubsection{A10: Bundling Angular Imports}\label{sec:case-study:bundling-imports}
+\problemSolution{
+	Angular provides a few ways to build projects. Two of which are in use by us. The first option is to build a project as an application. This bundles everything into a combination of browser-specific bundles. These bundles can then easily be loaded by including them in the browser. This is the option we use for the Web Component library. The second option is to build a project as a library. Building a project as a library preserves all typing information and allows it to be used by another Angular project. Since we are building an Angular project, this is the option we need if we want to be able to provide typings to developers who use our Angular wrapper.
+
+	However, we run into an issue after building. 30MHz uses the Font Awesome Pro~\footurl{https://fontawesome.com/pro} package for its icons. This is a licensed package that can only be downloaded when a valid key is presented. Since some of these icons are also used in the CC UI library, it needs to be bundled into the library to be able to work. Angular however refuses to do this. They recommend using \code{peerDependencies}~\footurl{https://github.com/ng-packagr/ng-packagr/blob/v10.1.0/docs/dependencies.md} instead. While their reasoning for this is valid, it does not apply in our case. Since 3rd party developers are unable to install the Font Awesome Pro package without a license, they would run into an error when installing the package. Previously Angular had the \code{embed} option, which allowed for the embedding of a given set of JS packages. This was eventually replaced with \code{bundledDependencies}~\footurl{https://github.com/ng-packagr/ng-packagr/issues/1106}, and a little while later it was deprecated~\footurl{https://github.com/ng-packagr/ng-packagr/commit/0c52486}. This leaves us with no native option to bundle our dependency.
+}{
+	We fix this issue by programmatically changing the build artifacts Angular outputs. There are three types of build formats, the \code{FESM2015} (or flattened \code{ESM2015}), \code{ESM2015}, and \code{umd} formats. Bundling the Font Awesome Pro source code is fairly trivial for the \code{FESM2015} and \code{umd} formats since they are both single files. The \code{ESM2015} format however, is a bit different. It consists of a folder that is essentially a clone of the source code, with every TypeScript source file being replaced with a compiled JavaScript version and a \code{.summary.json} file. This \code{.summary.json} file functions similar to a \code{.d.ts} file, in that it provides type information of the file. In fixing our issue we want to preserve this same folder structure. This means that we can not simply pass the entrypoint to a bundler and be done. On the other hand, we are also not able to feed every individual JavaScript file to the bundler. This would result in every separate file including its own copy of the Font Awesome Pro library, leading to a significant bundle size. Instead, we create a central folder in the \code{ESM2015} folder in which we store the Font Awesome Pro JavaScript bundle. This folder functions the same as a \ver{node\_modules} folder. We now replace every reference in the source files to point to this central location instead.
+}
+
+\problemSolution{
+	We now run into another problem. When the library that was just built is used in an Angular project, the Angular compiler scans over all of its \code{.summary.json} files to build an AST with type information. It then finds the values that are exported, looks up their type values in the AST and exports those that correspond to them. In performing this AST building process, the Angular compiler scans our included Font Awesome Pro folder for \code{.summary.json} files in order to extract definitions. Since those don't exist, an error is thrown.
+}{
+	The obvious approach to this problem is the following. We generate and bundle along the \code{.summary.json} files. This will provide Angular with the definitions it needs. The downside to this is that Angular will recursively perform this AST building process, meaning that it will first scan Font Awesome Pro, then its dependencies and their dependencies. All of these files would need to be included in the bundle simply to ensure the Angular compiler does not throw an error.
+
+	Instead, the solution is to simply remove any reference to our bundled Font Awesome Pro library from the \code{.summary.json} files. Now that there is no longer a reference, the Angular compiler will simply skip over it. Since the Font Awesome Pro library is not exported, the Angular compiler never has to export any of its type information, meaning it does not actually need this data.
+}
+
+\subsubsection{A11: Angular Ivy}\label{sec:case-study:ivy}
+\problemSolution{
+	Angular has released a new version of its compiler called Ivy~\footurl{https://angular.io/guide/ivy}. This Ivy compiler is set to replace the previous View Engine compiler. However, Angular does not allow the use of Ivy for projects built as libraries for now~\footurl{https://angular.io/guide/ivy\#maintaining-library-compatibility} both because of compatibility reasons and because Ivy is not seen as stable enough as of the writing of this paper. This forces us to use the View Engine compiler instead. This compiler contains a number of bugs, one of which is causing the build to fail entirely in our case~\footurl{https://github.com/angular/angular/issues/25424}. This bug is marked as \ver{Fixed by Ivy}, however we are unable to use Ivy.
+}{
+	The only other fix to this issue seems to be the disabling of AOT (or ahead-of-time compilation~\footurl{https://github.com/angular/angular/issues/25424\#issuecomment-465643237}. Unfortunately the disabling of AOT introduces significant overhead during the loading of the built library, an issue which we have not been able to fix. As will be mentioned in the results section, this increases the load time of the Angular wrapper to an unacceptable level.
+}
 
 \subsection{Optimizations}
-\todo{}
+After finishing the CC UI library we started looking for performance improvements. By looking through the Chrome profiler trace we were able to find some easy performance improvements. These will be discussed in detail below.
+
+\subsubsection{O1: Reduce time searching for CSS}\label{sec:case-study:searching-for-css}
+We provide developers with a CSS file they should include in their final \code{index.html} file. This file contains the styles required to make the CC UI library work. We'll be referring to this CSS file as the CC CSS file from now on.
+
+As mentioned in Section~\ref{sec:case-study:global-css}, we find the CC CSS file on the page and copy it into every component instance. Since there can be many more stylesheets than just the CC CSS file, we need to scan every stylesheet and check whether it's the one. This searching process consists of the following steps.
+
+\begin{itemize}
+	\item Get a list of all stylesheets on the page, this includes both \code{<style>} tags and \code{<link rel="stylesheet">} tags.
+	\item Iterate through every stylesheet.
+	\item Iterate through every rule.
+	\item Compare the current rule with a specific marker value that signifies the CC CSS file. If it matches, move on to the next step
+	\item Add this stylesheet to the list of CC CSS file and move on to the next stylesheet.
+\end{itemize}
+
+While we did implement some caching, making sure this process only runs a single time, this process still has a significant performance impact. This performance impact scales linearly with the size of the stylesheet, meaning that a stylesheet with more rules takes longer to scan. It takes about 16ms to scan through a stylesheet of 1667 lines in order to find the marker rule on the machine mentioned in Section~\ref{sec:experimental-setup:machine-specs}. In addition to scaling with the size of the stylesheet, this number also scales with the number of stylesheets. Since it iterates through every available stylesheet, including a big stylesheet will vastly increase loading times.
+
+We improve this process in two ways. The first step is to simply stop scanning after we find the marker. Instead of looking for other CC CSS files, we simply stop and return early. Since we know that there is only a single CC CSS file that applies to our Web Components, we can make this change. The performance impact of this change is hard to express in a single number since it largely depends on the stylesheets on the page, but this performance improvements saves about 1ms per 100 rules in stylesheets that are not the CC CSS file.
+
+The second step is to ask the developers to help us in this process. We ask them to add a simple \code{cow} attribute to the \code{<style>} or \code{<link rel="stylesheet">} tag that contains the CC CSS file. Since the developer knows which file contains our supplied CSS file, they should easily be able to add this attribute. At runtime we check whether there are any stylesheet tags that have a \code{cow} attribute. If there are, we can skip the entire process of finding the CC CSS file. Since this process was performed as the first component was rendered, this change saves about 16ms on the first component's render time.
+
+\subsubsection{O2: Move CSS searching to initial load}\label{sec:case-study:css-initial-load}
+While the above fixes provide great performance improvements, it may very well be possible that the developer does not add the \code{cow} tag, preventing our performance improvements from applying. The performance impact of the CSS search is still quite large, and the fact that it is ran during the rendering of the first component significantly, increases its render time. Since these render times tend to be around 16ms by themselves, a 16ms increase is huge.
+
+We remove this performance impact from the first render by moving it to the moment the CC UI library is initialized. To make sure we don't add any time to the initial load, we wait until the browser is idle by calling \code{window.requestIdleCallback}. This ensures that the process of finding CSS is performed while the browser is idle instead of it blocking an important operation such as component rendering.
