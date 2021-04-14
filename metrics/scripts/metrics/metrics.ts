@@ -18,12 +18,14 @@ import { makeChartDeterministic } from '../../collectors/cow-components/dashboar
 import { makeChartDeterministic as makeBasicChartDeterministic } from '../../collectors/cow-components-basic/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';
 import {
+	cowComponentBundles,
 	cowComponentsInstallBundleMap,
 	cowComponentsParallelBundleMap,
 	cowComponentsSerialBundleMap,
 	COW_COMPONENT_BUNDLES,
 } from './bundles/cow-components';
 import {
+	cowComponentBasicBundles,
 	cowComponentsBasicInstallBundleMap,
 	cowComponentsBasicParallelBundleMap,
 	cowComponentsBasicSerialBundleMap,
@@ -134,8 +136,13 @@ export const metris = preserveCommandBuilder(
 				: COW_COMPONENT_BUNDLES
 			).includes(bundle as never)
 		);
+		const hasDashboardBundle = bundles.some((bundle) =>
+			(isBasic ? cowComponentBasicBundles : cowComponentBundles).includes(
+				bundle as never
+			)
+		);
 		if (
-			hasCowComponentBundle &&
+			(hasCowComponentBundle || hasDashboardBundle) &&
 			!args['skip-dashboard'] &&
 			!(await fs.pathExists(packagesInstalledFile))
 		) {
