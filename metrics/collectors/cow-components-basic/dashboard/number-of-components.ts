@@ -8,7 +8,7 @@ export async function getNumberOfComponents(): Promise<number> {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', 'dashboard-basic', 'number-of-components'],
+		['metrics', 'cow-components-basic', 'dashboard-basic', 'number-of-components'],
 		await getNumberOfComponents()
 	);
 }, __filename);

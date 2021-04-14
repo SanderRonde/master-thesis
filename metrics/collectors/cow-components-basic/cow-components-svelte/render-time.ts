@@ -34,7 +34,7 @@ export async function getDashboardRenderTime(
 runFunctionIfCalledFromScript(async () => {
 	const components = await getComponents();
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'render-time'],
+		['metrics', 'cow-components-basic', STORE_NAME, 'render-time'],
 		await getDashboardRenderTime(components)
 	);
 	process.exit(0);

@@ -6,7 +6,7 @@ import { ANGULAR_METADATA_BUNDLE } from '../../../scripts/metrics/bundles/cow-co
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'load-time'],
+		['metrics', 'cow-components-basic', STORE_NAME, 'load-time'],
 		await getLoadTimeForDir(ANGULAR_METADATA_BUNDLE, 'bundle.js')
 	);
 }, __filename);

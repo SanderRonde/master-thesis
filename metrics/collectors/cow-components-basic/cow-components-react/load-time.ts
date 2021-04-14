@@ -8,7 +8,7 @@ import { REACT_DEMO_METRICS_TOGGLEABLE_DIR } from '../../../scripts/metrics/bund
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'load-time'],
+		['metrics', 'cow-components-basic', STORE_NAME, 'load-time'],
 		await getLoadTimeForDir(path.join(REACT_DEMO_METRICS_TOGGLEABLE_DIR))
 	);
 }, __filename);

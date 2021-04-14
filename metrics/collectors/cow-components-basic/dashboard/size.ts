@@ -11,7 +11,7 @@ export async function getDashboardSize(): Promise<number> {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', 'dashboard-basic', 'size'],
+		['metrics', 'cow-components-basic', 'dashboard-basic', 'size'],
 		await getDashboardSize()
 	);
 }, __filename);

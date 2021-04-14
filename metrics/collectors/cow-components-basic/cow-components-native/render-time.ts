@@ -16,7 +16,7 @@ export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
 	return await getRenderTime({
-		getComponents: () => components.map(c => c.js.componentName),
+		getComponents: () => components.map((c) => c.js.componentName),
 		sourceRoot: NATIVE_DEMO_METRICS_TOGGLEABLE_DIR,
 		showComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
@@ -34,7 +34,7 @@ export async function getDashboardRenderTime(
 runFunctionIfCalledFromScript(async () => {
 	const components = await getComponents();
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'render-time'],
+		['metrics', 'cow-components-basic', STORE_NAME, 'render-time'],
 		await getDashboardRenderTime(components)
 	);
 	process.exit(0);

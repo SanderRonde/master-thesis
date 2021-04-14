@@ -17,7 +17,7 @@ export async function getDashboardRenderTime(
 	components: ComponentFiles[]
 ): Promise<RenderTime> {
 	return await getRenderTime({
-		getComponents: () => components.map(c => c.js.componentName),
+		getComponents: () => components.map((c) => c.js.componentName),
 		sourceRoot: path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo'),
 		showComponent: async (component, page) => {
 			await page.$eval(
@@ -49,7 +49,7 @@ export async function getDashboardRenderTime(
 runFunctionIfCalledFromScript(async () => {
 	const components = await getComponents();
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'render-time'],
+		['metrics', 'cow-components-basic', STORE_NAME, 'render-time'],
 		await getDashboardRenderTime(components)
 	);
 	process.exit(0);

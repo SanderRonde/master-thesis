@@ -5,7 +5,12 @@ import { STORE_NAME } from './lib/constants';
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'structural-complexity'],
+		[
+			'metrics',
+			'cow-components-basic',
+			STORE_NAME,
+			'structural-complexity',
+		],
 		await getStructuralComplexityMetrics()
 	);
 }, __filename);

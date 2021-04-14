@@ -8,7 +8,7 @@ import { NATIVE_DEMO_METRICS_TOGGLEABLE_DIR } from '../../../scripts/metrics/bun
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', STORE_NAME, 'load-time'],
+		['metrics', 'cow-components-basic', STORE_NAME, 'load-time'],
 		await getLoadTimeForDir(path.join(NATIVE_DEMO_METRICS_TOGGLEABLE_DIR))
 	);
 }, __filename);
