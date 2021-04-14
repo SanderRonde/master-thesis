@@ -1,4 +1,4 @@
-import { fromEntries } from '../collectors/shared/helpers';
+import { fromEntries, runFunctionIfCalledFromScript } from '../collectors/shared/helpers';
 import { DatasetStats, getDatasetStats } from '../collectors/shared/stats';
 import { DEFAULT_STORE_NAME, readStore } from '../collectors/shared/storage';
 import { Data, BundleData } from '../collectors/shared/types';
@@ -75,3 +75,9 @@ export async function getData(
 		}),
 	};
 }
+
+runFunctionIfCalledFromScript(async () => {
+	const data = await getData();
+	console.log(data);
+	debugger;
+}, __filename)
