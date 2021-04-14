@@ -16,7 +16,7 @@ export async function getLinesOfCodeMetrics() {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', 'dashboard', 'lines-of-code'],
+		['metrics', 'cow-components', 'dashboard-basic', 'lines-of-code'],
 		await getLinesOfCodeMetrics()
 	);
 }, __filename);

@@ -156,7 +156,7 @@ export async function getStructuralComplexityMetrics() {
 
 runFunctionIfCalledFromScript(async () => {
 	await storeData(
-		['metrics', 'cow-components', 'dashboard', 'structural-complexity'],
+		['metrics', 'cow-components', 'dashboard-basic', 'structural-complexity'],
 		await getStructuralComplexityMetrics()
 	);
 }, __filename);
