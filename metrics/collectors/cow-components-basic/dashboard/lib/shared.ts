@@ -1,6 +1,7 @@
 import { sortObjectKeys } from '../../../shared/helpers';
 import { BASE_COMPONENT } from '../../../shared/shapes';
 import { DatasetStats, getDatasetStats } from '../../../shared/stats';
+import { RenderTime } from '../../../shared/types';
 import { ComponentFiles, getComponents, ReadFile } from './get-components';
 
 /**
@@ -54,4 +55,21 @@ export async function collectDashboardMetrics<A>(
 	stats: DatasetStats;
 }> {
 	return collectBundleMetrics(await getComponents(), getFileMetrics, getArgs);
+}
+
+export function duplicateRenderTimeKeys(renderTime: RenderTime): RenderTime {
+	const added: Partial<RenderTime['components']> = {};
+	for (const componentName in renderTime.components) {
+		if (COMPONENT_NAME_MAP.has(componentName)) {
+			added[COMPONENT_NAME_MAP.get(componentName) as any] =
+				renderTime.components[componentName];
+		}
+	}
+	return {
+		stats: renderTime.stats,
+		components: {
+			...renderTime.components,
+			...(added as RenderTime['components']),
+		},
+	};
 }

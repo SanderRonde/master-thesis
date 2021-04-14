@@ -4,7 +4,7 @@ import { ComponentFiles, getComponents } from './lib/get-components';
 import { RenderTime } from '../../shared/types';
 import { getRenderTime } from '../../shared/render-time';
 import { DASHBOARD_DIST_DIR } from './lib/constants';
-import { COMPONENT_NAME_MAP } from './lib/shared';
+import { duplicateRenderTimeKeys } from './lib/shared';
 
 interface NGElement {
 	__ngContext__: any[];
@@ -54,16 +54,9 @@ export async function getDashboardRenderTime(
 
 runFunctionIfCalledFromScript(async () => {
 	const components = await getComponents();
-	const data = await getDashboardRenderTime(components);
-	for (const componentName in data.components) {
-		if (COMPONENT_NAME_MAP.has(componentName)) {
-			data.components[COMPONENT_NAME_MAP.get(componentName) as any] =
-				data.components[componentName];
-		}
-	}
 	await storeData(
 		['metrics', 'cow-components-basic', 'dashboard-basic', 'render-time'],
-		data
+		duplicateRenderTimeKeys(await getDashboardRenderTime(components))
 	);
 	process.exit(0);
 }, __filename);
