@@ -1,4 +1,4 @@
-import { choice, cmd, flag } from 'makfy';
+import { choice, cmd, flag, str } from 'makfy';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
@@ -110,6 +110,7 @@ export const metris = preserveCommandBuilder(
 		.args({
 			'skip-dashboard': flag(),
 			bundle: choice([...BUNDLES, 'all'], 'all'),
+			'bundle-list': str(),
 			'skip-build': flag(),
 			...METRICS_COMMAND_ARGS,
 		})
@@ -117,10 +118,17 @@ export const metris = preserveCommandBuilder(
 			'skip-dashboard': 'Skip installing of dashboard',
 			'skip-build': 'Skip the build process of the current bundle',
 			bundle: 'A specific bundle to use. Uses all by default',
+			'bundle-list':
+				'A comma-separated list of bundles whose metrics to collect',
 			...METRICS_COMMAND_ARG_DESCRIPTIONS,
 		})
 ).run(async (exec, args) => {
-	const bundles: Bundle[] = args.bundle !== 'all' ? [args.bundle] : BUNDLES;
+	const bundles: Bundle[] =
+		args.bundle !== 'all'
+			? [args.bundle]
+			: args['bundle-list']
+			? (args['bundle-list'].split(',') as Bundle[])
+			: BUNDLES;
 
 	for (const dashboardDir of [DASHBOARD_DIR, BASIC_DASHBOARD_DIR]) {
 		const isBasic = dashboardDir === BASIC_DASHBOARD_DIR;
