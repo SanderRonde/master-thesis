@@ -311,7 +311,7 @@ export function getBundleInstallCommand<N extends string>(
 	const installCommand = registerSetupCommand(bundleName).run(
 		async (exec) => {
 			await exec('? Installing dependencies');
-			await exec(`yarn --cwd ${demoPath}`);
+			await exec(`yarn --cwd ${demoPath} || yarn --cwd ${demoPath} || yarn --cwd ${demoPath}`);
 		}
 	);
 

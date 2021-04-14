@@ -32,7 +32,9 @@ export const cowComponentsSvelteInstall = registerInstallCommand(
 	'cow-components-basic-svelte'
 ).run(async (exec) => {
 	await exec('? Installing dependencies');
-	await exec(`yarn --cwd ${SVELTE_DEMO_DIR}`);
+	await exec(
+		`yarn --cwd ${SVELTE_DEMO_DIR} || yarn --cwd ${SVELTE_DEMO_DIR} || yarn --cwd ${SVELTE_DEMO_DIR}`
+	);
 });
 
 export const cowComponentsSvelteSetup = registerSetupCommand(
