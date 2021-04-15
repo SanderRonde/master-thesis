@@ -3,3 +3,4 @@
 - Add "real case"
 - Update paper
 - Update paper with LaTeX template
+- Remove dead exports
