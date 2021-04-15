@@ -31,40 +31,49 @@ export async function generateRenderTimeHTML(
 ) {
 	const cowComponents = await getComponents(submodulePath);
 	const componentsHTML = await Promise.all(
-		components.map(
-			async (component) =>
-				[
-					component,
-					await (async () => {
-						const tagData = await getComponentTag(
-							component,
-							cowComponents
-						);
-						const isSelfClosing = SELF_CLOSING_TAGS.includes(
-							tagData.tagName
-						);
-						return `<${tagData.tagName} ${tagData.attributes.join(
-							' '
-						)} ${component.props
-							.filter((property) => {
-								return (
-									!property.isEventListener &&
-									property.demoDefaultValue
-								);
-							})
-							.map((property) => {
-								return `[${
-									property.name
-								}]="${DEFAULT_VALUE_PREFIX}.${getSanitizedComponentName(
-									component
-								)}['${property.name}']"`;
-							})
-							.join(' ')} ${isSelfClosing ? '/' : ''}>${
-							component.hasChildren ? 'content' : ''
-						}${isSelfClosing ? '' : `</${tagData.tagName}>`}`;
-					})(),
-				] as const
-		)
+		components
+			.filter((component) => {
+				return !!cowComponents.find((cowComponent) => {
+					return (
+						cowComponent.js.componentName ===
+						component.component.name
+					);
+				});
+			})
+			.map(
+				async (component) =>
+					[
+						component,
+						await (async () => {
+							const tagData = await getComponentTag(
+								component,
+								cowComponents
+							);
+							const isSelfClosing = SELF_CLOSING_TAGS.includes(
+								tagData.tagName
+							);
+							return `<${
+								tagData.tagName
+							} ${tagData.attributes.join(' ')} ${component.props
+								.filter((property) => {
+									return (
+										!property.isEventListener &&
+										property.demoDefaultValue
+									);
+								})
+								.map((property) => {
+									return `[${
+										property.name
+									}]="${DEFAULT_VALUE_PREFIX}.${getSanitizedComponentName(
+										component
+									)}['${property.name}']"`;
+								})
+								.join(' ')} ${isSelfClosing ? '/' : ''}>${
+								component.hasChildren ? 'content' : ''
+							}${isSelfClosing ? '' : `</${tagData.tagName}>`}`;
+						})(),
+					] as const
+			)
 	);
 
 	return componentsHTML
