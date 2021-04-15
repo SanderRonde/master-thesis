@@ -2,7 +2,6 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import { collectBundleMetrics as iterateOverBundle } from '../../collectors/cow-components/dashboard/lib/shared';
-import { getFileMaintainability } from '../../collectors/cow-components/dashboard/maintainability';
 import {
 	findFilePath,
 	isAbsolute,
@@ -36,6 +35,7 @@ import {
 	ReadFile,
 } from '../../collectors/metric-definitions/types';
 import { getFileLinesOfCode } from '../../collectors/metric-definitions/lines-of-code';
+import { getFileMaintainability } from '../../collectors/metric-definitions/maintainability';
 
 interface CollectorArgs {
 	bundleCategory: string;
