@@ -2,7 +2,7 @@ import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
 import { getComponents } from './lib/get-components';
 import { RenderTime } from '../../shared/types';
-import { getRenderTime } from '../../shared/render-time';
+import { getRenderTime } from '../../metric-definitions/render-time';
 import { DASHBOARD_DIST_DIR } from './lib/constants';
 import { duplicateRenderTimeKeys } from './lib/shared';
 import { ComponentFiles } from '../../metric-definitions/types';

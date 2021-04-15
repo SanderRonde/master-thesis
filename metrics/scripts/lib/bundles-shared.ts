@@ -23,7 +23,7 @@ import {
 	registerSetupCommand,
 } from './makfy-helper';
 import { getLoadTimeForDir } from '../../collectors/metric-definitions/load-time';
-import { getRenderTime } from '../../collectors/shared/render-time';
+import { getRenderTime } from '../../collectors/metric-definitions/render-time';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../../collectors/shared/settings';
 import ts from 'typescript';
 import { readFile } from '../../collectors/shared/files';

@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
 import * as fs from 'fs-extra';
 
-import { findLastIndex, generateTempFileName, wait } from './helpers';
-import { debug, info, warning } from './log';
+import { findLastIndex, generateTempFileName, wait } from '../shared/helpers';
+import { debug, info, warning } from '../shared/log';
 
 import {
 	KEEP_PROFILES,
@@ -14,14 +14,14 @@ import {
 	RENDER_TIME_WIDTH,
 	SLOWDOWN_FACTOR_RENDER_TIME,
 	WAIT_AFTER_IDLE_TIME,
-} from './settings';
+} from '../shared/settings';
 import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
-import { RenderTime } from './types';
-import { getDatasetStats } from './stats';
-import { PerformanceEvent, PerformanceProfile } from '../metric-definitions/load-time';
-import { assert } from './testing';
-import { readFile } from './files';
-import { MAX_PUPPETEER_BROWSER_LAUNCH_TRIES } from './constants';
+import { RenderTime } from '../shared/types';
+import { getDatasetStats } from '../shared/stats';
+import { PerformanceEvent, PerformanceProfile } from './load-time';
+import { assert } from '../shared/testing';
+import { readFile } from '../shared/files';
+import { MAX_PUPPETEER_BROWSER_LAUNCH_TRIES } from '../shared/constants';
 
 interface PuppeteerWindow extends Window {
 	requestIdleCallback(

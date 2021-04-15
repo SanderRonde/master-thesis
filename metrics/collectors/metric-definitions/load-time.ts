@@ -10,7 +10,7 @@ import {
 import { LoadTime } from '../shared/types';
 import { getDatasetStats } from '../shared/stats';
 import { readFile } from '../shared/files';
-import { createPage } from '../shared/render-time';
+import { createPage } from './render-time';
 import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
 
 interface EvaluateScriptArgs {

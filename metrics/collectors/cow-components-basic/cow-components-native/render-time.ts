@@ -1,7 +1,7 @@
 import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
 import { RenderTime } from '../../shared/types';
-import { getRenderTime } from '../../shared/render-time';
+import { getRenderTime } from '../../metric-definitions/render-time';
 import { getComponents } from '../dashboard/lib/get-components';
 import { STORE_NAME } from './lib/constants';
 import { NATIVE_DEMO_METRICS_TOGGLEABLE_DIR } from '../../../scripts/metrics/bundles/cow-components/cow-components-native';
