@@ -1,5 +1,6 @@
 import { CommandBuilder } from 'makfy/dist/lib/schema/commands';
 import { METRICS_COMMAND_ARGS } from './makfy-helper';
+import { PageLoadSettings } from './page-load';
 import { LoadTimeMetricConfig } from './time-metrics';
 
 export type ConstArrItems<T> = T[Extract<keyof T, number>];
@@ -20,6 +21,10 @@ export type NamedSerialBundleMap<B extends string> = {
 
 export type TimeMetricBundleMap<B extends string> = {
 	[K in B]?: LoadTimeMetricConfig;
+};
+
+export type PageLoadTimeMetricBundleMap<B extends string> = {
+	[K in B]?: PageLoadSettings;
 };
 
 export type ParallelBundleMap<B extends string> = {

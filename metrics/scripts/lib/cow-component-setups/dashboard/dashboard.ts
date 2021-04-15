@@ -30,6 +30,10 @@ import { storeData } from '../../../../collectors/shared/storage';
 import { RenderTime } from '../../../../collectors/shared/types';
 import { getRenderTime } from '../../../../collectors/metric-definitions/render-time';
 import { generateRenderTimePage } from '../../../../collectors/shared/dashboard/generate-render-time-page';
+import { generateDemoPage } from '../../../../collectors/shared/dashboard/generate-demo-page';
+import { cowComponentsPageLoadTimeMap } from '../../../metrics/bundles/cow-components';
+import { setupPageLoadTimeMeasuring } from '../../page-load';
+import { info } from '../../../../collectors/shared/log';
 
 type BaseDirs = ReturnType<typeof getDashboardDirs>;
 
@@ -260,6 +264,24 @@ export function createDashboardMetricsCommand(
 			indexJsFileName: 'bundle.js',
 			urlPath: '/index.html',
 		});
+
+		await dashboardCtx.keepContext('git reset --hard');
+
+		await exec('? Preparing for page load time measuring');
+		await generateDemoPage(baseDir, submoduleName);
+
+		await buildDashboard(exec, dirs, 'page-load-time', args['no-cache']);
+
+		const scripts = await setupPageLoadTimeMeasuring(
+			cowComponentsPageLoadTimeMap.dashboard!
+		);
+		await exec('? Starting with page load time tests');
+		for (let i = 0; i < scripts.length; i++) {
+			const script = scripts[i];
+			info('load-time', `Running timing test ${i + 1}/${scripts.length}`);
+			await script();
+		}
+		await exec('? Done with page load time  tests');
 
 		await dashboardCtx.keepContext('git reset --hard');
 

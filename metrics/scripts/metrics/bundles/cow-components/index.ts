@@ -30,6 +30,7 @@ import { registerInstallCommand } from '../../../lib/makfy-helper';
 import { LoadTimeMetricConfig } from '../../../lib/time-metrics';
 import {
 	ConstArrItems,
+	PageLoadTimeMetricBundleMap,
 	ParallelBundleMap,
 	SerialBundleMap,
 	TimeMetricBundleMap,
@@ -158,8 +159,8 @@ export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> =
 
 const timeMetricsArgs: LoadTimeMetricConfig = {
 	...baseMetricArgs,
-	bundleCategory: 'cow-components'
-}
+	bundleCategory: 'cow-components',
+};
 export const cowComponentsTimeMetricsMap: TimeMetricBundleMap<CowComponentBundle> = {
 	'cow-components-angular': {
 		...timeMetricsArgs,
@@ -182,5 +183,37 @@ export const cowComponentsTimeMetricsMap: TimeMetricBundleMap<CowComponentBundle
 	'cow-components-svelte': {
 		...timeMetricsArgs,
 		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'svelte'),
+	},
+};
+
+export const cowComponentsPageLoadTimeMap: PageLoadTimeMetricBundleMap<CowComponentBundle> = {
+	dashboard: {
+		basePath: path.join(DASHBOARD_DIR, 'dist/dasboard'),
+		urlPath: '/404',
+		bundleCategory: 'cow-components',
+		bundleName: 'dashboard',
+	},
+	'cow-components-angular': {
+		basePath: path.join(
+			DASHBOARD_DIR,
+			'dist/demo-repo/angular/dist/angular-demo'
+		),
+		bundleCategory: 'cow-components',
+		bundleName: 'cow-components-angular',
+	},
+	'cow-components-native': {
+		basePath: path.join(DASHBOARD_DIR, 'dist/demo-repo/native'),
+		bundleCategory: 'cow-components',
+		bundleName: 'cow-components-native',
+	},
+	'cow-components-react': {
+		basePath: path.join(DASHBOARD_DIR, 'dist/demo-repo/react'),
+		bundleCategory: 'cow-components',
+		bundleName: 'cow-components-react',
+	},
+	'cow-components-svelte': {
+		basePath: path.join(DASHBOARD_DIR, 'dist/demo-repo/svelte/public'),
+		bundleCategory: 'cow-components',
+		bundleName: 'cow-components-svelte',
 	},
 };

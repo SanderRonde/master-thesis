@@ -39,6 +39,15 @@ export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 5;
  */
 export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
 /**
+ * Slowdown factor used for page load time
+ */
+ export const PAGE_LOAD_TIME_SLOWDOWN_FACTOR = DEVELOPMENT ? 1 : 5;
+/**
+ * Number of times to measure load time performance
+ * before generating a report off of the avg
+ */
+ export const PAGE_LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
+/**
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
  */

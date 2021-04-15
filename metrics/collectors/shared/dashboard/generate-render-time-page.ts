@@ -19,7 +19,7 @@ import {
 } from './generate-render-time-html';
 import { JoinedDefinition } from './get-component-tag';
 
-type Dirs = ReturnType<typeof getRenderTimePageDirs>;
+export type Dirs = ReturnType<typeof getRenderTimePageDirs>;
 
 export function getRenderTimePageDirs(baseDir: string, submoduleName: string) {
 	const sharedModuleFilePath = path.join(

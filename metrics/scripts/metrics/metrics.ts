@@ -18,6 +18,7 @@ import { writeFile } from '../../collectors/shared/files';
 import {
 	cowComponentBundles,
 	cowComponentsInstallBundleMap,
+	cowComponentsPageLoadTimeMap,
 	cowComponentsParallelBundleMap,
 	cowComponentsSerialBundleMap,
 	cowComponentsTimeMetricsMap,
@@ -141,7 +142,7 @@ async function buildDemoRepo(
 	makeChartDeterministic(getRenderTimePageDirs(baseDir, submoduleName));
 
 	await exec('? Building design library and wrappers');
-	await dashboardCtx.keepContext('makfy demo-repo');
+	await dashboardCtx.keepContext('makfy demo-repo --build-demos');
 
 	await dashboardCtx.keepContext('git reset --hard');
 }
@@ -268,6 +269,7 @@ export const metris = preserveCommandBuilder(
 	}
 
 	// Run all sync tasks
+	await exec('? Running synchronous tasks');
 	for (const bundle of nonDashboardBundles) {
 		await exec(getCommandBuilderExec(serialBundleMap[bundle], execArgs));
 	}
@@ -286,6 +288,18 @@ export const metris = preserveCommandBuilder(
 		commands.push(...(await setupLoadTimeMeasuring(config)));
 		commands.push(...(await setupRenderTimeMeasuring(config)));
 	}
+	for (const bundleName in cowComponentsPageLoadTimeMap) {
+		if (bundleName === 'dashboard') continue;
+
+		commands.push(
+			...(await setupLoadTimeMeasuring(
+				cowComponentsPageLoadTimeMap[
+					bundleName as keyof typeof cowComponentsPageLoadTimeMap
+				]!
+			))
+		);
+	}
+
 	// Randomize order
 	const shuffled = shuffle(commands);
 	// Run them all

@@ -30,6 +30,16 @@ export type RenderTime = {
 		Record<string, ComponentRenderTimeData>;
 	stats: Record<number, DatasetStats>;
 };
+export type PageLoadTime = {
+	'first-paint': {
+		times: number[];
+		stats: DatasetStats;
+	};
+	'first-contentful-paint': {
+		times: number[];
+		stats: DatasetStats;
+	};
+};
 
 export interface BundleData {
 	'is-css-framework': boolean;
