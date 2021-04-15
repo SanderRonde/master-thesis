@@ -50,7 +50,11 @@ export function createSvelteSetupCommand(
 
 		await exec('? Bundling');
 		await exec(
-			`rollup -c ${path.join(__dirname, '../lib/', 'rollup.config.js')}`
+			`rollup -c ${path.join(
+				__dirname,
+				'lib/',
+				'rollup.config.js'
+			)} --base-dir ${baseDir}`
 		);
 	});
 }

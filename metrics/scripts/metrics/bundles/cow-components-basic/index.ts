@@ -13,6 +13,7 @@ import {
 } from '../../../lib/cow-component-setups/angular/angular';
 import {
 	createDashboardMetricsCommand,
+	createDashboardStructuralComplexityFunctionCreator,
 	getComponents as getCowComponents,
 } from '../../../lib/cow-component-setups/dashboard/dashboard';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
@@ -58,6 +59,9 @@ const metricsCreator = getBundleMetricsCommandCreator('cow-components-basic', {
 	},
 	indexJsFileName: 'index.bundle.js',
 	urlPath: '/index.html',
+	createComplexityFunction: createDashboardStructuralComplexityFunctionCreator(
+		BASIC_DASHBOARD_DIR
+	),
 });
 
 // Bundles
