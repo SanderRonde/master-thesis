@@ -151,11 +151,11 @@ async function getFileDependencies(
 
 async function getFileStructuralComplexity(
 	file: ReadFile,
-	extraLevels: number
+	args: { extraLevels: number }
 ): Promise<number> {
 	const dependencies = await getFileDependencies(
 		file,
-		STRUCTURAL_COMPLEXITY_DEPTH + extraLevels
+		STRUCTURAL_COMPLEXITY_DEPTH + args.extraLevels
 	);
 
 	return dependencies.filter(
@@ -164,13 +164,19 @@ async function getFileStructuralComplexity(
 }
 
 export async function collectStructuralComplexity(
-	{ bundleCategory, bundleName, components }: CollectorArgs,
+	{ bundleCategory, bundleName, components, extraLevels }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {
 	const getComplexityFunction = overrides.createComplexityFunction
 		? await overrides.createComplexityFunction?.(components)
 		: getFileStructuralComplexity;
-	const metrics = await iterateOverBundle(components, getComplexityFunction);
+	const metrics = await iterateOverBundle(
+		components,
+		getComplexityFunction,
+		() => ({
+			extraLevels,
+		})
+	);
 
 	await storeData(
 		['metrics', bundleCategory, bundleName, 'structural-complexity'],
@@ -353,7 +359,9 @@ interface BundleMetricsOverrides {
 	getComponents?: () => Promise<ComponentFiles[]>;
 	createComplexityFunction?: (
 		components: ComponentFiles[]
-	) => Promise<(file: ReadFile) => Promise<number>>;
+	) => Promise<
+		(file: ReadFile, args: { extraLevels: number }) => Promise<number>
+	>;
 }
 
 export function getBundleMetricsCommand<N extends string>(

@@ -230,6 +230,7 @@ export function createDashboardMetricsCommand(
 			components,
 			demoPath: dirs.distDir,
 			basePath: '',
+			extraLevels: 0
 		};
 
 		await collectIsCSSFramework(collectorArgs, {});

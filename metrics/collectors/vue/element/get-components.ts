@@ -4,6 +4,7 @@ import { ComponentFiles } from '../../metric-definitions/types';
 
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
+import { GetComponentFunction } from '../../shared/shapes';
 
 const IGNORED = new Set(['__mocks__', 'theme-chalk', 'utils', 'element-plus']);
 
@@ -23,7 +24,7 @@ export async function getComponentFiles(dir: string): Promise<ComponentFiles> {
 
 export async function getComponents(
 	submodulePath: string
-): Promise<ComponentFiles[]> {
+): ReturnType<GetComponentFunction> {
 	const packagesPath = path.join(submodulePath, 'packages');
 	const dirList = await asyncFilter(
 		await fs.readdir(packagesPath),
@@ -38,5 +39,8 @@ export async function getComponents(
 			.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
 	);
 
-	return components;
+	return {
+		components,
+		extraLevels: 1,
+	};
 }
