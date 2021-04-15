@@ -1,0 +1,10 @@
+- Add Vue libraries
+- Add PrimeVue
+- Update frameworks in paper
+- Update selection of frameworks in paper
+- Increase repetitions
+- Randomize render time and load time order
+- Increase number of components
+- Add "real case"
+- Update paper
+- Update paper with LaTeX template
