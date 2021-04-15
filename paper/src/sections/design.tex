@@ -1,22 +1,24 @@
 \section{Study Design}\label{sec:design}
 
 \subsection{Metric definitions}
-In order to evaluate the effectiveness of converting an existing set of Angular components to a Web Component UI library, we need to define some metrics. We will be measuring two aspects of this process. The first is measuring the effectiveness of the resulting CC UI library. In order to do this, we will compare the components in the CC UI library to the Angular components they originate from, as well as to various different UI libraries. We will make this comparison using various metrics at both component granularity and at UI library granularity. We have chosen the following metrics: structural complexity (SC), cyclomatic complexity (CC), lines of code (LOC), maintainability (MA), size (SI), load time (LT), number of components in the UI library (NOC), and render time (RT). A brief description of these metrics can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
+In order to evaluate the effectiveness of converting an existing set of Angular components to a Web Component UI library, we need to define some metrics. We will be measuring two aspects of this process. The first is measuring the effectiveness of the resulting CC UI library. In order to do this, we will compare the components in the CC UI library to the Angular components they originate from, as well as to various different UI libraries. We will make this comparison using various metrics at both component granularity and at UI library granularity. We have chosen the following metrics: structural complexity (SC), cyclomatic complexity (CC), lines of code (LOC), maintainability (MA), size (SI), load time (LT), number of components in the UI library (NOC), first paint (FP), first contentful paint (FCP), and render time (RT).  A brief description of these metrics can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
 
 
 \begin{table}[h]
 	\tiny
 	\begin{tabularx}{\columnwidth}{l|l|l|X}
 		\toprule
-		\textbf{ID} & \textbf{Metric}       & \textbf{Granularity} & \textbf{Description}                                                                                                              \\ \midrule
-		SC          & Structural complexity & Component            & The number of import statements for a component. Collected for a source file and all of its dependencies for up to two iterations \\ \hline
-		CC          & Cyclomatic complexity & Component            & A quantitative measure of the number of linearly independent paths through a program's~\cite{1702388}                             \\ \hline
-		LOC         & Lines of code         & Component            & The number of lines of code in a given component's source file                                                                    \\ \hline
-		MA          & Maintainability       & Component            & A derivative based on complexity, lines of code and Halstead volume~\cite{halstead1977elements}                                   \\ \hline
-		RT          & Render Time           & Component            & The render time of a given component                                                                                              \\ \hline
-		SI          & Size                  & UI Library           & The file size of the bundled up library                                                                                           \\ \hline
-		LT          & Load Time             & UI Library           & Parsing and running time of the bundled up library in the browser (without download time)                                         \\ \hline
-		NOC         & Number of Components  & UI Library           & The number of components in a UI library                                                                                          \\
+		\textbf{ID} & \textbf{Metric}        & \textbf{Granularity}             & \textbf{Description}                                                                                                              \\ \midrule
+		SC          & Structural complexity  & Component                        & The number of import statements for a component. Collected for a source file and all of its dependencies for up to two iterations \\ \hline
+		CC          & Cyclomatic complexity  & Component                        & A quantitative measure of the number of linearly independent paths through a program's~\cite{1702388}                             \\ \hline
+		LOC         & Lines of code          & Component                        & The number of lines of code in a given component's source file                                                                    \\ \hline
+		MA          & Maintainability        & Component                        & A derivative based on complexity, lines of code and Halstead volume~\cite{halstead1977elements}                                   \\ \hline
+		RT          & Render Time            & Component                        & The render time of a given component                                                                                              \\ \hline
+		SI          & Size                   & UI Library                       & The file size of the bundled up library                                                                                           \\ \hline
+		LT          & Load Time              & UI Library                       & Parsing and running time of the bundled up library in the browser (without download time)                                         \\ \hline
+		NOC         & Number of Components   & UI Library                       & The number of components in a UI library                                                                                          \\ \hline
+		FC          & First Paint            & UI Library (cow-components only) & First paint event of the browser                                                                                                  \\ \hline
+		FCP         & First Contentful Paint & UI Library (cow-components only) & First paint event of the browser that includes content for the user  (text, images, etc.)                                         \\
 	\end{tabularx}
 	\caption{Metrics used in this study}
 	\label{tab:design:metrics}
@@ -30,6 +32,9 @@ The size metric metric aims to measure the theoretical impact of loading the UI 
 
 \subsubsection{Load Time}
 The load time metric aims to provide a measure of the real impact of a UI library on the page by measuring the real-world load time. Note that we only measure the parsing time and running time of the JavaScript bundle. We explicitly exclude the download time from this metric since this is already captured in SI\@.
+
+\subsubsection{First Paint, First Contentful Paint}
+The first paint metric along with the FCP metric will be measured on just the cow-component UI libraries. We will be using these metrics to evaluate how the paint time of the UI libraries has changed after its conversion to Web Components and its later conversion to JS framework wrappers.
 
 \subsubsection{Render Time}
 Finally, the render time metric aims to capture the duration of the render cycle. We will define this render time as the time between setting the component's visibility to true and the browser being done with the rendering process This will likely be the most important metric for this study. If the render time of components in the CC UI library is significantly higher than components in other UI libraries or the Angular components they originate from, the performance impact of converting Angular components to Web Components will be too big. If it is slightly higher, the same or lower, we can conclude that the performance impact is minimal.

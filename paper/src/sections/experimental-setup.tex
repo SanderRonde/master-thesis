@@ -131,5 +131,8 @@ While it has been shown that load time and perceived performance of a web page a
 	\centering
 \end{figure}
 
+\subsection{First Paint, First Contentful Paint}
+In order to measure the first paint and first contentful paint, we will be constructing a page that has the same content across all versions of the CC UI library. This means we will be constructing one for the original Angular components, the Web Components version and the various JS framework wrappers. We will be measuring this metric by using the browser's builtin \code{performance} object. This object keeps track of both the FP and FCP metrics, allowing us to extract them.
+
 \subsection{Number of Components}
 The number of components is captured separately for the UI library as a whole, and for the bundle described in Section~\ref{sec:experimental-setup:size}. Since the bundles described in Section~\ref{sec:experimental-setup:size} always contain three components, this number will always be three. The only exception is the CC UI library. For the CC UI library and the UI libraries captured as a whole, we will be gathering the number of components by applying the process described in Section~\ref{sec:experimental-setup:gathering-components} to gather components, after which we count the number of them.
