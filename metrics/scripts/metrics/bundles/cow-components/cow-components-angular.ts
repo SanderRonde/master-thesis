@@ -1,26 +1,16 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { METRICS_DIR } from '../../../../collectors/shared/constants';
-import {
-	collectSameAsDashboardMetrics,
-	DEMO_REPO_DIR,
-} from '../../../lib/cow-components-shared';
+import { DEMO_REPO_DIR } from '../../../lib/cow-components-shared';
 import { getRenderTimeHTMLTemplate } from '../../../../collectors/cow-components/cow-components-angular/templates/render-time-html-template';
 import { getRenderTimeJsTemplate } from '../../../../collectors/cow-components/cow-components-angular/templates/render-time-js-template';
-import { rimrafAsync, cpxAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
+import { rimrafAsync, cpxAsync } from '../../../lib/helpers';
 import {
 	registerSetupCommand,
-	registerMetricsCommand,
 	registerInstallCommand,
 } from '../../../lib/makfy-helper';
 import { concatIntoBundle } from './dashboard';
 import { readFile, writeFile } from '../../../../collectors/shared/files';
-
-const BASE_DIR = path.join(
-	METRICS_DIR,
-	`collectors/cow-components/cow-components-angular`
-);
 
 export const ANGULAR_DEMO_DIR = path.join(DEMO_REPO_DIR, 'angular');
 const DEMO_METRICS_DIR = path.join(ANGULAR_DEMO_DIR, 'metrics');
@@ -108,17 +98,4 @@ export const cowComponentsAngularSetup = registerSetupCommand(
 	await fs.mkdirp(ANGULAR_METADATA_BUNDLE);
 	await cpxAsync(`${ANGULAR_DEMO_DIST}/**`, ANGULAR_METADATA_BUNDLE);
 	await concatIntoBundle(exec, ANGULAR_METADATA_BUNDLE);
-});
-
-export const cowComponentsAngularMetrics = registerMetricsCommand(
-	'cow-components-angular'
-).run(async (exec) => {
-	await collectSameAsDashboardMetrics(exec, 'angular');
-
-	await exec('? Collecting render time metrics');
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
-
-	await exec('? Collecting bundle metadata metrics');
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
 });
