@@ -1,10 +1,10 @@
-import { getJoinedComponentDefs } from '../../dashboard/lib/render-time/generate-render-time-page';
-import { getComponentSelector } from '../../../../submodules/30mhz-dashboard-basic/src/lib/design-library-wrappers/angular/scripts/lib/templates/component-template';
+import { getJoinedComponentDefs } from '../../../../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
+import { getComponentSelector } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/angular/scripts/lib/templates/component-template';
 import {
 	DEFAULT_VALUE_PREFIX,
 	getSanitizedComponentName,
 	VISIBLE_VALUES_PREFIX,
-} from '../../dashboard/lib/render-time/lib/generate-render-time-html';
+} from '../../../../../collectors/cow-components/dashboard/lib/render-time/lib/generate-render-time-html';
 
 export async function getRenderTimeHTMLTemplate() {
 	const components = await getJoinedComponentDefs();

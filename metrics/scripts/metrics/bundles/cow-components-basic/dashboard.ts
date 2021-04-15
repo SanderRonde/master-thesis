@@ -8,10 +8,8 @@ import {
 } from '../../../../collectors/shared/constants';
 import {
 	DASHBOARD_DIST_DIR,
-	ANGULAR_EXCLUDED_FILES,
 	DASHBOARD_IGNORED_DIR,
 } from '../../../../collectors/cow-components-basic/dashboard/lib/constants';
-import { asyncGlob } from '../../../../collectors/shared/helpers';
 import { registerMetricsCommand } from '../../../lib/makfy-helper';
 import {
 	cpxAsync,
@@ -21,7 +19,7 @@ import {
 } from '../../../lib/helpers';
 import { METRICS } from '../../../lib/constants';
 import { readFile, writeFile } from '../../../../collectors/shared/files';
-import { htmlTemplate } from '../../../../collectors/shared/templates';
+import { concatIntoBundle } from '../../../lib/cow-components-shared';
 
 const BROWSERS_LIST_FILE = path.join(BASIC_DASHBOARD_DIR, 'browserslist');
 const ANGULAR_PROJECT_FILE = path.join(BASIC_DASHBOARD_DIR, 'angular.json');
@@ -30,15 +28,6 @@ const DASHBOARD_BASE_DIR = path.join(
 	`collectors/cow-components-basic/dashboard`
 );
 
-async function getAngularJsFilesInDir(dir: string): Promise<string[]> {
-	const allJsFiles = await asyncGlob('*.js', {
-		cwd: dir,
-	});
-	const files = allJsFiles.filter(
-		(file) => !ANGULAR_EXCLUDED_FILES.includes(file)
-	);
-	return files.map((file) => path.join(dir, file));
-}
 
 async function preDashboardBuild(exec: ExecFunction) {
 	await exec('? Changing browser target to speed things up');
@@ -89,36 +78,6 @@ async function buildDashboard(
 	await cpxAsync(path.join(DASHBOARD_DIST_DIR, '**'), fullCachePath);
 }
 
-export async function concatIntoBundle(exec: ExecFunction, dir: string) {
-	await exec('? Concatenating into bundle');
-	const files = await Promise.all(
-		(await getAngularJsFilesInDir(dir)).map((file) => {
-			return readFile(file);
-		})
-	);
-	const bundle = files.reduce((prev, current) => {
-		return `${prev}\n\n${current}`;
-	});
-	const concatenatedFilePath = path.join(dir, 'concatenated.js');
-	await writeFile(concatenatedFilePath, bundle);
-
-	await exec('? Creating index.html file');
-	await writeFile(
-		path.join(dir, 'index.html'),
-		htmlTemplate({ jsPath: 'bundle.js' })
-	);
-
-	await exec('? Bundling');
-	try {
-		await fs.unlink(path.join(dir, 'bundle.js'));
-	} catch (e) {}
-	await exec(
-		`esbuild ${concatenatedFilePath} --bundle --minify --outfile=${path.join(
-			dir,
-			'bundle.js'
-		)}`
-	);
-}
 
 async function dashboardPreBundleMetrics(exec: ExecFunction, noCache: boolean) {
 	await buildDashboard(exec, 'pre-metrics', noCache);

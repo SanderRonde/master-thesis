@@ -5,25 +5,25 @@ import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 } from '../../../lib/bundles-shared';
+import {
+	createAngularSetupCommand,
+	getAngularDirs,
+} from '../../../lib/cow-component-setups/angular/angular';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
 import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
+import { getCowComponentsDirs } from '../../../lib/cow-component-setups/shared';
 import { createSvelteSetupCommand } from '../../../lib/cow-component-setups/svelte/svelte';
 
 import {
 	DEMO_REPO_DIR_BASIC,
 	getToggleableDir,
 } from '../../../lib/cow-components-shared';
+import { registerInstallCommand } from '../../../lib/makfy-helper';
 import {
 	ConstArrItems,
 	ParallelBundleMap,
 	SerialBundleMap,
 } from '../../../lib/types';
-import {
-	ANGULAR_DEMO_DIR,
-	ANGULAR_METADATA_BUNDLE,
-	cowComponentsAngularInstall,
-	cowComponentsAngularSetup,
-} from './cow-components-angular';
 import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_BASIC_WRAPPERS = [
@@ -63,7 +63,22 @@ export const cowComponentBasicBundles = [
 export const cowComponentsBasicInstallBundleMap: Partial<
 	SerialBundleMap<CowComponentBasicBundle>
 > = {
-	'cow-components-basic-angular': cowComponentsAngularInstall,
+	'cow-components-basic-angular': registerInstallCommand(
+		'cow-components-basic-angular'
+	).run(async (exec) => {
+		// For Angular we use the regular bundle for size and load-time
+		// testing. This is because it will be excluded from the build
+		// if not used. And the few bytes added should not make a big
+		// difference
+		await exec('? Installing dependencies');
+		const demoDirCtx = await exec(
+			`cd ${
+				getCowComponentsDirs(BASIC_DASHBOARD_DIR, 'angular')
+					.frameworkDemoDir
+			}`
+		);
+		await demoDirCtx.keepContext('npm install');
+	}),
 	'cow-components-basic-native': installCreator(
 		'cow-components-basic-native',
 		{
@@ -83,7 +98,10 @@ export const cowComponentsBasicInstallBundleMap: Partial<
 
 // Parallel tasks
 export const cowComponentsBasicParallelBundleMap: ParallelBundleMap<CowComponentBasicBundle> = {
-	'cow-components-basic-angular': cowComponentsAngularSetup,
+	'cow-components-basic-angular': createAngularSetupCommand(
+		'cow-components-basic-angular',
+		BASIC_DASHBOARD_DIR
+	),
 	'cow-components-basic-native': createNativeSetupCommand(
 		'cow-components-basic-native',
 		BASIC_DASHBOARD_DIR
@@ -104,10 +122,15 @@ export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasi
 	'cow-components-basic-angular': metricsCreator(
 		'cow-components-basic-angular',
 		{
-			demoDir: () => ANGULAR_METADATA_BUNDLE,
+			demoDir: () =>
+				getAngularDirs(BASIC_DASHBOARD_DIR).angularMetadataBundle,
 			indexJsFileName: 'bundle.js',
 			renderTimeDemoDir: () =>
-				path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo'),
+				path.join(
+					getCowComponentsDirs(BASIC_DASHBOARD_DIR, 'angular')
+						.frameworkDemoDir,
+					'dist/angular-demo'
+				),
 		}
 	),
 	'cow-components-basic-native': metricsCreator(

@@ -3,12 +3,12 @@ import {
 	getDefaultValuesString,
 	getJoinedComponentDefs,
 	getTogglesString,
-} from '../../dashboard/lib/render-time/generate-render-time-page';
+} from '../../../../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
 import {
 	SET_RENDER_OPTION_FUNCTION_NAME,
 	SET_RENDER_OPTION_FUNCTION_SIGNATURE,
 	SET_RENDER_OPTION_TEMPLATE,
-} from '../../dashboard/lib/render-time/templates/set-render-option';
+} from '../../../../../collectors/cow-components/dashboard/lib/render-time/templates/set-render-option';
 
 export async function getRenderTimeJsTemplate() {
 	const components = await getJoinedComponentDefs();
