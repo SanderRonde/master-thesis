@@ -11,7 +11,10 @@ import { LoadTime } from '../shared/types';
 import { getDatasetStats } from '../shared/stats';
 import { readFile } from '../shared/files';
 import { createPage } from './render-time';
-import { doWithServer } from '../shared/dashboard/serve-dashboard-dist';
+import {
+	doWithServer,
+	startServer,
+} from '../shared/dashboard/serve-dashboard-dist';
 
 interface EvaluateScriptArgs {
 	data: {
@@ -93,6 +96,33 @@ function getBundleLoadTimeFromProfile(
 	}
 
 	throw new Error('Failed to find relevant profile entry');
+}
+
+export async function setupLoadTimeMeasuringForDir(
+	onDone: (data: LoadTime) => Promise<void>,
+	dirName: string,
+	fileName: string = 'index.bundle.js',
+	rootPath?: string
+): Promise<(() => Promise<void>)[]> {
+	const { port, stop } = await startServer(0, dirName);
+
+	const profiles: PerformanceProfile[] = [];
+	return new Array(LOAD_TIME_PERFORMANCE_MEASURES).fill('').map(() => {
+		return async () => {
+			profiles.push(await createPerformanceProfile(port, rootPath));
+
+			if (profiles.length === LOAD_TIME_PERFORMANCE_MEASURES) {
+				const loadTimes = profiles.map((profile) =>
+					getBundleLoadTimeFromProfile(port, profile, fileName)
+				);
+				await onDone({
+					values: loadTimes,
+					stats: getDatasetStats(loadTimes),
+				});
+				stop();
+			}
+		};
+	});
 }
 
 export function getLoadTimeForDir(

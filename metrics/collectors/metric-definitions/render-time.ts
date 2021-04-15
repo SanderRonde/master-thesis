@@ -21,7 +21,10 @@ import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from '../shared/testing';
 import { readFile } from '../shared/files';
 import { MAX_PUPPETEER_BROWSER_LAUNCH_TRIES } from '../shared/constants';
-import { doWithServer } from '../shared/dashboard/serve-dashboard-dist';
+import {
+	doWithServer,
+	startServer,
+} from '../shared/dashboard/serve-dashboard-dist';
 
 interface PuppeteerWindow extends Window {
 	requestIdleCallback(
@@ -366,6 +369,31 @@ interface RenderTimeSettings {
 		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>;
+}
+
+export async function setupRenderTime(
+	onDone: (data: RenderTime) => Promise<void>,
+	settings: RenderTimeSettings
+): Promise<(() => Promise<void>)[]> {
+	const { port, stop } = await startServer(0, settings.sourceRoot);
+
+	const frames: Map<string, number>[] = [];
+	return new Array(RENDER_TIME_MEASURES).fill('').map(() => {
+		return async () => {
+			// Set up a slow browser and page
+			frames.push(
+				await collectRuntimeRenderTimes({
+					...settings,
+					port,
+				})
+			);
+
+			if (frames.length === RENDER_TIME_MEASURES) {
+				await onDone(joinMeasuredData(frames));
+				stop();
+			}
+		};
+	});
 }
 
 export async function getRenderTime(

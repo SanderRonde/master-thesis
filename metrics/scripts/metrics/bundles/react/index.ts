@@ -3,10 +3,12 @@ import {
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
+import { LoadTimeMetricConfig } from '../../../lib/time-metrics';
 import {
 	ConstArrItems,
 	NamedParallelBundleMap,
 	NamedSerialBundleMap,
+	TimeMetricBundleMap,
 } from '../../../lib/types';
 
 export type ReactBundle = ConstArrItems<typeof reactBundles>;
@@ -39,4 +41,16 @@ export const reactSerialBundleMap: NamedSerialBundleMap<ReactBundle> = {
 		isCSSFramework: true,
 	}),
 	'semantic-ui-react': metricsCreator('semantic-ui-react'),
+};
+
+const timeMetricsArgs: LoadTimeMetricConfig = {
+	bundleCategory: 'react',
+};
+export const reactTimeMetricsMap: TimeMetricBundleMap<ReactBundle> = {
+	'material-ui': timeMetricsArgs,
+	'react-bootstrap': {
+		...timeMetricsArgs,
+		isCSSFramework: true,
+	},
+	'semantic-ui-react': timeMetricsArgs,
 };

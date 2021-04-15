@@ -4,10 +4,12 @@ import {
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
+import { LoadTimeMetricConfig } from '../../../lib/time-metrics';
 import {
 	ConstArrItems,
 	NamedParallelBundleMap,
 	NamedSerialBundleMap,
+	TimeMetricBundleMap,
 } from '../../../lib/types';
 
 export type MultiFrameworkBundle = ConstArrItems<typeof multiFrameworkBundles>;
@@ -65,4 +67,36 @@ export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkB
 	'prime-vue': metricsCreator('prime-vue', {
 		demoDir: (basePath) => path.join(basePath, 'demo', 'dist'),
 	}),
+};
+
+const timeMetricsArgs: LoadTimeMetricConfig = {
+	bundleCategory: 'multi-framework',
+};
+export const multiFrameworkTimeMetricsMap: TimeMetricBundleMap<MultiFrameworkBundle> = {
+	'onsen-react': {
+		...timeMetricsArgs,
+		submoduleName: 'onsen',
+	},
+	'onsen-web-components': {
+		...timeMetricsArgs,
+		submoduleName: 'onsen',
+	},
+	'onsen-angular': {
+		...timeMetricsArgs,
+		submoduleName: 'onsen',
+		demoDir: (basePath) => path.join(basePath, 'demo/dist/demo'),
+		indexJsFileName: 'index.bundle.js',
+		urlPath: '/index.html',
+	},
+	'prime-react': timeMetricsArgs,
+	'prime-ng': {
+		...timeMetricsArgs,
+		demoDir: (basePath) => path.join(basePath, 'demo/dist/demo'),
+		indexJsFileName: 'index.bundle.js',
+		urlPath: '/index.html',
+	},
+	'prime-vue': {
+		...timeMetricsArgs,
+		demoDir: (basePath) => path.join(basePath, 'demo', 'dist'),
+	},
 };

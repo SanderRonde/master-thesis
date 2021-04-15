@@ -3,10 +3,12 @@ import {
 	getBundleMetricsCommandCreator,
 	getBundleSetupCommandCreator,
 } from '../../../lib/bundles-shared';
+import { LoadTimeMetricConfig } from '../../../lib/time-metrics';
 import {
 	ConstArrItems,
 	NamedParallelBundleMap,
 	NamedSerialBundleMap,
+	TimeMetricBundleMap,
 } from '../../../lib/types';
 
 export type SvelteBundle = ConstArrItems<typeof svelteBundles>;
@@ -37,4 +39,13 @@ export const svelteSerialBundleMap: NamedSerialBundleMap<SvelteBundle> = {
 	'svelte-material-ui': metricsCreator('svelte-material-ui'),
 	smelte: metricsCreator('smelte'),
 	'svelte-mui': metricsCreator('svelte-mui'),
+};
+
+const timeMetricsArgs: LoadTimeMetricConfig = {
+	bundleCategory: 'svelte',
+};
+export const svelteTimeMetricsMap: TimeMetricBundleMap<SvelteBundle> = {
+	'svelte-material-ui': timeMetricsArgs,
+	smelte: timeMetricsArgs,
+	'svelte-mui': timeMetricsArgs,
 };

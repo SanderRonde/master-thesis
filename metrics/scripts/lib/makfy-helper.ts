@@ -62,17 +62,20 @@ type MetricsArgDefinitions = {
 	'no-cache': FlagArgDefinition;
 	prod: FlagArgDefinition;
 	'log-debug': FlagArgDefinition;
+	'multi-run': FlagArgDefinition;
 };
 
 export const METRICS_COMMAND_ARGS = {
 	'no-cache': flag(),
 	prod: flag(),
 	'log-debug': flag(),
+	'multi-run': flag(),
 };
 export const METRICS_COMMAND_ARG_DESCRIPTIONS = {
 	'no-cache': "Don't use cache and force rebuild",
 	prod: 'Run in production mode',
 	'log-debug': 'Whether to log debug messages, even in prod mode',
+	'multi-run': 'Whether multiple bundles are being tested at once',
 };
 
 interface BundleCommandReturn {

@@ -20,6 +20,7 @@ import {
 	cowComponentsInstallBundleMap,
 	cowComponentsParallelBundleMap,
 	cowComponentsSerialBundleMap,
+	cowComponentsTimeMetricsMap,
 	COW_COMPONENT_BUNDLES,
 } from './bundles/cow-components';
 import {
@@ -27,33 +28,43 @@ import {
 	cowComponentsBasicInstallBundleMap,
 	cowComponentsBasicParallelBundleMap,
 	cowComponentsBasicSerialBundleMap,
+	cowComponentsBasicTimeMetricsMap,
 	COW_COMPONENT_BASIC_BUNDLES,
 } from './bundles/cow-components-basic';
-import { ParallelBundleMap, SerialBundleMap } from '../lib/types';
+import {
+	ParallelBundleMap,
+	SerialBundleMap,
+	TimeMetricBundleMap,
+} from '../lib/types';
 import {
 	svelteInstallBundleMap,
 	svelteParallelBundleMap,
 	svelteSerialBundleMap,
+	svelteTimeMetricsMap,
 } from './bundles/svelte';
 import {
 	reactInstallBundleMap,
 	reactParallelBundleMap,
 	reactSerialBundleMap,
+	reactTimeMetricsMap,
 } from './bundles/react';
 import {
 	angularInstallBundleMap,
 	angularParallelBundleMap,
 	angularSerialBundleMap,
+	angularTimeMetricsMap,
 } from './bundles/angular';
 import {
 	webcomponentsInstallBundleMap,
 	webcomponentsParallelBundleMap,
 	webcomponentsSerialBundleMap,
+	webcomponentsTimeMetricsMap,
 } from './bundles/web-components';
 import {
 	multiFrameworkInstallBundleMap,
 	multiFrameworkParallelBundleMap,
 	multiFrameworkSerialBundleMap,
+	multiFrameworkTimeMetricsMap,
 } from './bundles/multi-framework';
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import {
@@ -64,7 +75,15 @@ import {
 	vueInstallBundleMap,
 	vueParallelBundleMap,
 	vueSerialBundleMap,
+	vueTimeMetricsMap,
 } from './bundles/vue';
+import {
+	PerBundleLoadTimeMetricConfig,
+	setupLoadTimeMeasuring,
+	setupRenderTimeMeasuring,
+} from '../lib/time-metrics';
+import { shuffle } from '../lib/helpers';
+import { info } from '../../collectors/shared/log';
 
 const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
 	...cowComponentsInstallBundleMap,
@@ -97,6 +116,17 @@ const serialBundleMap: SerialBundleMap<Bundle> = {
 	...webcomponentsSerialBundleMap,
 	...multiFrameworkSerialBundleMap,
 	...vueSerialBundleMap,
+};
+
+const timeMetricsBundleMap: TimeMetricBundleMap<Bundle> = {
+	...cowComponentsTimeMetricsMap,
+	...cowComponentsBasicTimeMetricsMap,
+	...svelteTimeMetricsMap,
+	...reactTimeMetricsMap,
+	...angularTimeMetricsMap,
+	...webcomponentsTimeMetricsMap,
+	...multiFrameworkTimeMetricsMap,
+	...vueTimeMetricsMap,
 };
 
 async function buildDemoRepo(
@@ -199,6 +229,7 @@ export const metris = preserveCommandBuilder(
 		'no-cache': args['no-cache'],
 		prod: args.prod,
 		'log-debug': args['log-debug'],
+		'multi-run': true,
 	};
 
 	// First do dashboard by itself if we need to
@@ -240,6 +271,30 @@ export const metris = preserveCommandBuilder(
 	for (const bundle of nonDashboardBundles) {
 		await exec(getCommandBuilderExec(serialBundleMap[bundle], execArgs));
 	}
+
+	// Set up load and render time queues
+	const commands: (() => Promise<void>)[] = [];
+	for (const bundleName in timeMetricsBundleMap) {
+		const bundleConfig =
+			timeMetricsBundleMap[
+				bundleName as keyof typeof timeMetricsBundleMap
+			];
+		const config: PerBundleLoadTimeMetricConfig = {
+			...bundleConfig!,
+			bundleName,
+		};
+		commands.push(...(await setupLoadTimeMeasuring(config)));
+		commands.push(...(await setupRenderTimeMeasuring(config)));
+	}
+	// Randomize order
+	const shuffled = shuffle(commands);
+	// Run them all
+	await exec('? Starting with timing-based tests');
+	for (let i = 0; i < shuffled.length; i++) {
+		info('load-time', `Running timing test ${i + 1}/${shuffled.length}`);
+		await shuffled[i]();
+	}
+	await exec('? Done with timing-based tests');
 
 	// Exit manually
 	process.exit(0);

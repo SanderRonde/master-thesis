@@ -298,7 +298,7 @@ export async function collectRenderTimes(
 	);
 }
 
-function getPaths(
+export function getSharedBundlePaths(
 	bundleCategory: string,
 	bundleName: string,
 	overrides: BundleMetricsOverrides
@@ -322,7 +322,7 @@ export function getBundleInstallCommand<N extends string>(
 	bundleName: N,
 	overrides: BundleMetricsOverrides = {}
 ): CommandBuilderWithName<N> {
-	const { demoPath } = getPaths(bundleCategory, bundleName, overrides);
+	const { demoPath } = getSharedBundlePaths(bundleCategory, bundleName, overrides);
 
 	const installCommand = registerInstallCommand(bundleName).run(
 		async (exec) => {
@@ -340,7 +340,7 @@ export function getBundleSetupCommand<N extends string>(
 	bundleCategory: string,
 	bundleName: N
 ): CommandBuilderWithName<N> {
-	const { demoPath } = getPaths(bundleCategory, bundleName, {});
+	const { demoPath } = getSharedBundlePaths(bundleCategory, bundleName, {});
 
 	const setupCommand = registerSetupCommand(bundleName).run(async (exec) => {
 		await exec('? Building');
@@ -350,7 +350,7 @@ export function getBundleSetupCommand<N extends string>(
 	return setupCommand as CommandBuilderWithName<N>;
 }
 
-interface BundleMetricsOverrides {
+export interface BundleMetricsOverrides {
 	indexJsFileName?: string;
 	demoDir?: (basePath: string) => string;
 	renderTimeDemoDir?: (basePath: string) => string;
@@ -370,14 +370,14 @@ export function getBundleMetricsCommand<N extends string>(
 	bundleName: N,
 	overrides: BundleMetricsOverrides = {}
 ): CommandBuilderWithName<N> {
-	const { basePath, demoPath, submodulePath } = getPaths(
+	const { basePath, demoPath, submodulePath } = getSharedBundlePaths(
 		bundleCategory,
 		bundleName,
 		overrides
 	);
 
 	const metricsCommand = registerMetricsCommand(bundleName).run(
-		async (exec) => {
+		async (exec, args) => {
 			await exec('? Collecting source-file-based metrics');
 			const { components, extraLevels } = await (async () => {
 				if (overrides.getComponents) {
@@ -428,11 +428,13 @@ export function getBundleMetricsCommand<N extends string>(
 			await exec('? Collecting size');
 			await collectSize(collectorArgs, overrides);
 
-			await exec('? Collecting load time');
-			await collectLoadTime(collectorArgs, overrides);
+			if (!args['multi-run']) {
+				await exec('? Collecting load time');
+				await collectLoadTime(collectorArgs, overrides);
 
-			await exec('? Collecting render times');
-			await collectRenderTimes(collectorArgs, overrides);
+				await exec('? Collecting render times');
+				await collectRenderTimes(collectorArgs, overrides);
+			}
 		}
 	);
 

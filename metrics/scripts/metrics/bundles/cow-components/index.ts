@@ -5,6 +5,7 @@ import {
 	SUBMODULES_DIR,
 } from '../../../../collectors/shared/constants';
 import {
+	BundleMetricsOverrides,
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 } from '../../../lib/bundles-shared';
@@ -26,10 +27,12 @@ import {
 	getToggleableDir,
 } from '../../../lib/cow-components-shared';
 import { registerInstallCommand } from '../../../lib/makfy-helper';
+import { LoadTimeMetricConfig } from '../../../lib/time-metrics';
 import {
 	ConstArrItems,
 	ParallelBundleMap,
 	SerialBundleMap,
+	TimeMetricBundleMap,
 } from '../../../lib/types';
 
 const SUBMODULE_NAME = '30mhz-dashboard';
@@ -57,7 +60,7 @@ export const cowComponentBundles = [
 ] as const;
 
 const installCreator = getBundleInstallCommandCreator('cow-components');
-const metricsCreator = getBundleMetricsCommandCreator('cow-components', {
+const baseMetricArgs: BundleMetricsOverrides = {
 	getComponents() {
 		return getCowComponents(path.join(SUBMODULES_DIR, SUBMODULE_NAME));
 	},
@@ -66,7 +69,11 @@ const metricsCreator = getBundleMetricsCommandCreator('cow-components', {
 	createComplexityFunction: createDashboardStructuralComplexityFunctionCreator(
 		DASHBOARD_DIR
 	),
-});
+};
+const metricsCreator = getBundleMetricsCommandCreator(
+	'cow-components',
+	baseMetricArgs
+);
 
 export const cowComponentsInstallBundleMap: Partial<
 	SerialBundleMap<CowComponentBundle>
@@ -147,4 +154,33 @@ export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> =
 	'cow-components-svelte': metricsCreator('cow-components-svelte', {
 		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'svelte'),
 	}),
+};
+
+const timeMetricsArgs: LoadTimeMetricConfig = {
+	...baseMetricArgs,
+	bundleCategory: 'cow-components'
+}
+export const cowComponentsTimeMetricsMap: TimeMetricBundleMap<CowComponentBundle> = {
+	'cow-components-angular': {
+		...timeMetricsArgs,
+		demoDir: () => getAngularDirs(DASHBOARD_DIR).angularMetadataBundle,
+		indexJsFileName: 'bundle.js',
+		renderTimeDemoDir: () =>
+			path.join(
+				getCowComponentsDirs(DASHBOARD_DIR, 'angular').frameworkDemoDir,
+				'dist/angular-demo'
+			),
+	},
+	'cow-components-native': {
+		...timeMetricsArgs,
+		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'native'),
+	},
+	'cow-components-react': {
+		...timeMetricsArgs,
+		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'react'),
+	},
+	'cow-components-svelte': {
+		...timeMetricsArgs,
+		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'svelte'),
+	},
 };
