@@ -9,6 +9,7 @@ import {
 	createAngularSetupCommand,
 	getAngularDirs,
 } from '../../../lib/cow-component-setups/angular/angular';
+import { createDashboardMetricsCommand } from '../../../lib/cow-component-setups/dashboard/dashboard';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
 import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
 import { getCowComponentsDirs } from '../../../lib/cow-component-setups/shared';
@@ -24,7 +25,6 @@ import {
 	ParallelBundleMap,
 	SerialBundleMap,
 } from '../../../lib/types';
-import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_BASIC_WRAPPERS = [
 	'angular',
@@ -118,7 +118,11 @@ export const cowComponentsBasicParallelBundleMap: ParallelBundleMap<CowComponent
 
 // Serial tasks
 export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasicBundle> = {
-	'basic-dashboard': dashboardMetrics,
+	'basic-dashboard': createDashboardMetricsCommand(
+		'basic-dashboard',
+		BASIC_DASHBOARD_DIR,
+		'cow-components-basic'
+	),
 	'cow-components-basic-angular': metricsCreator(
 		'cow-components-basic-angular',
 		{

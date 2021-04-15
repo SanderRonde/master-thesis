@@ -10,6 +10,7 @@ import {
 	createAngularSetupCommand,
 	getAngularDirs,
 } from '../../../lib/cow-component-setups/angular/angular';
+import { createDashboardMetricsCommand } from '../../../lib/cow-component-setups/dashboard/dashboard';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
 import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
 import { getCowComponentsDirs } from '../../../lib/cow-component-setups/shared';
@@ -24,7 +25,6 @@ import {
 	ParallelBundleMap,
 	SerialBundleMap,
 } from '../../../lib/types';
-import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_WRAPPERS = [
 	'angular',
@@ -109,7 +109,11 @@ export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundl
 
 // Serial tasks
 export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> = {
-	dashboard: dashboardMetrics,
+	dashboard: createDashboardMetricsCommand(
+		'dashboard',
+		DASHBOARD_DIR,
+		'cow-components'
+	),
 	'cow-components-angular': metricsCreator('cow-components-angular', {
 		demoDir: () => getAngularDirs(DASHBOARD_DIR).angularMetadataBundle,
 		indexJsFileName: 'bundle.js',
