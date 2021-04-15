@@ -101,10 +101,6 @@ async function collectComponentProfile(
 		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>,
-	hideComponent: (
-		componentName: string,
-		page: puppeteer.Page
-	) => Promise<void>
 ): Promise<PerformanceProfile> {
 	const profilePath = await generateTempFileName('json', componentName);
 
@@ -141,9 +137,6 @@ async function collectComponentProfile(
 
 	// Stop profiling
 	await page.tracing.stop();
-
-	// Hide component
-	await hideComponent(componentName, page);
 
 	const profileContents = await readFile(profilePath);
 	if (!KEEP_PROFILES) {
@@ -262,7 +255,6 @@ async function getProfileRenderTime(
 
 async function collectRuntimeRenderTimes({
 	getComponents,
-	hideComponent,
 	showComponent,
 	urlPath = '',
 	port,
@@ -303,7 +295,6 @@ async function collectRuntimeRenderTimes({
 					componentName,
 					page,
 					showComponent,
-					hideComponent
 				);
 
 				debug('render-time', '\tExtracting render time');
@@ -372,10 +363,6 @@ interface RenderTimeSettings {
 	sourceRoot: string;
 	urlPath?: string;
 	showComponent: (
-		componentName: string,
-		page: puppeteer.Page
-	) => Promise<void>;
-	hideComponent: (
 		componentName: string,
 		page: puppeteer.Page
 	) => Promise<void>;

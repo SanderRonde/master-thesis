@@ -1,6 +1,10 @@
 import * as path from 'path';
 
-import { getBundleInstallCommandCreator } from '../../../lib/bundles-shared';
+import { getComponents as getCowComponents } from '../../../../collectors/cow-components/dashboard/lib/get-components';
+import {
+	getBundleInstallCommandCreator,
+	getBundleMetricsCommandCreator,
+} from '../../../lib/bundles-shared';
 import { DEMO_REPO_DIR } from '../../../lib/cow-components-shared';
 import {
 	ConstArrItems,
@@ -8,21 +12,22 @@ import {
 	SerialBundleMap,
 } from '../../../lib/types';
 import {
+	ANGULAR_DEMO_DIR,
+	ANGULAR_METADATA_BUNDLE,
 	cowComponentsAngularInstall,
-	cowComponentsAngularMetrics,
 	cowComponentsAngularSetup,
 } from './cow-components-angular';
 import {
-	cowComponentsNativeMetrics,
 	cowComponentsNativeSetup,
+	NATIVE_DEMO_METRICS_TOGGLEABLE_DIR,
 } from './cow-components-native';
 import {
-	cowComponentsReactMetrics,
 	cowComponentsReactSetup,
+	REACT_DEMO_METRICS_TOGGLEABLE_DIR,
 } from './cow-components-react';
 import {
-	cowComponentsSvelteMetrics,
 	cowComponentsSvelteSetup,
+	SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
 } from './cow-components-svelte';
 import { dashboardMetrics } from './dashboard';
 
@@ -50,6 +55,13 @@ export const cowComponentBundles = [
 ] as const;
 
 const installCreator = getBundleInstallCommandCreator('cow-components');
+const metricsCreator = getBundleMetricsCommandCreator('cow-components', {
+	getComponents() {
+		return getCowComponents();
+	},
+	indexJsFileName: 'index.bundle.js',
+	urlPath: '/index.html',
+});
 
 export const cowComponentsInstallBundleMap: Partial<
 	SerialBundleMap<CowComponentBundle>
@@ -77,8 +89,19 @@ export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundl
 // Serial tasks
 export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> = {
 	dashboard: dashboardMetrics,
-	'cow-components-angular': cowComponentsAngularMetrics,
-	'cow-components-native': cowComponentsNativeMetrics,
-	'cow-components-react': cowComponentsReactMetrics,
-	'cow-components-svelte': cowComponentsSvelteMetrics,
+	'cow-components-angular': metricsCreator('cow-components-native', {
+		demoDir: () => ANGULAR_METADATA_BUNDLE,
+		indexJsFileName: 'bundle.js',
+		renderTimeDemoDir: () =>
+			path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo'),
+	}),
+	'cow-components-native': metricsCreator('cow-components-native', {
+		demoDir: () => NATIVE_DEMO_METRICS_TOGGLEABLE_DIR,
+	}),
+	'cow-components-react': metricsCreator('cow-components-react', {
+		demoDir: () => REACT_DEMO_METRICS_TOGGLEABLE_DIR,
+	}),
+	'cow-components-svelte': metricsCreator('cow-components-svelte', {
+		demoDir: () => SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
+	}),
 };

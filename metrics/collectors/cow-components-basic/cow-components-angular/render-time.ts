@@ -32,18 +32,6 @@ export async function getDashboardRenderTime(
 				component
 			);
 		},
-		hideComponent: async (component, page) => {
-			await page.$eval(
-				'app-root',
-				(element, componentName) => {
-					(element as AppRootElement).setRenderOption(
-						componentName as string,
-						false
-					);
-				},
-				component
-			);
-		},
 	});
 }
 

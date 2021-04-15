@@ -268,16 +268,14 @@ async function collectRenderTimes(
 			});
 			return visibleComponentNames;
 		},
-		sourceRoot: overrides.demoDir?.(basePath) || demoPath,
+		sourceRoot:
+			overrides.renderTimeDemoDir?.(basePath) ||
+			overrides.demoDir?.(basePath) ||
+			demoPath,
 		urlPath: overrides.urlPath || '/demo.html',
 		showComponent: async (component, page) => {
 			await page.evaluate((componentName) => {
 				window.setVisibleComponent(componentName, true);
-			}, component);
-		},
-		hideComponent: async (component, page) => {
-			await page.evaluate((componentName) => {
-				window.setVisibleComponent(componentName, false);
 			}, component);
 		},
 	});
@@ -343,9 +341,11 @@ export function getBundleSetupCommand<N extends string>(
 interface BundleMetricsOverrides {
 	indexJsFileName?: string;
 	demoDir?: (basePath: string) => string;
+	renderTimeDemoDir?: (basePath: string) => string;
 	urlPath?: string;
 	submoduleName?: string;
 	isCSSFramework?: boolean;
+	getComponents?: () => Promise<ComponentFiles[]>;
 }
 
 export function getBundleMetricsCommand<N extends string>(
@@ -362,11 +362,18 @@ export function getBundleMetricsCommand<N extends string>(
 	const metricsCommand = registerMetricsCommand(bundleName).run(
 		async (exec) => {
 			await exec('? Collecting source-file-based metrics');
-			const { getComponents } = (await import(
-				path.join(basePath, 'get-components.ts')
-			)) as GetComponentModule;
+			const components = await (async () => {
+				if (overrides.getComponents) {
+					return overrides.getComponents();
+				}
 
-			const components = await getComponents(submodulePath);
+				const { getComponents } = (await import(
+					path.join(basePath, 'get-components.ts')
+				)) as GetComponentModule;
+
+				return await getComponents(submodulePath);
+			})();
+
 			const collectorArgs: CollectorArgs = {
 				bundleCategory,
 				bundleName,

@@ -33,22 +33,6 @@ export async function getDashboardRenderTime(
 				component
 			);
 		},
-		hideComponent: async (component, page) => {
-			await page.$eval(
-				'page-not-found',
-				(element, componentName) => {
-					((element as unknown) as NGElement).__ngContext__
-						.find(
-							(c) =>
-								c &&
-								typeof c === 'object' &&
-								'setRenderOption' in c
-						)
-						.setRenderOption(componentName, false);
-				},
-				component
-			);
-		},
 	});
 }
 

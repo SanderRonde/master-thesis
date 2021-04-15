@@ -24,11 +24,6 @@ export async function getDashboardRenderTime(
 				window.setVisibleComponent(componentName, true);
 			}, component);
 		},
-		hideComponent: async (component, page) => {
-			await page.evaluate((componentName) => {
-				window.setVisibleComponent(componentName, false);
-			}, component);
-		},
 	});
 }
 
