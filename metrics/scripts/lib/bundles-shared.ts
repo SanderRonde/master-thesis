@@ -44,6 +44,7 @@ export interface CollectorArgs {
 	components: ComponentFiles[];
 	demoPath: string;
 	basePath: string;
+	extraLevels: number;
 }
 
 declare const window: ComponentVisibilitySetterWindow;
@@ -68,9 +69,11 @@ async function getFileScript(filePath: string) {
 		case '.jsx':
 			return await readFile(filePath);
 		case '.svelte':
+		case '.vue':
 			const code = await readFile(filePath);
 			return createComponentFileFromSvelte(code, '', filePath).js.content;
 		case '.svg':
+		case '.sass':
 			return '';
 		default:
 			throw new Error(
@@ -147,10 +150,13 @@ async function getFileDependencies(
 	return await recursivelyGetDependencies(tsFile, file.filePath, maxDepth);
 }
 
-async function getFileStructuralComplexity(file: ReadFile): Promise<number> {
+async function getFileStructuralComplexity(
+	file: ReadFile,
+	args: { extraLevels: number }
+): Promise<number> {
 	const dependencies = await getFileDependencies(
 		file,
-		STRUCTURAL_COMPLEXITY_DEPTH
+		STRUCTURAL_COMPLEXITY_DEPTH + args.extraLevels
 	);
 
 	return dependencies.filter(
@@ -159,13 +165,19 @@ async function getFileStructuralComplexity(file: ReadFile): Promise<number> {
 }
 
 export async function collectStructuralComplexity(
-	{ bundleCategory, bundleName, components }: CollectorArgs,
+	{ bundleCategory, bundleName, components, extraLevels }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {
 	const getComplexityFunction = overrides.createComplexityFunction
 		? await overrides.createComplexityFunction?.(components)
 		: getFileStructuralComplexity;
-	const metrics = await iterateOverBundle(components, getComplexityFunction);
+	const metrics = await iterateOverBundle(
+		components,
+		getComplexityFunction,
+		() => ({
+			extraLevels,
+		})
+	);
 
 	await storeData(
 		['metrics', bundleCategory, bundleName, 'structural-complexity'],
@@ -348,7 +360,9 @@ interface BundleMetricsOverrides {
 	getComponents?: () => Promise<ComponentFiles[]>;
 	createComplexityFunction?: (
 		components: ComponentFiles[]
-	) => Promise<(file: ReadFile) => Promise<number>>;
+	) => Promise<
+		(file: ReadFile, args: { extraLevels: number }) => Promise<number>
+	>;
 }
 
 export function getBundleMetricsCommand<N extends string>(
@@ -365,16 +379,27 @@ export function getBundleMetricsCommand<N extends string>(
 	const metricsCommand = registerMetricsCommand(bundleName).run(
 		async (exec) => {
 			await exec('? Collecting source-file-based metrics');
-			const components = await (async () => {
+			const { components, extraLevels } = await (async () => {
 				if (overrides.getComponents) {
-					return overrides.getComponents();
+					return {
+						components: await overrides.getComponents(),
+						extraLevels: 0,
+					};
 				}
 
 				const { getComponents } = (await import(
 					path.join(basePath, 'get-components.ts')
 				)) as GetComponentModule;
 
-				return await getComponents(submodulePath);
+				const result = await getComponents(submodulePath);
+				if (Array.isArray(result)) {
+					return {
+						extraLevels: 0,
+						components: result,
+					};
+				} else {
+					return result;
+				}
 			})();
 
 			const collectorArgs: CollectorArgs = {
@@ -383,6 +408,7 @@ export function getBundleMetricsCommand<N extends string>(
 				components,
 				demoPath,
 				basePath,
+				extraLevels,
 			};
 			await exec('? Collecting CSS framework status');
 			await collectIsCSSFramework(collectorArgs, overrides);

@@ -13,6 +13,7 @@ import {
 } from '../metrics/bundles/multi-framework';
 import { reactBundles, ReactBundle } from '../metrics/bundles/react';
 import { svelteBundles, SvelteBundle } from '../metrics/bundles/svelte';
+import { VueBundle, vueBundles } from '../metrics/bundles/vue';
 import {
 	webComponentsBundles,
 	WebComponentsBundle,
@@ -26,6 +27,7 @@ const __BUNDLES = [
 	...angularBundles,
 	...webComponentsBundles,
 	...multiFrameworkBundles,
+	...vueBundles,
 ] as const;
 const __METRICS = [
 	'structural-complexity',
@@ -45,7 +47,8 @@ export type Framework =
 	| 'react'
 	| 'angular'
 	| 'web-components'
-	| 'multi-framework';
+	| 'multi-framework'
+	| 'vue';
 export type BundlesByFramework = {
 	'cow-components': CowComponentBundle;
 	'cow-components-basic': CowComponentBasicBundle;
@@ -54,6 +57,7 @@ export type BundlesByFramework = {
 	angular: AngularBundle;
 	'web-components': WebComponentsBundle;
 	'multi-framework': MultiFrameworkBundle;
+	vue: VueBundle;
 };
 
 export const BUNDLES = (__BUNDLES as unknown) as Bundle[];

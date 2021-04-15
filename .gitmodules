@@ -49,3 +49,15 @@
 [submodule "metrics/submodules/30mhz-dashboard-basic"]
 	path = metrics/submodules/30mhz-dashboard-basic
 	url = https://github.com/30MHz/dashboard.30mhz.com
+[submodule "metrics/submodules/element"]
+	path = metrics/submodules/element
+	url = https://github.com/element-plus/element-plus
+[submodule "metrics/submodules/vuetify"]
+	path = metrics/submodules/vuetify
+	url = https://github.com/vuetifyjs/vuetify
+[submodule "metrics/submodules/quasar"]
+	path = metrics/submodules/quasar
+	url = https://github.com/quasarframework/quasar
+[submodule "metrics/submodules/prime-vue"]
+	path = metrics/submodules/prime-vue
+	url = https://github.com/primefaces/primevue
