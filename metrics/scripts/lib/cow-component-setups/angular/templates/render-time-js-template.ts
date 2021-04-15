@@ -27,7 +27,7 @@ export async function getRenderTimeJsTemplate(submoduleName: string) {
 				_elementRef.nativeElement.${SET_RENDER_OPTION_FUNCTION_NAME} = ${SET_RENDER_OPTION_FUNCTION_SIGNATURE} => this.${SET_RENDER_OPTION_FUNCTION_NAME}(name, value);
 			}
 
-			window.setVisibleComponent = (componentName) => {
+			(window as any).setVisibleComponent = (componentName) => {
 				this.${SET_RENDER_OPTION_FUNCTION_NAME}(componentName, true);
 			}
 		}
@@ -39,7 +39,7 @@ export async function getRenderTimeJsTemplate(submoduleName: string) {
 		${SET_RENDER_OPTION_TEMPLATE}
 	}
 
-	window.availableComponents = [${components
+	(window as any).availableComponents = [${components
 		.map((component) => `'${component.component.name}'`)
 		.join(', ')}]
 	`;
