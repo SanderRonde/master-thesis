@@ -2,10 +2,10 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { glob } from 'glob';
 
-import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 import { flatten } from '../../../submodules/30mhz-dashboard/src/lib/web-components/src/api/helpers';
+import { ComponentFiles } from '../../metric-definitions/types';
 
 const COMPONENT_NAME_REGEX = /export class (\w+)/;
 

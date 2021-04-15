@@ -1,9 +1,10 @@
 import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
-import { ComponentFiles, getComponents } from './lib/get-components';
+import { getComponents } from './lib/get-components';
 import { RenderTime } from '../../shared/types';
 import { getRenderTime } from '../../shared/render-time';
 import { DASHBOARD_DIST_DIR } from './lib/constants';
+import { ComponentFiles } from '../../metric-definitions/types';
 
 interface NGElement {
 	__ngContext__: any[];

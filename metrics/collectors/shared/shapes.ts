@@ -1,4 +1,4 @@
-import { ComponentFiles } from '../cow-components/dashboard/lib/get-components';
+import { ComponentFiles } from '../metric-definitions/types';
 
 /**
  * Available components

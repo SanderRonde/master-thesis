@@ -1,4 +1,4 @@
-import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
+import { ComponentFiles } from '../../metric-definitions/types';
 import { getComponents as getOnsenComponents } from '../onsen-shared/get-components';
 
 export async function getComponents(

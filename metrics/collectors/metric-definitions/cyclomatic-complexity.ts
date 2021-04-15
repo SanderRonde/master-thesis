@@ -1,5 +1,5 @@
 import tsComplex from 'ts-complex';
-import { ReadFile } from '../cow-components/dashboard/lib/get-components';
+import { ReadFile } from './types';
 
 export function getFileCyclomaticComplexity(file: ReadFile): number {
 	const cyclomaticComplexities = tsComplex.calculateCyclomaticComplexity(

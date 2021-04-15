@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { ComponentFiles } from '../../metric-definitions/types';
 
-import { ComponentFiles } from '../../cow-components/dashboard/lib/get-components';
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
 import { dirNameToComponentName } from '../../svelte/svelte-material-ui/get-components';

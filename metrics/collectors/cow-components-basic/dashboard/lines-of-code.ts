@@ -2,9 +2,9 @@ import { calculate as calculateLOC } from 'ts-complex/lib/src/services/sloc.serv
 
 import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
-import { ReadFile } from './lib/get-components';
 import { collectDashboardMetrics } from './lib/shared';
 import { readFile } from '../../shared/files';
+import { ReadFile } from '../../metric-definitions/types';
 
 export async function getFileLinesOfCode(file: ReadFile): Promise<number> {
 	return calculateLOC(await readFile(file.filePath));

@@ -2,28 +2,7 @@ import {
 	getCowComponents,
 	getMatchingComponent,
 } from '../../../../submodules/30mhz-dashboard/src/lib/web-components/scripts/lib/get-cow-components';
-
-export interface ReadFile {
-	filePath: string;
-	content: string;
-}
-
-export interface CowComponentImport extends ReadFile {
-	componentName: string;
-}
-
-export interface ComponentFiles {
-	js: CowComponentImport;
-	html: CowComponentImport | null;
-}
-
-export class TextOnlyComponentFile implements CowComponentImport {
-	public get filePath(): string {
-		throw new Error('Can not get file path of text-only component file');
-	}
-
-	constructor(public componentName: string, public content: string) {}
-}
+import { ComponentFiles } from '../../../metric-definitions/types';
 
 export const EXCLUDED_COMPONENTS = [
 	'LineChartComponent',

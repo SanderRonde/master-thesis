@@ -1,7 +1,8 @@
+import { ComponentFiles, ReadFile } from '../../../metric-definitions/types';
 import { sortObjectKeys } from '../../../shared/helpers';
 import { BASE_COMPONENT } from '../../../shared/shapes';
 import { DatasetStats, getDatasetStats } from '../../../shared/stats';
-import { ComponentFiles, getComponents, ReadFile } from './get-components';
+import { getComponents } from './get-components';
 
 /**
  * Add copies of the dashboard's equivalents of the

@@ -1,11 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { getFileCyclomaticComplexity } from '../../collectors/cow-components/dashboard/cyclomatic-complexity';
-import {
-	ComponentFiles,
-	ReadFile,
-} from '../../collectors/cow-components/dashboard/lib/get-components';
 import { collectBundleMetrics as iterateOverBundle } from '../../collectors/cow-components/dashboard/lib/shared';
 import { getFileLinesOfCode } from '../../collectors/cow-components/dashboard/lines-of-code';
 import { getFileMaintainability } from '../../collectors/cow-components/dashboard/maintainability';
@@ -36,6 +31,8 @@ import ts from 'typescript';
 import { readFile } from '../../collectors/shared/files';
 import { createComponentFileFromSvelte } from '../../collectors/svelte/shared/util';
 import { CommandBuilderWithName } from './types';
+import { getFileCyclomaticComplexity } from '../../collectors/metric-definitions/cyclomatic-complexity';
+import { ComponentFiles, ReadFile } from '../../collectors/metric-definitions/types';
 
 interface CollectorArgs {
 	bundleCategory: string;

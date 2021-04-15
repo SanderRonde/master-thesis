@@ -4,11 +4,11 @@ import * as fs from 'fs-extra';
 
 import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
-import { ReadFile } from './lib/get-components';
 import { createTSProgram } from '../../shared/typescript';
 import { DASHBOARD_DIR } from '../../shared/constants';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../../shared/settings';
 import { collectDashboardMetrics } from './lib/shared';
+import { ReadFile } from '../../metric-definitions/types';
 
 export function isAbsolute(filePath: string): boolean {
 	return path.isAbsolute(filePath) || !filePath.startsWith('.');
