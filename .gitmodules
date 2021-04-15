@@ -52,3 +52,6 @@
 [submodule "metrics/submodules/element"]
 	path = metrics/submodules/element
 	url = https://github.com/element-plus/element-plus
+[submodule "metrics/submodules/vuetify"]
+	path = metrics/submodules/vuetify
+	url = https://github.com/vuetifyjs/vuetify

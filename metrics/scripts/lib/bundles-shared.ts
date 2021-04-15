@@ -44,6 +44,7 @@ export interface CollectorArgs {
 	components: ComponentFiles[];
 	demoPath: string;
 	basePath: string;
+	extraLevels: number;
 }
 
 declare const window: ComponentVisibilitySetterWindow;
@@ -148,10 +149,13 @@ async function getFileDependencies(
 	return await recursivelyGetDependencies(tsFile, file.filePath, maxDepth);
 }
 
-async function getFileStructuralComplexity(file: ReadFile): Promise<number> {
+async function getFileStructuralComplexity(
+	file: ReadFile,
+	extraLevels: number
+): Promise<number> {
 	const dependencies = await getFileDependencies(
 		file,
-		STRUCTURAL_COMPLEXITY_DEPTH
+		STRUCTURAL_COMPLEXITY_DEPTH + extraLevels
 	);
 
 	return dependencies.filter(
@@ -366,16 +370,27 @@ export function getBundleMetricsCommand<N extends string>(
 	const metricsCommand = registerMetricsCommand(bundleName).run(
 		async (exec) => {
 			await exec('? Collecting source-file-based metrics');
-			const components = await (async () => {
+			const { components, extraLevels } = await (async () => {
 				if (overrides.getComponents) {
-					return overrides.getComponents();
+					return {
+						components: await overrides.getComponents(),
+						extraLevels: 0,
+					};
 				}
 
 				const { getComponents } = (await import(
 					path.join(basePath, 'get-components.ts')
 				)) as GetComponentModule;
 
-				return await getComponents(submodulePath);
+				const result = await getComponents(submodulePath);
+				if (Array.isArray(result)) {
+					return {
+						extraLevels: 0,
+						components: result,
+					};
+				} else {
+					return result;
+				}
 			})();
 
 			const collectorArgs: CollectorArgs = {
@@ -384,6 +399,7 @@ export function getBundleMetricsCommand<N extends string>(
 				components,
 				demoPath,
 				basePath,
+				extraLevels,
 			};
 			await exec('? Collecting CSS framework status');
 			await collectIsCSSFramework(collectorArgs, overrides);
