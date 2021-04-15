@@ -89,7 +89,7 @@ export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundl
 // Serial tasks
 export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> = {
 	dashboard: dashboardMetrics,
-	'cow-components-angular': metricsCreator('cow-components-native', {
+	'cow-components-angular': metricsCreator('cow-components-angular', {
 		demoDir: () => ANGULAR_METADATA_BUNDLE,
 		indexJsFileName: 'bundle.js',
 		renderTimeDemoDir: () =>
