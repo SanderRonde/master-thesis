@@ -114,7 +114,7 @@ export const metris = preserveCommandBuilder(
 		.args({
 			'skip-dashboard': flag(),
 			bundle: choice([...BUNDLES, 'all'], 'all'),
-			'bundle-list': str(),
+			'bundle-list': str(''),
 			'skip-build': flag(),
 			...METRICS_COMMAND_ARGS,
 		})
@@ -130,7 +130,7 @@ export const metris = preserveCommandBuilder(
 	const bundles: Bundle[] =
 		args.bundle !== 'all'
 			? [args.bundle]
-			: args['bundle-list']
+			: args['bundle-list'] && args['bundle-list'] !== ''
 			? (args['bundle-list'].split(',') as Bundle[])
 			: BUNDLES;
 
