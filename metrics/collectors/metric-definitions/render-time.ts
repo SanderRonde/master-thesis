@@ -270,7 +270,6 @@ async function collectRuntimeRenderTimes({
 		urlPath
 	);
 	const components = await getComponents(componentPage);
-	console.log(components);
 	await componentPage.close();
 	await componentBrowser.close();
 
