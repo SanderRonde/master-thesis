@@ -10,10 +10,7 @@ import css from 'rollup-plugin-css-only';
 import { spawn } from 'child_process';
 
 import { ChildProcessByStdio } from 'node:child_process';
-import {
-	SVELTE_DEMO_DIR,
-	SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
-} from '../../../../../scripts/metrics/bundles/cow-components/cow-components-svelte';
+import { getSvelteCowComponentsDirs } from '../svelte';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -42,13 +39,24 @@ function serve() {
 	};
 }
 
+function getBaseDir() {
+	for (let i = 0; i < process.argv.length; i++) {
+		if (process.argv[i] === '--base-dir') {
+			return process.argv[i + 1];
+		}
+	}
+	throw new Error('No base dir passed to rollup command');
+}
+
+const dirs = getSvelteCowComponentsDirs(getBaseDir());
+
 export default {
-	input: path.join(SVELTE_DEMO_METRICS_TOGGLEABLE_DIR, 'index.ts'),
+	input: path.join(dirs.toggleableDir, 'index.ts'),
 	output: {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: path.join(SVELTE_DEMO_METRICS_TOGGLEABLE_DIR, 'index.bundle.js'),
+		file: path.join(dirs.toggleableDir, 'index.bundle.js'),
 	},
 	plugins: [
 		svelte({
@@ -69,7 +77,7 @@ export default {
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			mainFields: ['module', 'main', 'browser'],
-			moduleDirectories: [path.join(SVELTE_DEMO_DIR, 'node_modules')],
+			moduleDirectories: [path.join(dirs.svelteDemoDir, 'node_modules')],
 			dedupe: ['svelte'],
 		}),
 		commonjs(),

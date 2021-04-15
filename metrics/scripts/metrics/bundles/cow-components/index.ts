@@ -6,6 +6,7 @@ import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 } from '../../../lib/bundles-shared';
+import { createSvelteSetupCommand } from '../../../lib/cow-component-setups/svelte/svelte';
 import {
 	DEMO_REPO_DIR,
 	getToggleableDir,
@@ -23,7 +24,6 @@ import {
 } from './cow-components-angular';
 import { cowComponentsNativeSetup } from './cow-components-native';
 import { cowComponentsReactSetup } from './cow-components-react';
-import { cowComponentsSvelteSetup } from './cow-components-svelte';
 import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_WRAPPERS = [
@@ -78,7 +78,10 @@ export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundl
 	'cow-components-angular': cowComponentsAngularSetup,
 	'cow-components-native': cowComponentsNativeSetup,
 	'cow-components-react': cowComponentsReactSetup,
-	'cow-components-svelte': cowComponentsSvelteSetup,
+	'cow-components-svelte': createSvelteSetupCommand(
+		'cow-components-svelte',
+		DASHBOARD_DIR
+	),
 };
 
 // Serial tasks
