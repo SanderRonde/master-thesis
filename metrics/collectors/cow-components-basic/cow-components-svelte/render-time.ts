@@ -5,8 +5,8 @@ import { getRenderTime } from '../../metric-definitions/render-time';
 import { getComponents } from '../dashboard/lib/get-components';
 import { STORE_NAME } from './lib/constants';
 import { SVELTE_DEMO_METRICS_TOGGLEABLE_DIR } from '../../../scripts/metrics/bundles/cow-components/cow-components-svelte';
-import { duplicateRenderTimeKeys } from '../dashboard/lib/shared';
 import { ComponentFiles } from '../../metric-definitions/types';
+import { duplicateRenderTimeKeys } from '../../shared/cow-components-shared';
 
 interface ExtendedWindow extends Window {
 	setVisibleComponent(componentName: string, visible: boolean): void;

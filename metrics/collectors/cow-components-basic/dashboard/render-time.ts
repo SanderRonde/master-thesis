@@ -4,8 +4,8 @@ import { getComponents } from './lib/get-components';
 import { RenderTime } from '../../shared/types';
 import { getRenderTime } from '../../metric-definitions/render-time';
 import { DASHBOARD_DIST_DIR } from './lib/constants';
-import { duplicateRenderTimeKeys } from './lib/shared';
 import { ComponentFiles } from '../../metric-definitions/types';
+import { duplicateRenderTimeKeys } from '../../shared/cow-components-shared';
 
 interface NGElement {
 	__ngContext__: any[];

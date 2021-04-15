@@ -1,11 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { collectBundleMetrics as iterateOverBundle } from '../../collectors/cow-components/dashboard/lib/shared';
-import {
-	findFilePath,
-	isAbsolute,
-} from '../../collectors/cow-components/dashboard/structural-complexity';
 import {
 	COLLECTORS_DIR,
 	SUBMODULES_DIR,
@@ -36,6 +31,12 @@ import {
 } from '../../collectors/metric-definitions/types';
 import { getFileLinesOfCode } from '../../collectors/metric-definitions/lines-of-code';
 import { getFileMaintainability } from '../../collectors/metric-definitions/maintainability';
+import {
+	collectBundleMetrics as iterateOverBundle,
+	duplicateRenderTimeKeys,
+	findFilePath,
+	isAbsolute,
+} from '../../collectors/shared/cow-components-shared';
 
 interface CollectorArgs {
 	bundleCategory: string;
@@ -282,7 +283,7 @@ async function collectRenderTimes(
 
 	await storeData(
 		['metrics', bundleCategory, bundleName, 'render-time'],
-		renderTimes
+		duplicateRenderTimeKeys(renderTimes)
 	);
 }
 
