@@ -1,8 +1,6 @@
 ## Research questions:
 
 RQ1 How viable is the process of migrating Angular components to Web Components?
-RQ2 How viable is the migration from web components to various JavaScript frameworks?
-With the eventual results telling the reader whether it's worth it to migrate a set of existing Angular components to web components, and then to various JS frameworks vs writing these components anew.
 
 ## Subjects
 
