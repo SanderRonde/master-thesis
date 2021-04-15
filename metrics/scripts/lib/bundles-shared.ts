@@ -73,6 +73,7 @@ async function getFileScript(filePath: string) {
 			const code = await readFile(filePath);
 			return createComponentFileFromSvelte(code, '', filePath).js.content;
 		case '.svg':
+		case '.sass':
 			return '';
 		default:
 			throw new Error(

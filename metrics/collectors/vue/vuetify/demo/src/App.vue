@@ -1,21 +1,15 @@
 <template>
 	<span>
-		<ElButton v-if="visibleComponents.Button">Content</ElButton>
-		<ElSwitch v-if="visibleComponents.Switch" />
-		<ElInput v-if="visibleComponents.Input" />
+		<v-btn v-if="visibleComponents.Button">Content</v-btn>
+		<v-checkbox v-if="visibleComponents.Switch" />
+		<v-text-field label="label" v-if="visibleComponents.Input" />
 	</span>
 </template>
 
 <script>
-import { ElButton, ElSwitch, ElInput } from 'element-plus';
-
 export default {
 	name: 'App',
-	components: {
-		ElButton,
-		ElSwitch,
-		ElInput,
-	},
+	components: {},
 	data: () => ({
 		visibleComponents: {
 			Button: false,

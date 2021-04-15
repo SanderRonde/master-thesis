@@ -4,8 +4,7 @@ import { ComponentFiles } from '../../metric-definitions/types';
 
 import { readFile } from '../../shared/files';
 import { asyncFilter } from '../../shared/helpers';
-
-const IGNORED = new Set(['__mocks__', 'theme-chalk', 'utils', 'element-plus']);
+import { GetComponentFunction } from '../../shared/shapes';
 
 export async function getComponentFiles(dir: string): Promise<ComponentFiles> {
 	const componentName = path.parse(dir).base;
@@ -23,8 +22,11 @@ export async function getComponentFiles(dir: string): Promise<ComponentFiles> {
 
 export async function getComponents(
 	submodulePath: string
-): Promise<ComponentFiles[]> {
-	const packagesPath = path.join(submodulePath, 'vuetify/packages/vuetify/src/components');
+): ReturnType<GetComponentFunction> {
+	const packagesPath = path.join(
+		submodulePath,
+		'packages/vuetify/src/components'
+	);
 	const dirList = await asyncFilter(
 		await fs.readdir(packagesPath),
 		async (dir) => {
@@ -33,10 +35,11 @@ export async function getComponents(
 	);
 
 	const components = await Promise.all(
-		dirList
-			.filter((dir) => !IGNORED.has(dir))
-			.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
+		dirList.map((dir) => getComponentFiles(path.join(packagesPath, dir)))
 	);
 
-	return components;
+	return {
+		components,
+		extraLevels: 1,
+	};
 }

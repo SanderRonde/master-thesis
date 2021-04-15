@@ -12,7 +12,7 @@ import {
 
 export type VueBundle = ConstArrItems<typeof vueBundles>;
 
-export const vueBundles = ['element'] as const;
+export const vueBundles = ['element', 'vuetify'] as const;
 
 const installCreator = getBundleInstallCommandCreator('vue');
 const setupCreator = getBundleSetupCommandCreator('vue');
@@ -22,12 +22,15 @@ const metricsCreator = getBundleMetricsCommandCreator('vue', {
 
 export const vueInstallBundleMap: NamedSerialBundleMap<VueBundle> = {
 	element: installCreator('element'),
+	vuetify: installCreator('vuetify')
 };
 
 export const vueParallelBundleMap: NamedParallelBundleMap<VueBundle> = {
 	element: setupCreator('element'),
+	vuetify: setupCreator('vuetify')
 };
 
 export const vueSerialBundleMap: NamedSerialBundleMap<VueBundle> = {
 	element: metricsCreator('element'),
+	vuetify: metricsCreator('vuetify')
 };
