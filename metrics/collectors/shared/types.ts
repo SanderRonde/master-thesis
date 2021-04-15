@@ -7,10 +7,13 @@ type ByComponentNumberStats = {
 	components: Record<string, number>;
 	stats: DatasetStats;
 };
-export type ComponentRenderTimeData = {
-	times: number[];
-	stats: DatasetStats;
-};
+export type ComponentRenderTimeData = Record<
+	number,
+	{
+		times: number[];
+		stats: DatasetStats;
+	}
+>;
 export type StructuralComplexity = ByComponentNumberStats;
 export type CyclomaticComplexity = ByComponentNumberStats;
 export type LinesOfCode = ByComponentNumberStats;
@@ -25,7 +28,7 @@ export type RenderTime = {
 		[BC in BaseComponent]: ComponentRenderTimeData;
 	} &
 		Record<string, ComponentRenderTimeData>;
-	stats: DatasetStats;
+	stats: Record<number, DatasetStats>;
 };
 
 export interface BundleData {

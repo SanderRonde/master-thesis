@@ -1,15 +1,15 @@
 <div style="margin: 50px; margin-top: 300px">
-	<div *ngIf="visibleComponent == 'Button'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Button'">
 		<label class="btn-primary" ngbButtonLabel>
 			<span ngbButton>Button</span>
 		</label>
 	</div>
-	<div *ngIf="visibleComponent == 'Input'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Input'">
 		<mat-form-field>
 			<input id="typeahead-basic" type="text" class="form-control" />
 		</mat-form-field>
 	</div>
-	<div *ngIf="visibleComponent == 'Switch'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Switch'">
 		<label class="btn-primary" ngbButtonLabel>
 			<input type="checkbox" ngbButton /> Left (pre-checked) XD
 		</label>

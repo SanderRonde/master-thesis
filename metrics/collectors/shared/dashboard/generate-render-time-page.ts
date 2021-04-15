@@ -183,7 +183,7 @@ async function addDefaultValuesToClass(
 export function getTogglesString(components: JoinedDefinition[]) {
 	return `public ${VISIBLE_VALUES_PREFIX} = {
 		${components.map((component) => {
-			return `${component.component.name}: false`;
+			return `${component.component.name}: []`;
 		})}
 	}`;
 }

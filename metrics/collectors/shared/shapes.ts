@@ -11,7 +11,11 @@ export enum BASE_COMPONENT {
 export type BaseComponent = 'Button' | 'Switch' | 'Input';
 
 export interface ComponentVisibilitySetterWindow extends Window {
-	setVisibleComponent(componentName: BaseComponent, visible: boolean): void;
+	setVisibleComponent(
+		componentName: BaseComponent,
+		numberOfComponents: number,
+		visible: boolean
+	): void;
 	availableComponents: BaseComponent[];
 }
 

@@ -78,7 +78,7 @@ export async function generateRenderTimeHTML(
 
 	return componentsHTML
 		.map(([component, html]) => {
-			return `<div *ngIf="${VISIBLE_VALUES_PREFIX}.${component.component.name}">${html}</div>`;
+			return `<div *ngFor="let a of ${VISIBLE_VALUES_PREFIX}.${component.component.name}" *ngIf="${VISIBLE_VALUES_PREFIX}.${component.component.name}.length">${html}</div>`;
 		})
 		.join('\n');
 }

@@ -26,7 +26,9 @@ import { ${components.map((component) =>
 `;
 
 const componentTemplate = (component: JoinedDefinition) => `
-	{visibleComponent === '${component.component.name}' && <${getComponentName(
+	{visibleComponent === '${
+		component.component.name
+	}' && componentArr.map(() => <${getComponentName(
 	component
 )} ${component.props
 	.filter((prop) => !prop.isEventListener && prop.demoDefaultValue)
@@ -36,7 +38,7 @@ const componentTemplate = (component: JoinedDefinition) => `
 		)}Defaults.ReferencedTypes['${prop.name}DemoDefaultValue']}`;
 	})
 	.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
-	`Content </${getComponentName(component)}>`,
+	`Content </${getComponentName(component)}>)`,
 	component.hasChildren
 )} }
 `;
@@ -47,9 +49,11 @@ ${components.map((c) => componentTemplate(c)).join('\n')}`;
 const appTemplate = (components: JoinedDefinition[]) => `
 const App: React.FC<{}> = () => {
 	const [ visibleComponent, setVisibleComponent ] = React.useState<string|null>(null);
+	const [ componentArr, setComponentArr ] = React.useState<unknown[]>([]);
 
-	window.setVisibleComponent = (name: string|null) => {
+	window.setVisibleComponent = (name: string|null, numberOfComponents: number) => {
 		setVisibleComponent(name);
+		setComponentArr(new Array(numberOfComponents).fill(''));
 	}
 
 	window.availableComponents = [${components

@@ -22,20 +22,22 @@ case '${component.component.name}':
 			component.tagName
 		}')].forEach(el => el.remove());
 	} else {
-		const element = document.createElement('${component.tagName}');
-		${component.props
-			.filter((prop) => !prop.isEventListener && prop.demoDefaultValue)
-			.map((prop) => {
-				return `element['${prop.name}'] = ${getSanitizedComponentName(
-					component
-				)}Defaults.ReferencedTypes['${prop.name}DemoDefaultValue'];`;
-			})
-			.join('\n')}
-		${ifTrue(
-			`element.appendChild(document.createTextNode('Content'))`,
-			component.hasChildren
-		)};
-		document.getElementById('root').appendChild(element);
+		for (let i = 0; i < numberOfComponents; i++) {
+			const element = document.createElement('${component.tagName}');
+			${component.props
+				.filter((prop) => !prop.isEventListener && prop.demoDefaultValue)
+				.map((prop) => {
+					return `element['${prop.name}'] = ${getSanitizedComponentName(
+						component
+					)}Defaults.ReferencedTypes['${prop.name}DemoDefaultValue'];`;
+				})
+				.join('\n')}
+			${ifTrue(
+				`element.appendChild(document.createTextNode('Content'))`,
+				component.hasChildren
+			)};
+			document.getElementById('root').appendChild(element);
+		}
 	}
 	break;`;
 
@@ -44,7 +46,7 @@ window.availableComponents = [${components
 	.map((component) => `'${component.component.name}'`)
 	.join(', ')}]
 
-window.setVisibleComponent = (name: string, visible: boolean) => {
+window.setVisibleComponent = (name: string, numberOfComponents: number, visible: boolean) => {
 	switch (name) {
 		${components.map((component) => componentCaseTemplate(component)).join('\n')}
 	}

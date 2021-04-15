@@ -1,8 +1,20 @@
 <template>
 	<span>
-		<Button v-if="visibleComponents.Button">Content</Button>
-		<Checkbox value="true" v-if="visibleComponents.Switch" />
-		<Input v-if="visibleComponents.Input" />
+		<span v-if="visibleComponents.Button.length">
+			<Button v-for="item in visibleComponents.Button" :key="item"
+				>Content</Button
+			>
+		</span>
+		<span v-if="visibleComponents.Switch.length">
+			<Checkbox
+				v-for="item in visibleComponents.Button"
+				:key="item"
+				value="true"
+			/>
+		</span>
+		<span v-if="visibleComponents.Input.length">
+			<Input v-for="item in visibleComponents.Button" :key="item" />
+		</span>
 	</span>
 </template>
 
@@ -11,15 +23,15 @@ export default {
 	name: 'App',
 	data: () => ({
 		visibleComponents: {
-			Button: false,
-			Switch: false,
-			Input: false,
+			Button: [],
+			Switch: [],
+			Input: [],
 		},
 	}),
 	created() {
 		window.availableComponents = ['Button', 'Input', 'Switch'];
-		window.setVisibleComponent = (componentName) => {
-			this.visibleComponents[componentName] = true;
+		window.setVisibleComponent = (componentName, numberOfComponents) => {
+			this.visibleComponents[componentName] = new Array(numberOfComponents).fill('');
 		};
 	},
 };

@@ -1,8 +1,23 @@
 <template>
 	<span>
-		<v-btn v-if="visibleComponents.Button">Content</v-btn>
-		<v-checkbox v-if="visibleComponents.Switch" />
-		<v-text-field label="label" v-if="visibleComponents.Input" />
+		<span v-if="visibleComponents.Button.length">
+			<v-btn v-for="item in visibleComponents.Button" :key="item"
+				>Content</v-btn
+			>
+		</span>
+		<span v-if="visibleComponents.Switch.length">
+			<v-checkbox
+				v-for="item in visibleComponents.Button"
+				:key="item"
+				value="true"
+			/>
+		</span>
+		<span v-if="visibleComponents.Input.length">
+			<v-text-field
+				v-for="item in visibleComponents.Button"
+				:key="item"
+			/>
+		</span>
 	</span>
 </template>
 
@@ -12,15 +27,17 @@ export default {
 	components: {},
 	data: () => ({
 		visibleComponents: {
-			Button: false,
-			Switch: false,
-			Input: false,
+			Button: [],
+			Switch: [],
+			Input: [],
 		},
 	}),
 	created() {
 		window.availableComponents = ['Button', 'Input', 'Switch'];
-		window.setVisibleComponent = (componentName) => {
-			this.visibleComponents[componentName] = true;
+		window.setVisibleComponent = (componentName, numberOfComponents) => {
+			this.visibleComponents[componentName] = new Array(
+				numberOfComponents
+			).fill('');
 		};
 	},
 };

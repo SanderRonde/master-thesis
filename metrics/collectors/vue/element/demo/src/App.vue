@@ -1,8 +1,20 @@
 <template>
 	<span>
-		<ElButton v-if="visibleComponents.Button">Content</ElButton>
-		<ElSwitch v-if="visibleComponents.Switch" />
-		<ElInput v-if="visibleComponents.Input" />
+		<span v-if="visibleComponents.Button.length">
+			<ElButton v-for="item in visibleComponents.Button" :key="item"
+				>Content</ElButton
+			>
+		</span>
+		<span v-if="visibleComponents.Switch.length">
+			<ElSwitch
+				v-for="item in visibleComponents.Button"
+				:key="item"
+				value="true"
+			/>
+		</span>
+		<span v-if="visibleComponents.Input.length">
+			<ElInput v-for="item in visibleComponents.Button" :key="item" />
+		</span>
 	</span>
 </template>
 
@@ -18,15 +30,17 @@ export default {
 	},
 	data: () => ({
 		visibleComponents: {
-			Button: false,
-			Switch: false,
-			Input: false,
+			Button: [],
+			Switch: [],
+			Input: [],
 		},
 	}),
 	created() {
 		window.availableComponents = ['Button', 'Input', 'Switch'];
-		window.setVisibleComponent = (componentName) => {
-			this.visibleComponents[componentName] = true;
+		window.setVisibleComponent = (componentName, numberOfComponents) => {
+			this.visibleComponents[componentName] = new Array(
+				numberOfComponents
+			).fill('');
 		};
 	},
 };

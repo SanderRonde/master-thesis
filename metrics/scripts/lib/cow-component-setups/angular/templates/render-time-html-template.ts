@@ -13,6 +13,8 @@ export async function getRenderTimeHTMLTemplate(submoduleName: string) {
 			components.map(async (component) => {
 				return `<div *ngIf="${VISIBLE_VALUES_PREFIX}.${
 					component.component.name
+				}.length" *ngFor="let a of ${VISIBLE_VALUES_PREFIX}.${
+					component.component.name
 				}"><${getComponentSelector(component.tagName)} ${component.props
 					.filter((property) => {
 						return (

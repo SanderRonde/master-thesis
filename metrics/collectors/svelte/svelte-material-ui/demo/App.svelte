@@ -4,7 +4,7 @@
 	import Switch from '@smui/switch';
 
 	window.setVisibleComponent = (componentName, isVisible) => {
-		visible[componentName] = isVisible;
+		visible[componentName] = new Array(numberOfComponents).fill('');
 	};
 	window.availableComponents = ['Button', 'Input', 'Switch'];
 
@@ -15,12 +15,18 @@
 	};
 </script>
 
-{#if visible.Button}
-	<Button>Content</Button>
+{#if visible.Button.length}
+	{#each visible.Button as btn, i }
+		<Button>Content</Button>
+	{/each}
 {/if}
-{#if visible.Switch}
-	<Switch />
+{#if visible.Switch.length}
+	{#each visible.Switch as btn, i }
+		<Switch />
+	{/each}
 {/if}
-{#if visible.Input}
-	<Textfield label="Label" />
+{#if visible.Input.length}
+	{#each visible.Input as btn, i }
+		<Textfield label="Label" />
+	{/each}
 {/if}

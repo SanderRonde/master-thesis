@@ -1,8 +1,20 @@
 <template>
 	<span>
-		<q-btn v-if="visibleComponents.Button">Content</q-btn>
-		<q-checkbox value="true" v-if="visibleComponents.Switch" />
-		<q-input v-if="visibleComponents.Input" />
+		<span v-if="visibleComponents.Button.length">
+			<q-btn v-for="item in visibleComponents.Button" :key="item"
+				>Content</q-btn
+			>
+		</span>
+		<span v-if="visibleComponents.Switch.length">
+			<q-checkbox
+				v-for="item in visibleComponents.Button"
+				:key="item"
+				value="true"
+			/>
+		</span>
+		<span v-if="visibleComponents.Input.length">
+			<q-input v-for="item in visibleComponents.Button" :key="item" />
+		</span>
 	</span>
 </template>
 
@@ -12,19 +24,21 @@ import { QBtn, QCheckbox, QInput } from 'quasar';
 export default {
 	name: 'App',
 	components: {
-		QBtn, QCheckbox, QInput
+		QBtn,
+		QCheckbox,
+		QInput,
 	},
 	data: () => ({
 		visibleComponents: {
-			Button: false,
-			Switch: false,
-			Input: false,
+			Button: [],
+			Switch: [],
+			Input: [],
 		},
 	}),
 	created() {
 		window.availableComponents = ['Button', 'Input', 'Switch'];
-		window.setVisibleComponent = (componentName) => {
-			this.visibleComponents[componentName] = true;
+		window.setVisibleComponent = (componentName, numberOfComponents) => {
+			this.visibleComponents[componentName] = new Array(numberOfComponents).fill('');
 		};
 	},
 };

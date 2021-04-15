@@ -62,12 +62,18 @@ window.availableComponents = [${components
 	.map((component) => `'${component.component.name}'`)
 	.join(', ')}]
 
-	window.setVisibleComponent = (name: string, visible: boolean) => {
+	window.setVisibleComponent = (name: string, numberOfComponents: number, visible: boolean) => {
 		switch (name) {
 			${components
 				.map((component) => {
 					return `case '${component.component.name}':
-					${getSanitizedComponentName(component)}Visible = visible;
+					if (visible) {
+						${getSanitizedComponentName(
+							component
+						)}Visible = new Array(numberOfComponents).fill('');
+					} else {
+						${getSanitizedComponentName(component)}Visible = []
+					}
 					break;`;
 				})
 				.join('\n')}
@@ -94,21 +100,23 @@ const scriptTemplate = (components: JoinedDefinition[]) => `
 const htmlTemplate = (components: JoinedDefinition[]) => `
 		${components
 			.map((component) => {
-				return `{#if ${getSanitizedComponentName(component)}Visible}
-				<${getComponentName(component)} ${component.props
-					.filter(
-						(prop) => !prop.isEventListener && prop.demoDefaultValue
-					)
-					.map((prop) => {
-						return `${prop.name}={${getPropDefaultValueName(
-							prop,
-							component
-						)}}`;
-					})
-					.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
-					`Content </${getComponentName(component)}>`,
-					component.hasChildren
-				)}
+				return `{#if ${getSanitizedComponentName(component)}Visible.length}
+				{#each ${getSanitizedComponentName(component)}Visible as btn, i }
+					<${getComponentName(component)} ${component.props
+						.filter(
+							(prop) => !prop.isEventListener && prop.demoDefaultValue
+						)
+						.map((prop) => {
+							return `${prop.name}={${getPropDefaultValueName(
+								prop,
+								component
+							)}}`;
+						})
+						.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
+						`Content </${getComponentName(component)}>`,
+						component.hasChildren
+					)}
+				{/each}
 				{/if}`;
 			})
 			.join('\n\n')}

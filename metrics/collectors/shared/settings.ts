@@ -87,3 +87,11 @@ export const NAVIGATION_TIMEOUT = Math.max(
  * before failing
  */
 export const RENDER_TIME_TRIES = 3;
+/**
+ * We measure the render times of multiple numbers
+ * of components, this array will contain all of them
+ * and the numbers
+ */
+export const NUMBER_OF_COMPONENT_SETS = [
+	1, 10, 100
+]

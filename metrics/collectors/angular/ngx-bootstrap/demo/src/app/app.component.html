@@ -1,11 +1,11 @@
 <div style="margin: 50px; margin-top: 300px">
-	<div *ngIf="visibleComponent == 'Button'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Button'">
 		<button type="button" class="btn btn-primary">Button</button>
 	</div>
-	<div *ngIf="visibleComponent == 'Input'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Input'">
 		<input class="form-control" />
 	</div>
-	<div *ngIf="visibleComponent == 'Switch'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Switch'">
 		<button
 			type="button"
 			class="btn btn-primary"

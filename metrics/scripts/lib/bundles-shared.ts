@@ -285,10 +285,18 @@ export async function collectRenderTimes(
 			overrides.demoDir?.(basePath) ||
 			demoPath,
 		urlPath: overrides.urlPath || '/demo.html',
-		showComponent: async (component, page) => {
-			await page.evaluate((componentName) => {
-				window.setVisibleComponent(componentName, true);
-			}, component);
+		showComponent: async (component, numberOfComponents, page) => {
+			await page.evaluate(
+				(componentName, numberOfComponents) => {
+					window.setVisibleComponent(
+						componentName,
+						numberOfComponents,
+						true
+					);
+				},
+				component,
+				numberOfComponents
+			);
 		},
 	});
 
@@ -322,7 +330,11 @@ export function getBundleInstallCommand<N extends string>(
 	bundleName: N,
 	overrides: BundleMetricsOverrides = {}
 ): CommandBuilderWithName<N> {
-	const { demoPath } = getSharedBundlePaths(bundleCategory, bundleName, overrides);
+	const { demoPath } = getSharedBundlePaths(
+		bundleCategory,
+		bundleName,
+		overrides
+	);
 
 	const installCommand = registerInstallCommand(bundleName).run(
 		async (exec) => {

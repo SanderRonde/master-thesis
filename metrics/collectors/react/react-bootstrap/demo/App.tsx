@@ -17,23 +17,34 @@ const App = () => {
 		visibleComponent,
 		setVisibleComponent,
 	] = React.useState<BaseComponent | null>(null);
+	const [numberOfComponents, setNumberOfComponents] = React.useState<
+		unknown[]
+	>([]);
 
-	window.setVisibleComponent = (componentName, isVisible) => {
+	window.setVisibleComponent = (
+		componentName,
+		numberOfComponents,
+		isVisible
+	) => {
 		if (!isVisible) {
 			setVisibleComponent(null);
 		} else {
 			setVisibleComponent(componentName);
 		}
+		setNumberOfComponents(new Array(numberOfComponents).fill(''));
 	};
 
 	return (
 		<>
-			{visibleComponent === 'Button' && <Button>Content</Button>}
+			{visibleComponent === 'Button' &&
+				numberOfComponents.map(() => <Button>Content</Button>)}
 			<Form>
-				{visibleComponent === 'Input' && <Form.Control type="text" />}
-				{visibleComponent === 'Switch' && (
-					<Form.Check type="checkbox" />
-				)}
+				{visibleComponent === 'Input' &&
+					numberOfComponents.map(() => <Form.Control type="text" />)}
+				{visibleComponent === 'Switch' &&
+					numberOfComponents.map(() => (
+						<Form.Check type="checkbox" />
+					))}
 			</Form>
 		</>
 	);

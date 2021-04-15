@@ -9,27 +9,31 @@ declare const window: ComponentVisibilitySetterWindow;
 const root = document.getElementById('root')!;
 window.availableComponents = ['Button', 'Input', 'Switch'];
 
-window.setVisibleComponent = (componentName, isVisible) => {
+window.setVisibleComponent = (componentName, numberOfComponents, isVisible) => {
 	switch (componentName) {
 		case 'Button':
 			[...document.querySelectorAll('#button')].forEach((b) =>
 				b.remove()
 			);
 			if (isVisible) {
-				const btn = document.createElement('cds-button');
-				btn.appendChild(document.createTextNode('Button'));
-				btn.id = 'button';
-				root.appendChild(btn);
+				for (let i = 0; i < numberOfComponents; i++) {
+					const btn = document.createElement('cds-button');
+					btn.appendChild(document.createTextNode('Button'));
+					btn.id = 'button';
+					root.appendChild(btn);
+				}
 			}
 			break;
 		case 'Input':
 			[...document.querySelectorAll('#input')].forEach((b) => b.remove());
 			if (isVisible) {
-				const input = document.createElement('cds-input');
-				input.id = 'input';
-				input.appendChild(document.createElement('label'));
-				input.appendChild(document.createElement('input'));
-				root.appendChild(input);
+				for (let i = 0; i < numberOfComponents; i++) {
+					const input = document.createElement('cds-input');
+					input.id = 'input';
+					input.appendChild(document.createElement('label'));
+					input.appendChild(document.createElement('input'));
+					root.appendChild(input);
+				}
 			}
 			break;
 		case 'Switch':
@@ -37,13 +41,15 @@ window.setVisibleComponent = (componentName, isVisible) => {
 				b.remove()
 			);
 			if (isVisible) {
-				const checkbox = document.createElement('cds-toggle');
-				checkbox.id = 'switch';
-				checkbox.appendChild(document.createElement('label'));
-				const input = document.createElement('input');
-				input.type = 'checkbox';
-				checkbox.appendChild(input);
-				root.appendChild(checkbox);
+				for (let i = 0; i < numberOfComponents; i++) {
+					const checkbox = document.createElement('cds-toggle');
+					checkbox.id = 'switch';
+					checkbox.appendChild(document.createElement('label'));
+					const input = document.createElement('input');
+					input.type = 'checkbox';
+					checkbox.appendChild(input);
+					root.appendChild(checkbox);
+				}
 			}
 			break;
 	}

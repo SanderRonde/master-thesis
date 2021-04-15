@@ -14,6 +14,7 @@ export class AppComponent {
 		window.availableComponents = ['Button', 'Switch', 'Input'];
 		window.setVisibleComponent = (
 			componentName: string,
+			numberOfComponents: number,
 			isVisible: boolean
 		) => {
 			if (!isVisible) {
@@ -21,9 +22,11 @@ export class AppComponent {
 			} else {
 				this.visibleComponent = componentName;
 			}
+			this.componentCount = new Array(numberOfComponents).fill('');
 			this._cd.detectChanges();
 		};
 	}
 
 	public visibleComponent: string | null = null;
+	public componentCount: unknown[] = [];
 }

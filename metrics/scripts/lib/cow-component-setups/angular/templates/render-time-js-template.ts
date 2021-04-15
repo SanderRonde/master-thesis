@@ -27,8 +27,8 @@ export async function getRenderTimeJsTemplate(submoduleName: string) {
 				_elementRef.nativeElement.${SET_RENDER_OPTION_FUNCTION_NAME} = ${SET_RENDER_OPTION_FUNCTION_SIGNATURE} => this.${SET_RENDER_OPTION_FUNCTION_NAME}(name, value);
 			}
 
-			(window as any).setVisibleComponent = (componentName) => {
-				this.${SET_RENDER_OPTION_FUNCTION_NAME}(componentName, true);
+			(window as any).setVisibleComponent = (componentName, numberOfComponents) => {
+				this.${SET_RENDER_OPTION_FUNCTION_NAME}(componentName, numberOfComponents);
 			}
 		}
 		

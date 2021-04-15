@@ -116,10 +116,10 @@ async function getDashboardRenderTime(
 		getComponents: () => components.map((c) => c.js.componentName),
 		sourceRoot: sourceRoot,
 		urlPath: '/404',
-		showComponent: async (component, page) => {
+		showComponent: async (component, numberOfComponents, page) => {
 			await page.$eval(
 				'page-not-found',
-				(element, componentName) => {
+				(element, componentName, numberOfComponents) => {
 					((element as unknown) as NGElement).__ngContext__
 						.find(
 							(c) =>
@@ -127,9 +127,14 @@ async function getDashboardRenderTime(
 								typeof c === 'object' &&
 								'setRenderOption' in c
 						)
-						.setRenderOption(componentName, true);
+						.setRenderOption(
+							componentName,
+							numberOfComponents,
+							true
+						);
 				},
-				component
+				component,
+				numberOfComponents
 			);
 		},
 	});
@@ -230,7 +235,7 @@ export function createDashboardMetricsCommand(
 			components,
 			demoPath: dirs.distDir,
 			basePath: '',
-			extraLevels: 0
+			extraLevels: 0,
 		};
 
 		await collectIsCSSFramework(collectorArgs, {});

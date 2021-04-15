@@ -8,6 +8,7 @@ import {
 	KEEP_PROFILES,
 	MAX_MEASURED_RENDER_WAIT_TIME,
 	NAVIGATION_TIMEOUT,
+	NUMBER_OF_COMPONENT_SETS,
 	RENDER_TIME_HEIGHT,
 	RENDER_TIME_MEASURES,
 	RENDER_TIME_TRIES,
@@ -16,7 +17,7 @@ import {
 	WAIT_AFTER_IDLE_TIME,
 } from '../shared/settings';
 import { RenderTime } from '../shared/types';
-import { getDatasetStats } from '../shared/stats';
+import { DatasetStats, getDatasetStats } from '../shared/stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from '../shared/testing';
 import { readFile } from '../shared/files';
@@ -100,8 +101,10 @@ export async function openPage(
 async function collectComponentProfile(
 	componentName: string,
 	page: puppeteer.Page,
+	numberOfComponents: number,
 	showComponent: (
 		componentName: string,
+		numberOfComponents: number,
 		page: puppeteer.Page
 	) => Promise<void>
 ): Promise<PerformanceProfile> {
@@ -118,7 +121,7 @@ async function collectComponentProfile(
 	await wait(2000);
 
 	// Show current component
-	await showComponent(componentName, page);
+	await showComponent(componentName, numberOfComponents, page);
 
 	debug('render-time', '\tWaiting for component to render');
 	/**
@@ -261,8 +264,10 @@ async function collectRuntimeRenderTimes({
 	showComponent,
 	urlPath = '',
 	port,
+	numberOfComponents,
 }: RenderTimeSettings & {
 	port: number;
+	numberOfComponents: number;
 }): Promise<Map<string, number>> {
 	const times: Map<string, number> = new Map();
 
@@ -297,6 +302,7 @@ async function collectRuntimeRenderTimes({
 				const performanceProfile = await collectComponentProfile(
 					componentName,
 					page,
+					numberOfComponents,
 					showComponent
 				);
 
@@ -330,34 +336,59 @@ async function collectRuntimeRenderTimes({
 	return times;
 }
 
-function joinMeasuredData(maps: Map<string, number>[]): RenderTime {
-	const joinedComponentMap: Map<string, number[]> = new Map();
+function joinMeasuredData(map: Map<number, Map<string, number>[]>): RenderTime {
+	const joinedComponentMap: Map<string, Map<number, number[]>> = new Map();
 
-	for (const map of maps) {
-		for (const [componentName, measurement] of map.entries()) {
-			if (!joinedComponentMap.has(componentName)) {
-				joinedComponentMap.set(componentName, []);
+	for (const [numberOfComponents, maps] of map.entries()) {
+		for (const map of maps) {
+			for (const [componentName, measurement] of map.entries()) {
+				if (!joinedComponentMap.has(componentName)) {
+					joinedComponentMap.set(componentName, new Map());
+				}
+				if (
+					!joinedComponentMap
+						.get(componentName)!
+						.has(numberOfComponents)
+				) {
+					joinedComponentMap
+						.get(componentName)!
+						.set(numberOfComponents, []);
+				}
+
+				joinedComponentMap
+					.get(componentName)!
+					.get(numberOfComponents)!
+					.push(measurement);
 			}
-
-			joinedComponentMap.get(componentName)!.push(measurement);
 		}
 	}
 
 	const renderTimesPerFile: Partial<RenderTime['components']> = {};
-	for (const [componentName, measurements] of joinedComponentMap) {
-		renderTimesPerFile[componentName] = {
-			times: measurements,
-			stats: getDatasetStats(measurements),
-		};
+	const numberStats: Map<number, number[]> = new Map();
+	for (const [componentName, measurementMap] of joinedComponentMap) {
+		renderTimesPerFile[componentName] = {};
+		for (const [
+			numberOfComponents,
+			measurements,
+		] of measurementMap.entries()) {
+			renderTimesPerFile[componentName]![numberOfComponents] = {
+				times: measurements,
+				stats: getDatasetStats(measurements),
+			};
+			if (!numberStats.has(numberOfComponents)) {
+				numberStats.set(numberOfComponents, []);
+			}
+			numberStats.get(numberOfComponents)!.push(...measurements);
+		}
+	}
+	const stats: Record<number, DatasetStats> = {};
+	for (const [numberOfComponents, allMeasurements] of numberStats.entries()) {
+		stats[numberOfComponents] = getDatasetStats(allMeasurements);
 	}
 
 	return {
 		components: renderTimesPerFile as RenderTime['components'],
-		stats: getDatasetStats(
-			Object.values(renderTimesPerFile).flatMap(
-				(renderTimes) => renderTimes!.times
-			)
-		),
+		stats,
 	};
 }
 
@@ -367,6 +398,7 @@ interface RenderTimeSettings {
 	urlPath?: string;
 	showComponent: (
 		componentName: string,
+		numberOfComponents: number,
 		page: puppeteer.Page
 	) => Promise<void>;
 }
@@ -377,23 +409,40 @@ export async function setupRenderTime(
 ): Promise<(() => Promise<void>)[]> {
 	const { port, stop } = await startServer(0, settings.sourceRoot);
 
-	const frames: Map<string, number>[] = [];
-	return new Array(RENDER_TIME_MEASURES).fill('').map(() => {
-		return async () => {
-			// Set up a slow browser and page
-			frames.push(
-				await collectRuntimeRenderTimes({
-					...settings,
-					port,
-				})
-			);
+	const frames: Map<number, Map<string, number>[]> = new Map();
+	return new Array(RENDER_TIME_MEASURES * NUMBER_OF_COMPONENT_SETS.length)
+		.fill('')
+		.map((_, i) => {
+			return async () => {
+				// Set up a slow browser and page
+				const numberOfComponents =
+					NUMBER_OF_COMPONENT_SETS[
+						i % NUMBER_OF_COMPONENT_SETS.length
+					];
+				if (!frames.has(numberOfComponents)) {
+					frames.set(numberOfComponents, []);
+				}
+				frames.get(numberOfComponents)!.push(
+					await collectRuntimeRenderTimes({
+						...settings,
+						port,
+						numberOfComponents,
+					})
+				);
 
-			if (frames.length === RENDER_TIME_MEASURES) {
+				for (const possibleNumberOfComponents of NUMBER_OF_COMPONENT_SETS) {
+					if (
+						!frames.has(possibleNumberOfComponents) ||
+						frames.get(possibleNumberOfComponents)!.length !==
+							RENDER_TIME_MEASURES
+					) {
+						return;
+					}
+				}
 				await onDone(joinMeasuredData(frames));
 				stop();
-			}
-		};
-	});
+			};
+		});
 }
 
 export async function getRenderTime(
@@ -401,19 +450,26 @@ export async function getRenderTime(
 ): Promise<RenderTime> {
 	return await doWithServer(0, settings.sourceRoot, async (port) => {
 		// Collect runtime info
-		const frames: Map<string, number>[] = [];
-		for (let i = 0; i < RENDER_TIME_MEASURES; i++) {
-			info(
-				'render-time',
-				`Collecting render times. ${i + 1}/${RENDER_TIME_MEASURES}`
-			);
-			// Set up a slow browser and page
-			frames.push(
-				await collectRuntimeRenderTimes({
-					...settings,
-					port,
-				})
-			);
+		const frames: Map<number, Map<string, number>[]> = new Map();
+		for (let i = 0; i < NUMBER_OF_COMPONENT_SETS.length; i++) {
+			const numberOfComponents = NUMBER_OF_COMPONENT_SETS[i];
+			for (let j = 0; j < RENDER_TIME_MEASURES; j++) {
+				info(
+					'render-time',
+					`Collecting render times. ${j + 1}/${RENDER_TIME_MEASURES}`
+				);
+				// Set up a slow browser and page
+				if (!frames.has(numberOfComponents)) {
+					frames.set(numberOfComponents, []);
+				}
+				frames.get(numberOfComponents)!.push(
+					await collectRuntimeRenderTimes({
+						...settings,
+						port,
+						numberOfComponents,
+					})
+				);
+			}
 		}
 
 		return joinMeasuredData(frames);

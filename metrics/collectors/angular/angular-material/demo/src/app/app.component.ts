@@ -11,13 +11,10 @@ export class AppComponent {
 	title = 'demo';
 
 	constructor(private _cd: ChangeDetectorRef) {
-		window.availableComponents = [
-			'Button',
-			'Switch',
-			'Input',
-		];
+		window.availableComponents = ['Button', 'Switch', 'Input'];
 		window.setVisibleComponent = (
 			componentName: string,
+			numberOfComponents: number,
 			isVisible: boolean
 		) => {
 			if (!isVisible) {
@@ -25,9 +22,11 @@ export class AppComponent {
 			} else {
 				this.visibleComponent = componentName;
 			}
+			this.componentCount = new Array(numberOfComponents).fill('');
 			this._cd.detectChanges();
 		};
 	}
 
 	public visibleComponent: string | null = null;
+	public componentCount: unknown[] = [];
 }

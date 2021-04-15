@@ -1,11 +1,11 @@
 <div style="margin: 50px; margin-top: 300px">
-	<div *ngIf="visibleComponent == 'Button'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Button'">
 		<ons-button>Button</ons-button>
 	</div>
-	<div *ngIf="visibleComponent == 'Input'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Input'">
 		<ons-input float modifier="underbar" value="input"></ons-input>
 	</div>
-	<div *ngIf="visibleComponent == 'Switch'">
+	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Switch'">
 		<ons-checkbox></ons-checkbox>
 	</div>
 </div>

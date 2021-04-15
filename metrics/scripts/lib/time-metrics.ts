@@ -75,10 +75,10 @@ export function setupRenderTimeMeasuring(
 				config.demoDir?.(basePath) ||
 				demoPath,
 			urlPath: config.urlPath || '/demo.html',
-			showComponent: async (component, page) => {
+			showComponent: async (component, numberOfComponents, page) => {
 				await page.evaluate((componentName) => {
-					window.setVisibleComponent(componentName, true);
-				}, component);
+					window.setVisibleComponent(componentName, numberOfComponents, true);
+				}, component, numberOfComponents);
 			},
 		}
 	);
