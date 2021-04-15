@@ -68,6 +68,7 @@ async function getFileScript(filePath: string) {
 		case '.jsx':
 			return await readFile(filePath);
 		case '.svelte':
+		case '.vue':
 			const code = await readFile(filePath);
 			return createComponentFileFromSvelte(code, '', filePath).js.content;
 		case '.svg':

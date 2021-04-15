@@ -60,6 +60,11 @@ import {
 	getRenderTimePageDirs,
 	makeChartDeterministic,
 } from '../../collectors/shared/dashboard/generate-render-time-page';
+import {
+	vueInstallBundleMap,
+	vueParallelBundleMap,
+	vueSerialBundleMap,
+} from './bundles/vue';
 
 const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
 	...cowComponentsInstallBundleMap,
@@ -69,6 +74,7 @@ const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
 	...angularInstallBundleMap,
 	...webcomponentsInstallBundleMap,
 	...multiFrameworkInstallBundleMap,
+	...vueInstallBundleMap,
 };
 
 const parallelBundleMap: ParallelBundleMap<Bundle> = {
@@ -79,6 +85,7 @@ const parallelBundleMap: ParallelBundleMap<Bundle> = {
 	...angularParallelBundleMap,
 	...webcomponentsParallelBundleMap,
 	...multiFrameworkParallelBundleMap,
+	...vueParallelBundleMap,
 };
 
 const serialBundleMap: SerialBundleMap<Bundle> = {
@@ -89,6 +96,7 @@ const serialBundleMap: SerialBundleMap<Bundle> = {
 	...angularSerialBundleMap,
 	...webcomponentsSerialBundleMap,
 	...multiFrameworkSerialBundleMap,
+	...vueSerialBundleMap,
 };
 
 async function buildDemoRepo(
