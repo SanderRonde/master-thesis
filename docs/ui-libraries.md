@@ -28,7 +28,7 @@ We searched for various UI libraries online and categorized them by JS framework
 -   [element](https://element-plus.org/#/en-US) (49.8k)
 -   [vuetify](https://vuetifyjs.com/en/) (30.2k)
 -   [quasar](https://quasar.dev/) (18.3k)
--   ~~[ant design vue](https://2x.antdv.com/docs/vue/introduce) (14.k1)~~
+-   ~~[ant design vue](https://2x.antdv.com/docs/vue/introduce) (14.1k)~~
 -   ~~[bootstrap Vue](https://bootstrap-vue.org/) (13.1k)~~
 -   ~~[vue-material](https://vuematerial.io/) (9.3k)~~
 -   ~~[buefy](https://buefy.org/) (8.6k)~~
