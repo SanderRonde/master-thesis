@@ -24,7 +24,11 @@ import {
 import { storeData } from '../../collectors/shared/storage';
 import { createSingleFileTSProgram } from '../../collectors/shared/typescript';
 
-import { registerMetricsCommand, registerSetupCommand } from './makfy-helper';
+import {
+	registerInstallCommand,
+	registerMetricsCommand,
+	registerSetupCommand,
+} from './makfy-helper';
 import { getLoadTimeForDir } from '../../collectors/shared/load-time';
 import { getRenderTime } from '../../collectors/shared/render-time';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../../collectors/shared/settings';
@@ -290,7 +294,8 @@ function getPaths(
 	overrides: BundleMetricsOverrides
 ) {
 	const basePath = path.join(COLLECTORS_DIR, bundleCategory, bundleName);
-	const demoPath = path.join(basePath, 'demo');
+	const demoPath =
+		overrides.demoDir?.(basePath) || path.join(basePath, 'demo');
 	const submodulePath = path.join(
 		SUBMODULES_DIR,
 		overrides.submoduleName || bundleName
@@ -304,14 +309,17 @@ function getPaths(
 
 export function getBundleInstallCommand<N extends string>(
 	bundleCategory: string,
-	bundleName: N
+	bundleName: N,
+	overrides: BundleMetricsOverrides = {}
 ): CommandBuilderWithName<N> {
-	const { demoPath } = getPaths(bundleCategory, bundleName, {});
+	const { demoPath } = getPaths(bundleCategory, bundleName, overrides);
 
-	const installCommand = registerSetupCommand(bundleName).run(
+	const installCommand = registerInstallCommand(bundleName).run(
 		async (exec) => {
 			await exec('? Installing dependencies');
-			await exec(`yarn --cwd ${demoPath} || yarn --cwd ${demoPath} || yarn --cwd ${demoPath}`);
+			await exec(
+				`yarn --cwd ${demoPath} || yarn --cwd ${demoPath} || yarn --cwd ${demoPath}`
+			);
 		}
 	);
 
@@ -395,9 +403,18 @@ export function getBundleMetricsCommand<N extends string>(
 	return metricsCommand as CommandBuilderWithName<N>;
 }
 
-export function getBundleInstallCommandCreator(bundleCategory: string) {
-	return <N extends string>(bundleName: N) => {
-		return getBundleInstallCommand(bundleCategory, bundleName);
+export function getBundleInstallCommandCreator(
+	bundleCategory: string,
+	creatorOverrides: BundleMetricsOverrides = {}
+) {
+	return <N extends string>(
+		bundleName: N,
+		overrides: BundleMetricsOverrides = {}
+	) => {
+		return getBundleInstallCommand(bundleCategory, bundleName, {
+			...creatorOverrides,
+			...overrides,
+		});
 	};
 }
 

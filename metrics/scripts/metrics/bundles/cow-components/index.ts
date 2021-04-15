@@ -1,3 +1,7 @@
+import * as path from 'path';
+
+import { getBundleInstallCommandCreator } from '../../../lib/bundles-shared';
+import { DEMO_REPO_DIR } from '../../../lib/cow-components-shared';
 import {
 	ConstArrItems,
 	ParallelBundleMap,
@@ -9,17 +13,14 @@ import {
 	cowComponentsAngularSetup,
 } from './cow-components-angular';
 import {
-	cowComponentsNativeInstall,
 	cowComponentsNativeMetrics,
 	cowComponentsNativeSetup,
 } from './cow-components-native';
 import {
-	cowComponentsReactInstall,
 	cowComponentsReactMetrics,
 	cowComponentsReactSetup,
 } from './cow-components-react';
 import {
-	cowComponentsSvelteInstall,
 	cowComponentsSvelteMetrics,
 	cowComponentsSvelteSetup,
 } from './cow-components-svelte';
@@ -48,13 +49,21 @@ export const cowComponentBundles = [
 	...COW_COMPONENT_BUNDLES,
 ] as const;
 
+const installCreator = getBundleInstallCommandCreator('cow-components');
+
 export const cowComponentsInstallBundleMap: Partial<
 	SerialBundleMap<CowComponentBundle>
 > = {
 	'cow-components-angular': cowComponentsAngularInstall,
-	'cow-components-native': cowComponentsNativeInstall,
-	'cow-components-react': cowComponentsReactInstall,
-	'cow-components-svelte': cowComponentsSvelteInstall,
+	'cow-components-native': installCreator('cow-components-native', {
+		demoDir: () => path.join(DEMO_REPO_DIR, 'native'),
+	}),
+	'cow-components-react': installCreator('cow-components-react', {
+		demoDir: () => path.join(DEMO_REPO_DIR, 'react'),
+	}),
+	'cow-components-svelte': installCreator('cow-components-svelte', {
+		demoDir: () => path.join(DEMO_REPO_DIR, 'svelte'),
+	}),
 };
 
 // Parallel tasks

@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import {
-	registerInstallCommand,
 	registerMetricsCommand,
 	registerSetupCommand,
 } from '../../../lib/makfy-helper';
@@ -26,13 +25,6 @@ const BASE_DIR = path.join(
 	METRICS_DIR,
 	`collectors/cow-components/cow-components-native`
 );
-
-export const cowComponentsNativeInstall = registerInstallCommand(
-	'cow-components-native'
-).run(async (exec) => {
-	await exec('? Installing dependencies');
-	await exec(`yarn --cwd ${DEMO_DIR} || yarn --cwd ${DEMO_DIR} || yarn --cwd ${DEMO_DIR}`);
-});
 
 export const cowComponentsNativeSetup = registerSetupCommand(
 	'cow-components-native'

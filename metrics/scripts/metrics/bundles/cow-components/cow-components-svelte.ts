@@ -2,7 +2,6 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import {
-	registerInstallCommand,
 	registerMetricsCommand,
 	registerSetupCommand,
 } from '../../../lib/makfy-helper';
@@ -27,15 +26,6 @@ const BASE_DIR = path.join(
 	METRICS_DIR,
 	`collectors/cow-components/cow-components-svelte`
 );
-
-export const cowComponentsSvelteInstall = registerInstallCommand(
-	'cow-components-svelte'
-).run(async (exec) => {
-	await exec('? Installing dependencies');
-	await exec(
-		`yarn --cwd ${SVELTE_DEMO_DIR} || yarn --cwd ${SVELTE_DEMO_DIR} || yarn --cwd ${SVELTE_DEMO_DIR}`
-	);
-});
 
 export const cowComponentsSvelteSetup = registerSetupCommand(
 	'cow-components-svelte'

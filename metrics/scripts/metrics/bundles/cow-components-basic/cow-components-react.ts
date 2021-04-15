@@ -2,7 +2,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import {
-	registerInstallCommand,
 	registerMetricsCommand,
 	registerSetupCommand,
 } from '../../../lib/makfy-helper';
@@ -26,13 +25,6 @@ const BASE_DIR = path.join(
 	METRICS_DIR,
 	`collectors/cow-components-basic/cow-components-react`
 );
-
-export const cowComponentsReactInstall = registerInstallCommand(
-	'cow-components-basic-react'
-).run(async (exec) => {
-	await exec('? Installing dependencies');
-	await exec(`yarn --cwd ${DEMO_DIR} || yarn --cwd ${DEMO_DIR} || yarn --cwd ${DEMO_DIR}`);
-});
 
 export const cowComponentsReactSetup = registerSetupCommand(
 	'cow-components-basic-react'
