@@ -1,8 +1,8 @@
 import { getDefaultValuesClassString, getDefaultValuesString, getJoinedComponentDefs, getTogglesString } from "../../../../../collectors/shared/dashboard/generate-render-time-page";
 import { SET_RENDER_OPTION_FUNCTION_NAME, SET_RENDER_OPTION_FUNCTION_SIGNATURE, SET_RENDER_OPTION_TEMPLATE } from "../../../../../collectors/shared/template-files/dashboard/set-render-option";
 
-export async function getRenderTimeJsTemplate() {
-	const components = await getJoinedComponentDefs();
+export async function getRenderTimeJsTemplate(submoduleName: string) {
+	const components = await getJoinedComponentDefs(submoduleName);
 	return `
 	import { Component, ChangeDetectorRef, ElementRef } from '@angular/core';
 	

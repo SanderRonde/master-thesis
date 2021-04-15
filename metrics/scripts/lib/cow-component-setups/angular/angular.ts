@@ -25,7 +25,8 @@ export function getAngularDirs(baseDir: string) {
 
 export function createAngularSetupCommand(
 	commandName: string,
-	baseDir: string
+	baseDir: string,
+	submoduleName: string
 ) {
 	const { demoMetricsDir, frameworkDemoDir } = getCowComponentsDirs(
 		baseDir,
@@ -55,7 +56,7 @@ export function createAngularSetupCommand(
 				metricsComponentDir,
 				'metrics.component.ts'
 			);
-			const jsContent = await getRenderTimeJsTemplate();
+			const jsContent = await getRenderTimeJsTemplate(submoduleName);
 			await writeFile(jsFilePath, jsContent);
 
 			await exec('? Generating HTML');
@@ -63,7 +64,7 @@ export function createAngularSetupCommand(
 				metricsComponentDir,
 				'metrics.component.html'
 			);
-			const htmlContent = await getRenderTimeHTMLTemplate();
+			const htmlContent = await getRenderTimeHTMLTemplate(submoduleName);
 			await writeFile(htmlFilePath, htmlContent);
 
 			await exec('? Copying CSS');

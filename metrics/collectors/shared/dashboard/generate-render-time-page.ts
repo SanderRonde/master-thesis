@@ -1,7 +1,6 @@
 import * as path from 'path';
 import { EXCLUDED_COMPONENTS } from '../../../scripts/lib/cow-component-setups/dashboard/dashboard';
 import { extractComponentTypes } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-component-types';
-import { getNamedCowComponents } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
 import { createReactComponent } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/react/scripts/lib/create-react-component';
 import {
 	defaultValuesTemplate,
@@ -242,7 +241,16 @@ async function addToAppModule(dirs: Dirs) {
 	});
 }
 
-export async function getJoinedComponentDefs(): Promise<JoinedDefinition[]> {
+export async function getJoinedComponentDefs(
+	submoduleName: string
+): Promise<JoinedDefinition[]> {
+	const { getNamedCowComponents } = (await import(
+		path.join(
+			SUBMODULES_DIR,
+			submoduleName,
+			'src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names'
+		)
+	)) as typeof import('../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names');
 	const componentTypes = (
 		await getNamedCowComponents(await extractComponentTypes())
 	).filter(
@@ -285,7 +293,7 @@ export async function generateRenderTimePage(
 	info(tagName, 'Making chart deterministic');
 	await makeChartDeterministic(dirs);
 	info(tagName, 'Getting component defs');
-	const componentDefs = await getJoinedComponentDefs();
+	const componentDefs = await getJoinedComponentDefs(submoduleName);
 	info(tagName, 'Generating render timing html');
 	const renderTimeHTML = await generateRenderTimeHTML(
 		componentDefs,

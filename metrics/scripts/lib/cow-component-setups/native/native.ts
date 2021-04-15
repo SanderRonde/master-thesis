@@ -8,7 +8,11 @@ import { getCowComponentsDirs } from '../shared';
 import { htmlTemplate } from '../../../../collectors/shared/templates';
 import { getRenderTimeJsTemplate } from './templates/render-time-js-template';
 
-export function createNativeSetupCommand(commandName: string, baseDir: string) {
+export function createNativeSetupCommand(
+	commandName: string,
+	baseDir: string,
+	submoduleName: string
+) {
 	const {
 		demoMetricsDir,
 		frameworkDemoDir,
@@ -21,7 +25,7 @@ export function createNativeSetupCommand(commandName: string, baseDir: string) {
 
 		await exec('? Generating JS');
 		const indexJsFilePath = path.join(toggleableDir, 'index.ts');
-		const indexJsContent = await getRenderTimeJsTemplate();
+		const indexJsContent = await getRenderTimeJsTemplate(submoduleName);
 		await writeFile(indexJsFilePath, indexJsContent);
 
 		await exec('? Generating HTML');

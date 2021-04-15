@@ -161,10 +161,11 @@ async function getFileStructuralComplexity(file: ReadFile): Promise<number> {
 
 export async function collectStructuralComplexity(
 	{ bundleCategory, bundleName, components }: CollectorArgs,
-	getComplexityFunction: (
-		file: ReadFile
-	) => Promise<number> = getFileStructuralComplexity
+	overrides: BundleMetricsOverrides
 ) {
+	const getComplexityFunction = overrides.createComplexityFunction
+		? await overrides.createComplexityFunction?.(components)
+		: getFileStructuralComplexity;
 	const metrics = await iterateOverBundle(components, getComplexityFunction);
 
 	await storeData(
@@ -346,6 +347,9 @@ interface BundleMetricsOverrides {
 	submoduleName?: string;
 	isCSSFramework?: boolean;
 	getComponents?: () => Promise<ComponentFiles[]>;
+	createComplexityFunction?: (
+		components: ComponentFiles[]
+	) => Promise<(file: ReadFile) => Promise<number>>;
 }
 
 export function getBundleMetricsCommand<N extends string>(
@@ -385,7 +389,7 @@ export function getBundleMetricsCommand<N extends string>(
 			await collectIsCSSFramework(collectorArgs, overrides);
 
 			await exec('? Collecting structural complexity');
-			await collectStructuralComplexity(collectorArgs);
+			await collectStructuralComplexity(collectorArgs, overrides);
 
 			await exec('? Collecting cyclomatic complexity');
 			await collectCyclomaticComplexity(collectorArgs);

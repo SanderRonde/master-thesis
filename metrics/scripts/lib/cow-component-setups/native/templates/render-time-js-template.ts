@@ -47,8 +47,8 @@ window.setVisibleComponent = (name: string, visible: boolean) => {
 }
 `;
 
-export async function getRenderTimeJsTemplate() {
-	const components = await getJoinedComponentDefs();
+export async function getRenderTimeJsTemplate(submoduleName: string) {
+	const components = await getJoinedComponentDefs(submoduleName);
 	return `
 	import '../../packages/native';
 	

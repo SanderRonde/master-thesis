@@ -186,6 +186,26 @@ export async function getComponents(submodulePath: string) {
 	});
 }
 
+export function createDashboardStructuralComplexityFunctionCreator(
+	baseDir: string
+) {
+	return async (components: ComponentFiles[]) => {
+		const tsProgram = await createTSProgram(
+			components.map((component) => component.js.filePath)
+		);
+		const structuralComplexityArgs = {
+			tsProgram: tsProgram,
+			baseDir: baseDir,
+		};
+
+		return (file: ReadFile) =>
+			getDashboardFileStructuralComplexity(
+				file,
+				structuralComplexityArgs
+			);
+	};
+}
+
 export function createDashboardMetricsCommand(
 	commandName: string,
 	baseDir: string,
@@ -214,16 +234,11 @@ export function createDashboardMetricsCommand(
 
 		await collectIsCSSFramework(collectorArgs, {});
 
-		const tsProgram = await createTSProgram(
-			components.map((component) => component.js.filePath)
-		);
-		const structuralComplexityArgs = {
-			tsProgram: tsProgram,
-			baseDir: baseDir,
-		};
-		await collectStructuralComplexity(collectorArgs, (file: ReadFile) =>
-			getDashboardFileStructuralComplexity(file, structuralComplexityArgs)
-		);
+		await collectStructuralComplexity(collectorArgs, {
+			createComplexityFunction: createDashboardStructuralComplexityFunctionCreator(
+				baseDir
+			),
+		});
 
 		await collectCyclomaticComplexity(collectorArgs);
 
