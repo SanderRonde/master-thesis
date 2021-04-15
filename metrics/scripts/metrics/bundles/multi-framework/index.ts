@@ -18,6 +18,7 @@ export const multiFrameworkBundles = [
 	'onsen-angular',
 	'prime-react',
 	'prime-ng',
+	'prime-vue',
 ] as const;
 
 const installCreator = getBundleInstallCommandCreator('multi-framework');
@@ -30,6 +31,7 @@ export const multiFrameworkInstallBundleMap: NamedSerialBundleMap<MultiFramework
 	'onsen-angular': installCreator('onsen-angular'),
 	'prime-react': installCreator('prime-react'),
 	'prime-ng': installCreator('prime-ng'),
+	'prime-vue': installCreator('prime-vue'),
 };
 
 export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFrameworkBundle> = {
@@ -38,6 +40,7 @@ export const multiFrameworkParallelBundleMap: NamedParallelBundleMap<MultiFramew
 	'onsen-angular': setupCreator('onsen-angular'),
 	'prime-react': setupCreator('prime-react'),
 	'prime-ng': setupCreator('prime-ng'),
+	'prime-vue': setupCreator('prime-vue'),
 };
 
 export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkBundle> = {
@@ -58,5 +61,8 @@ export const multiFrameworkSerialBundleMap: NamedSerialBundleMap<MultiFrameworkB
 		demoDir: (basePath) => path.join(basePath, 'demo/dist/demo'),
 		indexJsFileName: 'index.bundle.js',
 		urlPath: '/index.html',
+	}),
+	'prime-vue': metricsCreator('prime-vue', {
+		demoDir: (basePath) => path.join(basePath, 'demo', 'dist'),
 	}),
 };

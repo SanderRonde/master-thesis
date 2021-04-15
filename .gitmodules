@@ -58,3 +58,6 @@
 [submodule "metrics/submodules/quasar"]
 	path = metrics/submodules/quasar
 	url = https://github.com/quasarframework/quasar
+[submodule "metrics/submodules/prime-vue"]
+	path = metrics/submodules/prime-vue
+	url = https://github.com/primefaces/primevue
