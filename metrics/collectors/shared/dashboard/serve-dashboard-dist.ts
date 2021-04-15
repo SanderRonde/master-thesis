@@ -2,10 +2,8 @@ import express from 'express';
 import { AddressInfo } from 'node:net';
 import * as path from 'path';
 import serveStatic from 'serve-static';
-
-import { runFunctionIfCalledFromScript } from '../../../../shared/helpers';
-import { success } from '../../../../shared/log';
-import { DASHBOARD_DIST_DIR } from '../constants';
+import { runFunctionIfCalledFromScript } from '../helpers';
+import { success } from '../log';
 
 export function doWithServer<R>(
 	port: number,
@@ -31,8 +29,11 @@ export function doWithServer<R>(
 }
 
 runFunctionIfCalledFromScript(async () => {
+	if (!process.argv[2]) {
+		throw new Error('No to-serve path passed');
+	}
 	await doWithServer(
 		process.argv[3] ? parseInt(process.argv[3], 10) : 1234,
-		process.argv[2] || DASHBOARD_DIST_DIR
+		process.argv[2]
 	);
 }, __filename);

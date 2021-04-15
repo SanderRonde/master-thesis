@@ -1,6 +1,8 @@
 import * as path from 'path';
-import { getBasicCowComponents } from '../../../../collectors/cow-components-basic/dashboard/lib/get-components';
-import { BASIC_DASHBOARD_DIR } from '../../../../collectors/shared/constants';
+import {
+	BASIC_DASHBOARD_DIR,
+	SUBMODULES_DIR,
+} from '../../../../collectors/shared/constants';
 import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
@@ -9,7 +11,10 @@ import {
 	createAngularSetupCommand,
 	getAngularDirs,
 } from '../../../lib/cow-component-setups/angular/angular';
-import { createDashboardMetricsCommand } from '../../../lib/cow-component-setups/dashboard/dashboard';
+import {
+	createDashboardMetricsCommand,
+	getComponents as getCowComponents,
+} from '../../../lib/cow-component-setups/dashboard/dashboard';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
 import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
 import { getCowComponentsDirs } from '../../../lib/cow-component-setups/shared';
@@ -26,6 +31,7 @@ import {
 	SerialBundleMap,
 } from '../../../lib/types';
 
+const SUBMODULE_NAME = '30mhz-dashboard-basic';
 const __COW_COMPONENTS_BASIC_WRAPPERS = [
 	'angular',
 	'react',
@@ -48,7 +54,7 @@ export type CowComponentBasicBundle = ConstArrItems<
 const installCreator = getBundleInstallCommandCreator('cow-components-basic');
 const metricsCreator = getBundleMetricsCommandCreator('cow-components-basic', {
 	getComponents() {
-		return getBasicCowComponents();
+		return getCowComponents(path.join(SUBMODULES_DIR, SUBMODULE_NAME));
 	},
 	indexJsFileName: 'index.bundle.js',
 	urlPath: '/index.html',
@@ -121,7 +127,8 @@ export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasi
 	'basic-dashboard': createDashboardMetricsCommand(
 		'basic-dashboard',
 		BASIC_DASHBOARD_DIR,
-		'cow-components-basic'
+		'cow-components-basic',
+		SUBMODULE_NAME
 	),
 	'cow-components-basic-angular': metricsCreator(
 		'cow-components-basic-angular',

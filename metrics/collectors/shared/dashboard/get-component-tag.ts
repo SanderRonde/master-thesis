@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
 
-import { TypedNamedComponentDataWithDefaultValue } from '../../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
-import { StorybookComponentDefinition } from '../../../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/generate-stories';
-import { ComponentFiles } from '../../../../../metric-definitions/types';
-import { createSingleFileTSProgram } from '../../../../../shared/typescript';
+import { TypedNamedComponentDataWithDefaultValue } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
+import { StorybookComponentDefinition } from '../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/generate-stories';
+import { ComponentFiles } from '../../metric-definitions/types';
+import { createSingleFileTSProgram } from '../typescript';
 
 const SELECTOR_REGEX = /(\w+)\[([-\w]+)\]/;
 

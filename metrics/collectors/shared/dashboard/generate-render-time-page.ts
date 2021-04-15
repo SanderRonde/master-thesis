@@ -1,53 +1,67 @@
 import * as path from 'path';
-import { extractComponentTypes } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-component-types';
-import { getNamedCowComponents } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
-import { createReactComponent } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/react/scripts/lib/create-react-component';
+import { EXCLUDED_COMPONENTS } from '../../../scripts/lib/cow-component-setups/dashboard/dashboard';
+import { extractComponentTypes } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-component-types';
+import { getNamedCowComponents } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/build/scripts/lib/extract-cow-tag-names';
+import { createReactComponent } from '../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/react/scripts/lib/create-react-component';
 import {
 	defaultValuesTemplate,
 	getNamespacedPropDemoDefaultValueName,
-} from '../../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
-import { DASHBOARD_DIR } from '../../../../shared/constants';
-import { transformFile, writeFile } from '../../../../shared/files';
-
-import { runFunctionIfCalledFromScript } from '../../../../shared/helpers';
-import { info, success } from '../../../../shared/log';
-import { EXCLUDED_COMPONENTS } from '../get-components';
+} from '../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
+import { SUBMODULES_DIR } from '../constants';
+import { transformFile, writeFile } from '../files';
+import { info, success } from '../log';
+import { chartRandomTemplate } from '../template-files/dashboard/chart-random';
+import { SET_RENDER_OPTION_TEMPLATE } from '../template-files/dashboard/set-render-option';
 import {
 	DEFAULT_VALUE_PREFIX,
 	generateRenderTimeHTML,
 	getSanitizedComponentName,
 	VISIBLE_VALUES_PREFIX,
-} from './lib/generate-render-time-html';
-import { JoinedDefinition } from './lib/get-component-tag';
-import { chartRandomTemplate } from './templates/chart-random';
-import { SET_RENDER_OPTION_TEMPLATE } from './templates/set-render-option';
+} from './generate-render-time-html';
+import { JoinedDefinition } from './get-component-tag';
 
-const SHARED_MODULE_FILE_PATH = path.join(
-	DASHBOARD_DIR,
-	'src/app/shared/shared.module.ts'
-);
-const APP_MODULE_FILE_PATH = path.join(DASHBOARD_DIR, 'src/app/app.module.ts');
-const NOT_FOUND_COMPONENT_BASE = path.join(DASHBOARD_DIR, 'src/app/shared/404');
-const HACK_CSS_FILE_PATH = path.join(DASHBOARD_DIR, 'src/styles/hack.scss');
-const NOT_FOUND_COMPONENT_HTML = path.join(
-	NOT_FOUND_COMPONENT_BASE,
-	'404.component.html'
-);
-const NOT_FOUND_COMPONENT_TS = path.join(
-	NOT_FOUND_COMPONENT_BASE,
-	'404.component.ts'
-);
-const CHART_COMPONENT = path.join(
-	DASHBOARD_DIR,
-	'src/app/charts/modular-chart/modular-chart.demo.state.ts'
-);
-const WEBCOMPONENTS_ENV_FILE = path.join(
-	DASHBOARD_DIR,
-	'src/environments/webcomponent.ts'
-);
+type Dirs = ReturnType<typeof getRenderTimePageDirs>;
 
-async function addBrowserModule() {
-	await transformFile(SHARED_MODULE_FILE_PATH, (content) => {
+export function getRenderTimePageDirs(baseDir: string, submoduleName: string) {
+	const sharedModuleFilePath = path.join(
+		baseDir,
+		'src/app/shared/shared.module.ts'
+	);
+	const appModuleFilePath = path.join(baseDir, 'src/app/app.module.ts');
+	const notFoundComponentBase = path.join(baseDir, 'src/app/shared/404');
+	const hackCSSFilePath = path.join(baseDir, 'src/styles/hack.scss');
+	const notFoundComponentHTML = path.join(
+		notFoundComponentBase,
+		'404.component.html'
+	);
+	const notFoundComponentTs = path.join(
+		notFoundComponentBase,
+		'404.component.ts'
+	);
+	const chartComponent = path.join(
+		baseDir,
+		'src/app/charts/modular-chart/modular-chart.demo.state.ts'
+	);
+	const webcomponentsEnvFile = path.join(
+		baseDir,
+		'src/environments/webcomponent.ts'
+	);
+
+	return {
+		sharedModuleFilePath,
+		appModuleFilePath,
+		notFoundComponentBase,
+		hackCSSFilePath,
+		notFoundComponentTs,
+		notFoundComponentHTML,
+		chartComponent,
+		webcomponentsEnvFile,
+		submodulePath: path.join(SUBMODULES_DIR, submoduleName),
+	};
+}
+
+async function addBrowserModule(dirs: Dirs) {
+	await transformFile(dirs.sharedModuleFilePath, (content) => {
 		const importAdded = `import { BrowserModule } from '@angular/platform-browser';\n${content}`;
 		const importUsed = importAdded.replace(
 			/NgSelectModule,/,
@@ -57,8 +71,8 @@ async function addBrowserModule() {
 	});
 }
 
-async function disableSupportButton() {
-	await transformFile(HACK_CSS_FILE_PATH, (content) => {
+async function disableSupportButton(dirs: Dirs) {
+	await transformFile(dirs.hackCSSFilePath, (content) => {
 		return `${content}\niframe { display: none; } page-not-found { margin-top: 0!important; }`;
 	});
 }
@@ -68,8 +82,8 @@ async function disableSupportButton() {
  * demo line. We want to make this deterministic
  * so we can actually test when it's rendered
  */
-export async function makeChartDeterministic() {
-	await transformFile(CHART_COMPONENT, (content) => {
+export async function makeChartDeterministic(dirs: Dirs) {
+	await transformFile(dirs.chartComponent, (content) => {
 		const randomFunctionStart = content.indexOf('private _randomBetween');
 		const randomFunctionEnd =
 			content.slice(randomFunctionStart).indexOf('}') +
@@ -83,15 +97,15 @@ export async function makeChartDeterministic() {
 	});
 }
 
-async function writeRenderTimeHTML(html: string) {
+async function writeRenderTimeHTML(html: string, dirs: Dirs) {
 	const replacedFile = `
 	<div class="vertical-align">
 		<div class="vertical">${html}</div></div>`;
-	await writeFile(NOT_FOUND_COMPONENT_HTML, replacedFile);
+	await writeFile(dirs.notFoundComponentHTML, replacedFile);
 }
 
-async function addChangeDetectorFunction() {
-	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+async function addChangeDetectorFunction(dirs: Dirs) {
+	await transformFile(dirs.notFoundComponentTs, (content) => {
 		// Add import
 		content = `import { ChangeDetectorRef } from '@angular/core';\n${content}`;
 
@@ -121,8 +135,11 @@ export function getDefaultValuesString(components: JoinedDefinition[]) {
 	return str;
 }
 
-async function addDefaultValuesToFile(components: JoinedDefinition[]) {
-	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+async function addDefaultValuesToFile(
+	components: JoinedDefinition[],
+	dirs: Dirs
+) {
+	await transformFile(dirs.notFoundComponentTs, (content) => {
 		return getDefaultValuesString(components) + content;
 	});
 }
@@ -151,8 +168,11 @@ export function getDefaultValuesClassString(components: JoinedDefinition[]) {
 	}`;
 }
 
-async function addDefaultValuesToClass(components: JoinedDefinition[]) {
-	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+async function addDefaultValuesToClass(
+	components: JoinedDefinition[],
+	dirs: Dirs
+) {
+	await transformFile(dirs.notFoundComponentTs, (content) => {
 		return content.replace(
 			'satDiv: any;',
 			`satDiv: any;\n
@@ -169,8 +189,8 @@ export function getTogglesString(components: JoinedDefinition[]) {
 	}`;
 }
 
-async function addTogglesToClass(components: JoinedDefinition[]) {
-	await transformFile(NOT_FOUND_COMPONENT_TS, (content) => {
+async function addTogglesToClass(components: JoinedDefinition[], dirs: Dirs) {
+	await transformFile(dirs.notFoundComponentTs, (content) => {
 		return content.replace(
 			'satDiv: any;',
 			`satDiv: any;\n
@@ -179,8 +199,8 @@ async function addTogglesToClass(components: JoinedDefinition[]) {
 	});
 }
 
-async function disableAuthentication() {
-	await transformFile(WEBCOMPONENTS_ENV_FILE, (content) => {
+async function disableAuthentication(dirs: Dirs) {
+	await transformFile(dirs.webcomponentsEnvFile, (content) => {
 		return content.replace(
 			'USE_AUTHENTICATION = true;',
 			'USE_AUTHENTICATION = false;'
@@ -188,14 +208,14 @@ async function disableAuthentication() {
 	});
 }
 
-async function remove404PageFromModule() {
-	await transformFile(SHARED_MODULE_FILE_PATH, (content) => {
+async function remove404PageFromModule(dirs: Dirs) {
+	await transformFile(dirs.sharedModuleFilePath, (content) => {
 		return content.replace(/PageNotFoundComponent,/g, '');
 	});
 }
 
-async function addToAppModule() {
-	await transformFile(APP_MODULE_FILE_PATH, (content) => {
+async function addToAppModule(dirs: Dirs) {
+	await transformFile(dirs.appModuleFilePath, (content) => {
 		// Add imports
 		content = `import { PageNotFoundComponent } from './shared/404/404.component';\n${content}`;
 		content = `import { AppsDataService } from './apps/apps-data.service';\n${content}`;
@@ -247,33 +267,41 @@ export async function getJoinedComponentDefs(): Promise<JoinedDefinition[]> {
  * redirect to the login page.
  */
 
-runFunctionIfCalledFromScript(async () => {
+export async function generateRenderTimePage(
+	baseDir: string,
+	submoduleName: string
+) {
+	const dirs = getRenderTimePageDirs(baseDir, submoduleName);
+
 	const tagName = 'generate-render-time-page';
 	info(tagName, 'Getting browser module');
-	await addBrowserModule();
+	await addBrowserModule(dirs);
 	info(tagName, 'Adding to app module');
-	await addToAppModule();
+	await addToAppModule(dirs);
 	info(tagName, 'Disabling support button');
-	await disableSupportButton();
+	await disableSupportButton(dirs);
 	info(tagName, 'Removing 404 page from shared module');
-	await remove404PageFromModule();
+	await remove404PageFromModule(dirs);
 	info(tagName, 'Making chart deterministic');
-	await makeChartDeterministic();
+	await makeChartDeterministic(dirs);
 	info(tagName, 'Getting component defs');
 	const componentDefs = await getJoinedComponentDefs();
 	info(tagName, 'Generating render timing html');
-	const renderTimeHTML = await generateRenderTimeHTML(componentDefs);
+	const renderTimeHTML = await generateRenderTimeHTML(
+		componentDefs,
+		dirs.submodulePath
+	);
 	info(tagName, 'Writing render timing HTML');
-	await writeRenderTimeHTML(renderTimeHTML);
+	await writeRenderTimeHTML(renderTimeHTML, dirs);
 	info(tagName, 'Adding change detector function');
-	await addChangeDetectorFunction();
+	await addChangeDetectorFunction(dirs);
 	info(tagName, 'Adding default values to file');
-	await addDefaultValuesToFile(componentDefs);
+	await addDefaultValuesToFile(componentDefs, dirs);
 	info(tagName, 'Adding default values to class');
-	await addDefaultValuesToClass(componentDefs);
+	await addDefaultValuesToClass(componentDefs, dirs);
 	info(tagName, 'Disabling authentication');
-	await disableAuthentication();
+	await disableAuthentication(dirs);
 	info(tagName, 'Adding toggles to class');
-	await addTogglesToClass(componentDefs);
+	await addTogglesToClass(componentDefs, dirs);
 	success(tagName, 'Done generating render timing page');
-}, __filename);
+}

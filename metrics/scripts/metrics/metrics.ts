@@ -14,8 +14,6 @@ import {
 } from '../lib/makfy-helper';
 import { Bundle, BUNDLES } from '../lib/constants';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
-import { makeChartDeterministic } from '../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
-import { makeChartDeterministic as makeBasicChartDeterministic } from '../../collectors/cow-components-basic/dashboard/lib/render-time/generate-render-time-page';
 import { writeFile } from '../../collectors/shared/files';
 import {
 	cowComponentBundles,
@@ -58,6 +56,10 @@ import {
 	multiFrameworkSerialBundleMap,
 } from './bundles/multi-framework';
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
+import {
+	getRenderTimePageDirs,
+	makeChartDeterministic,
+} from '../../collectors/shared/dashboard/generate-render-time-page';
 
 const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
 	...cowComponentsInstallBundleMap,
@@ -89,14 +91,16 @@ const serialBundleMap: SerialBundleMap<Bundle> = {
 	...multiFrameworkSerialBundleMap,
 };
 
-async function buildDemoRepo(exec: ExecFunction, isBasic: boolean) {
-	const dashboardCtx = await exec(
-		`cd ${isBasic ? BASIC_DASHBOARD_DIR : DASHBOARD_DIR}`
-	);
+async function buildDemoRepo(
+	exec: ExecFunction,
+	baseDir: string,
+	submoduleName: string
+) {
+	const dashboardCtx = await exec(`cd ${baseDir}`);
 	await dashboardCtx.keepContext('git reset --hard');
 
 	await exec('? Making chart deterministic');
-	await (isBasic ? makeBasicChartDeterministic : makeChartDeterministic)();
+	makeChartDeterministic(getRenderTimePageDirs(baseDir, submoduleName));
 
 	await exec('? Building design library and wrappers');
 	await dashboardCtx.keepContext('makfy demo-repo');
@@ -175,7 +179,11 @@ export const metris = preserveCommandBuilder(
 			hasCowComponentBundle &&
 			(!(await fs.pathExists(DEMO_REPO_DIR)) || args['no-cache'])
 		) {
-			await buildDemoRepo(exec, isBasic);
+			await buildDemoRepo(
+				exec,
+				dashboardDir,
+				isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard'
+			);
 		}
 	}
 

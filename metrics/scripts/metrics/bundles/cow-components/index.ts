@@ -1,7 +1,6 @@
 import * as path from 'path';
 
-import { getComponents as getCowComponents } from '../../../../collectors/cow-components/dashboard/lib/get-components';
-import { DASHBOARD_DIR } from '../../../../collectors/shared/constants';
+import { DASHBOARD_DIR, SUBMODULES_DIR } from '../../../../collectors/shared/constants';
 import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
@@ -10,7 +9,7 @@ import {
 	createAngularSetupCommand,
 	getAngularDirs,
 } from '../../../lib/cow-component-setups/angular/angular';
-import { createDashboardMetricsCommand } from '../../../lib/cow-component-setups/dashboard/dashboard';
+import { createDashboardMetricsCommand, getComponents as getCowComponents } from '../../../lib/cow-component-setups/dashboard/dashboard';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
 import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
 import { getCowComponentsDirs } from '../../../lib/cow-component-setups/shared';
@@ -26,6 +25,7 @@ import {
 	SerialBundleMap,
 } from '../../../lib/types';
 
+const SUBMODULE_NAME = '30mhz-dashboard';
 const __COW_COMPONENTS_WRAPPERS = [
 	'angular',
 	'react',
@@ -52,7 +52,7 @@ export const cowComponentBundles = [
 const installCreator = getBundleInstallCommandCreator('cow-components');
 const metricsCreator = getBundleMetricsCommandCreator('cow-components', {
 	getComponents() {
-		return getCowComponents();
+		return getCowComponents(path.join(SUBMODULES_DIR, SUBMODULE_NAME));
 	},
 	indexJsFileName: 'index.bundle.js',
 	urlPath: '/index.html',
@@ -112,7 +112,8 @@ export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> =
 	dashboard: createDashboardMetricsCommand(
 		'dashboard',
 		DASHBOARD_DIR,
-		'cow-components'
+		'cow-components',
+		SUBMODULE_NAME
 	),
 	'cow-components-angular': metricsCreator('cow-components-angular', {
 		demoDir: () => getAngularDirs(DASHBOARD_DIR).angularMetadataBundle,

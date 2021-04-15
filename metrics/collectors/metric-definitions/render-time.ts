@@ -15,13 +15,13 @@ import {
 	SLOWDOWN_FACTOR_RENDER_TIME,
 	WAIT_AFTER_IDLE_TIME,
 } from '../shared/settings';
-import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
 import { RenderTime } from '../shared/types';
 import { getDatasetStats } from '../shared/stats';
 import { PerformanceEvent, PerformanceProfile } from './load-time';
 import { assert } from '../shared/testing';
 import { readFile } from '../shared/files';
 import { MAX_PUPPETEER_BROWSER_LAUNCH_TRIES } from '../shared/constants';
+import { doWithServer } from '../shared/dashboard/serve-dashboard-dist';
 
 interface PuppeteerWindow extends Window {
 	requestIdleCallback(

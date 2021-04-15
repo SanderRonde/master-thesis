@@ -1,6 +1,6 @@
-import { getJoinedComponentDefs } from '../../../../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
-import { getSanitizedComponentName } from '../../../../../collectors/cow-components/dashboard/lib/render-time/lib/generate-render-time-html';
-import { JoinedDefinition } from '../../../../../collectors/cow-components/dashboard/lib/render-time/lib/get-component-tag';
+import { getSanitizedComponentName } from '../../../../../collectors/shared/dashboard/generate-render-time-html';
+import { getJoinedComponentDefs } from '../../../../../collectors/shared/dashboard/generate-render-time-page';
+import { JoinedDefinition } from '../../../../../collectors/shared/dashboard/get-component-tag';
 import { defaultValuesTemplate } from '../../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
 import { ifTrue } from '../../../helpers';
 

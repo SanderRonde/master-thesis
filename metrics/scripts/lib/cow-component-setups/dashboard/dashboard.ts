@@ -2,34 +2,45 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 import { registerSetupCommand } from '../../../lib/makfy-helper';
-import {
-	cpxAsync,
-	omitArr,
-	rimrafAsync,
-	TS_NODE_COMMAND,
-} from '../../../lib/helpers';
+import { cpxAsync, rimrafAsync } from '../../../lib/helpers';
 import { readFile, writeFile } from '../../../../collectors/shared/files';
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
-import { METRICS } from '../../constants';
 import { concatIntoBundle } from '../../cow-components-shared';
-import { METRICS_DIR } from '../../../../collectors/shared/constants';
+import { SUBMODULES_DIR } from '../../../../collectors/shared/constants';
+import {
+	collectCyclomaticComplexity,
+	collectIsCSSFramework,
+	collectLinesOfCode,
+	collectLoadTime,
+	collectMaintainability,
+	CollectorArgs,
+	collectSize,
+	collectStructuralComplexity,
+} from '../../bundles-shared';
+import {
+	duplicateRenderTimeKeys,
+	getDashboardFileStructuralComplexity,
+} from '../../../../collectors/shared/cow-components-shared';
+import { createTSProgram } from '../../../../collectors/shared/typescript';
+import {
+	ComponentFiles,
+	ReadFile,
+} from '../../../../collectors/metric-definitions/types';
+import { storeData } from '../../../../collectors/shared/storage';
+import { RenderTime } from '../../../../collectors/shared/types';
+import { getRenderTime } from '../../../../collectors/metric-definitions/render-time';
+import { generateRenderTimePage } from '../../../../collectors/shared/dashboard/generate-render-time-page';
 
 type BaseDirs = ReturnType<typeof getDashboardDirs>;
 
-function getDashboardDirs(baseDir: string, scriptsBaseDir: string) {
+function getDashboardDirs(baseDir: string, submoduleName: string) {
 	return {
 		baseDir,
 		distDir: path.join(baseDir, 'dist/dashboard'),
 		ignoredDir: path.join(baseDir, 'tmp'),
 		browsersListFile: path.join(baseDir, 'browserslist'),
 		angularProjectFile: path.join(baseDir, 'angular.json'),
-		// TODO: join?
-		scriptsDir: path.join(
-			METRICS_DIR,
-			'collectors',
-			scriptsBaseDir,
-			'dashboard'
-		),
+		submodulePath: path.join(SUBMODULES_DIR, submoduleName),
 	};
 }
 
@@ -93,12 +104,95 @@ async function dashboardPreBundleMetrics(
 	await concatIntoBundle(exec, dirs.distDir);
 }
 
+interface NGElement {
+	__ngContext__: any[];
+}
+
+async function getDashboardRenderTime(
+	components: ComponentFiles[],
+	sourceRoot: string
+): Promise<RenderTime> {
+	return await getRenderTime({
+		getComponents: () => components.map((c) => c.js.componentName),
+		sourceRoot: sourceRoot,
+		urlPath: '/404',
+		showComponent: async (component, page) => {
+			await page.$eval(
+				'page-not-found',
+				(element, componentName) => {
+					((element as unknown) as NGElement).__ngContext__
+						.find(
+							(c) =>
+								c &&
+								typeof c === 'object' &&
+								'setRenderOption' in c
+						)
+						.setRenderOption(componentName, true);
+				},
+				component
+			);
+		},
+	});
+}
+
+async function collectDashboardRenderTimes({
+	bundleCategory,
+	bundleName,
+	components,
+	demoPath,
+}: CollectorArgs) {
+	await storeData(
+		['metrics', bundleCategory, bundleName, 'render-time'],
+		duplicateRenderTimeKeys(
+			await getDashboardRenderTime(components, demoPath)
+		)
+	);
+}
+
+export const EXCLUDED_COMPONENTS = [
+	'LineChartComponent',
+	'PopupsComponent',
+	'ToastNotificationComponent',
+	'PopupComponent',
+	'ToastComponent',
+	'ThemeProviderComponent',
+	'FireworksComponent',
+	'ChartErrorComponent',
+];
+
+export async function getComponents(submodulePath: string) {
+	type ImportType = typeof import('../../../../submodules/30mhz-dashboard/src/lib/web-components/scripts/lib/get-cow-components');
+	const { getCowComponents, getMatchingComponent } = (await import(
+		path.join(
+			submodulePath,
+			'src/lib/web-components/scripts/lib/get-cow-components'
+		)
+	)) as {
+		getCowComponents: ImportType['getCowComponents'];
+		getMatchingComponent: ImportType['getMatchingComponent'];
+	};
+
+	const componentFiles = (await getCowComponents('src')).filter(
+		(c) => !EXCLUDED_COMPONENTS.includes(c.componentName)
+	);
+
+	const templateFiles = await getCowComponents('src', 'html');
+
+	return componentFiles.map((componentFile) => {
+		return {
+			js: componentFile,
+			html: getMatchingComponent(componentFile, templateFiles),
+		};
+	});
+}
+
 export function createDashboardMetricsCommand(
 	commandName: string,
 	baseDir: string,
-	scriptsBaseDir: string
+	category: string,
+	submoduleName: string
 ) {
-	const dirs = getDashboardDirs(baseDir, scriptsBaseDir);
+	const dirs = getDashboardDirs(baseDir, submoduleName);
 
 	return registerSetupCommand(commandName).run(async (exec, args) => {
 		const dashboardCtx = await exec(`cd ${baseDir}`);
@@ -108,37 +202,52 @@ export function createDashboardMetricsCommand(
 		await dashboardPreBundleMetrics(exec, dirs, args['no-cache']);
 
 		await exec('? Collecting non time sensitive metrics');
-		await Promise.all(
-			omitArr(METRICS, 'render-time').map((metric) => {
-				return exec(
-					`${TS_NODE_COMMAND} ${path.join(
-						dirs.scriptsDir,
-						`${metric}.ts`
-					)}`
-				);
-			})
+		const components = await getComponents(dirs.submodulePath);
+
+		const collectorArgs: CollectorArgs = {
+			bundleCategory: category,
+			bundleName: commandName,
+			components,
+			demoPath: dirs.distDir,
+			basePath: '',
+		};
+
+		await collectIsCSSFramework(collectorArgs, {});
+
+		const tsProgram = await createTSProgram(
+			components.map((component) => component.js.filePath)
+		);
+		const structuralComplexityArgs = {
+			tsProgram: tsProgram,
+			baseDir: baseDir,
+		};
+		await collectStructuralComplexity(collectorArgs, (file: ReadFile) =>
+			getDashboardFileStructuralComplexity(file, structuralComplexityArgs)
 		);
 
-		await exec('? Collecting load time');
-		await exec(
-			`${TS_NODE_COMMAND} ${path.join(dirs.scriptsDir, `load-time.ts`)}`
-		);
+		await collectCyclomaticComplexity(collectorArgs);
+
+		await collectLinesOfCode(collectorArgs);
+
+		await collectMaintainability(collectorArgs);
+
+		await collectSize(collectorArgs, {
+			indexJsFileName: 'bundle.js',
+		});
+
+		await collectLoadTime(collectorArgs, {
+			indexJsFileName: 'bundle.js',
+			urlPath: '/index.html',
+		});
 
 		await dashboardCtx.keepContext('git reset --hard');
 
 		await exec('? Preparing for render time measuring');
-		await exec(
-			`${TS_NODE_COMMAND} ${path.join(
-				dirs.scriptsDir,
-				`lib/render-time/generate-render-time-page.ts`
-			)}`
-		);
+		await generateRenderTimePage(baseDir, submoduleName);
 
 		await buildDashboard(exec, dirs, 'render-time', args['no-cache']);
 
-		await exec(
-			`${TS_NODE_COMMAND} ${path.join(dirs.scriptsDir, `render-time.ts`)}`
-		);
+		await collectDashboardRenderTimes(collectorArgs);
 
 		await dashboardCtx.keepContext('git reset --hard');
 	});

@@ -131,7 +131,7 @@ async function getFileDependencies(
 	);
 }
 
-export async function getFileStructuralComplexity(
+export async function getDashboardFileStructuralComplexity(
 	file: ReadFile,
 	args: {
 		tsProgram: ts.Program;

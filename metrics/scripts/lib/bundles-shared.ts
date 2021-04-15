@@ -38,7 +38,7 @@ import {
 	isAbsolute,
 } from '../../collectors/shared/cow-components-shared';
 
-interface CollectorArgs {
+export interface CollectorArgs {
 	bundleCategory: string;
 	bundleName: string;
 	components: ComponentFiles[];
@@ -158,15 +158,13 @@ async function getFileStructuralComplexity(file: ReadFile): Promise<number> {
 	).length;
 }
 
-async function collectStructuralComplexity({
-	bundleCategory,
-	bundleName,
-	components,
-}: CollectorArgs) {
-	const metrics = await iterateOverBundle(
-		components,
-		getFileStructuralComplexity
-	);
+export async function collectStructuralComplexity(
+	{ bundleCategory, bundleName, components }: CollectorArgs,
+	getComplexityFunction: (
+		file: ReadFile
+	) => Promise<number> = getFileStructuralComplexity
+) {
+	const metrics = await iterateOverBundle(components, getComplexityFunction);
 
 	await storeData(
 		['metrics', bundleCategory, bundleName, 'structural-complexity'],
@@ -174,7 +172,7 @@ async function collectStructuralComplexity({
 	);
 }
 
-async function collectCyclomaticComplexity({
+export async function collectCyclomaticComplexity({
 	bundleCategory,
 	bundleName,
 	components,
@@ -190,7 +188,7 @@ async function collectCyclomaticComplexity({
 	);
 }
 
-async function collectLinesOfCode({
+export async function collectLinesOfCode({
 	bundleCategory,
 	bundleName,
 	components,
@@ -203,7 +201,7 @@ async function collectLinesOfCode({
 	);
 }
 
-async function collectMaintainability({
+export async function collectMaintainability({
 	bundleCategory,
 	bundleName,
 	components,
@@ -216,7 +214,7 @@ async function collectMaintainability({
 	);
 }
 
-async function collectSize(
+export async function collectSize(
 	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {
@@ -232,7 +230,7 @@ async function collectSize(
 	await storeData(['metrics', bundleCategory, bundleName, 'size'], size);
 }
 
-async function collectLoadTime(
+export async function collectLoadTime(
 	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {
@@ -248,7 +246,7 @@ async function collectLoadTime(
 	);
 }
 
-async function collectIsCSSFramework(
+export async function collectIsCSSFramework(
 	{ bundleCategory, bundleName }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {
@@ -258,7 +256,7 @@ async function collectIsCSSFramework(
 	);
 }
 
-async function collectRenderTimes(
+export async function collectRenderTimes(
 	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {

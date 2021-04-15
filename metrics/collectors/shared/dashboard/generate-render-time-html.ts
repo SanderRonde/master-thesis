@@ -1,4 +1,4 @@
-import { getComponents } from '../../get-components';
+import { getComponents } from '../../../scripts/lib/cow-component-setups/dashboard/dashboard';
 import { getComponentTag, JoinedDefinition } from './get-component-tag';
 
 export const DEFAULT_VALUE_PREFIX = 'defaultValues';
@@ -8,7 +8,7 @@ const SELF_CLOSING_TAGS = [
 	'area',
 	'base',
 	'br',
-	' col',
+	' ol',
 	'embed',
 	'hr',
 	'img',
@@ -25,8 +25,11 @@ export function getSanitizedComponentName(component: JoinedDefinition) {
 	return component.tagName.replace(/[^a-zA-Z]/g, '');
 }
 
-export async function generateRenderTimeHTML(components: JoinedDefinition[]) {
-	const cowComponents = await getComponents();
+export async function generateRenderTimeHTML(
+	components: JoinedDefinition[],
+	submodulePath: string
+) {
+	const cowComponents = await getComponents(submodulePath);
 	const componentsHTML = await Promise.all(
 		components.map(
 			async (component) =>
