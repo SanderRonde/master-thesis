@@ -1,4 +1,3 @@
-- Add Vue libraries
 - Add PrimeVue
 - Update frameworks in paper
 - Update selection of frameworks in paper
