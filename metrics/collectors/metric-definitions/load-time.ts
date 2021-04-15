@@ -1,16 +1,16 @@
 import * as fs from 'fs-extra';
 
-import { generateTempFileName } from './helpers';
-import { info } from './log';
+import { generateTempFileName } from '../shared/helpers';
+import { info } from '../shared/log';
 import {
 	KEEP_PROFILES,
 	LOAD_TIME_PERFORMANCE_MEASURES,
 	SLOWDOWN_FACTOR_LOAD_TIME,
-} from './settings';
-import { LoadTime } from './types';
-import { getDatasetStats } from './stats';
-import { readFile } from './files';
-import { createPage } from './render-time';
+} from '../shared/settings';
+import { LoadTime } from '../shared/types';
+import { getDatasetStats } from '../shared/stats';
+import { readFile } from '../shared/files';
+import { createPage } from '../shared/render-time';
 import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
 
 interface EvaluateScriptArgs {

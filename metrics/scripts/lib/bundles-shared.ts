@@ -2,7 +2,6 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import { collectBundleMetrics as iterateOverBundle } from '../../collectors/cow-components/dashboard/lib/shared';
-import { getFileLinesOfCode } from '../../collectors/cow-components/dashboard/lines-of-code';
 import { getFileMaintainability } from '../../collectors/cow-components/dashboard/maintainability';
 import {
 	findFilePath,
@@ -24,7 +23,7 @@ import {
 	registerMetricsCommand,
 	registerSetupCommand,
 } from './makfy-helper';
-import { getLoadTimeForDir } from '../../collectors/shared/load-time';
+import { getLoadTimeForDir } from '../../collectors/metric-definitions/load-time';
 import { getRenderTime } from '../../collectors/shared/render-time';
 import { STRUCTURAL_COMPLEXITY_DEPTH } from '../../collectors/shared/settings';
 import ts from 'typescript';
@@ -32,7 +31,11 @@ import { readFile } from '../../collectors/shared/files';
 import { createComponentFileFromSvelte } from '../../collectors/svelte/shared/util';
 import { CommandBuilderWithName } from './types';
 import { getFileCyclomaticComplexity } from '../../collectors/metric-definitions/cyclomatic-complexity';
-import { ComponentFiles, ReadFile } from '../../collectors/metric-definitions/types';
+import {
+	ComponentFiles,
+	ReadFile,
+} from '../../collectors/metric-definitions/types';
+import { getFileLinesOfCode } from '../../collectors/metric-definitions/lines-of-code';
 
 interface CollectorArgs {
 	bundleCategory: string;

@@ -18,7 +18,7 @@ import {
 import { doWithServer } from '../cow-components/dashboard/lib/render-time/serve-dashboard-dist';
 import { RenderTime } from './types';
 import { getDatasetStats } from './stats';
-import { PerformanceEvent, PerformanceProfile } from './load-time';
+import { PerformanceEvent, PerformanceProfile } from '../metric-definitions/load-time';
 import { assert } from './testing';
 import { readFile } from './files';
 import { MAX_PUPPETEER_BROWSER_LAUNCH_TRIES } from './constants';

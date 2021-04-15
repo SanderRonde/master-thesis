@@ -4,7 +4,7 @@ import { BASIC_DASHBOARD_DIR } from '../../shared/constants';
 import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
 import { LoadTime } from '../../shared/types';
-import { getLoadTimeForDir } from '../../shared/load-time';
+import { getLoadTimeForDir } from '../../metric-definitions/load-time';
 
 const DASHBOARD_DIST_DIR = path.join(BASIC_DASHBOARD_DIR, 'dist', 'dashboard');
 
