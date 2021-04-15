@@ -55,3 +55,6 @@
 [submodule "metrics/submodules/vuetify"]
 	path = metrics/submodules/vuetify
 	url = https://github.com/vuetifyjs/vuetify
+[submodule "metrics/submodules/quasar"]
+	path = metrics/submodules/quasar
+	url = https://github.com/quasarframework/quasar
