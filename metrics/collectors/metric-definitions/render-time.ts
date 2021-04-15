@@ -100,7 +100,7 @@ async function collectComponentProfile(
 	showComponent: (
 		componentName: string,
 		page: puppeteer.Page
-	) => Promise<void>,
+	) => Promise<void>
 ): Promise<PerformanceProfile> {
 	const profilePath = await generateTempFileName('json', componentName);
 
@@ -294,7 +294,7 @@ async function collectRuntimeRenderTimes({
 				const performanceProfile = await collectComponentProfile(
 					componentName,
 					page,
-					showComponent,
+					showComponent
 				);
 
 				debug('render-time', '\tExtracting render time');

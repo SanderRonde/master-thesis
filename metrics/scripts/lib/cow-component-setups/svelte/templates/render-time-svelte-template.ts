@@ -58,6 +58,10 @@ const visibilityToggleTemplate = (components: JoinedDefinition[]) => `
 `;
 
 const visibilitySetterTemplate = (components: JoinedDefinition[]) => `
+window.availableComponents = [${components
+	.map((component) => `'${component.component.name}'`)
+	.join(', ')}]
+
 	window.setVisibleComponent = (name: string, visible: boolean) => {
 		switch (name) {
 			${components

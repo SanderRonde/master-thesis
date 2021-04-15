@@ -51,6 +51,10 @@ const App: React.FC<{}> = () => {
 	window.setVisibleComponent = (name: string|null) => {
 		setVisibleComponent(name);
 	}
+
+	window.availableComponents = [${components
+		.map((component) => `'${component.component.name}'`)
+		.join(', ')}]
 	
 	return (
 		<div>
