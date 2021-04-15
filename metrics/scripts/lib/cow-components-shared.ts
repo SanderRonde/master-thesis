@@ -1,7 +1,11 @@
 import { ExecFunction } from 'makfy/dist/lib/schema/runtime';
 import * as path from 'path';
 
-import { BASIC_DASHBOARD_DIR, DASHBOARD_DIR, METRICS_DIR } from '../../collectors/shared/constants';
+import {
+	BASIC_DASHBOARD_DIR,
+	DASHBOARD_DIR,
+	METRICS_DIR,
+} from '../../collectors/shared/constants';
 import { TS_NODE_COMMAND } from './helpers';
 
 /**
@@ -17,7 +21,10 @@ export const SAME_AS_DASHBOARD_METRICS = [
 ] as const;
 
 export const DEMO_REPO_DIR = path.join(DASHBOARD_DIR, 'dist/demo-repo');
-export const DEMO_REPO_DIR_BASIC = path.join(BASIC_DASHBOARD_DIR, 'dist/demo-repo');
+export const DEMO_REPO_DIR_BASIC = path.join(
+	BASIC_DASHBOARD_DIR,
+	'dist/demo-repo'
+);
 
 export async function collectSameAsDashboardMetrics(
 	exec: ExecFunction,
@@ -49,3 +56,12 @@ export async function collectSameAsDashboardBasicMetrics(
 	}
 }
 
+export function getToggleableDir(baseDir: string, framework: string) {
+	return path.join(
+		baseDir,
+		'dist/demo-repo',
+		framework,
+		'metrics',
+		'toggleable'
+	);
+}

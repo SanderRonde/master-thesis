@@ -1,11 +1,15 @@
 import * as path from 'path';
 
 import { getComponents as getCowComponents } from '../../../../collectors/cow-components/dashboard/lib/get-components';
+import { DASHBOARD_DIR } from '../../../../collectors/shared/constants';
 import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 } from '../../../lib/bundles-shared';
-import { DEMO_REPO_DIR } from '../../../lib/cow-components-shared';
+import {
+	DEMO_REPO_DIR,
+	getToggleableDir,
+} from '../../../lib/cow-components-shared';
 import {
 	ConstArrItems,
 	ParallelBundleMap,
@@ -96,12 +100,12 @@ export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> =
 			path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo'),
 	}),
 	'cow-components-native': metricsCreator('cow-components-native', {
-		demoDir: () => NATIVE_DEMO_METRICS_TOGGLEABLE_DIR,
+		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'native'),
 	}),
 	'cow-components-react': metricsCreator('cow-components-react', {
-		demoDir: () => REACT_DEMO_METRICS_TOGGLEABLE_DIR,
+		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'react'),
 	}),
 	'cow-components-svelte': metricsCreator('cow-components-svelte', {
-		demoDir: () => SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
+		demoDir: () => getToggleableDir(DASHBOARD_DIR, 'svelte'),
 	}),
 };

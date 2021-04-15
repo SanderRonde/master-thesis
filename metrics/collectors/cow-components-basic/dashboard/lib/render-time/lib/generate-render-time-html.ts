@@ -1,4 +1,4 @@
-import { getComponents } from '../../get-components';
+import { getBasicCowComponents } from '../../get-components';
 import { getComponentTag, JoinedDefinition } from './get-component-tag';
 
 export const DEFAULT_VALUE_PREFIX = 'defaultValues';
@@ -26,7 +26,7 @@ export function getSanitizedComponentName(component: JoinedDefinition) {
 }
 
 export async function generateRenderTimeHTML(components: JoinedDefinition[]) {
-	const cowComponents = await getComponents();
+	const cowComponents = await getBasicCowComponents();
 	const componentsHTML = await Promise.all(
 		components.map(
 			async (component) =>

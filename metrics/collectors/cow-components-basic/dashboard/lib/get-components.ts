@@ -15,7 +15,7 @@ export const EXCLUDED_COMPONENTS = [
 	'ChartErrorComponent',
 ];
 
-export async function getComponents(): Promise<ComponentFiles[]> {
+export async function getBasicCowComponents(): Promise<ComponentFiles[]> {
 	const componentFiles = (await getCowComponents('src')).filter(
 		(c) => !EXCLUDED_COMPONENTS.includes(c.componentName)
 	);

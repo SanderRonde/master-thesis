@@ -2,7 +2,7 @@ import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
 import { RenderTime } from '../../shared/types';
 import { getRenderTime } from '../../metric-definitions/render-time';
-import { getComponents } from '../dashboard/lib/get-components';
+import { getBasicCowComponents } from '../dashboard/lib/get-components';
 import { STORE_NAME } from './lib/constants';
 import { REACT_DEMO_METRICS_TOGGLEABLE_DIR } from '../../../scripts/metrics/bundles/cow-components/cow-components-react';
 import { ComponentFiles } from '../../metric-definitions/types';
@@ -29,7 +29,7 @@ export async function getDashboardRenderTime(
 }
 
 runFunctionIfCalledFromScript(async () => {
-	const components = await getComponents();
+	const components = await getBasicCowComponents();
 	await storeData(
 		['metrics', 'cow-components-basic', STORE_NAME, 'render-time'],
 		duplicateRenderTimeKeys(await getDashboardRenderTime(components))

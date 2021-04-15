@@ -3,7 +3,7 @@ import {
 	collectBundleMetrics,
 } from '../../../shared/cow-components-shared';
 import { DatasetStats } from '../../../shared/stats';
-import { getComponents } from './get-components';
+import { getBasicCowComponents } from './get-components';
 
 export async function collectDashboardMetrics<A>(
 	getFileMetrics: (file: ReadFile, args: A) => number | Promise<number>,
@@ -12,5 +12,5 @@ export async function collectDashboardMetrics<A>(
 	components: Record<string, number>;
 	stats: DatasetStats;
 }> {
-	return collectBundleMetrics(await getComponents(), getFileMetrics, getArgs);
+	return collectBundleMetrics(await getBasicCowComponents(), getFileMetrics, getArgs);
 }

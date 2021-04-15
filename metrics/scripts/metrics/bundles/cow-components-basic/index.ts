@@ -1,29 +1,29 @@
 import * as path from 'path';
-import { getBundleInstallCommandCreator } from '../../../lib/bundles-shared';
+import { getBasicCowComponents } from '../../../../collectors/cow-components-basic/dashboard/lib/get-components';
+import { BASIC_DASHBOARD_DIR } from '../../../../collectors/shared/constants';
+import {
+	getBundleInstallCommandCreator,
+	getBundleMetricsCommandCreator,
+} from '../../../lib/bundles-shared';
 
-import { DEMO_REPO_DIR_BASIC } from '../../../lib/cow-components-shared';
+import {
+	DEMO_REPO_DIR_BASIC,
+	getToggleableDir,
+} from '../../../lib/cow-components-shared';
 import {
 	ConstArrItems,
 	ParallelBundleMap,
 	SerialBundleMap,
 } from '../../../lib/types';
 import {
+	ANGULAR_DEMO_DIR,
+	ANGULAR_METADATA_BUNDLE,
 	cowComponentsAngularInstall,
-	cowComponentsAngularMetrics,
 	cowComponentsAngularSetup,
 } from './cow-components-angular';
-import {
-	cowComponentsNativeMetrics,
-	cowComponentsNativeSetup,
-} from './cow-components-native';
-import {
-	cowComponentsReactMetrics,
-	cowComponentsReactSetup,
-} from './cow-components-react';
-import {
-	cowComponentsSvelteMetrics,
-	cowComponentsSvelteSetup,
-} from './cow-components-svelte';
+import { cowComponentsNativeSetup } from './cow-components-native';
+import { cowComponentsReactSetup } from './cow-components-react';
+import { cowComponentsSvelteSetup } from './cow-components-svelte';
 import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_BASIC_WRAPPERS = [
@@ -46,6 +46,13 @@ export type CowComponentBasicBundle = ConstArrItems<
 >;
 
 const installCreator = getBundleInstallCommandCreator('cow-components-basic');
+const metricsCreator = getBundleMetricsCommandCreator('cow-components-basic', {
+	getComponents() {
+		return getBasicCowComponents();
+	},
+	indexJsFileName: 'index.bundle.js',
+	urlPath: '/index.html',
+});
 
 // Bundles
 export const cowComponentBasicBundles = [
@@ -85,8 +92,28 @@ export const cowComponentsBasicParallelBundleMap: ParallelBundleMap<CowComponent
 // Serial tasks
 export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasicBundle> = {
 	'basic-dashboard': dashboardMetrics,
-	'cow-components-basic-angular': cowComponentsAngularMetrics,
-	'cow-components-basic-native': cowComponentsNativeMetrics,
-	'cow-components-basic-react': cowComponentsReactMetrics,
-	'cow-components-basic-svelte': cowComponentsSvelteMetrics,
+	'cow-components-basic-angular': metricsCreator(
+		'cow-components-basic-angular',
+		{
+			demoDir: () => ANGULAR_METADATA_BUNDLE,
+			indexJsFileName: 'bundle.js',
+			renderTimeDemoDir: () =>
+				path.join(ANGULAR_DEMO_DIR, 'dist/angular-demo'),
+		}
+	),
+	'cow-components-basic-native': metricsCreator(
+		'cow-components-basic-native',
+		{
+			demoDir: () => getToggleableDir(BASIC_DASHBOARD_DIR, 'native'),
+		}
+	),
+	'cow-components-basic-react': metricsCreator('cow-components-basic-react', {
+		demoDir: () => getToggleableDir(BASIC_DASHBOARD_DIR, 'react'),
+	}),
+	'cow-components-basic-svelte': metricsCreator(
+		'cow-components-basic-svelte',
+		{
+			demoDir: () => getToggleableDir(BASIC_DASHBOARD_DIR, 'svelte'),
+		}
+	),
 };

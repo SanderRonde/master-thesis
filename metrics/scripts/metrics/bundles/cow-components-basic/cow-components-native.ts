@@ -1,16 +1,9 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import {
-	registerMetricsCommand,
-	registerSetupCommand,
-} from '../../../lib/makfy-helper';
-import {
-	collectSameAsDashboardBasicMetrics,
-	DEMO_REPO_DIR_BASIC,
-} from '../../../lib/cow-components-shared';
-import { METRICS_DIR } from '../../../../collectors/shared/constants';
-import { rimrafAsync, TS_NODE_COMMAND } from '../../../lib/helpers';
+import { registerSetupCommand } from '../../../lib/makfy-helper';
+import { DEMO_REPO_DIR_BASIC } from '../../../lib/cow-components-shared';
+import { rimrafAsync } from '../../../lib/helpers';
 import { getRenderTimeJsTemplate } from '../../../../collectors/cow-components-basic/cow-components-native/templates/render-time-js-template';
 import { getRenderTimeHTMLTemplate } from '../../../../collectors/cow-components-basic/cow-components-native/templates/render-time-html-template';
 import { writeFile } from '../../../../collectors/shared/files';
@@ -20,10 +13,6 @@ const DEMO_METRICS_DIR = path.join(DEMO_DIR, 'metrics');
 export const NATIVE_DEMO_METRICS_TOGGLEABLE_DIR = path.join(
 	DEMO_METRICS_DIR,
 	'toggleable'
-);
-const BASE_DIR = path.join(
-	METRICS_DIR,
-	`collectors/cow-components-basic/cow-components-native`
 );
 
 export const cowComponentsNativeSetup = registerSetupCommand(
@@ -61,17 +50,4 @@ export const cowComponentsNativeSetup = registerSetupCommand(
 			'index.bundle.js'
 		)}`
 	);
-});
-
-export const cowComponentsNativeMetrics = registerMetricsCommand(
-	'cow-components-native'
-).run(async (exec) => {
-	await collectSameAsDashboardBasicMetrics(exec, 'native');
-
-	await exec('? Collecting bundle metadata metrics');
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `load-time.ts`)}`);
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `size.ts`)}`);
-
-	await exec('? Collecting render time metrics');
-	await exec(`${TS_NODE_COMMAND} ${path.join(BASE_DIR, `render-time.ts`)}`);
 });

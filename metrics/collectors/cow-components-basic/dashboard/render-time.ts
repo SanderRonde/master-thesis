@@ -1,6 +1,6 @@
 import { runFunctionIfCalledFromScript } from '../../shared/helpers';
 import { storeData } from '../../shared/storage';
-import { getComponents } from './lib/get-components';
+import { getBasicCowComponents } from './lib/get-components';
 import { RenderTime } from '../../shared/types';
 import { getRenderTime } from '../../metric-definitions/render-time';
 import { DASHBOARD_DIST_DIR } from './lib/constants';
@@ -38,7 +38,7 @@ export async function getDashboardRenderTime(
 }
 
 runFunctionIfCalledFromScript(async () => {
-	const components = await getComponents();
+	const components = await getBasicCowComponents();
 	await storeData(
 		['metrics', 'cow-components-basic', 'dashboard-basic', 'render-time'],
 		duplicateRenderTimeKeys(await getDashboardRenderTime(components))
