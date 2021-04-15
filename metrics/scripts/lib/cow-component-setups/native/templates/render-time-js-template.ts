@@ -40,6 +40,10 @@ case '${component.component.name}':
 	break;`;
 
 const appTemplate = (components: JoinedDefinition[]) => `
+window.availableComponents = [${components
+	.map((component) => `'${component.component.name}'`)
+	.join(', ')}]
+
 window.setVisibleComponent = (name: string, visible: boolean) => {
 	switch (name) {
 		${components.map((component) => componentCaseTemplate(component)).join('\n')}
