@@ -1,4 +1,3 @@
-- Increase repetitions
 - Randomize render time and load time order
 - Increase number of components
 - Add "real case"

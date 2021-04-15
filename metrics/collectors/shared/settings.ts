@@ -37,7 +37,7 @@ export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 5;
  * Number of times to measure load time performance
  * before generating a report off of the avg
  */
-export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 5;
+export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
 /**
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
@@ -58,7 +58,7 @@ export const GOLDEN_FRAME_MAX_DIFF_PIXELS = 0;
  * The number of times to measure render time performance
  * for the same component, allowing for some stabilization
  */
-export const RENDER_TIME_MEASURES = DEVELOPMENT ? 1 : 5;
+export const RENDER_TIME_MEASURES = DEVELOPMENT ? 1 : 30;
 /**
  * The height of the frame for the render time test
  */
