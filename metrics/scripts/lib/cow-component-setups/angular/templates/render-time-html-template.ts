@@ -6,8 +6,8 @@ import {
 } from '../../../../../collectors/shared/dashboard/generate-render-time-html';
 import { getJoinedComponentDefs } from '../../../../../collectors/shared/dashboard/generate-render-time-page';
 
-export async function getRenderTimeHTMLTemplate() {
-	const components = await getJoinedComponentDefs();
+export async function getRenderTimeHTMLTemplate(submoduleName: string) {
+	const components = await getJoinedComponentDefs(submoduleName);
 	return `<div style="margin: 100px;">${(
 		await Promise.all(
 			components.map(async (component) => {

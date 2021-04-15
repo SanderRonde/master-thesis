@@ -61,8 +61,8 @@ const App: React.FC<{}> = () => {
 
 ReactDOM.render(<App />, document.getElementById('root'));`;
 
-export async function getRenderTimeJsTemplate() {
-	const components = await getJoinedComponentDefs();
+export async function getRenderTimeJsTemplate(submoduleName: string) {
+	const components = await getJoinedComponentDefs(submoduleName);
 	return `${importTemplate(components)}
 	${defsTemplate(components)}
 	${appTemplate(components)}

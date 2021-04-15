@@ -1,6 +1,9 @@
 import * as path from 'path';
 
-import { DASHBOARD_DIR, SUBMODULES_DIR } from '../../../../collectors/shared/constants';
+import {
+	DASHBOARD_DIR,
+	SUBMODULES_DIR,
+} from '../../../../collectors/shared/constants';
 import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
@@ -9,7 +12,10 @@ import {
 	createAngularSetupCommand,
 	getAngularDirs,
 } from '../../../lib/cow-component-setups/angular/angular';
-import { createDashboardMetricsCommand, getComponents as getCowComponents } from '../../../lib/cow-component-setups/dashboard/dashboard';
+import {
+	createDashboardMetricsCommand,
+	getComponents as getCowComponents,
+} from '../../../lib/cow-component-setups/dashboard/dashboard';
 import { createNativeSetupCommand } from '../../../lib/cow-component-setups/native/native';
 import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
 import { getCowComponentsDirs } from '../../../lib/cow-component-setups/shared';
@@ -91,19 +97,23 @@ export const cowComponentsInstallBundleMap: Partial<
 export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundle> = {
 	'cow-components-angular': createAngularSetupCommand(
 		'cow-components-angular',
-		DASHBOARD_DIR
+		DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 	'cow-components-native': createNativeSetupCommand(
 		'cow-components-native',
-		DASHBOARD_DIR
+		DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 	'cow-components-react': createReactSetupCommand(
 		'cow-components-react',
-		DASHBOARD_DIR
+		DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 	'cow-components-svelte': createSvelteSetupCommand(
 		'cow-components-svelte',
-		DASHBOARD_DIR
+		DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 };
 

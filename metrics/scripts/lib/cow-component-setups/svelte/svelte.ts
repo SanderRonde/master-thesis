@@ -9,7 +9,11 @@ import { writeFile } from '../../../../collectors/shared/files';
 import { getCowComponentsDirs } from '../shared';
 import { htmlTemplate } from '../../../../collectors/shared/templates';
 
-export function createSvelteSetupCommand(commandName: string, baseDir: string) {
+export function createSvelteSetupCommand(
+	commandName: string,
+	baseDir: string,
+	submoduleName: string
+) {
 	const {
 		demoMetricsDir,
 		frameworkDemoDir,
@@ -32,7 +36,7 @@ export function createSvelteSetupCommand(commandName: string, baseDir: string) {
 
 		await exec('? Generating Svelte');
 		const sveltePath = path.join(toggleableDir, 'App.svelte');
-		const svelteContent = await getRenderTimeSvelteTemplate();
+		const svelteContent = await getRenderTimeSvelteTemplate(submoduleName);
 		await writeFile(sveltePath, svelteContent);
 
 		await exec('? Copying CSS');

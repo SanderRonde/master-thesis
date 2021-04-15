@@ -8,7 +8,7 @@ import { writeFile } from '../../../../collectors/shared/files';
 import { getCowComponentsDirs } from '../shared';
 import { htmlTemplate } from '../../../../collectors/shared/templates';
 
-export function createReactSetupCommand(commandName: string, baseDir: string) {
+export function createReactSetupCommand(commandName: string, baseDir: string, submoduleName: string) {
 	const {
 		demoMetricsDir,
 		frameworkDemoDir,
@@ -21,7 +21,7 @@ export function createReactSetupCommand(commandName: string, baseDir: string) {
 
 		await exec('? Generating JS');
 		const indexJsFilePath = path.join(toggleableDir, 'index.tsx');
-		const indexJsContent = await getRenderTimeJsTemplate();
+		const indexJsContent = await getRenderTimeJsTemplate(submoduleName);
 		await writeFile(indexJsFilePath, indexJsContent);
 
 		await exec('? Generating HTML');

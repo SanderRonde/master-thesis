@@ -110,8 +110,8 @@ const htmlTemplate = (components: JoinedDefinition[]) => `
 			.join('\n\n')}
 `;
 
-export async function getRenderTimeSvelteTemplate() {
-	const components = await getJoinedComponentDefs();
+export async function getRenderTimeSvelteTemplate(submoduleName: string) {
+	const components = await getJoinedComponentDefs(submoduleName);
 	return `${scriptTemplate(components)}
 	${htmlTemplate(components)}`;
 }

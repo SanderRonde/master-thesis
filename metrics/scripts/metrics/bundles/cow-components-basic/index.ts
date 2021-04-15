@@ -106,19 +106,23 @@ export const cowComponentsBasicInstallBundleMap: Partial<
 export const cowComponentsBasicParallelBundleMap: ParallelBundleMap<CowComponentBasicBundle> = {
 	'cow-components-basic-angular': createAngularSetupCommand(
 		'cow-components-basic-angular',
-		BASIC_DASHBOARD_DIR
+		BASIC_DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 	'cow-components-basic-native': createNativeSetupCommand(
 		'cow-components-basic-native',
-		BASIC_DASHBOARD_DIR
+		BASIC_DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 	'cow-components-basic-react': createReactSetupCommand(
 		'cow-components-basic-react',
-		BASIC_DASHBOARD_DIR
+		BASIC_DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 	'cow-components-basic-svelte': createSvelteSetupCommand(
 		'cow-components-basic-svelte',
-		BASIC_DASHBOARD_DIR
+		BASIC_DASHBOARD_DIR,
+		SUBMODULE_NAME
 	),
 };
 
