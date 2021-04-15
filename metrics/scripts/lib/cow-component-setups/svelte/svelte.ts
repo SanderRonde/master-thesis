@@ -4,30 +4,17 @@ import * as fs from 'fs-extra';
 import { getRenderTimeIndexJsTemplate } from './templates/render-time-index-js-template';
 import { rimrafAsync } from '../../helpers';
 import { registerSetupCommand } from '../../makfy-helper';
-import { getRenderTimeIndexHTMLTemplate } from './templates/render-time-index-html-template';
 import { getRenderTimeSvelteTemplate } from './templates/render-time-svelte-template';
 import { writeFile } from '../../../../collectors/shared/files';
-
-export function getSvelteCowComponentsDirs(baseDir: string) {
-	const demoRepoDir = path.join(baseDir, 'dist/demo-repo');
-	const svelteDemoDir = path.join(demoRepoDir, 'svelte');
-	const demoMetricsDir = path.join(svelteDemoDir, 'metrics');
-	const toggleableDir = path.join(demoMetricsDir, 'toggleable');
-
-	return {
-		demoRepoDir,
-		svelteDemoDir,
-		demoMetricsDir,
-		toggleableDir,
-	};
-}
+import { getCowComponentsDirs } from '../shared';
+import { htmlTemplate } from '../../../../collectors/shared/templates';
 
 export function createSvelteSetupCommand(commandName: string, baseDir: string) {
 	const {
 		demoMetricsDir,
-		svelteDemoDir,
+		frameworkDemoDir,
 		toggleableDir,
-	} = getSvelteCowComponentsDirs(baseDir);
+	} = getCowComponentsDirs(baseDir, 'svelte');
 
 	return registerSetupCommand(commandName).run(async (exec) => {
 		await rimrafAsync(demoMetricsDir);
@@ -40,7 +27,7 @@ export function createSvelteSetupCommand(commandName: string, baseDir: string) {
 
 		await exec('? Generating index HTML');
 		const indexHtmlFilePath = path.join(toggleableDir, 'index.html');
-		const indexHtmlContent = await getRenderTimeIndexHTMLTemplate();
+		const indexHtmlContent = htmlTemplate();
 		await writeFile(indexHtmlFilePath, indexHtmlContent);
 
 		await exec('? Generating Svelte');
@@ -51,7 +38,7 @@ export function createSvelteSetupCommand(commandName: string, baseDir: string) {
 		await exec('? Copying CSS');
 		await fs.copy(
 			path.join(
-				svelteDemoDir,
+				frameworkDemoDir,
 				'packages/svelte/styles/cow-components.css'
 			),
 			path.join(toggleableDir, 'index.css')

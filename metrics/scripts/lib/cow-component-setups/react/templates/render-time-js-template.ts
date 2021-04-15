@@ -1,10 +1,9 @@
-import { ifTrue } from '../../../../scripts/lib/helpers';
-import { getComponentName } from '../../../../submodules/30mhz-dashboard-basic/src/lib/design-library-wrappers/react/scripts/template/declaration';
-import { defaultValuesTemplate } from '../../../../submodules/30mhz-dashboard-basic/src/lib/storybook/scripts/lib/templates/default-values-template';
-import { getJoinedComponentDefs } from '../../dashboard/lib/render-time/generate-render-time-page';
-import { getSanitizedComponentName } from '../../dashboard/lib/render-time/lib/generate-render-time-html';
-import { JoinedDefinition } from '../../dashboard/lib/render-time/lib/get-component-tag';
-import { FRAMEWORK_NAME } from '../lib/constants';
+import { ifTrue } from '../../../helpers';
+import { getComponentName } from '../../../../../submodules/30mhz-dashboard/src/lib/design-library-wrappers/react/scripts/template/declaration';
+import { defaultValuesTemplate } from '../../../../../submodules/30mhz-dashboard/src/lib/storybook/scripts/lib/templates/default-values-template';
+import { getJoinedComponentDefs } from '../../../../../collectors/cow-components/dashboard/lib/render-time/generate-render-time-page';
+import { getSanitizedComponentName } from '../../../../../collectors/cow-components/dashboard/lib/render-time/lib/generate-render-time-html';
+import { JoinedDefinition } from '../../../../../collectors/cow-components/dashboard/lib/render-time/lib/get-component-tag';
 
 const defsTemplate = (components: JoinedDefinition[]) => `
 ${components
@@ -23,7 +22,7 @@ const importTemplate = (
 import * as ReactDOM from 'react-dom';
 import { ${components.map((component) =>
 	getComponentName(component)
-)} } from '../../packages/${FRAMEWORK_NAME}';
+)} } from '../../packages/react';
 `;
 
 const componentTemplate = (component: JoinedDefinition) => `

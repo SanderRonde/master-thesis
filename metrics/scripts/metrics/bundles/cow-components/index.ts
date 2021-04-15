@@ -6,6 +6,7 @@ import {
 	getBundleInstallCommandCreator,
 	getBundleMetricsCommandCreator,
 } from '../../../lib/bundles-shared';
+import { createReactSetupCommand } from '../../../lib/cow-component-setups/react/react';
 import { createSvelteSetupCommand } from '../../../lib/cow-component-setups/svelte/svelte';
 import {
 	DEMO_REPO_DIR,
@@ -23,7 +24,6 @@ import {
 	cowComponentsAngularSetup,
 } from './cow-components-angular';
 import { cowComponentsNativeSetup } from './cow-components-native';
-import { cowComponentsReactSetup } from './cow-components-react';
 import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_WRAPPERS = [
@@ -77,7 +77,10 @@ export const cowComponentsInstallBundleMap: Partial<
 export const cowComponentsParallelBundleMap: ParallelBundleMap<CowComponentBundle> = {
 	'cow-components-angular': cowComponentsAngularSetup,
 	'cow-components-native': cowComponentsNativeSetup,
-	'cow-components-react': cowComponentsReactSetup,
+	'cow-components-react': createReactSetupCommand(
+		'cow-components-react',
+		DASHBOARD_DIR
+	),
 	'cow-components-svelte': createSvelteSetupCommand(
 		'cow-components-svelte',
 		DASHBOARD_DIR

@@ -10,7 +10,7 @@ import css from 'rollup-plugin-css-only';
 import { spawn } from 'child_process';
 
 import { ChildProcessByStdio } from 'node:child_process';
-import { getSvelteCowComponentsDirs } from '../svelte';
+import { getCowComponentsDirs } from '../../shared';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -48,7 +48,7 @@ function getBaseDir() {
 	throw new Error('No base dir passed to rollup command');
 }
 
-const dirs = getSvelteCowComponentsDirs(getBaseDir());
+const dirs = getCowComponentsDirs(getBaseDir(), 'svelte');
 
 export default {
 	input: path.join(dirs.toggleableDir, 'index.ts'),
@@ -77,7 +77,9 @@ export default {
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			mainFields: ['module', 'main', 'browser'],
-			moduleDirectories: [path.join(dirs.svelteDemoDir, 'node_modules')],
+			moduleDirectories: [
+				path.join(dirs.frameworkDemoDir, 'node_modules'),
+			],
 			dedupe: ['svelte'],
 		}),
 		commonjs(),
