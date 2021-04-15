@@ -21,18 +21,9 @@ import {
 	cowComponentsAngularInstall,
 	cowComponentsAngularSetup,
 } from './cow-components-angular';
-import {
-	cowComponentsNativeSetup,
-	NATIVE_DEMO_METRICS_TOGGLEABLE_DIR,
-} from './cow-components-native';
-import {
-	cowComponentsReactSetup,
-	REACT_DEMO_METRICS_TOGGLEABLE_DIR,
-} from './cow-components-react';
-import {
-	cowComponentsSvelteSetup,
-	SVELTE_DEMO_METRICS_TOGGLEABLE_DIR,
-} from './cow-components-svelte';
+import { cowComponentsNativeSetup } from './cow-components-native';
+import { cowComponentsReactSetup } from './cow-components-react';
+import { cowComponentsSvelteSetup } from './cow-components-svelte';
 import { dashboardMetrics } from './dashboard';
 
 const __COW_COMPONENTS_WRAPPERS = [
