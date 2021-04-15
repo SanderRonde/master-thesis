@@ -23,6 +23,19 @@ We searched for various UI libraries online and categorized them by JS framework
 -   ~~[zendesk garden](https://garden.zendesk.com/) (858 stars)~~
 -   ~~[shards react](https://designrevision.com/docs/shards-react/getting-started) (649 stars)~~
 
+### Vue Libraries:
+
+-   [element](https://element.eleme.io/#/en-US) (49.8k)
+-   [vuetify](https://vuetifyjs.com/en/) (30.2k)
+-   [quasar](https://quasar.dev/) (18.3k)
+-   ~~[ant design vue](https://2x.antdv.com/docs/vue/introduce) (14.k1)~~
+-   ~~[bootstrap Vue](https://bootstrap-vue.org/) (13.1k)~~
+-   ~~[vue-material](https://vuematerial.io/) (9.3k)~~
+-   ~~[buefy](https://buefy.org/) (8.6k)~~
+-   ~~[vuesax](https://vuesax.com/) (5k)~~
+-   ~~[chakra](https://vue.chakra-ui.com/) (1.1k)~~
+-   ~~[fish UI](https://myliang.github.io/fish-ui/#/components/button) (867)~~
+
 ### Angular libraries:
 
 -   [Angular material](https://material.angular.io/) (21.3k stars)
