@@ -13,12 +13,13 @@ interface ComponentGetterSettings {
 		dirOnly?: boolean;
 		fileOnly?: boolean;
 		startsWith?: string;
+		endsWith?: string;
 		ignored?: (string | RegExp)[];
 	};
 	componentName: 'sameAsDir' | 'fromFile';
-	fileName: {
+	fileName?: {
 		caseInSensitive?: boolean;
-		initialFileStrategy:
+		initialFileStrategy?:
 			| {
 					type: 'fileName';
 					fileName: string;
@@ -109,13 +110,16 @@ async function getFileName(
 	dir: string,
 	settings: ComponentGetterSettings
 ): Promise<string> {
-	if (settings.fileName.overrides?.[path.parse(dir).base]) {
+	if (settings.fileName?.overrides?.[path.parse(dir).base]) {
 		return path.join(
 			dir,
-			settings.fileName.overrides[path.parse(dir).base]
+			settings.fileName?.overrides[path.parse(dir).base]
 		);
 	}
 
+	if (!settings.fileName?.initialFileStrategy) {
+		throw new Error('No initial file strategy');
+	}
 	const initialFile = (() => {
 		switch (settings.fileName.initialFileStrategy.type) {
 			case 'fileName':
@@ -134,7 +138,9 @@ async function getFileName(
 	if (!specificFileStrategy) {
 		if (settings.fileName.caseInSensitive) {
 			if (initialFile.includes('/')) {
-				throw new Error('Can\'t apply case insensitive search when path has dir in it');
+				throw new Error(
+					"Can't apply case insensitive search when path has dir in it"
+				);
 			}
 			return path.join(
 				dir,
@@ -245,11 +251,16 @@ async function getComponentFiles(
 	dir: string,
 	settings: ComponentGetterSettings
 ): Promise<ComponentFiles> {
-	const initialFilePath = await getFileName(dir, settings);
-	const { content, filePath } = await tryReadFileWithExtensions(
-		initialFilePath,
-		EXTENSIONS
-	);
+	const { content, filePath } = await (async () => {
+		if (!(await fs.stat(dir)).isDirectory()) {
+			return {
+				filePath: dir,
+				content: await readFile(dir),
+			};
+		}
+		const initialFilePath = await getFileName(dir, settings);
+		return await tryReadFileWithExtensions(initialFilePath, EXTENSIONS);
+	})();
 	const componentName = (() => {
 		if (settings.componentName === 'sameAsDir') {
 			return path.parse(dir).base;
@@ -314,6 +325,12 @@ export function createComponentGetter(
 		if (settings.filters.startsWith) {
 			files = files.filter((file) =>
 				file.startsWith(settings.filters.startsWith!)
+			);
+		}
+		// Apply ends-with filter
+		if (settings.filters.endsWith) {
+			files = files.filter((file) =>
+				file.endsWith(settings.filters.endsWith!)
 			);
 		}
 		// Apply ignored filter
