@@ -21,6 +21,7 @@ export const KEEP_PROFILES = DEVELOPMENT && KEEP_PROFILES_DEFAULT;
  * 							Metrics
  * ================================================
  */
+const DEFAULT_NUM_MEASURES = DEVELOPMENT ? 1 : 30
 /**
  * 2, as used by the paper (A quality model for web components)
  */
@@ -37,7 +38,7 @@ export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 5;
  * Number of times to measure load time performance
  * before generating a report off of the avg
  */
-export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
+export const LOAD_TIME_PERFORMANCE_MEASURES = DEFAULT_NUM_MEASURES;
 /**
  * Slowdown factor used for page load time
  */
@@ -46,7 +47,7 @@ export const PAGE_LOAD_TIME_SLOWDOWN_FACTOR = DEVELOPMENT ? 1 : 5;
  * Number of times to measure load time performance
  * before generating a report off of the avg
  */
-export const PAGE_LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
+export const PAGE_LOAD_TIME_PERFORMANCE_MEASURES = DEFAULT_NUM_MEASURES;
 /**
  * How long the interval between checking whether the metrics are
  * in should be
