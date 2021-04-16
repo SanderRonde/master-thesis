@@ -13,7 +13,7 @@ export async function getRenderTimeHTMLTemplate(submoduleName: string) {
 			components.map(async (component) => {
 				return `<div *ngIf="${VISIBLE_VALUES_PREFIX}.${
 					component.component.name
-				}.length" *ngFor="let a of ${VISIBLE_VALUES_PREFIX}.${
+				}.length"><div *ngFor="let a of ${VISIBLE_VALUES_PREFIX}.${
 					component.component.name
 				}"><${getComponentSelector(component.tagName)} ${component.props
 					.filter((property) => {
@@ -31,7 +31,7 @@ export async function getRenderTimeHTMLTemplate(submoduleName: string) {
 					})
 					.join(' ')}>${
 					component.hasChildren ? 'content' : ''
-				}</${getComponentSelector(component.tagName)}></div>`;
+				}</${getComponentSelector(component.tagName)}></div></div>`;
 			})
 		)
 	).join('\n')}</div>`;

@@ -1,14 +1,14 @@
 <div style="margin: 50px; margin-top: 300px">
-	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Button'">
-		<button mat-button>Content</button>
+	<div *ngIf="visibleComponent == 'Button'">
+		<button *ngFor="let a of componentCount" mat-button>Content</button>
 	</div>
-	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Input'">
-		<mat-form-field>
+	<div *ngIf="visibleComponent == 'Input'">
+		<mat-form-field *ngFor="let a of componentCount">
 			<mat-label>Label</mat-label>
 			<input matInput placeholder="placeholder" />
 		</mat-form-field>
 	</div>
-	<div *ngFor="let a of componentCount" *ngIf="visibleComponent == 'Switch'">
-		<mat-checkbox>Checkbox</mat-checkbox>
+	<div **ngIf="visibleComponent == 'Switch'">
+		<mat-checkbox *ngFor="let a of componentCount">Checkbox</mat-checkbox>
 	</div>
 </div>
