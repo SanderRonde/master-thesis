@@ -456,7 +456,9 @@ export async function getRenderTime(
 			for (let j = 0; j < RENDER_TIME_MEASURES; j++) {
 				info(
 					'render-time',
-					`Collecting render times. ${j + 1}/${RENDER_TIME_MEASURES}`
+					`Collecting render times for ${numberOfComponents} components ${
+						i * RENDER_TIME_MEASURES + j + 1
+					}/${RENDER_TIME_MEASURES * NUMBER_OF_COMPONENT_SETS.length}`
 				);
 				// Set up a slow browser and page
 				if (!frames.has(numberOfComponents)) {
