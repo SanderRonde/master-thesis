@@ -60,23 +60,21 @@ async function setupPageLoadTime(
 ): Promise<(() => Promise<void>)[]> {
 	const { port, stop } = await startServer(0, settings.basePath);
 
+	const measurements: PageLoadTimeMeasurements[] = [];
 	return new Array(PAGE_LOAD_TIME_PERFORMANCE_MEASURES).fill('').map(() => {
 		return async () => {
-			const measurements: PageLoadTimeMeasurements[] = [];
-			for (let i = 0; i < PAGE_LOAD_TIME_PERFORMANCE_MEASURES; i++) {
-				info(
-					'load-time',
-					`Creating page load time profile for iteration ${
-						i + 1
-					}/${PAGE_LOAD_TIME_PERFORMANCE_MEASURES}`
-				);
-				measurements.push(
-					await measurePageLoadMetrics(
-						port,
-						settings.urlPath || '/index.html'
-					)
-				);
-			}
+			info(
+				'load-time',
+				`Creating page load time profile for iteration ${
+					measurements.length + 1
+				}/${PAGE_LOAD_TIME_PERFORMANCE_MEASURES}`
+			);
+			measurements.push(
+				await measurePageLoadMetrics(
+					port,
+					settings.urlPath || '/index.html'
+				)
+			);
 
 			if (measurements.length === PAGE_LOAD_TIME_PERFORMANCE_MEASURES) {
 				stop();
