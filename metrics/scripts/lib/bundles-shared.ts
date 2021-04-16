@@ -57,6 +57,8 @@ const EXTENSIONS = [
 	'.jsx',
 	'.js',
 	'.ts',
+	'.vue',
+	'.d.ts',
 	'',
 ];
 
@@ -74,6 +76,7 @@ async function getFileScript(filePath: string) {
 			return createComponentFileFromSvelte(code, '', filePath).js.content;
 		case '.svg':
 		case '.sass':
+		case '.d.ts':
 			return '';
 		default:
 			throw new Error(
