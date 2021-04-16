@@ -290,7 +290,10 @@ export const metris = preserveCommandBuilder(
 	}
 
 	// Set up load and render time queues
-	const commands: (() => Promise<void>)[] = [];
+	const commands: {
+		fn: () => Promise<void>;
+		bundle: string;
+	}[] = [];
 	for (const bundle of nonDashboardBundles) {
 		if (!timeMetricsBundleMap[bundle]) {
 			continue;
@@ -301,8 +304,18 @@ export const metris = preserveCommandBuilder(
 			...bundleConfig!,
 			bundleName: bundle,
 		};
-		commands.push(...(await setupLoadTimeMeasuring(config)));
-		commands.push(...(await setupRenderTimeMeasuring(config)));
+		commands.push(
+			...(await setupLoadTimeMeasuring(config)).map((fn) => ({
+				fn,
+				bundle,
+			}))
+		);
+		commands.push(
+			...(await setupRenderTimeMeasuring(config)).map((fn) => ({
+				fn,
+				bundle,
+			}))
+		);
 	}
 	for (const bundle of nonDashboardBundles) {
 		if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
@@ -310,11 +323,16 @@ export const metris = preserveCommandBuilder(
 		}
 
 		commands.push(
-			...(await setupLoadTimeMeasuring(
-				cowComponentsPageLoadTimeMap[
-					bundle as keyof typeof cowComponentsPageLoadTimeMap
-				]!
-			))
+			...(
+				await setupLoadTimeMeasuring(
+					cowComponentsPageLoadTimeMap[
+						bundle as keyof typeof cowComponentsPageLoadTimeMap
+					]!
+				)
+			).map((fn) => ({
+				fn,
+				bundle,
+			}))
 		);
 	}
 
@@ -323,8 +341,12 @@ export const metris = preserveCommandBuilder(
 	// Run them all
 	await exec('? Starting with timing-based tests');
 	for (let i = 0; i < shuffled.length; i++) {
-		info('load-time', `Running timing test ${i + 1}/${shuffled.length}`);
-		await shuffled[i]();
+		const { bundle, fn } = shuffled[i];
+		info(
+			'load-time',
+			`Running timing test ${i + 1}/${shuffled.length} (bundle ${bundle})`
+		);
+		await fn();
 	}
 	await exec('? Done with timing-based tests');
 
