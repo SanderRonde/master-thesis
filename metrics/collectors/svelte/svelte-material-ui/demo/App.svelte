@@ -3,7 +3,7 @@
 	import Textfield from '@smui/textfield';
 	import Switch from '@smui/switch';
 
-	window.setVisibleComponent = (componentName, isVisible) => {
+	window.setVisibleComponent = (componentName, numberOfComponents, isVisible) => {
 		visible[componentName] = new Array(numberOfComponents).fill('');
 	};
 	window.availableComponents = ['Button', 'Input', 'Switch'];
