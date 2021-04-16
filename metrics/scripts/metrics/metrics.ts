@@ -154,16 +154,8 @@ async function buildDemoRepo(
 	// needed so it's wasted time
 	for (const framework of ['angular', 'native', 'react', 'svelte']) {
 		const frameworkDir = path.join(baseDir, 'dist/demo-repo', framework);
-		await execCwd(
-			exec,
-			'npm install',
-			frameworkDir
-		);
-		await execCwd(
-			exec,
-			'yarn build',
-			frameworkDir
-		);
+		await execCwd(exec, 'npm install', frameworkDir);
+		await execCwd(exec, 'yarn build', frameworkDir);
 	}
 
 	await dashboardCtx.keepContext('git reset --hard');
@@ -299,25 +291,28 @@ export const metris = preserveCommandBuilder(
 
 	// Set up load and render time queues
 	const commands: (() => Promise<void>)[] = [];
-	for (const bundleName in timeMetricsBundleMap) {
+	for (const bundle of nonDashboardBundles) {
+		if (!timeMetricsBundleMap[bundle]) {
+			continue;
+		}
 		const bundleConfig =
-			timeMetricsBundleMap[
-				bundleName as keyof typeof timeMetricsBundleMap
-			];
+			timeMetricsBundleMap[bundle as keyof typeof timeMetricsBundleMap];
 		const config: PerBundleLoadTimeMetricConfig = {
 			...bundleConfig!,
-			bundleName,
+			bundleName: bundle,
 		};
 		commands.push(...(await setupLoadTimeMeasuring(config)));
 		commands.push(...(await setupRenderTimeMeasuring(config)));
 	}
-	for (const bundleName in cowComponentsPageLoadTimeMap) {
-		if (bundleName === 'dashboard') continue;
+	for (const bundle of nonDashboardBundles) {
+		if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
+			continue;
+		}
 
 		commands.push(
 			...(await setupLoadTimeMeasuring(
 				cowComponentsPageLoadTimeMap[
-					bundleName as keyof typeof cowComponentsPageLoadTimeMap
+					bundle as keyof typeof cowComponentsPageLoadTimeMap
 				]!
 			))
 		);
