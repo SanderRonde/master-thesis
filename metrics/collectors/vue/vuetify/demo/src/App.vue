@@ -7,14 +7,14 @@
 		</span>
 		<span v-if="visibleComponents.Switch.length">
 			<v-checkbox
-				v-for="item in visibleComponents.Button"
+				v-for="item in visibleComponents.Switch"
 				:key="item"
 				value="true"
 			/>
 		</span>
 		<span v-if="visibleComponents.Input.length">
 			<v-text-field
-				v-for="item in visibleComponents.Button"
+				v-for="item in visibleComponents.Input"
 				:key="item"
 			/>
 		</span>
