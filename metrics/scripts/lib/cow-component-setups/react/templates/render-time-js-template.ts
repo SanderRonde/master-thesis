@@ -38,9 +38,9 @@ const componentTemplate = (component: JoinedDefinition) => `
 		)}Defaults.ReferencedTypes['${prop.name}DemoDefaultValue']}`;
 	})
 	.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
-	`Content </${getComponentName(component)}>)`,
+	`Content </${getComponentName(component)}>`,
 	component.hasChildren
-)} }
+)} )}
 `;
 
 const componentsTemplate = (components: JoinedDefinition[]) => `
