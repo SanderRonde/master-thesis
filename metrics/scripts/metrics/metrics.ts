@@ -85,6 +85,7 @@ import {
 } from '../lib/time-metrics';
 import { shuffle } from '../lib/helpers';
 import { info } from '../../collectors/shared/log';
+import { setupPageLoadTimeMeasuring } from '../lib/page-load';
 
 const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
 	...cowComponentsInstallBundleMap,
@@ -324,7 +325,7 @@ export const metris = preserveCommandBuilder(
 
 		commands.push(
 			...(
-				await setupLoadTimeMeasuring(
+				await setupPageLoadTimeMeasuring(
 					cowComponentsPageLoadTimeMap[
 						bundle as keyof typeof cowComponentsPageLoadTimeMap
 					]!
