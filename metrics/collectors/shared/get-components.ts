@@ -12,6 +12,7 @@ interface ComponentGetterSettings {
 	filters: {
 		dirOnly?: boolean;
 		fileOnly?: boolean;
+		startsWith?: string;
 		ignored?: (string | RegExp)[];
 	};
 	componentName: 'sameAsDir' | 'fromFile';
@@ -109,7 +110,10 @@ async function getFileName(
 	settings: ComponentGetterSettings
 ): Promise<string> {
 	if (settings.fileName.overrides?.[path.parse(dir).base]) {
-		return path.join(dir, settings.fileName.overrides[path.parse(dir).base])
+		return path.join(
+			dir,
+			settings.fileName.overrides[path.parse(dir).base]
+		);
 	}
 
 	const initialFile = (() => {
@@ -129,6 +133,9 @@ async function getFileName(
 	const specificFileStrategy = settings.fileName.specificFileStrategy;
 	if (!specificFileStrategy) {
 		if (settings.fileName.caseInSensitive) {
+			if (initialFile.includes('/')) {
+				throw new Error('Can\'t apply case insensitive search when path has dir in it');
+			}
 			return path.join(
 				dir,
 				await findCaseInsensitiveFile(dir, initialFile)
@@ -302,6 +309,12 @@ export function createComponentGetter(
 					await fs.stat(path.join(packagesPath, dir))
 				).isDirectory();
 			});
+		}
+		// Apply starts-with filter
+		if (settings.filters.startsWith) {
+			files = files.filter((file) =>
+				file.startsWith(settings.filters.startsWith!)
+			);
 		}
 		// Apply ignored filter
 		if (settings.filters.ignored) {
