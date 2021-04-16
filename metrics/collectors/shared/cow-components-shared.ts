@@ -157,7 +157,7 @@ export async function getDashboardFileStructuralComplexity(
  * and allows us to just do `components.Button`
  * instead of `components.Button || components.PrimaryButtonComponent`
  */
-export const COMPONENT_NAME_MAP = new Map<string, string>([
+const COMPONENT_NAME_MAP = new Map<string, string>([
 	['PrimaryButtonComponent', BASE_COMPONENT.BUTTON],
 	['InputElement', BASE_COMPONENT.INPUT],
 	['SwitchComponent', BASE_COMPONENT.SWITCH],

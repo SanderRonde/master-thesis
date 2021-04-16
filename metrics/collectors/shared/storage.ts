@@ -7,10 +7,10 @@ import { debug } from './log';
 import { DEVELOPMENT } from './settings';
 import { readFile, writeFile } from './files';
 
-export const DEFAULT_STORE_NAME = 'database';
-export const STORAGE_DIR = path.join(METRICS_DIR, 'data');
+const DEFAULT_STORE_NAME = 'database';
+const STORAGE_DIR = path.join(METRICS_DIR, 'data');
 
-export async function readStore(storeName: string): Promise<any | null> {
+async function readStore(storeName: string): Promise<any | null> {
 	const storeFileName = path.join(STORAGE_DIR, `${storeName}.json`);
 	if (!(await fs.pathExists(storeFileName))) {
 		return null;

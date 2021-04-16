@@ -42,7 +42,7 @@ const __COW_COMPONENTS_BASIC_WRAPPERS = [
 	'native',
 	'svelte',
 ] as const;
-export type CowComponentsBasicWrapper = ConstArrItems<
+type CowComponentsBasicWrapper = ConstArrItems<
 	typeof __COW_COMPONENTS_BASIC_WRAPPERS
 >;
 const COW_COMPONENTS_BASIC_WRAPPERS = (__COW_COMPONENTS_BASIC_WRAPPERS as unknown) as CowComponentsBasicWrapper[];

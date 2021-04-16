@@ -41,10 +41,6 @@ export function ifTrue(str: string, condition: boolean): string {
 	return '';
 }
 
-export function omitArr<V>(arr: V[], ...toOmit: V[]): V[] {
-	return arr.filter((entry) => !toOmit.includes(entry));
-}
-
 export async function setContexts(
 	exec: ExecFunction,
 	args: { prod: boolean; 'log-debug': boolean }

@@ -358,7 +358,7 @@ async function getMultipleComponentFiles(
 	return components;
 }
 
-export function flatten<A>(arr: A[][]): A[] {
+function flatten<A>(arr: A[][]): A[] {
 	const result: A[] = [];
 	for (const item of arr) {
 		if (Array.isArray(item)) {

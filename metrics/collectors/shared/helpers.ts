@@ -87,7 +87,7 @@ export function sum(values: number[]) {
 	return values.reduce((prev, current) => prev + current, 0);
 }
 
-export const generateRandomString = (() => {
+const generateRandomString = (() => {
 	const CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(
 		''
 	);
@@ -100,15 +100,6 @@ export const generateRandomString = (() => {
 			.join('');
 	};
 })();
-
-export async function generateTempFolder() {
-	let folderName: string;
-	do {
-		folderName = generateRandomString();
-	} while (await fs.pathExists(folderName));
-
-	return path.join(TEMP_DIR, folderName);
-}
 
 export async function generateTempFileName(
 	extension: string,
@@ -129,24 +120,6 @@ export function wait(duration: number) {
 	});
 }
 
-function capitalize(word: string): string {
-	return `${word[0].toUpperCase()}${word.slice(1)}`;
-}
-
-export function createCamelCaseString(
-	parts: string[],
-	uppercaseFirst = false
-): string {
-	return parts
-		.map((part, index) => {
-			if (index === 0 && !uppercaseFirst) {
-				return `${part[0].toLowerCase()}${part.slice(1)}`;
-			}
-			return capitalize(part);
-		})
-		.join('');
-}
-
 export function findLastIndex<I>(
 	arr: I[],
 	predicate: (value: I, index: number, obj: I[]) => boolean
@@ -160,26 +133,6 @@ export function findLastIndex<I>(
 	return -1;
 }
 
-export function findLast<I>(
-	arr: I[],
-	predicate: (value: I, index: number, obj: I[]) => boolean
-): I | undefined {
-	const lastIndex = findLastIndex(arr, predicate);
-	if (lastIndex === -1) {
-		return undefined;
-	}
-	return arr[lastIndex];
-}
-
-export function toCamelCase(str: string, capitalizeFirst: boolean = false) {
-	const arr = str.split('-');
-	const words = arr.map((item, index) =>
-		capitalizeFirst || index > 0 ? capitalize(item) : item
-	);
-
-	return words.join('');
-}
-
 export async function asyncFilter<I>(
 	arr: I[],
 	filter: (item: I, index: number, arr: I[]) => Promise<boolean>
@@ -191,18 +144,4 @@ export async function asyncFilter<I>(
 		}
 	}
 	return items;
-}
-
-export function fromEntries<V>(
-	entries: [string, V][]
-): {
-	[key: string]: V;
-} {
-	const obj: {
-		[key: string]: V;
-	} = {};
-	for (const [key, value] of entries) {
-		obj[key] = value;
-	}
-	return obj;
 }

@@ -84,7 +84,7 @@ interface BundleCommandReturn {
 	): CommandBuilder<MetricsArgDefinitions>;
 }
 
-export function registerBundleCommand(
+function registerBundleCommand(
 	name: string,
 	postfix: string
 ): BundleCommandReturn {

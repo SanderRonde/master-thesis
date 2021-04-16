@@ -10,7 +10,6 @@ import {
 	getCommandBuilderExec,
 	METRICS_COMMAND_ARGS,
 	METRICS_COMMAND_ARG_DESCRIPTIONS,
-	preserveCommandBuilder,
 } from '../lib/makfy-helper';
 import { Bundle, BUNDLES } from '../lib/constants';
 import { DEMO_REPO_DIR } from '../lib/cow-components-shared';
@@ -163,194 +162,211 @@ async function buildDemoRepo(
 	await dashboardCtx.keepContext('npm install');
 }
 
-export const metris = preserveCommandBuilder(
-	cmd('metrics')
-		.desc('Collect metrics')
-		.args({
-			'skip-dashboard': flag(),
-			bundle: choice([...BUNDLES, 'all'], 'all'),
-			'bundle-list': str(''),
-			'skip-build': flag(),
-			...METRICS_COMMAND_ARGS,
-		})
-		.argsDesc({
-			'skip-dashboard': 'Skip installing of dashboard',
-			'skip-build': 'Skip the build process of the current bundle',
-			bundle: 'A specific bundle to use. Uses all by default',
-			'bundle-list':
-				'A comma-separated list of bundles whose metrics to collect',
-			...METRICS_COMMAND_ARG_DESCRIPTIONS,
-		})
-).run(async (exec, args) => {
-	const bundles: Bundle[] =
-		args.bundle !== 'all'
-			? [args.bundle]
-			: args['bundle-list'] && args['bundle-list'] !== ''
-			? (args['bundle-list'].split(',') as Bundle[])
-			: BUNDLES;
+cmd('metrics')
+	.desc('Collect metrics')
+	.args({
+		'skip-dashboard': flag(),
+		bundle: choice([...BUNDLES, 'all'], 'all'),
+		'bundle-list': str(''),
+		'skip-build': flag(),
+		...METRICS_COMMAND_ARGS,
+	})
+	.argsDesc({
+		'skip-dashboard': 'Skip installing of dashboard',
+		'skip-build': 'Skip the build process of the current bundle',
+		bundle: 'A specific bundle to use. Uses all by default',
+		'bundle-list':
+			'A comma-separated list of bundles whose metrics to collect',
+		...METRICS_COMMAND_ARG_DESCRIPTIONS,
+	})
+	.run(async (exec, args) => {
+		const bundles: Bundle[] =
+			args.bundle !== 'all'
+				? [args.bundle]
+				: args['bundle-list'] && args['bundle-list'] !== ''
+				? (args['bundle-list'].split(',') as Bundle[])
+				: BUNDLES;
 
-	for (const dashboardDir of [DASHBOARD_DIR, BASIC_DASHBOARD_DIR]) {
-		const isBasic = dashboardDir === BASIC_DASHBOARD_DIR;
+		for (const dashboardDir of [DASHBOARD_DIR, BASIC_DASHBOARD_DIR]) {
+			const isBasic = dashboardDir === BASIC_DASHBOARD_DIR;
 
-		const packagesInstalledFile = path.join(
-			dashboardDir,
-			'.vscode/installed'
-		);
-
-		const hasCowComponentBundle = bundles.some((bundle) =>
-			(isBasic
-				? COW_COMPONENT_BASIC_BUNDLES
-				: COW_COMPONENT_BUNDLES
-			).includes(bundle as never)
-		);
-		const hasDashboardBundle = bundles.some((bundle) =>
-			(isBasic ? cowComponentBasicBundles : cowComponentBundles).includes(
-				bundle as never
-			)
-		);
-		if (
-			(hasCowComponentBundle || hasDashboardBundle) &&
-			!args['skip-dashboard'] &&
-			!(await fs.pathExists(packagesInstalledFile))
-		) {
-			await exec('? Copying environment files');
-			await fs.copyFile(
-				path.join(dashboardDir, 'src/environments/environment.ts.txt'),
-				path.join(dashboardDir, 'src/environments/environment.ts')
-			);
-			await fs.copyFile(
-				path.join(dashboardDir, 'src/environments/version.ts.txt'),
-				path.join(dashboardDir, 'src/environments/version.ts')
-			);
-
-			await exec('? Installing dashboard dependencies');
-			await exec(`npm install -C ${dashboardDir} --no-save`);
-
-			await exec('? Marking as installed');
-			await writeFile(packagesInstalledFile, '');
-		}
-
-		if (
-			hasCowComponentBundle &&
-			(!(await fs.pathExists(DEMO_REPO_DIR)) || args['no-cache'])
-		) {
-			await buildDemoRepo(
-				exec,
+			const packagesInstalledFile = path.join(
 				dashboardDir,
-				isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard'
+				'.vscode/installed'
 			);
-		}
-	}
 
-	const execArgs = {
-		'no-cache': args['no-cache'],
-		prod: args.prod,
-		'log-debug': args['log-debug'],
-		'multi-run': true,
-	};
-
-	// First do dashboard by itself if we need to
-	// because it's a bit of a special case
-	if (bundles.includes('dashboard')) {
-		await exec(getCommandBuilderExec(serialBundleMap.dashboard, execArgs));
-	}
-	if (bundles.includes('basic-dashboard')) {
-		await exec(
-			getCommandBuilderExec(serialBundleMap['basic-dashboard'], execArgs)
-		);
-	}
-
-	const nonDashboardBundles = bundles.filter(
-		(bundle) => !['dashboard', 'basic-dashboard'].includes(bundle)
-	);
-
-	// Run all install tasks
-	for (const bundle of nonDashboardBundles) {
-		if (bundle in installCommandMap) {
-			await exec(
-				getCommandBuilderExec(installCommandMap[bundle]!, execArgs)
+			const hasCowComponentBundle = bundles.some((bundle) =>
+				(isBasic
+					? COW_COMPONENT_BASIC_BUNDLES
+					: COW_COMPONENT_BUNDLES
+				).includes(bundle as never)
 			);
+			const hasDashboardBundle = bundles.some((bundle) =>
+				(isBasic
+					? cowComponentBasicBundles
+					: cowComponentBundles
+				).includes(bundle as never)
+			);
+			if (
+				(hasCowComponentBundle || hasDashboardBundle) &&
+				!args['skip-dashboard'] &&
+				!(await fs.pathExists(packagesInstalledFile))
+			) {
+				await exec('? Copying environment files');
+				await fs.copyFile(
+					path.join(
+						dashboardDir,
+						'src/environments/environment.ts.txt'
+					),
+					path.join(dashboardDir, 'src/environments/environment.ts')
+				);
+				await fs.copyFile(
+					path.join(dashboardDir, 'src/environments/version.ts.txt'),
+					path.join(dashboardDir, 'src/environments/version.ts')
+				);
+
+				await exec('? Installing dashboard dependencies');
+				await exec(`npm install -C ${dashboardDir} --no-save`);
+
+				await exec('? Marking as installed');
+				await writeFile(packagesInstalledFile, '');
+			}
+
+			if (
+				hasCowComponentBundle &&
+				(!(await fs.pathExists(DEMO_REPO_DIR)) || args['no-cache'])
+			) {
+				await buildDemoRepo(
+					exec,
+					dashboardDir,
+					isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard'
+				);
+			}
 		}
-	}
 
-	if (!args['skip-build']) {
-		// Run all parallel tasks
-		await exec(
-			nonDashboardBundles
-				.filter((bundle) => parallelBundleMap[bundle])
-				.map((bundle) =>
-					getCommandBuilderExec(parallelBundleMap[bundle]!, execArgs)
-				)
-		);
-	}
-
-	// Run all sync tasks
-	await exec('? Running synchronous tasks');
-	for (const bundle of nonDashboardBundles) {
-		await exec(getCommandBuilderExec(serialBundleMap[bundle], execArgs));
-	}
-
-	// Set up load and render time queues
-	const commands: {
-		fn: () => Promise<void>;
-		bundle: string;
-	}[] = [];
-	for (const bundle of nonDashboardBundles) {
-		if (!timeMetricsBundleMap[bundle]) {
-			continue;
-		}
-		const bundleConfig =
-			timeMetricsBundleMap[bundle as keyof typeof timeMetricsBundleMap];
-		const config: PerBundleLoadTimeMetricConfig = {
-			...bundleConfig!,
-			bundleName: bundle,
+		const execArgs = {
+			'no-cache': args['no-cache'],
+			prod: args.prod,
+			'log-debug': args['log-debug'],
+			'multi-run': true,
 		};
-		commands.push(
-			...(await setupLoadTimeMeasuring(config)).map((fn) => ({
-				fn,
-				bundle,
-			}))
-		);
-		commands.push(
-			...(await setupRenderTimeMeasuring(config)).map((fn) => ({
-				fn,
-				bundle,
-			}))
-		);
-	}
-	for (const bundle of nonDashboardBundles) {
-		if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
-			continue;
+
+		// First do dashboard by itself if we need to
+		// because it's a bit of a special case
+		if (bundles.includes('dashboard')) {
+			await exec(
+				getCommandBuilderExec(serialBundleMap.dashboard, execArgs)
+			);
+		}
+		if (bundles.includes('basic-dashboard')) {
+			await exec(
+				getCommandBuilderExec(
+					serialBundleMap['basic-dashboard'],
+					execArgs
+				)
+			);
 		}
 
-		commands.push(
-			...(
-				await setupPageLoadTimeMeasuring(
-					cowComponentsPageLoadTimeMap[
-						bundle as keyof typeof cowComponentsPageLoadTimeMap
-					]!
-				)
-			).map((fn) => ({
-				fn,
-				bundle,
-			}))
+		const nonDashboardBundles = bundles.filter(
+			(bundle) => !['dashboard', 'basic-dashboard'].includes(bundle)
 		);
-	}
 
-	// Randomize order
-	const shuffled = shuffle(commands);
-	// Run them all
-	await exec('? Starting with timing-based tests');
-	for (let i = 0; i < shuffled.length; i++) {
-		const { bundle, fn } = shuffled[i];
-		info(
-			'load-time',
-			`Running timing test ${i + 1}/${shuffled.length} (bundle ${bundle})`
-		);
-		await fn();
-	}
-	await exec('? Done with timing-based tests');
+		// Run all install tasks
+		for (const bundle of nonDashboardBundles) {
+			if (bundle in installCommandMap) {
+				await exec(
+					getCommandBuilderExec(installCommandMap[bundle]!, execArgs)
+				);
+			}
+		}
 
-	// Exit manually
-	process.exit(0);
-});
+		if (!args['skip-build']) {
+			// Run all parallel tasks
+			await exec(
+				nonDashboardBundles
+					.filter((bundle) => parallelBundleMap[bundle])
+					.map((bundle) =>
+						getCommandBuilderExec(
+							parallelBundleMap[bundle]!,
+							execArgs
+						)
+					)
+			);
+		}
+
+		// Run all sync tasks
+		await exec('? Running synchronous tasks');
+		for (const bundle of nonDashboardBundles) {
+			await exec(
+				getCommandBuilderExec(serialBundleMap[bundle], execArgs)
+			);
+		}
+
+		// Set up load and render time queues
+		const commands: {
+			fn: () => Promise<void>;
+			bundle: string;
+		}[] = [];
+		for (const bundle of nonDashboardBundles) {
+			if (!timeMetricsBundleMap[bundle]) {
+				continue;
+			}
+			const bundleConfig =
+				timeMetricsBundleMap[
+					bundle as keyof typeof timeMetricsBundleMap
+				];
+			const config: PerBundleLoadTimeMetricConfig = {
+				...bundleConfig!,
+				bundleName: bundle,
+			};
+			commands.push(
+				...(await setupLoadTimeMeasuring(config)).map((fn) => ({
+					fn,
+					bundle,
+				}))
+			);
+			commands.push(
+				...(await setupRenderTimeMeasuring(config)).map((fn) => ({
+					fn,
+					bundle,
+				}))
+			);
+		}
+		for (const bundle of nonDashboardBundles) {
+			if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
+				continue;
+			}
+
+			commands.push(
+				...(
+					await setupPageLoadTimeMeasuring(
+						cowComponentsPageLoadTimeMap[
+							bundle as keyof typeof cowComponentsPageLoadTimeMap
+						]!
+					)
+				).map((fn) => ({
+					fn,
+					bundle,
+				}))
+			);
+		}
+
+		// Randomize order
+		const shuffled = shuffle(commands);
+		// Run them all
+		await exec('? Starting with timing-based tests');
+		for (let i = 0; i < shuffled.length; i++) {
+			const { bundle, fn } = shuffled[i];
+			info(
+				'load-time',
+				`Running timing test ${i + 1}/${
+					shuffled.length
+				} (bundle ${bundle})`
+			);
+			await fn();
+		}
+		await exec('? Done with timing-based tests');
+
+		// Exit manually
+		process.exit(0);
+	});

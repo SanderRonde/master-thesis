@@ -3,7 +3,7 @@ export interface ReadFile {
 	content: string;
 }
 
-export interface CowComponentImport extends ReadFile {
+interface CowComponentImport extends ReadFile {
 	componentName: string;
 }
 

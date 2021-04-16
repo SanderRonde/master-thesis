@@ -272,7 +272,7 @@ export async function collectIsCSSFramework(
 	);
 }
 
-export async function collectRenderTimes(
+async function collectRenderTimes(
 	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
 	overrides: BundleMetricsOverrides
 ) {
@@ -328,7 +328,7 @@ export function getSharedBundlePaths(
 	};
 }
 
-export function getBundleInstallCommand<N extends string>(
+function getBundleInstallCommand<N extends string>(
 	bundleCategory: string,
 	bundleName: N,
 	overrides: BundleMetricsOverrides = {}
@@ -351,7 +351,7 @@ export function getBundleInstallCommand<N extends string>(
 	return installCommand as CommandBuilderWithName<N>;
 }
 
-export function getBundleSetupCommand<N extends string>(
+function getBundleSetupCommand<N extends string>(
 	bundleCategory: string,
 	bundleName: N
 ): CommandBuilderWithName<N> {
@@ -380,7 +380,7 @@ export interface BundleMetricsOverrides {
 	>;
 }
 
-export function getBundleMetricsCommand<N extends string>(
+function getBundleMetricsCommand<N extends string>(
 	bundleCategory: string,
 	bundleName: N,
 	overrides: BundleMetricsOverrides = {}
