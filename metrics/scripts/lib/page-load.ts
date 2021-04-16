@@ -35,21 +35,22 @@ async function measurePageLoadMetrics(
 		await page.evaluate(() =>
 			JSON.stringify(performance.getEntriesByName('first-paint'))
 		)
-	);
+	).startTime;
 	const firstContentfulPaint = JSON.parse(
 		await page.evaluate(() =>
 			JSON.stringify(
 				performance.getEntriesByName('first-contentful-paint')
 			)
 		)
-	);
+	).startTime;
 
 	await page.close();
 	await browser.close();
 
 	return {
-		'first-paint': firstPaint,
-		'first-contentful-paint': firstContentfulPaint,
+		'first-paint': firstPaint / PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
+		'first-contentful-paint':
+			firstContentfulPaint / PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
 	};
 }
 
