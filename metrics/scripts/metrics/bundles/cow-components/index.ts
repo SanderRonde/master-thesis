@@ -135,7 +135,8 @@ export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> =
 		'dashboard',
 		DASHBOARD_DIR,
 		'cow-components',
-		SUBMODULE_NAME
+		SUBMODULE_NAME,
+		true
 	),
 	'cow-components-angular': metricsCreator('cow-components-angular', {
 		demoDir: () => getAngularDirs(DASHBOARD_DIR).angularMetadataBundle,

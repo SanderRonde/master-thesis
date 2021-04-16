@@ -219,7 +219,8 @@ export function createDashboardMetricsCommand(
 	commandName: string,
 	baseDir: string,
 	category: string,
-	submoduleName: string
+	submoduleName: string,
+	runPageLoadTimeTest: boolean
 ) {
 	const dirs = getDashboardDirs(baseDir, submoduleName);
 
@@ -265,23 +266,33 @@ export function createDashboardMetricsCommand(
 			urlPath: '/index.html',
 		});
 
-		await dashboardCtx.keepContext('git reset --hard');
+		if (runPageLoadTimeTest) {
+			await dashboardCtx.keepContext('git reset --hard');
 
-		await exec('? Preparing for page load time measuring');
-		await generateDemoPage(baseDir, submoduleName);
+			await exec('? Preparing for page load time measuring');
+			await generateDemoPage(baseDir, submoduleName);
 
-		await buildDashboard(exec, dirs, 'page-load-time', args['no-cache']);
+			await buildDashboard(
+				exec,
+				dirs,
+				'page-load-time',
+				args['no-cache']
+			);
 
-		const scripts = await setupPageLoadTimeMeasuring(
-			cowComponentsPageLoadTimeMap.dashboard!
-		);
-		await exec('? Starting with page load time tests');
-		for (let i = 0; i < scripts.length; i++) {
-			const script = scripts[i];
-			info('load-time', `Running timing test ${i + 1}/${scripts.length}`);
-			await script();
+			const scripts = await setupPageLoadTimeMeasuring(
+				cowComponentsPageLoadTimeMap.dashboard!
+			);
+			await exec('? Starting with page load time tests');
+			for (let i = 0; i < scripts.length; i++) {
+				const script = scripts[i];
+				info(
+					'load-time',
+					`Running timing test ${i + 1}/${scripts.length}`
+				);
+				await script();
+			}
+			await exec('? Done with page load time  tests');
 		}
-		await exec('? Done with page load time  tests');
 
 		await dashboardCtx.keepContext('git reset --hard');
 

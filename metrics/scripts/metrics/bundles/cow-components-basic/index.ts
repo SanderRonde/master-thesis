@@ -143,7 +143,8 @@ export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasi
 		'basic-dashboard',
 		BASIC_DASHBOARD_DIR,
 		'cow-components-basic',
-		SUBMODULE_NAME
+		SUBMODULE_NAME,
+		false
 	),
 	'cow-components-basic-angular': metricsCreator(
 		'cow-components-basic-angular',
@@ -178,8 +179,8 @@ export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasi
 
 const timeMetricsArgs: LoadTimeMetricConfig = {
 	...baseMetricArgs,
-	bundleCategory: 'cow-components-basic'
-}
+	bundleCategory: 'cow-components-basic',
+};
 export const cowComponentsBasicTimeMetricsMap: TimeMetricBundleMap<CowComponentBasicBundle> = {
 	'cow-components-basic-angular': {
 		...timeMetricsArgs,

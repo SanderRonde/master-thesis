@@ -41,12 +41,23 @@ export const LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
 /**
  * Slowdown factor used for page load time
  */
- export const PAGE_LOAD_TIME_SLOWDOWN_FACTOR = DEVELOPMENT ? 1 : 5;
+export const PAGE_LOAD_TIME_SLOWDOWN_FACTOR = DEVELOPMENT ? 1 : 5;
 /**
  * Number of times to measure load time performance
  * before generating a report off of the avg
  */
- export const PAGE_LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
+export const PAGE_LOAD_TIME_PERFORMANCE_MEASURES = DEVELOPMENT ? 1 : 30;
+/**
+ * How long the interval between checking whether the metrics are
+ * in should be
+ */
+export const PAGE_LOAD_TIME_WAIT_TIME_INTERVAL = 250;
+/**
+ * The maximum time to wait before assuming a page is not going to
+ * load any more
+ */
+export const PAGE_LOAD_TIME_MAX_WAIT_TIME =
+	10000 * PAGE_LOAD_TIME_SLOWDOWN_FACTOR;
 /**
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
@@ -101,6 +112,4 @@ export const RENDER_TIME_TRIES = 3;
  * of components, this array will contain all of them
  * and the numbers
  */
-export const NUMBER_OF_COMPONENT_SETS = [
-	1, 10, 100
-]
+export const NUMBER_OF_COMPONENT_SETS = [1, 10, 100];

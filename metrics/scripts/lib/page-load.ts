@@ -1,9 +1,12 @@
 import { openPage } from '../../collectors/metric-definitions/render-time';
 import { startServer } from '../../collectors/shared/dashboard/serve-dashboard-dist';
+import { wait } from '../../collectors/shared/helpers';
 import { info } from '../../collectors/shared/log';
 import {
+	PAGE_LOAD_TIME_MAX_WAIT_TIME,
 	PAGE_LOAD_TIME_PERFORMANCE_MEASURES,
 	PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
+	PAGE_LOAD_TIME_WAIT_TIME_INTERVAL,
 } from '../../collectors/shared/settings';
 import { getDatasetStats } from '../../collectors/shared/stats';
 import { storeData } from '../../collectors/shared/storage';
@@ -38,18 +41,55 @@ async function measurePageLoadMetrics(
 		urlPath
 	);
 
-	const firstPaint = (JSON.parse(
+	for (
+		let i = 0;
+		i < PAGE_LOAD_TIME_MAX_WAIT_TIME / PAGE_LOAD_TIME_WAIT_TIME_INTERVAL;
+		i++
+	) {
+		await wait(PAGE_LOAD_TIME_WAIT_TIME_INTERVAL);
+		const firstPaintMeasurements = JSON.parse(
+			await page.evaluate(() =>
+				JSON.stringify(performance.getEntriesByName('first-paint'))
+			)
+		) as PagePerformanceMeasurement;
+		const firstContentfulPaintMeasurements = JSON.parse(
+			await page.evaluate(() =>
+				JSON.stringify(
+					performance.getEntriesByName('first-contentful-paint')
+				)
+			)
+		) as PagePerformanceMeasurement;
+		if (
+			firstPaintMeasurements.length &&
+			firstContentfulPaintMeasurements.length
+		) {
+			break;
+		}
+	}
+
+	const firstPaintMeasurements = JSON.parse(
 		await page.evaluate(() =>
 			JSON.stringify(performance.getEntriesByName('first-paint'))
 		)
-	) as PagePerformanceMeasurement)[0].startTime;
-	const firstContentfulPaint = (JSON.parse(
+	) as PagePerformanceMeasurement;
+	const firstContentfulPaintMeasurements = JSON.parse(
 		await page.evaluate(() =>
 			JSON.stringify(
 				performance.getEntriesByName('first-contentful-paint')
 			)
 		)
-	) as PagePerformanceMeasurement)[0].startTime;
+	) as PagePerformanceMeasurement;
+	if (
+		!firstPaintMeasurements.length ||
+		!firstContentfulPaintMeasurements.length
+	) {
+		throw new Error(
+			'Failed to read first paint or first contentful paint metric'
+		);
+	}
+
+	const firstPaint = firstPaintMeasurements[0].startTime;
+	const firstContentfulPaint = firstContentfulPaintMeasurements[0].startTime;
 
 	await page.close();
 	await browser.close();
