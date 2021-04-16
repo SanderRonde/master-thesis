@@ -50,9 +50,7 @@ ${components
 const visibilityToggleTemplate = (components: JoinedDefinition[]) => `
 	${components
 		.map((component) => {
-			return `let ${getSanitizedComponentName(
-				component
-			)}Visible = false;`;
+			return `let ${getSanitizedComponentName(component)}Visible = [];`;
 		})
 		.join('\n')}
 `;
@@ -100,22 +98,24 @@ const scriptTemplate = (components: JoinedDefinition[]) => `
 const htmlTemplate = (components: JoinedDefinition[]) => `
 		${components
 			.map((component) => {
-				return `{#if ${getSanitizedComponentName(component)}Visible.length}
+				return `{#if ${getSanitizedComponentName(
+					component
+				)}Visible.length}
 				{#each ${getSanitizedComponentName(component)}Visible as btn, i }
 					<${getComponentName(component)} ${component.props
-						.filter(
-							(prop) => !prop.isEventListener && prop.demoDefaultValue
-						)
-						.map((prop) => {
-							return `${prop.name}={${getPropDefaultValueName(
-								prop,
-								component
-							)}}`;
-						})
-						.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
-						`Content </${getComponentName(component)}>`,
-						component.hasChildren
-					)}
+					.filter(
+						(prop) => !prop.isEventListener && prop.demoDefaultValue
+					)
+					.map((prop) => {
+						return `${prop.name}={${getPropDefaultValueName(
+							prop,
+							component
+						)}}`;
+					})
+					.join(' ')} ${ifTrue('/', !component.hasChildren)}>${ifTrue(
+					`Content </${getComponentName(component)}>`,
+					component.hasChildren
+				)}
 				{/each}
 				{/if}`;
 			})
