@@ -116,7 +116,7 @@ export async function createSingleFileTSProgram(
 	const ast = program.getSourceFile(fileName);
 	if (!ast) {
 		throw new Error(
-			`Failed to parse file "${fileName}" into typescript AST`
+			`Code: ${code}\n.Failed to parse file "${fileName}" into typescript AST`
 		);
 	}
 	return {

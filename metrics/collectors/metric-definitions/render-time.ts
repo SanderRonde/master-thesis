@@ -290,6 +290,7 @@ async function collectRuntimeRenderTimes({
 			})`
 		);
 
+		let succeeded: boolean = false;
 		for (let j = 0; j < RENDER_TIME_TRIES; j++) {
 			try {
 				debug('render-time', '\tOpening page');
@@ -321,15 +322,23 @@ async function collectRuntimeRenderTimes({
 					'render-time',
 					`\tRender time for ${componentName} is ${renderTime}ms`
 				);
+				succeeded = true;
 				break;
 			} catch (e) {
+				console.log(e);
 				warning(
 					'render-time',
-					`'\tFailed to find render time, retrying (${j + 1}/${
+					`\tFailed to find render time, retrying (${j + 1}/${
 						RENDER_TIME_TRIES - 1
 					})`
 				);
 			}
+		}
+
+		if (!succeeded) {
+			throw new Error(
+				`Failed to find render time for component ${componentName}`
+			);
 		}
 	}
 
