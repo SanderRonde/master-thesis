@@ -159,60 +159,63 @@ async function getFileName(
 		return joinedPath;
 	}
 
-	return await (async () => {
-		switch (specificFileStrategy!.type) {
-			case 'importEndsWith': {
-				const matches = (await getImportPaths(initialFile)).filter(
-					(importPath) => {
-						return importPath.endsWith(
-							specificFileStrategy!.endsWith
+	return path.join(
+		dir,
+		await (async () => {
+			switch (specificFileStrategy!.type) {
+				case 'importEndsWith': {
+					const matches = (await getImportPaths(joinedPath)).filter(
+						(importPath) => {
+							return importPath.endsWith(
+								specificFileStrategy!.endsWith
+							);
+						}
+					);
+
+					if (matches.length === 0) {
+						throw new Error(
+							`Failed to find a match matches for files that end with "${
+								specificFileStrategy!.endsWith
+							}" for dir "${dir}"`
 						);
 					}
-				);
-
-				if (matches.length === 0) {
-					throw new Error(
-						`Failed to find a match matches for files that end with "${
-							specificFileStrategy!.endsWith
-						}" for dir "${dir}"`
-					);
-				}
-				if (matches.length > 1) {
-					throw new Error(
-						`Found multiple matches for files that end with "${
-							specificFileStrategy!.endsWith
-						}", "${matches.join(', ')}" for dir "${dir}"`
-					);
-				}
-				return matches[0];
-			}
-			case 'matches': {
-				const matches = (await getImportPaths(initialFile)).filter(
-					(importPath) => {
-						return specificFileStrategy.matches.some((m) =>
-							m.test(importPath)
+					if (matches.length > 1) {
+						throw new Error(
+							`Found multiple matches for files that end with "${
+								specificFileStrategy!.endsWith
+							}", "${matches.join(', ')}" for dir "${dir}"`
 						);
 					}
-				);
+					return matches[0];
+				}
+				case 'matches': {
+					const matches = (await getImportPaths(joinedPath)).filter(
+						(importPath) => {
+							return specificFileStrategy.matches.some((m) =>
+								m.test(importPath)
+							);
+						}
+					);
 
-				if (matches.length === 0) {
-					throw new Error(
-						`Failed to find a match matches for files that match for dir "${dir}"`
-					);
+					if (matches.length === 0) {
+						throw new Error(
+							`Failed to find a match matches for files that match for dir "${dir}"`
+						);
+					}
+					if (matches.length > 1) {
+						throw new Error(
+							`Found multiple matches for files that match, "${matches.join(
+								', '
+							)}" for dir "${dir}"`
+						);
+					}
+					return matches[0];
 				}
-				if (matches.length > 1) {
-					throw new Error(
-						`Found multiple matches for files that match, "${matches.join(
-							', '
-						)}" for dir "${dir}"`
-					);
-				}
-				return matches[0];
+				default:
+					throw new Error('Unknown specific file strategy');
 			}
-			default:
-				throw new Error('Unknown specific file strategy');
-		}
-	})();
+		})()
+	);
 }
 
 async function tryReadFile(filePath: string): Promise<string | null> {
