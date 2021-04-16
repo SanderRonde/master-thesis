@@ -29,5 +29,7 @@ paper/src/**/*.synctex
 paper/src/**/*.out
 paper/src/**/*.fdb_latexmk
 paper/src/**/*.synctex(busy)
+paper/src/**/*.brf
+paper/src/**/*.nlo
 
 yarn-error.log

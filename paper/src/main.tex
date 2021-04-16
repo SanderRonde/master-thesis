@@ -1,7 +1,6 @@
-\documentclass[10pt, conference, compsocconf]{IEEEtran}
+\documentclass[oneside,11pt]{lib/PhDthesisPSnPDF}
 
 \usepackage[utf8]{inputenc}
-\usepackage[bookmarks=true]{hyperref}
 \usepackage{epsfig}
 \usepackage{amsmath,amssymb,amsfonts,latexsym}
 \usepackage{enumerate}
@@ -37,11 +36,19 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{pbox}
-\usepackage[bottom]{footmisc}
-\usepackage{tabularx}
 \usepackage{fancyvrb}
 \usepackage{cprotect}
 \usepackage{fontspec}
+\usepackage{tabularx}
+
+\let\cleardoublepage\clearpage
+
+
+\textwidth 15cm
+\textheight 22cm
+\parindent 10pt
+\oddsidemargin 0.85cm
+\evensidemargin 0.37cm
 
 
 \makeatletter
@@ -62,9 +69,55 @@
     
 \begin{document}
 
-\title{
-	\todo{Title}
-}
+\thispagestyle{empty}
+
+\begin{center}
+
+	Vrije Universiteit Amsterdam \hspace*{2cm} Universiteit van Amsterdam
+
+	\vspace{1mm}
+
+	\hspace*{-7.5cm}\includegraphics[height=25mm]{figures/front/vu-griffioen.pdf}
+
+	\vspace*{-2cm}\hspace*{7.5cm}\includegraphics[height=15mm]{figures/front/uva_logo.jpg}
+
+	\vspace{2cm}
+
+	{\Large Master Thesis}
+
+	\vspace*{1.5cm}
+
+	\rule{.9\linewidth}{.6pt}\\[0.4cm]
+	{\huge \bfseries Title of the Thesis\par}\vspace{0.4cm}
+	\rule{.9\linewidth}{.6pt}\\[1.5cm]
+
+	\vspace*{2mm}
+
+	{\Large
+		\begin{tabular}{l}
+			{\bf Author:} ~~student name ~~~~ (student number)
+		\end{tabular}
+	}
+
+	\vspace*{2cm}
+
+	\begin{tabular}{ll}
+		{\it 1st supervisor:}   & ~~supervisor name                               \\
+		{\it daily supervisor:} & ~~supervisor name ~~~~ (company, if applicable) \\
+		{\it 2nd reader:}       & ~~supervisor name
+	\end{tabular}
+
+	\vspace*{2.5cm}
+
+	\textit{A thesis submitted in fulfillment of the requirements for\\ the joint UvA-VU Master of Science degree in Computer Science}
+
+	\vspace*{1.8cm}
+
+	\today\\[4cm] % Date
+
+\end{center}
+
+\newpage
 
 \author{
 	\IEEEauthorblockN{Sander Ronde}
@@ -76,17 +129,34 @@
 	}
 }
 
-\maketitle
+\hbadness=10000
+\hfuzz=50pt
+\renewcommand\baselinestretch{1.2}
+\baselineskip=18pt plus1pt
 
-\begin{abstract}
+\begin{center}
+	\textit{``I am the master of my fate, I am the captain of my soul'' \\ from {\em Invictus}, by William Ernest Henley}
+\end{center}
+\newpage
+
+
+\begin{abstracts}
 	\input{sections/abstract.tex}
-\end{abstract}
+\end{abstracts}
 
-\begin{IEEEkeywords}
-	\todo{keywords}
+\frontmatter{}
 
+\setcounter{secnumdepth}{3} % organisational level that receives a numbers
+\setcounter{tocdepth}{3}    % print table of contents for level 3
+\tableofcontents            % print the table of contents
 
-\end{IEEEkeywords}
+\listoffigures	% print list of figures
+
+\listoftables  % print list of tables
+
+\mainmatter{}
+\renewcommand{\chaptername}{} % uncomment to print only "1" not "Chapter 1"
+
 
 \todo{Run grammarly}
 \input{sections/introduction.tex} \todo{}
@@ -99,19 +169,12 @@
 \input{sections/threats-to-validity.tex} \todo{}
 \input{sections/discussion.tex} \todo{}
 \input{sections/conclusion.tex} \todo{}
-
 \clearpage
-\bibliographystyle{IEEEtran}
-\bibliography{bib/references}
-
-\clearpage
-\phantomsection
 \input{sections/appendix.tex}
 
+\clearpage
+\bibliographystyle{lib/PhDbiblio-url2}
+\renewcommand{\bibname}{References}
+\bibliography{bib/references}
+
 \end{document}
-
-
-
-
-
-

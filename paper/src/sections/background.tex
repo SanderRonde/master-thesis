@@ -1,8 +1,8 @@
-\section{Background}\label{sec:background}
+\chapter{Background}\label{chap:background}
 
 This case study was performed at 30MHz, specifically within the context of their software platform. This section describes the company (30MHz), their software platform (the dashboard), and the problem that was solved by the case study.
 
-\subsection{The Company}\label{sec:bg:thecompany}
+\section{The Company}\label{sec:bg:thecompany}
 30MHz is a technology company in the agriculture industry. They offer sensors that collect various types of data, all within the context of agriculture. For example, temperature, humidity, air pressure, etc. They also provide their customers with a dashboard that allows them to view the collected data. 30MHz has several so-called partners. These partners are consultancies in the field of agriculture (among others). They supply 30MHz with additional customers by suggesting their clients become customers of 30MHz as well.
 
 30MHz supplies their customers with the so-called dashboard. An example of it can be seen in Figure~\ref{fig:bg:dashboard}. It is the central location where any customer can view their data. This dashboard is a web app that, as of this case study, is using Angular 10. Data is fetched from a backend, and the various types of data are displayed in different ways using so-called widgets. An example of a widget is a chart that displays the value of the data over time.
@@ -14,7 +14,7 @@ This case study was performed at 30MHz, specifically within the context of their
 	\centering
 \end{figure}
 
-\subsubsection{Apps}\label{sec:bg:apps}
+\subsection{Apps}\label{sec:bg:apps}
 The large amounts of data collected by 30MHz can be utilized in many ways. Companies with domain knowledge and expertise in certain areas (such as the partners) can use it to provide customers with new insights and information that simple graphs can not. Because 30MHz itself does not have this domain knowledge and does not have the resources to create every single possible implementation of this knowledge (in the form of a widget or page in the dashboard), they decided to allow 3rd party developers to develop them instead. In practice, these will be built by the partners and will be provided to customers of 30MHz for a fee through a marketplace. There are currently two implementations:
 
 \begin{itemize}
@@ -33,12 +33,12 @@ The obvious problem with the first option is that you're maintaining two separat
 
 While the second option is not an easy one and it will likely be a very complex process to set up, it is one that will scale a lot better. Once it is set up, any new components will be automatically converted, and any changes will be propagated automatically. In the long run, this should save a lot of time. This is the option 30MHz eventually decided on. However, a framework-agnostic format needs to be chosen to facilitate this process.
 
-\subsection{Web Components}\label{sec:bg:webcomponents}
+\section{Web Components}\label{sec:bg:webcomponents}
 When it comes to choosing a framework-agnostic format for a UI library, there are very few options. Looking at the literature, we find Quid, a DSL for generating components in various frameworks~\footurl{https://www.w3.org/TR/2013/WD-custom-elements-20130514/\#about}. It currently supports Web Components~\footurl{https://developer.mozilla.org/en-US/docs/Web/Web_Components}, Stencil~\footurl{https://stenciljs.com/}, Angular and Polymer~\footurl{https://www.polymer-project.org/}. While this is fairly impressive, the authors do mention it should only be used for rapid prototyping. Since it only supports a fairly small set of supported frameworks and it has the problem of requiring a DSL which the Angular code would have to be converted to, this is not a great fit for us.
 
 This brings us to the other option, namely Web Components. Web Components (also known as Custom Elements) are a technology proposed in 2013~\footurl{https://www.w3.org/TR/2013/WD-custom-elements-20130514/\#about} and implemented in major browsers in 2018~\footurl{https://caniuse.com/?search=webcomponents}. It allows for the creation of custom HTML elements using JavaScript. These elements can then be used like regular HTML elements. Since every JS framework has support for native HTML elements and almost every framework has full support for Web Components~\footurl{https://custom-elements-everywhere.com/}, we can cover most JS frameworks by using Web Components as our target format.
 
-\subsection{Angular Elements}\label{sec:bg:angularelements}
+\section{Angular Elements}\label{sec:bg:angularelements}
 To perform the conversion of Angular components to Web Components, we will be using Angular Elements~\footurl{https://angular.io/guide/elements}. Angular Elements is a JS package published by the developers of Angular that allows the conversion of Angular components to Web Components. Angular apps are normally mounted to the DOM by the user through a call to the \code{bootstrapModule} function. After this call, the bootstrap component is mounted to the DOM, after which child components are rendered within its root recursively. Angular Elements works slightly differently. Components registered as Web Components through Angular Elements are instead rendered whenever an HTML element with the registered tag is added to the DOM\@. When this happens, a new root is created in place of this new HTML element. Instead of there being a single root in which everything is rendered (as is the case in a normal Angular app), components are all rendered in their own local root. We will be using Angular Elements for the conversion to Web Components in this case study.
 
 \begin{figure}[h]
@@ -55,5 +55,5 @@ To perform the conversion of Angular components to Web Components, we will be us
 	\centering
 \end{figure}
 
-\subsection{Javascript frameworks}\label{sec:bg:jsframeworks}
+\section{Javascript frameworks}\label{sec:bg:jsframeworks}
 While converting components to Web Components makes them usable in most JS frameworks, they do not provide a perfect experience. The first problem is them not being perfectly usable in every JS framework. As of the writing of this paper, there are still some issues preventing them from working completely in React JS~\footurl{https://reactjs.org/}. These issues mostly concern the passing of non-primitive data to the components, such as JavaScript Objects, Arrays and Functions. The second problem is that they are not native to JS frameworks, and as such, do not integrate very well with the tooling provided by the framework. An example of type hinting provided by the framework and editor can be seen in Figure~\ref{fig:bg:hinting}. Compared to Figure~\ref{fig:bg:no-hinting}, which shows a component with no type hinting, Figure~\ref{fig:bg:hinting} provides the developer with much more information and shows them what options are available to them. Instead of having to search the web for the available properties, they are provided by the element's source code and displayed by the framework tooling and editor. In order to provide developers with proper tooling and type hinting for components, we will provide what we'll call a wrapper for each framework that either provides this tooling or does not support Web Components fully. This wrapper is written in the language the framework which it is targeting provides, and as such, allows the framework to infer information from its source code. Under the hood, this wrapper still makes use of the Web Components to render the components in the CC UI library, but this wrapper serves as glue code between the framework and the Web Components. By combining the two steps of converting the original Angular components to Web Components, and the Web Components to wrappers for frameworks, we are able to provide developers with an experience that is native to their framework, regardless of the fact that the original source code was written in Angular.
