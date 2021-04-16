@@ -16,7 +16,11 @@ interface ComponentGetterSettings {
 		endsWith?: string;
 		ignored?: (string | RegExp)[];
 	};
-	componentName: 'sameAsDir' | 'fromFile';
+	componentName: 'sameAsDir';
+	multipleFiles?: {
+		type: 'matches';
+		matches: RegExp[];
+	};
 	fileName?: {
 		caseInSensitive?: boolean;
 		initialFileStrategy?:
@@ -265,9 +269,6 @@ async function getComponentFiles(
 		if (settings.componentName === 'sameAsDir') {
 			return path.parse(dir).base;
 		}
-		if (settings.componentName === 'fromFile') {
-			// TODO:
-		}
 		throw new Error('Unknown component name setting');
 	})();
 
@@ -295,6 +296,73 @@ async function getComponentFiles(
 		},
 		html: null,
 	};
+}
+
+async function getMultipleComponentFiles(
+	dir: string,
+	settings: ComponentGetterSettings
+): Promise<ComponentFiles[]> {
+	const filesInDir = await fs.readdir(dir);
+	const files = filesInDir
+		.filter((file) => {
+			switch (settings.multipleFiles!.type) {
+				case 'matches':
+					return settings.multipleFiles!.matches.some((regexp) =>
+						regexp.test(file)
+					);
+			}
+		})
+		.map((file) => path.join(dir, file));
+
+	const components: ComponentFiles[] = [];
+	for (const file of files) {
+		const content = await readFile(file);
+		const componentName = (() => {
+			if (settings.componentName === 'sameAsDir') {
+				return path.parse(dir).base;
+			}
+			throw new Error('Unknown component name setting');
+		})();
+
+		if (file.endsWith('.svelte') || file.endsWith('.vue')) {
+			const { html, js } = splitSvelteIntoParts(content);
+
+			components.push({
+				html: {
+					componentName,
+					content: html,
+					filePath: file,
+				},
+				js: {
+					componentName,
+					content: js,
+					filePath: file,
+				},
+			});
+		} else {
+			components.push({
+				js: {
+					componentName,
+					content,
+					filePath: file,
+				},
+				html: null,
+			});
+		}
+	}
+	return components;
+}
+
+export function flatten<A>(arr: A[][]): A[] {
+	const result: A[] = [];
+	for (const item of arr) {
+		if (Array.isArray(item)) {
+			result.push(...item);
+		} else {
+			result.push(item);
+		}
+	}
+	return result;
 }
 
 export function createComponentGetter(
@@ -352,6 +420,18 @@ export function createComponentGetter(
 		}
 
 		// Get components
+		if (settings.multipleFiles) {
+			return flatten(
+				await Promise.all(
+					files.map((file) =>
+						getMultipleComponentFiles(
+							path.join(packagesPath, file),
+							settings
+						)
+					)
+				)
+			);
+		}
 		return await Promise.all(
 			files.map((file) =>
 				getComponentFiles(path.join(packagesPath, file), settings)
