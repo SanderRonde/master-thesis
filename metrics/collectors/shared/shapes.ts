@@ -24,13 +24,7 @@ export interface ComponentVisibilitySetterWindow extends Window {
  */
 export type GetComponentFunction = (
 	submodulePath: string
-) => Promise<
-	| ComponentFiles[]
-	| {
-			extraLevels: number;
-			components: ComponentFiles[];
-	  }
->;
+) => Promise<ComponentFiles[]>;
 
 export type GetComponentModule = {
 	getComponents: GetComponentFunction;

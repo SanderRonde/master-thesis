@@ -13,6 +13,7 @@ interface ComponentGetterSettings {
 		dirOnly?: boolean;
 		fileOnly?: boolean;
 		startsWith?: string;
+		doesNotEndWith?: string;
 		startsWithUppercase?: boolean;
 		endsWith?: string;
 		ignored?: (string | RegExp)[];
@@ -400,6 +401,12 @@ export function createComponentGetter(
 		if (settings.filters.endsWith) {
 			files = files.filter((file) =>
 				file.endsWith(settings.filters.endsWith!)
+			);
+		}
+		// Apply does-not-ends-with filter
+		if (settings.filters.doesNotEndWith) {
+			files = files.filter(
+				(file) => !file.endsWith(settings.filters.doesNotEndWith!)
 			);
 		}
 		// Apply startsWithUppercase filter
