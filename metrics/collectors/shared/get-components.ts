@@ -13,6 +13,7 @@ interface ComponentGetterSettings {
 		dirOnly?: boolean;
 		fileOnly?: boolean;
 		startsWith?: string;
+		startsWithUppercase?: boolean;
 		endsWith?: string;
 		ignored?: (string | RegExp)[];
 	};
@@ -400,6 +401,12 @@ export function createComponentGetter(
 			files = files.filter((file) =>
 				file.endsWith(settings.filters.endsWith!)
 			);
+		}
+		// Apply startsWithUppercase filter
+		if (settings.filters.startsWithUppercase) {
+			files = files.filter((file) => {
+				return file[0].toUpperCase() === file[0];
+			});
 		}
 		// Apply ignored filter
 		if (settings.filters.ignored) {
