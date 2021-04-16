@@ -21,6 +21,13 @@ interface PageLoadTimeMeasurements {
 	'first-contentful-paint': number;
 }
 
+type PagePerformanceMeasurement = {
+	name: string;
+	entryType: string;
+	startTime: number;
+	duration: number;
+}[];
+
 async function measurePageLoadMetrics(
 	port: number,
 	urlPath: string
@@ -31,18 +38,18 @@ async function measurePageLoadMetrics(
 		urlPath
 	);
 
-	const firstPaint = JSON.parse(
+	const firstPaint = (JSON.parse(
 		await page.evaluate(() =>
 			JSON.stringify(performance.getEntriesByName('first-paint'))
 		)
-	).startTime;
-	const firstContentfulPaint = JSON.parse(
+	) as PagePerformanceMeasurement)[0].startTime;
+	const firstContentfulPaint = (JSON.parse(
 		await page.evaluate(() =>
 			JSON.stringify(
 				performance.getEntriesByName('first-contentful-paint')
 			)
 		)
-	).startTime;
+	) as PagePerformanceMeasurement)[0].startTime;
 
 	await page.close();
 	await browser.close();
