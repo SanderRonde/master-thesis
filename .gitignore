@@ -34,5 +34,6 @@ paper/src/**/*.nlo
 paper/src/**/*.loc
 paper/src/**/*.lot
 paper/src/**/*.toc
+paper/src/**/*.lof
 
 yarn-error.log
