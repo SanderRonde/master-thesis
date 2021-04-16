@@ -130,6 +130,11 @@ const timeMetricsBundleMap: TimeMetricBundleMap<Bundle> = {
 	...vueTimeMetricsMap,
 };
 
+async function execCwd(exec: ExecFunction, cmd: string, cwd: string) {
+	const ctx = await exec(`cd ${cwd}`);
+	await ctx.keepContext(cmd);
+}
+
 async function buildDemoRepo(
 	exec: ExecFunction,
 	baseDir: string,
@@ -142,7 +147,18 @@ async function buildDemoRepo(
 	makeChartDeterministic(getRenderTimePageDirs(baseDir, submoduleName));
 
 	await exec('? Building design library and wrappers');
-	await dashboardCtx.keepContext('makfy demo-repo --build-demos');
+
+	await dashboardCtx.keepContext('makfy demo-repo');
+	// We only build these frameworks, making sure we get around the
+	// issue of building storybook. Also building storybook etc is not
+	// needed so it's wasted time
+	for (const framework of ['angular', 'native', 'react', 'svelte']) {
+		await execCwd(
+			exec,
+			'yarn build',
+			path.join(baseDir, 'dist/demo-repo', framework)
+		);
+	}
 
 	await dashboardCtx.keepContext('git reset --hard');
 }
