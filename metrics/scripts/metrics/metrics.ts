@@ -153,10 +153,16 @@ async function buildDemoRepo(
 	// issue of building storybook. Also building storybook etc is not
 	// needed so it's wasted time
 	for (const framework of ['angular', 'native', 'react', 'svelte']) {
+		const frameworkDir = path.join(baseDir, 'dist/demo-repo', framework);
+		await execCwd(
+			exec,
+			'npm install',
+			frameworkDir
+		);
 		await execCwd(
 			exec,
 			'yarn build',
-			path.join(baseDir, 'dist/demo-repo', framework)
+			frameworkDir
 		);
 	}
 
