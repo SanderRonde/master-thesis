@@ -288,7 +288,7 @@ export async function collectRenderTimes(
 			overrides.demoDir?.(basePath) ||
 			demoPath,
 		urlPath: overrides.urlPath || '/demo.html',
-		showComponent: async (component, numberOfComponents, page) => {
+		showComponent: async (component, numComponents, page) => {
 			await page.evaluate(
 				(componentName, numberOfComponents) => {
 					window.setVisibleComponent(
@@ -298,7 +298,7 @@ export async function collectRenderTimes(
 					);
 				},
 				component,
-				numberOfComponents
+				numComponents
 			);
 		},
 	});
