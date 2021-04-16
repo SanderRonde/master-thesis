@@ -31,5 +31,8 @@ paper/src/**/*.fdb_latexmk
 paper/src/**/*.synctex(busy)
 paper/src/**/*.brf
 paper/src/**/*.nlo
+paper/src/**/*.loc
+paper/src/**/*.lot
+paper/src/**/*.toc
 
 yarn-error.log
