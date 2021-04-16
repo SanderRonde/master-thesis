@@ -167,6 +167,7 @@ async function buildDemoRepo(
 	}
 
 	await dashboardCtx.keepContext('git reset --hard');
+	await dashboardCtx.keepContext('npm install');
 }
 
 export const metris = preserveCommandBuilder(

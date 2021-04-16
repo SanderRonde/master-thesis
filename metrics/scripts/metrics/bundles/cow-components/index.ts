@@ -188,7 +188,7 @@ export const cowComponentsTimeMetricsMap: TimeMetricBundleMap<CowComponentBundle
 
 export const cowComponentsPageLoadTimeMap: PageLoadTimeMetricBundleMap<CowComponentBundle> = {
 	dashboard: {
-		basePath: path.join(DASHBOARD_DIR, 'dist/dasboard'),
+		basePath: path.join(DASHBOARD_DIR, 'dist/dashboard'),
 		urlPath: '/404',
 		bundleCategory: 'cow-components',
 		bundleName: 'dashboard',
