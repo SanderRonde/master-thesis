@@ -285,9 +285,9 @@ async function collectRuntimeRenderTimes({
 		const componentName = components[i];
 		info(
 			'render-time',
-			`\tCapturing render times for ${componentName} (${i + 1}/${
-				components.length
-			})`
+			`\tCapturing render times for ${componentName} (${numberOfComponents}) (${
+				i + 1
+			}/${components.length})`
 		);
 
 		let succeeded: boolean = false;
