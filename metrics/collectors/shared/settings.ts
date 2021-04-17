@@ -21,7 +21,8 @@ export const KEEP_PROFILES = DEVELOPMENT && KEEP_PROFILES_DEFAULT;
  * 							Metrics
  * ================================================
  */
-const DEFAULT_NUM_MEASURES = DEVELOPMENT ? 1 : 30
+const DEFAULT_NUM_MEASURES = DEVELOPMENT ? 1 : 30;
+const DEFAULT_SLOW_DOWN_FACTOR = DEVELOPMENT ? 1 : 5;
 /**
  * 2, as used by the paper (A quality model for web components)
  */
@@ -29,11 +30,11 @@ export const STRUCTURAL_COMPLEXITY_DEPTH = 2;
 /**
  * Slowdown factor used for the load time of bundles
  */
-export const SLOWDOWN_FACTOR_LOAD_TIME = DEVELOPMENT ? 1 : 5;
+export const SLOWDOWN_FACTOR_LOAD_TIME = DEFAULT_SLOW_DOWN_FACTOR;
 /**
  * Slowdown factor used for the render time of bundles
  */
-export const SLOWDOWN_FACTOR_RENDER_TIME = DEVELOPMENT ? 1 : 5;
+export const SLOWDOWN_FACTOR_RENDER_TIME = DEFAULT_SLOW_DOWN_FACTOR;
 /**
  * Number of times to measure load time performance
  * before generating a report off of the avg
@@ -42,7 +43,7 @@ export const LOAD_TIME_PERFORMANCE_MEASURES = DEFAULT_NUM_MEASURES;
 /**
  * Slowdown factor used for page load time
  */
-export const PAGE_LOAD_TIME_SLOWDOWN_FACTOR = DEVELOPMENT ? 1 : 5;
+export const PAGE_LOAD_TIME_SLOWDOWN_FACTOR = DEFAULT_SLOW_DOWN_FACTOR;
 /**
  * Number of times to measure load time performance
  * before generating a report off of the avg
