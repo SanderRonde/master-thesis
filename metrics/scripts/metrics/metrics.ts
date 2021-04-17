@@ -8,6 +8,7 @@ import {
 } from '../../collectors/shared/constants';
 import {
 	getCommandBuilderExec,
+	handleErrors,
 	METRICS_COMMAND_ARGS,
 	METRICS_COMMAND_ARG_DESCRIPTIONS,
 } from '../lib/makfy-helper';
@@ -201,214 +202,228 @@ cmd('metrics')
 		...METRICS_COMMAND_ARG_DESCRIPTIONS,
 	})
 	.run(async (exec, args) => {
-		const bundles: Bundle[] = (() => {
-			if (args.bundle !== 'all') {
-				return [args.bundle];
-			}
-			if (args['bundle-list'] && args['bundle-list'] !== '') {
-				return args['bundle-list'].split(',') as Bundle[];
-			}
-			if (args['all-but-bundles'] && args['all-but-bundles'] !== '') {
-				const allButBundlesList = args['all-but-bundles'].split(
-					','
-				) as Bundle[];
-				return BUNDLES.filter(
-					(bundle) => !allButBundlesList.includes(bundle)
-				);
-			}
-			return BUNDLES;
-		})();
+		await handleErrors(async () => {
+			const bundles: Bundle[] = (() => {
+				if (args.bundle !== 'all') {
+					return [args.bundle];
+				}
+				if (args['bundle-list'] && args['bundle-list'] !== '') {
+					return args['bundle-list'].split(',') as Bundle[];
+				}
+				if (args['all-but-bundles'] && args['all-but-bundles'] !== '') {
+					const allButBundlesList = args['all-but-bundles'].split(
+						','
+					) as Bundle[];
+					return BUNDLES.filter(
+						(bundle) => !allButBundlesList.includes(bundle)
+					);
+				}
+				return BUNDLES;
+			})();
 
-		for (const dashboardDir of [DASHBOARD_DIR, BASIC_DASHBOARD_DIR]) {
-			const isBasic = dashboardDir === BASIC_DASHBOARD_DIR;
+			for (const dashboardDir of [DASHBOARD_DIR, BASIC_DASHBOARD_DIR]) {
+				const isBasic = dashboardDir === BASIC_DASHBOARD_DIR;
 
-			const packagesInstalledFile = path.join(
-				dashboardDir,
-				'.vscode/installed'
-			);
-
-			const hasCowComponentBundle = bundles.some((bundle) =>
-				(isBasic
-					? COW_COMPONENT_BASIC_BUNDLES
-					: COW_COMPONENT_BUNDLES
-				).includes(bundle as never)
-			);
-			const hasDashboardBundle = bundles.some((bundle) =>
-				(isBasic
-					? cowComponentBasicBundles
-					: cowComponentBundles
-				).includes(bundle as never)
-			);
-			if (
-				(hasCowComponentBundle || hasDashboardBundle) &&
-				!args['skip-dashboard'] &&
-				!(await fs.pathExists(packagesInstalledFile))
-			) {
-				await exec('? Copying environment files');
-				await fs.copyFile(
-					path.join(
-						dashboardDir,
-						'src/environments/environment.ts.txt'
-					),
-					path.join(dashboardDir, 'src/environments/environment.ts')
-				);
-				await fs.copyFile(
-					path.join(dashboardDir, 'src/environments/version.ts.txt'),
-					path.join(dashboardDir, 'src/environments/version.ts')
-				);
-
-				await exec('? Installing dashboard dependencies');
-				await exec(`npm install -C ${dashboardDir} --no-save`);
-
-				await exec('? Marking as installed');
-				await writeFile(packagesInstalledFile, '');
-			}
-
-			if (
-				hasCowComponentBundle &&
-				(!(await fs.pathExists(DEMO_REPO_DIR)) || args['no-cache'])
-			) {
-				await buildDemoRepo(
-					exec,
+				const packagesInstalledFile = path.join(
 					dashboardDir,
-					isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard',
-					bundles
+					'.vscode/installed'
 				);
-			}
-		}
 
-		const execArgs = {
-			'no-cache': args['no-cache'],
-			prod: args.prod,
-			'log-debug': args['log-debug'],
-			'multi-run': true,
-		};
-
-		// First do angular stuff by itself if we need to
-		// because it's a bit of a special case
-		const fullSoloBundles: Bundle[] = ['dashboard', 'basic-dashboard'];
-		for (const soloBundle of fullSoloBundles) {
-			if (bundles.includes(soloBundle)) {
-				await exec(
-					getCommandBuilderExec(serialBundleMap[soloBundle], execArgs)
+				const hasCowComponentBundle = bundles.some((bundle) =>
+					(isBasic
+						? COW_COMPONENT_BASIC_BUNDLES
+						: COW_COMPONENT_BUNDLES
+					).includes(bundle as never)
 				);
-			}
-		}
-
-		const nonSoloBundles = bundles.filter(
-			(bundle) => !fullSoloBundles.includes(bundle)
-		);
-
-		// Run all install tasks
-		await exec('? Running non-angular tasks');
-		for (const bundle of nonSoloBundles) {
-			if (bundle in installCommandMap) {
-				await exec(
-					getCommandBuilderExec(installCommandMap[bundle]!, execArgs)
+				const hasDashboardBundle = bundles.some((bundle) =>
+					(isBasic
+						? cowComponentBasicBundles
+						: cowComponentBundles
+					).includes(bundle as never)
 				);
-			}
-		}
+				if (
+					(hasCowComponentBundle || hasDashboardBundle) &&
+					!args['skip-dashboard'] &&
+					!(await fs.pathExists(packagesInstalledFile))
+				) {
+					await exec('? Copying environment files');
+					await fs.copyFile(
+						path.join(
+							dashboardDir,
+							'src/environments/environment.ts.txt'
+						),
+						path.join(
+							dashboardDir,
+							'src/environments/environment.ts'
+						)
+					);
+					await fs.copyFile(
+						path.join(
+							dashboardDir,
+							'src/environments/version.ts.txt'
+						),
+						path.join(dashboardDir, 'src/environments/version.ts')
+					);
 
-		const syncBundles: Bundle[] = [
-			'cow-components-angular',
-			'cow-components-basic-angular',
-		];
-		if (!args['skip-build']) {
-			// Run all parallel tasks
-			for (const partialSoloBundle of syncBundles) {
-				await exec(
-					getCommandBuilderExec(
-						parallelBundleMap[partialSoloBundle]!,
-						execArgs
-					)
-				);
+					await exec('? Installing dashboard dependencies');
+					await exec(`npm install -C ${dashboardDir} --no-save`);
+
+					await exec('? Marking as installed');
+					await writeFile(packagesInstalledFile, '');
+				}
+
+				if (
+					hasCowComponentBundle &&
+					(!(await fs.pathExists(DEMO_REPO_DIR)) || args['no-cache'])
+				) {
+					await buildDemoRepo(
+						exec,
+						dashboardDir,
+						isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard',
+						bundles
+					);
+				}
 			}
-			await exec(
-				nonSoloBundles
-					.filter((bundle) => !syncBundles.includes(bundle))
-					.filter((bundle) => parallelBundleMap[bundle])
-					.map((bundle) =>
+
+			const execArgs = {
+				'no-cache': args['no-cache'],
+				prod: args.prod,
+				'log-debug': args['log-debug'],
+				'multi-run': true,
+			};
+
+			// First do angular stuff by itself if we need to
+			// because it's a bit of a special case
+			const fullSoloBundles: Bundle[] = ['dashboard', 'basic-dashboard'];
+			for (const soloBundle of fullSoloBundles) {
+				if (bundles.includes(soloBundle)) {
+					await exec(
 						getCommandBuilderExec(
-							parallelBundleMap[bundle]!,
+							serialBundleMap[soloBundle],
 							execArgs
 						)
-					)
-			);
-		}
-
-		// Run all sync tasks
-		await exec('? Running synchronous tasks');
-		for (const bundle of nonSoloBundles) {
-			await exec(
-				getCommandBuilderExec(serialBundleMap[bundle], execArgs)
-			);
-		}
-
-		// Set up load and render time queues
-		const commands: {
-			fn: () => Promise<void>;
-			bundle: string;
-		}[] = [];
-		for (const bundle of nonSoloBundles) {
-			if (!timeMetricsBundleMap[bundle]) {
-				continue;
-			}
-			const bundleConfig =
-				timeMetricsBundleMap[
-					bundle as keyof typeof timeMetricsBundleMap
-				];
-			const config: PerBundleLoadTimeMetricConfig = {
-				...bundleConfig!,
-				bundleName: bundle,
-			};
-			commands.push(
-				...(await setupLoadTimeMeasuring(config)).map((fn) => ({
-					fn,
-					bundle,
-				}))
-			);
-			commands.push(
-				...(await setupRenderTimeMeasuring(config)).map((fn) => ({
-					fn,
-					bundle,
-				}))
-			);
-		}
-		for (const bundle of nonSoloBundles) {
-			if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
-				continue;
+					);
+				}
 			}
 
-			commands.push(
-				...(
-					await setupPageLoadTimeMeasuring(
-						cowComponentsPageLoadTimeMap[
-							bundle as keyof typeof cowComponentsPageLoadTimeMap
-						]!
-					)
-				).map((fn) => ({
-					fn,
-					bundle,
-				}))
+			const nonSoloBundles = bundles.filter(
+				(bundle) => !fullSoloBundles.includes(bundle)
 			);
-		}
 
-		// Randomize order
-		const shuffled = shuffle(commands);
-		// Run them all
-		await exec('? Starting with timing-based tests');
-		for (let i = 0; i < shuffled.length; i++) {
-			const { bundle, fn } = shuffled[i];
-			info(
-				'load-time',
-				`Running timing test ${i + 1}/${
-					shuffled.length
-				} (bundle ${bundle})`
-			);
-			await fn();
-		}
-		await exec('? Done with timing-based tests');
+			// Run all install tasks
+			await exec('? Running non-angular tasks');
+			for (const bundle of nonSoloBundles) {
+				if (bundle in installCommandMap) {
+					await exec(
+						getCommandBuilderExec(
+							installCommandMap[bundle]!,
+							execArgs
+						)
+					);
+				}
+			}
 
-		// Exit manually
-		process.exit(0);
+			const syncBundles: Bundle[] = [
+				'cow-components-angular',
+				'cow-components-basic-angular',
+			];
+			if (!args['skip-build']) {
+				// Run all parallel tasks
+				for (const partialSoloBundle of syncBundles) {
+					await exec(
+						getCommandBuilderExec(
+							parallelBundleMap[partialSoloBundle]!,
+							execArgs
+						)
+					);
+				}
+				await exec(
+					nonSoloBundles
+						.filter((bundle) => !syncBundles.includes(bundle))
+						.filter((bundle) => parallelBundleMap[bundle])
+						.map((bundle) =>
+							getCommandBuilderExec(
+								parallelBundleMap[bundle]!,
+								execArgs
+							)
+						)
+				);
+			}
+
+			// Run all sync tasks
+			await exec('? Running synchronous tasks');
+			for (const bundle of nonSoloBundles) {
+				await exec(
+					getCommandBuilderExec(serialBundleMap[bundle], execArgs)
+				);
+			}
+
+			// Set up load and render time queues
+			const commands: {
+				fn: () => Promise<void>;
+				bundle: string;
+			}[] = [];
+			for (const bundle of nonSoloBundles) {
+				if (!timeMetricsBundleMap[bundle]) {
+					continue;
+				}
+				const bundleConfig =
+					timeMetricsBundleMap[
+						bundle as keyof typeof timeMetricsBundleMap
+					];
+				const config: PerBundleLoadTimeMetricConfig = {
+					...bundleConfig!,
+					bundleName: bundle,
+				};
+				commands.push(
+					...(await setupLoadTimeMeasuring(config)).map((fn) => ({
+						fn,
+						bundle,
+					}))
+				);
+				commands.push(
+					...(await setupRenderTimeMeasuring(config)).map((fn) => ({
+						fn,
+						bundle,
+					}))
+				);
+			}
+			for (const bundle of nonSoloBundles) {
+				if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
+					continue;
+				}
+
+				commands.push(
+					...(
+						await setupPageLoadTimeMeasuring(
+							cowComponentsPageLoadTimeMap[
+								bundle as keyof typeof cowComponentsPageLoadTimeMap
+							]!
+						)
+					).map((fn) => ({
+						fn,
+						bundle,
+					}))
+				);
+			}
+
+			// Randomize order
+			const shuffled = shuffle(commands);
+			// Run them all
+			await exec('? Starting with timing-based tests');
+			for (let i = 0; i < shuffled.length; i++) {
+				const { bundle, fn } = shuffled[i];
+				info(
+					'load-time',
+					`Running timing test ${i + 1}/${
+						shuffled.length
+					} (bundle ${bundle})`
+				);
+				await fn();
+			}
+			await exec('? Done with timing-based tests');
+
+			// Exit manually
+			process.exit(0);
+		});
 	});

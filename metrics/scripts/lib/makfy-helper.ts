@@ -40,6 +40,15 @@ export function preserveCommandBuilder<TA extends ArgDefinitions>(
 	};
 }
 
+export async function handleErrors<V>(fn: () => Promise<V>): Promise<V> {
+	try {
+		return await fn();
+	} catch(e) {
+		console.log(e);
+		throw e;
+	}
+}
+
 function getCommandName(builder: CommandBuilder<any>): string {
 	// This is private but we know it's there so we can
 	// access it
@@ -98,7 +107,7 @@ function registerBundleCommand(
 		exec = await setContexts(exec, args);
 
 		if (runHandler) {
-			await runHandler(exec, args);
+			await handleErrors(() => runHandler!(exec, args))
 		}
 	});
 
