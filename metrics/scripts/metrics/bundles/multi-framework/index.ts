@@ -98,5 +98,6 @@ export const multiFrameworkTimeMetricsMap: TimeMetricBundleMap<MultiFrameworkBun
 	'prime-vue': {
 		...timeMetricsArgs,
 		demoDir: (basePath) => path.join(basePath, 'demo', 'dist'),
+		urlPath: '/index.html',
 	},
 };
