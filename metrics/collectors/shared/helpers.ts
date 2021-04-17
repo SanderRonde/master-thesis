@@ -151,7 +151,14 @@ export async function ensureUrlSourceExists(
 	urlPath: string,
 	testName: string
 ) {
-	if (await fs.pathExists(path.join(sourceRoot, urlPath))) {
+	if (
+		await fs.pathExists(
+			path.join(
+				sourceRoot,
+				urlPath.startsWith('/') ? urlPath.slice(1) : urlPath
+			)
+		)
+	) {
 		throw new Error(
 			`Entrypoint "${sourceRoot}/${urlPath}" does not exist in test ${testName}`
 		);
