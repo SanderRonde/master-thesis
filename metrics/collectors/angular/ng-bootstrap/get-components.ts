@@ -1,5 +1,3 @@
-import * as path from 'path';
-import { SUBMODULES_DIR } from '../../shared/constants';
 import { createComponentGetter } from '../../shared/get-components';
 
 export const getComponents = createComponentGetter({
@@ -20,5 +18,3 @@ export const getComponents = createComponentGetter({
 		},
 	},
 });
-
-getComponents(path.join(SUBMODULES_DIR, 'ng-bootstrap')).then(console.log);
