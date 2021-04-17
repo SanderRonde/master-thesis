@@ -138,7 +138,8 @@ async function execCwd(exec: ExecFunction, cmd: string, cwd: string) {
 async function buildDemoRepo(
 	exec: ExecFunction,
 	baseDir: string,
-	submoduleName: string
+	submoduleName: string,
+	forBundles: Bundle[]
 ) {
 	const dashboardCtx = await exec(`cd ${baseDir}`);
 	await dashboardCtx.keepContext('git reset --hard');
@@ -152,19 +153,30 @@ async function buildDemoRepo(
 	// We only build these frameworks, making sure we get around the
 	// issue of building storybook. Also building storybook etc is not
 	// needed so it's wasted time
-	for (const framework of ['native', 'react', 'svelte']) {
+	const frameworks = forBundles
+		.filter((b) => b.startsWith('cow-components-'))
+		.map((b) => b.slice('cow-components-'.length))
+		.map((b) =>
+			b.endsWith('-basic') ? b.slice(0, b.length - '-basic'.length) : b
+		);
+	for (const framework of frameworks.filter((f) => f !== 'angular')) {
 		const frameworkDir = path.join(baseDir, 'dist/demo-repo', framework);
 		await execCwd(exec, 'npm install', frameworkDir);
 		await execCwd(exec, 'yarn build', frameworkDir);
 	}
 	// Handle the angular case a bit differently
-	const frameworkDir = path.join(baseDir, 'dist/demo-repo', 'angular');
-	const cowComponentsLibCtx = await exec(
-		`cd ${path.join(frameworkDir, 'packages/angular/cow-components-lib')}`
-	);
-	await cowComponentsLibCtx.keepContext('npm link');
-	await execCwd(exec, 'npm install', frameworkDir);
-	await execCwd(exec, 'yarn build', frameworkDir);
+	if (frameworks.includes('angular')) {
+		const frameworkDir = path.join(baseDir, 'dist/demo-repo', 'angular');
+		const cowComponentsLibCtx = await exec(
+			`cd ${path.join(
+				frameworkDir,
+				'packages/angular/cow-components-lib'
+			)}`
+		);
+		await cowComponentsLibCtx.keepContext('npm link');
+		await execCwd(exec, 'npm install', frameworkDir);
+		await execCwd(exec, 'yarn build', frameworkDir);
+	}
 
 	await dashboardCtx.keepContext('git reset --hard');
 	await dashboardCtx.keepContext('npm install');
@@ -259,7 +271,8 @@ cmd('metrics')
 				await buildDemoRepo(
 					exec,
 					dashboardDir,
-					isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard'
+					isBasic ? '30mhz-dashboard-basic' : '30mhz-dashboard',
+					bundles
 				);
 			}
 		}
@@ -271,29 +284,24 @@ cmd('metrics')
 			'multi-run': true,
 		};
 
-		// First do dashboard by itself if we need to
+		// First do angular stuff by itself if we need to
 		// because it's a bit of a special case
-		if (bundles.includes('dashboard')) {
-			await exec(
-				getCommandBuilderExec(serialBundleMap.dashboard, execArgs)
-			);
-		}
-		if (bundles.includes('basic-dashboard')) {
-			await exec(
-				getCommandBuilderExec(
-					serialBundleMap['basic-dashboard'],
-					execArgs
-				)
-			);
+		const fullSoloBundles: Bundle[] = ['dashboard', 'basic-dashboard'];
+		for (const soloBundle of fullSoloBundles) {
+			if (bundles.includes(soloBundle)) {
+				await exec(
+					getCommandBuilderExec(serialBundleMap[soloBundle], execArgs)
+				);
+			}
 		}
 
-		const nonDashboardBundles = bundles.filter(
-			(bundle) => !['dashboard', 'basic-dashboard'].includes(bundle)
+		const nonSoloBundles = bundles.filter(
+			(bundle) => !fullSoloBundles.includes(bundle)
 		);
 
 		// Run all install tasks
-		await exec('? Running non-dashboard tasks');
-		for (const bundle of nonDashboardBundles) {
+		await exec('? Running non-angular tasks');
+		for (const bundle of nonSoloBundles) {
 			if (bundle in installCommandMap) {
 				await exec(
 					getCommandBuilderExec(installCommandMap[bundle]!, execArgs)
@@ -301,10 +309,23 @@ cmd('metrics')
 			}
 		}
 
+		const syncBundles: Bundle[] = [
+			'cow-components-angular',
+			'cow-components-basic-angular',
+		];
 		if (!args['skip-build']) {
 			// Run all parallel tasks
+			for (const partialSoloBundle of syncBundles) {
+				await exec(
+					getCommandBuilderExec(
+						parallelBundleMap[partialSoloBundle]!,
+						execArgs
+					)
+				);
+			}
 			await exec(
-				nonDashboardBundles
+				nonSoloBundles
+					.filter((bundle) => !syncBundles.includes(bundle))
 					.filter((bundle) => parallelBundleMap[bundle])
 					.map((bundle) =>
 						getCommandBuilderExec(
@@ -317,7 +338,7 @@ cmd('metrics')
 
 		// Run all sync tasks
 		await exec('? Running synchronous tasks');
-		for (const bundle of nonDashboardBundles) {
+		for (const bundle of nonSoloBundles) {
 			await exec(
 				getCommandBuilderExec(serialBundleMap[bundle], execArgs)
 			);
@@ -328,7 +349,7 @@ cmd('metrics')
 			fn: () => Promise<void>;
 			bundle: string;
 		}[] = [];
-		for (const bundle of nonDashboardBundles) {
+		for (const bundle of nonSoloBundles) {
 			if (!timeMetricsBundleMap[bundle]) {
 				continue;
 			}
@@ -353,7 +374,7 @@ cmd('metrics')
 				}))
 			);
 		}
-		for (const bundle of nonDashboardBundles) {
+		for (const bundle of nonSoloBundles) {
 			if (!(cowComponentsPageLoadTimeMap as any)[bundle as any]) {
 				continue;
 			}
