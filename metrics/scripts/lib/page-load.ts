@@ -1,6 +1,3 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
-
 import { openPage } from '../../collectors/metric-definitions/render-time';
 import { startServer } from '../../collectors/shared/dashboard/serve-dashboard-dist';
 import { ensureUrlSourceExists, wait } from '../../collectors/shared/helpers';
