@@ -21,6 +21,7 @@ const installCreator = getBundleInstallCommandCreator('vue');
 const setupCreator = getBundleSetupCommandCreator('vue');
 const baseMetricOverrides: BundleMetricsOverrides = {
 	demoDir: (basePath) => path.join(basePath, 'demo', 'dist'),
+	urlPath: '/index.html',
 };
 const metricsCreator = getBundleMetricsCommandCreator(
 	'vue',
