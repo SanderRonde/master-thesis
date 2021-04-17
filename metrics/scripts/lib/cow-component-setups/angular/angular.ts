@@ -13,11 +13,19 @@ export function getAngularDirs(baseDir: string) {
 	const { frameworkDemoDir } = getCowComponentsDirs(baseDir, 'angular');
 
 	const angularDemoDist = path.join(frameworkDemoDir, 'dist/angular-demo');
+	const angularToggleableDemoDist = path.join(
+		frameworkDemoDir,
+		'dist/angular-toggleable'
+	);
 	const metricsComponentDir = path.join(frameworkDemoDir, 'src/app');
-	const angularMetadataBundle = path.join(angularDemoDist, 'metadata');
+	const angularMetadataBundle = path.join(
+		angularToggleableDemoDist,
+		'metadata'
+	);
 
 	return {
 		angularDemoDist,
+		angularToggleableDemoDist,
 		metricsComponentDir,
 		angularMetadataBundle,
 	};
@@ -33,7 +41,7 @@ export function createAngularSetupCommand(
 		'angular'
 	);
 	const {
-		angularDemoDist,
+		angularToggleableDemoDist,
 		angularMetadataBundle,
 		metricsComponentDir,
 	} = getAngularDirs(baseDir);
@@ -89,23 +97,45 @@ export function createAngularSetupCommand(
 			mainFileContent.replace('/app.component', '/metrics.component')
 		);
 
+		await exec('? Changing output dir');
+		const angularJsonFilePath = path.join(frameworkDemoDir, 'angular.json');
+		const angularJsonContent = await readFile(angularJsonFilePath);
+		await writeFile(
+			angularJsonFilePath,
+			angularJsonContent.replace(
+				'dist/angular-demo',
+				'dist/angular-toggleable'
+			)
+		);
+
 		await exec('? Bundling');
 		const demoCtx = await exec(`cd ${frameworkDemoDir}`);
 		await demoCtx.keepContext('npm install');
 		const demoPackageCtx = await exec(
 			`cd ${path.join(frameworkDemoDir, 'packages/angular')}`
 		);
+		const cowComponentsLibCtx = await exec(
+			`cd ${path.join(
+				frameworkDemoDir,
+				'packages/angular/cow-components-lib'
+			)}`
+		);
+		await cowComponentsLibCtx.keepContext('npm link');
 		await demoPackageCtx.keepContext('npm install');
 		await demoCtx.keepContext('ng build angular-demo');
 
 		await exec('? Changing back used component for demo-project');
 		await writeFile(appModulePath, appModuleContent);
 		await writeFile(mainFilePath, mainFileContent);
+		await writeFile(angularJsonFilePath, angularJsonContent);
 
 		await exec('? Bundling up built files for measuring');
 		await rimrafAsync(angularMetadataBundle);
 		await fs.mkdirp(angularMetadataBundle);
-		await cpxAsync(`${angularDemoDist}/**`, angularMetadataBundle);
+		await cpxAsync(
+			`${angularToggleableDemoDist}/**`,
+			angularMetadataBundle
+		);
 		await concatIntoBundle(exec, angularMetadataBundle);
 	});
 }

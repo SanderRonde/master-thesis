@@ -156,7 +156,7 @@ export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasi
 				path.join(
 					getCowComponentsDirs(BASIC_DASHBOARD_DIR, 'angular')
 						.frameworkDemoDir,
-					'dist/angular-demo'
+					'dist/angular-toggleable'
 				),
 		}
 	),
@@ -191,7 +191,7 @@ export const cowComponentsBasicTimeMetricsMap: TimeMetricBundleMap<CowComponentB
 			path.join(
 				getCowComponentsDirs(BASIC_DASHBOARD_DIR, 'angular')
 					.frameworkDemoDir,
-				'dist/angular-demo'
+				'dist/angular-toggleable'
 			),
 	},
 	'cow-components-basic-native': {

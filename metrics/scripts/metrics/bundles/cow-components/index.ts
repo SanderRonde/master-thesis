@@ -144,7 +144,7 @@ export const cowComponentsSerialBundleMap: SerialBundleMap<CowComponentBundle> =
 		renderTimeDemoDir: () =>
 			path.join(
 				getCowComponentsDirs(DASHBOARD_DIR, 'angular').frameworkDemoDir,
-				'dist/angular-demo'
+				'dist/angular-toggleable'
 			),
 	}),
 	'cow-components-native': metricsCreator('cow-components-native', {
@@ -170,7 +170,7 @@ export const cowComponentsTimeMetricsMap: TimeMetricBundleMap<CowComponentBundle
 		renderTimeDemoDir: () =>
 			path.join(
 				getCowComponentsDirs(DASHBOARD_DIR, 'angular').frameworkDemoDir,
-				'dist/angular-demo'
+				'dist/angular-toggleable'
 			),
 	},
 	'cow-components-native': {

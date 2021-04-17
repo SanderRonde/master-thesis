@@ -152,11 +152,19 @@ async function buildDemoRepo(
 	// We only build these frameworks, making sure we get around the
 	// issue of building storybook. Also building storybook etc is not
 	// needed so it's wasted time
-	for (const framework of ['angular', 'native', 'react', 'svelte']) {
+	for (const framework of ['native', 'react', 'svelte']) {
 		const frameworkDir = path.join(baseDir, 'dist/demo-repo', framework);
 		await execCwd(exec, 'npm install', frameworkDir);
 		await execCwd(exec, 'yarn build', frameworkDir);
 	}
+	// Handle the angular case a bit differently
+	const frameworkDir = path.join(baseDir, 'dist/demo-repo', 'angular');
+	const cowComponentsLibCtx = await exec(
+		`cd ${path.join(frameworkDir, 'packages/angular/cow-components-lib')}`
+	);
+	await cowComponentsLibCtx.keepContext('npm link');
+	await execCwd(exec, 'npm install', frameworkDir);
+	await execCwd(exec, 'yarn build', frameworkDir);
 
 	await dashboardCtx.keepContext('git reset --hard');
 	await dashboardCtx.keepContext('npm install');
@@ -284,6 +292,7 @@ cmd('metrics')
 		);
 
 		// Run all install tasks
+		await exec('? Running non-dashboard tasks');
 		for (const bundle of nonDashboardBundles) {
 			if (bundle in installCommandMap) {
 				await exec(
