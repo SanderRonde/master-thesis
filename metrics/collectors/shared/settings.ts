@@ -63,7 +63,7 @@ export const PAGE_LOAD_TIME_MAX_WAIT_TIME =
  * How long to wait before assuming a component has been fully
  * rendered (when measuring a slower version of the page)
  */
-export const MAX_MEASURED_RENDER_WAIT_TIME = 800 * SLOWDOWN_FACTOR_RENDER_TIME;
+export const MAX_MEASURED_RENDER_WAIT_TIME = 2000 * SLOWDOWN_FACTOR_RENDER_TIME;
 /**
  * How long to wait after the `requestIdleCallback` callback
  * has been fired by the browser
