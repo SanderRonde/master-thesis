@@ -29,7 +29,7 @@ export const STRUCTURAL_COMPLEXITY_DEPTH = 2;
 /**
  * Slowdown factor used for the load time of bundles
  */
-export const SLOWDOWN_FACTOR_LOAD_TIME = DEVELOPMENT ? 1 : 10;
+export const SLOWDOWN_FACTOR_LOAD_TIME = DEVELOPMENT ? 1 : 5;
 /**
  * Slowdown factor used for the render time of bundles
  */
