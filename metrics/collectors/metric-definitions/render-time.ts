@@ -1,7 +1,13 @@
 import puppeteer from 'puppeteer';
+import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import { findLastIndex, generateTempFileName, wait } from '../shared/helpers';
+import {
+	ensureUrlSourceExists,
+	findLastIndex,
+	generateTempFileName,
+	wait,
+} from '../shared/helpers';
 import { debug, info, warning } from '../shared/log';
 
 import {
@@ -259,10 +265,11 @@ async function getProfileRenderTime(
 	return microsendsDiff / 1000;
 }
 
+const DEFAULT_URL_PATH = '';
 async function collectRuntimeRenderTimes({
 	getComponents,
 	showComponent,
-	urlPath = '',
+	urlPath = DEFAULT_URL_PATH,
 	port,
 	numberOfComponents,
 }: RenderTimeSettings & {
@@ -417,6 +424,11 @@ export async function setupRenderTime(
 	settings: RenderTimeSettings
 ): Promise<(() => Promise<void>)[]> {
 	const { port, stop } = await startServer(0, settings.sourceRoot);
+	await ensureUrlSourceExists(
+		settings.sourceRoot,
+		settings.urlPath || DEFAULT_URL_PATH,
+		'render-time'
+	);
 
 	const frames: Map<number, Map<string, number>[]> = new Map();
 	return new Array(RENDER_TIME_MEASURES * NUMBER_OF_COMPONENT_SETS.length)
@@ -457,6 +469,12 @@ export async function setupRenderTime(
 export async function getRenderTime(
 	settings: RenderTimeSettings
 ): Promise<RenderTime> {
+	await ensureUrlSourceExists(
+		settings.sourceRoot,
+		settings.urlPath || '',
+		'render-time'
+	);
+
 	return await doWithServer(0, settings.sourceRoot, async (port) => {
 		// Collect runtime info
 		const frames: Map<number, Map<string, number>[]> = new Map();
@@ -467,7 +485,9 @@ export async function getRenderTime(
 					'render-time',
 					`Collecting render times for ${numberOfComponents} components (${
 						i * RENDER_TIME_MEASURES + j + 1
-					}/${RENDER_TIME_MEASURES * NUMBER_OF_COMPONENT_SETS.length})`
+					}/${
+						RENDER_TIME_MEASURES * NUMBER_OF_COMPONENT_SETS.length
+					})`
 				);
 				// Set up a slow browser and page
 				if (!frames.has(numberOfComponents)) {

@@ -145,3 +145,15 @@ export async function asyncFilter<I>(
 	}
 	return items;
 }
+
+export async function ensureUrlSourceExists(
+	sourceRoot: string,
+	urlPath: string,
+	testName: string
+) {
+	if (await fs.pathExists(path.join(sourceRoot, urlPath))) {
+		throw new Error(
+			`Entrypoint "${sourceRoot}/${urlPath}" does not exist in test ${testName}`
+		);
+	}
+}

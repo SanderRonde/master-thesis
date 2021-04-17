@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 
-import { generateTempFileName } from '../shared/helpers';
+import { ensureUrlSourceExists, generateTempFileName } from '../shared/helpers';
 import { info } from '../shared/log';
 import {
 	KEEP_PROFILES,
@@ -45,9 +45,11 @@ export interface PerformanceProfile {
 	metadata: Record<string, unknown>;
 }
 
+const DEFAULT_ROOT_PATH = '/index.html';
+
 async function createPerformanceProfile(
 	port: number,
-	rootPath: string = '/index.html'
+	rootPath: string = DEFAULT_ROOT_PATH
 ): Promise<PerformanceProfile> {
 	const { page, browser } = await createPage();
 
@@ -105,6 +107,11 @@ export async function setupLoadTimeMeasuringForDir(
 	rootPath?: string
 ): Promise<(() => Promise<void>)[]> {
 	const { port, stop } = await startServer(0, dirName);
+	await ensureUrlSourceExists(
+		dirName,
+		rootPath || DEFAULT_ROOT_PATH,
+		'load-time'
+	);
 
 	const profiles: PerformanceProfile[] = [];
 	return new Array(LOAD_TIME_PERFORMANCE_MEASURES).fill('').map(() => {
@@ -125,12 +132,17 @@ export async function setupLoadTimeMeasuringForDir(
 	});
 }
 
-export function getLoadTimeForDir(
+export async function getLoadTimeForDir(
 	dirName: string,
 	fileName: string = 'index.bundle.js',
 	rootPath?: string
 ): Promise<LoadTime> {
 	info('load-time', 'Starting server');
+	await ensureUrlSourceExists(
+		dirName,
+		rootPath || DEFAULT_ROOT_PATH,
+		'load-time'
+	);
 	return doWithServer(0, dirName, async (port) => {
 		const profiles: PerformanceProfile[] = [];
 		for (let i = 0; i < LOAD_TIME_PERFORMANCE_MEASURES; i++) {

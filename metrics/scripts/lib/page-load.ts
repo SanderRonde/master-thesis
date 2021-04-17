@@ -1,6 +1,9 @@
+import * as fs from 'fs-extra';
+import * as path from 'path';
+
 import { openPage } from '../../collectors/metric-definitions/render-time';
 import { startServer } from '../../collectors/shared/dashboard/serve-dashboard-dist';
-import { wait } from '../../collectors/shared/helpers';
+import { ensureUrlSourceExists, wait } from '../../collectors/shared/helpers';
 import { info } from '../../collectors/shared/log';
 import {
 	PAGE_LOAD_TIME_MAX_WAIT_TIME,
@@ -31,6 +34,7 @@ type PagePerformanceMeasurement = {
 	duration: number;
 }[];
 
+const DEFAULT_URL_PATH = '/index.html';
 async function measurePageLoadMetrics(
 	port: number,
 	urlPath: string
@@ -106,6 +110,11 @@ async function setupPageLoadTime(
 	settings: PageLoadSettings
 ): Promise<(() => Promise<void>)[]> {
 	const { port, stop } = await startServer(0, settings.basePath);
+	await ensureUrlSourceExists(
+		settings.basePath,
+		settings.urlPath || DEFAULT_URL_PATH,
+		'page-load-time'
+	);
 
 	const measurements: PageLoadTimeMeasurements[] = [];
 	return new Array(PAGE_LOAD_TIME_PERFORMANCE_MEASURES).fill('').map(() => {
@@ -119,7 +128,7 @@ async function setupPageLoadTime(
 			measurements.push(
 				await measurePageLoadMetrics(
 					port,
-					settings.urlPath || '/index.html'
+					settings.urlPath || DEFAULT_URL_PATH
 				)
 			);
 
