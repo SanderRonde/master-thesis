@@ -91,6 +91,11 @@ export function createAngularSetupCommand(
 
 		await exec('? Bundling');
 		const demoCtx = await exec(`cd ${frameworkDemoDir}`);
+		await demoCtx.keepContext('npm install');
+		const demoPackageCtx = await exec(
+			`cd ${path.join(frameworkDemoDir, 'packages/angular')}`
+		);
+		await demoPackageCtx.keepContext('npm install');
 		await demoCtx.keepContext('ng build angular-demo');
 
 		await exec('? Changing back used component for demo-project');
