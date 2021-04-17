@@ -158,7 +158,7 @@ async function buildDemoRepo(
 		.filter((b) => b.startsWith('cow-components-'))
 		.map((b) => b.slice('cow-components-'.length))
 		.map((b) =>
-			b.startsWith('basic-') ? b.slice(0, b.length - 'basic-'.length) : b
+			b.startsWith('basic-') ? b.slice(b.length - 'basic-'.length) : b
 		);
 	for (const framework of frameworks.filter((f) => f !== 'angular')) {
 		const frameworkDir = path.join(baseDir, 'dist/demo-repo', framework);
