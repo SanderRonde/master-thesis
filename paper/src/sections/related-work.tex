@@ -10,8 +10,5 @@ Research on the area of Angular Elements is very sparse. In our search, we only 
 
 Unfortunately, we were unable to find any related work on the conversion of complex Angular components to Web Components through Angular Elements. Related work seems to focus mostly on small get-started style projects. In the cases where they do focus on more complex projects, it seems like the only use is the conversion from AngularJS to Angular.
 
-\section{Web Components}
-\todo{Web Components section}
-
 \section{JS Framework Wrappers}
 We were unable to find any research on JS framework wrappers. This does not seem to be a problem that has been tackled very often, at least in literature. On the website \emph{custom-elements-everywhere.com}~\footurl{https://custom-elements-everywhere.com/}, the authors keep track of the current usability of Web Components in various JS frameworks. Notably, the ReactJS framework does not fully support Web Components at the time of writing for this paper. In ReactJS, non-primitive values (such as Objects, Arrays, and Functions) can not be passed to Web Components, along with some other issues. As such, it is the only framework that needs a wrapper for the UI library to function at all. Looking at how to fix this issue, we find some proposed solutions in a blog post~\footurl{https://itnext.io/handling-data-with-web-components-9e7e4a452e6e}. In this blog post, the author explores various options to tackle this problem of passing non-primitive data.
