@@ -168,6 +168,7 @@ cmd('metrics')
 		'skip-dashboard': flag(),
 		bundle: choice([...BUNDLES, 'all'], 'all'),
 		'bundle-list': str(''),
+		'all-but-bundles': str(''),
 		'skip-build': flag(),
 		...METRICS_COMMAND_ARGS,
 	})
@@ -180,12 +181,23 @@ cmd('metrics')
 		...METRICS_COMMAND_ARG_DESCRIPTIONS,
 	})
 	.run(async (exec, args) => {
-		const bundles: Bundle[] =
-			args.bundle !== 'all'
-				? [args.bundle]
-				: args['bundle-list'] && args['bundle-list'] !== ''
-				? (args['bundle-list'].split(',') as Bundle[])
-				: BUNDLES;
+		const bundles: Bundle[] = (() => {
+			if (args.bundle !== 'all') {
+				return [args.bundle];
+			}
+			if (args['bundle-list'] && args['bundle-list'] !== '') {
+				return args['bundle-list'].split(',') as Bundle[];
+			}
+			if (args['all-but-bundles'] && args['all-but-bundles'] !== '') {
+				const allButBundlesList = args['all-but-bundles'].split(
+					','
+				) as Bundle[];
+				return BUNDLES.filter(
+					(bundle) => !allButBundlesList.includes(bundle)
+				);
+			}
+			return BUNDLES;
+		})();
 
 		for (const dashboardDir of [DASHBOARD_DIR, BASIC_DASHBOARD_DIR]) {
 			const isBasic = dashboardDir === BASIC_DASHBOARD_DIR;
