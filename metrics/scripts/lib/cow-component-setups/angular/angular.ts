@@ -109,11 +109,10 @@ export function createAngularSetupCommand(
 		);
 
 		await exec('? Bundling');
-		const demoCtx = await exec(`cd ${frameworkDemoDir}`);
-		await demoCtx.keepContext('npm install');
-		const demoPackageCtx = await exec(
-			`cd ${path.join(frameworkDemoDir, 'packages/angular')}`
-		);
+		{
+			const demoCtx = await exec(`cd ${frameworkDemoDir}`);
+			await demoCtx.keepContext('npm install');
+		}
 		const cowComponentsLibCtx = await exec(
 			`cd ${path.join(
 				frameworkDemoDir,
@@ -121,8 +120,10 @@ export function createAngularSetupCommand(
 			)}`
 		);
 		await cowComponentsLibCtx.keepContext('npm link');
-		await demoPackageCtx.keepContext('npm install');
-		await demoCtx.keepContext('ng build angular-demo');
+		{
+			const demoCtx = await exec(`cd ${frameworkDemoDir}`);
+			await demoCtx.keepContext('npm run build');
+		}
 
 		await exec('? Changing back used component for demo-project');
 		await writeFile(appModulePath, appModuleContent);
