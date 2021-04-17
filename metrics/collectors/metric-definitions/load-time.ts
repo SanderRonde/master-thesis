@@ -45,7 +45,7 @@ export interface PerformanceProfile {
 	metadata: Record<string, unknown>;
 }
 
-const DEFAULT_ROOT_PATH = '/index.html';
+const DEFAULT_ROOT_PATH = '/demo.html';
 
 async function createPerformanceProfile(
 	port: number,

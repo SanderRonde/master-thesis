@@ -264,7 +264,7 @@ async function getProfileRenderTime(
 	return microsendsDiff / 1000;
 }
 
-const DEFAULT_URL_PATH = '';
+const DEFAULT_URL_PATH = '/demo.html';
 async function collectRuntimeRenderTimes({
 	getComponents,
 	showComponent,
@@ -470,7 +470,7 @@ export async function getRenderTime(
 ): Promise<RenderTime> {
 	await ensureUrlSourceExists(
 		settings.sourceRoot,
-		settings.urlPath || '',
+		settings.urlPath || DEFAULT_URL_PATH,
 		'render-time'
 	);
 
