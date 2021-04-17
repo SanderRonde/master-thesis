@@ -122,7 +122,7 @@ export function createAngularSetupCommand(
 		);
 		await cowComponentsLibCtx.keepContext('npm link');
 		await demoPackageCtx.keepContext('npm install');
-		await demoCtx.keepContext('ng build angular-demo');
+		await demoCtx.keepContext('yarn build');
 
 		await exec('? Changing back used component for demo-project');
 		await writeFile(appModulePath, appModuleContent);
