@@ -86,6 +86,7 @@ import {
 import { shuffle } from '../lib/helpers';
 import { info } from '../../collectors/shared/log';
 import { setupPageLoadTimeMeasuring } from '../lib/page-load';
+import { getData, storeData } from '../../collectors/shared/storage';
 
 const installCommandMap: Partial<SerialBundleMap<Bundle>> = {
 	...cowComponentsInstallBundleMap,
@@ -420,10 +421,15 @@ cmd('metrics')
 				try {
 					await fn();
 				} catch (e) {
-					console.log(
+					const err = [
 						`ERROR while running timing test for bundle ${bundle}`,
-						e
+						e,
+					];
+					await storeData(
+						['errors'],
+						[...((await getData<any[]>(['errors'])) || []), err]
 					);
+					console.log(...err);
 				}
 			}
 			await exec('? Done with timing-based tests');

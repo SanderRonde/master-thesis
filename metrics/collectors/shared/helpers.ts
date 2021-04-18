@@ -5,6 +5,7 @@ import { IOptions } from 'glob';
 
 import { TEMP_DIR } from './constants';
 import { error } from './log';
+import { getData, storeData } from './storage';
 
 /**
  * Run given function if given file is the
@@ -153,8 +154,11 @@ export async function ensureUrlSourceExists(
 ) {
 	const slicedPath = urlPath.startsWith('/') ? urlPath.slice(1) : urlPath;
 	if (!(await fs.pathExists(path.join(sourceRoot, slicedPath)))) {
-		console.warn(
-			`Entrypoint "${sourceRoot}/${slicedPath}" does not exist in test ${testName}`
+		const err = `Entrypoint "${sourceRoot}/${slicedPath}" does not exist in test ${testName}`;
+		await storeData(
+			['errors'],
+			[...((await getData<any[]>(['errors'])) || []), err]
 		);
+		console.warn(err);
 	}
 }
