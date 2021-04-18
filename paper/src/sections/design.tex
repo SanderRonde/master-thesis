@@ -1,4 +1,4 @@
-\chapter{Study Design}\label{sec:design}
+\chapter{Study Design}\label{chap:design}
 
 \section{Metric definitions}
 In order to evaluate the effectiveness of converting an existing set of Angular components to a Web Component UI library, we need to define some metrics. We will be measuring two aspects of this process. The first is measuring the effectiveness of the resulting CC UI library. In order to do this, we will compare the components in the CC UI library to the Angular components they originate from, as well as to various different UI libraries. We will make this comparison using various metrics at both component granularity and at UI library granularity. We have chosen the following metrics: structural complexity (SC), cyclomatic complexity (CC), lines of code (LOC), maintainability (MA), size (SI), load time (LT), number of components in the UI library (NOC), first paint (FP), first contentful paint (FCP), and render time (RT).  A brief description of these metrics can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
@@ -95,3 +95,7 @@ Since the components included in the selected UI libraries vary greatly, we can 
 	\caption{Collected UI libraries, the number of github stars and whether they were included in the study}
 	\label{tab:design:ui-libraries}
 \end{table*}
+
+\section{Developer Feedback}
+\todo{Do we want to do this?}
+In addition to collecting metrics over the resulting CC UI library we will be asking software engineers in the 30MHz team on their experience with the performed case study. We will be focusing on the impact of the case study on the 30MHz codebase and its engineers.

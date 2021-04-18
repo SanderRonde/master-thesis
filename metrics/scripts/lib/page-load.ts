@@ -1,4 +1,4 @@
-import { openPage } from '../../collectors/metric-definitions/render-time';
+import { withBrowser } from '../../collectors/metric-definitions/render-time';
 import { startServer } from '../../collectors/shared/dashboard/serve-dashboard-dist';
 import { ensureUrlSourceExists, wait } from '../../collectors/shared/helpers';
 import { info } from '../../collectors/shared/log';
@@ -36,70 +36,75 @@ async function measurePageLoadMetrics(
 	port: number,
 	urlPath: string
 ): Promise<PageLoadTimeMeasurements> {
-	const { page, browser } = await openPage(
+	return await withBrowser(
 		port,
 		PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
-		urlPath
-	);
+		urlPath,
+		async ({ page }) => {
+			for (
+				let i = 0;
+				i <
+				PAGE_LOAD_TIME_MAX_WAIT_TIME /
+					PAGE_LOAD_TIME_WAIT_TIME_INTERVAL;
+				i++
+			) {
+				await wait(PAGE_LOAD_TIME_WAIT_TIME_INTERVAL);
+				const firstPaintMeasurements = JSON.parse(
+					await page.evaluate(() =>
+						JSON.stringify(
+							performance.getEntriesByName('first-paint')
+						)
+					)
+				) as PagePerformanceMeasurement;
+				const firstContentfulPaintMeasurements = JSON.parse(
+					await page.evaluate(() =>
+						JSON.stringify(
+							performance.getEntriesByName(
+								'first-contentful-paint'
+							)
+						)
+					)
+				) as PagePerformanceMeasurement;
+				if (
+					firstPaintMeasurements.length &&
+					firstContentfulPaintMeasurements.length
+				) {
+					break;
+				}
+			}
 
-	for (
-		let i = 0;
-		i < PAGE_LOAD_TIME_MAX_WAIT_TIME / PAGE_LOAD_TIME_WAIT_TIME_INTERVAL;
-		i++
-	) {
-		await wait(PAGE_LOAD_TIME_WAIT_TIME_INTERVAL);
-		const firstPaintMeasurements = JSON.parse(
-			await page.evaluate(() =>
-				JSON.stringify(performance.getEntriesByName('first-paint'))
-			)
-		) as PagePerformanceMeasurement;
-		const firstContentfulPaintMeasurements = JSON.parse(
-			await page.evaluate(() =>
-				JSON.stringify(
-					performance.getEntriesByName('first-contentful-paint')
+			const firstPaintMeasurements = JSON.parse(
+				await page.evaluate(() =>
+					JSON.stringify(performance.getEntriesByName('first-paint'))
 				)
-			)
-		) as PagePerformanceMeasurement;
-		if (
-			firstPaintMeasurements.length &&
-			firstContentfulPaintMeasurements.length
-		) {
-			break;
+			) as PagePerformanceMeasurement;
+			const firstContentfulPaintMeasurements = JSON.parse(
+				await page.evaluate(() =>
+					JSON.stringify(
+						performance.getEntriesByName('first-contentful-paint')
+					)
+				)
+			) as PagePerformanceMeasurement;
+			if (
+				!firstPaintMeasurements.length ||
+				!firstContentfulPaintMeasurements.length
+			) {
+				throw new Error(
+					'Failed to read first paint or first contentful paint metric'
+				);
+			}
+
+			const firstPaint = firstPaintMeasurements[0].startTime;
+			const firstContentfulPaint =
+				firstContentfulPaintMeasurements[0].startTime;
+
+			return {
+				'first-paint': firstPaint / PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
+				'first-contentful-paint':
+					firstContentfulPaint / PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
+			};
 		}
-	}
-
-	const firstPaintMeasurements = JSON.parse(
-		await page.evaluate(() =>
-			JSON.stringify(performance.getEntriesByName('first-paint'))
-		)
-	) as PagePerformanceMeasurement;
-	const firstContentfulPaintMeasurements = JSON.parse(
-		await page.evaluate(() =>
-			JSON.stringify(
-				performance.getEntriesByName('first-contentful-paint')
-			)
-		)
-	) as PagePerformanceMeasurement;
-	if (
-		!firstPaintMeasurements.length ||
-		!firstContentfulPaintMeasurements.length
-	) {
-		throw new Error(
-			'Failed to read first paint or first contentful paint metric'
-		);
-	}
-
-	const firstPaint = firstPaintMeasurements[0].startTime;
-	const firstContentfulPaint = firstContentfulPaintMeasurements[0].startTime;
-
-	await page.close();
-	await browser.close();
-
-	return {
-		'first-paint': firstPaint / PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
-		'first-contentful-paint':
-			firstContentfulPaint / PAGE_LOAD_TIME_SLOWDOWN_FACTOR,
-	};
+	);
 }
 
 async function setupPageLoadTime(

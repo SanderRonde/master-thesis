@@ -43,6 +43,7 @@ export const svelteSerialBundleMap: NamedSerialBundleMap<SvelteBundle> = {
 
 const timeMetricsArgs: LoadTimeMetricConfig = {
 	bundleCategory: 'svelte',
+	urlPath: '/demo.html',
 };
 export const svelteTimeMetricsMap: TimeMetricBundleMap<SvelteBundle> = {
 	'svelte-material-ui': timeMetricsArgs,
