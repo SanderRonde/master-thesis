@@ -153,7 +153,7 @@ export async function ensureUrlSourceExists(
 ) {
 	const slicedPath = urlPath.startsWith('/') ? urlPath.slice(1) : urlPath;
 	if (!(await fs.pathExists(path.join(sourceRoot, slicedPath)))) {
-		throw new Error(
+		console.warn(
 			`Entrypoint "${sourceRoot}/${slicedPath}" does not exist in test ${testName}`
 		);
 	}
