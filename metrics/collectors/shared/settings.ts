@@ -74,7 +74,7 @@ export const WAIT_AFTER_IDLE_TIME = 1000;
  * The number of times to measure render time performance
  * for the same component, allowing for some stabilization
  */
-export const RENDER_TIME_MEASURES = DEVELOPMENT ? 1 : 30;
+export const RENDER_TIME_MEASURES = DEFAULT_NUM_MEASURES;
 /**
  * The height of the frame for the render time test
  */
