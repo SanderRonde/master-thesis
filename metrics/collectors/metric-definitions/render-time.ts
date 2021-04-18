@@ -342,7 +342,7 @@ async function collectRuntimeRenderTimes({
 		}
 
 		if (!succeeded) {
-			throw new Error(
+			console.warn(
 				`Failed to find render time for component ${componentName}`
 			);
 		}
