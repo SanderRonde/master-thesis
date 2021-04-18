@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import * as fs from 'fs-extra';
+import shell from 'shelljs';
 
 import {
 	ensureUrlSourceExists,
@@ -101,6 +102,51 @@ export async function openPage(
 	await wait(2000);
 
 	return { page, browser };
+}
+
+async function killBrowser(browser: puppeteer.Browser) {
+	await browser.close();
+	await new Promise<void>((resolve) => {
+		shell.exec('pkill chrome', () => {
+			resolve();
+		});
+	});
+}
+
+export async function withBrowser<R>(
+	port: number,
+	slowdownFactor: number,
+	path: string = '/',
+	fn: (options: {
+		page: puppeteer.Page;
+		browser: puppeteer.Browser;
+	}) => Promise<R>
+): Promise<R> {
+	const { browser, page } = await createPage();
+
+	await page.setViewport({
+		width: RENDER_TIME_WIDTH,
+		height: RENDER_TIME_HEIGHT,
+	});
+
+	const client = await page.target().createCDPSession();
+	await client.send('Emulation.setCPUThrottlingRate', {
+		rate: slowdownFactor,
+	});
+	await page.goto(`http://localhost:${port}${path}`);
+
+	// Wait for the page to load
+	await wait(2000);
+
+	try {
+		const returnValue = await fn({ page, browser });
+		await killBrowser(browser);
+		return returnValue;
+	} catch (e) {
+		console.log(e);
+		await killBrowser(browser);
+		throw e;
+	}
 }
 
 async function collectComponentProfile(
@@ -278,14 +324,9 @@ async function collectRuntimeRenderTimes({
 	const times: Map<string, number> = new Map();
 
 	// Create a page for gathering the components
-	const { page: componentPage, browser: componentBrowser } = await openPage(
-		port,
-		1,
-		urlPath
-	);
-	const components = await getComponents(componentPage);
-	await componentPage.close();
-	await componentBrowser.close();
+	const components = await withBrowser(port, 1, urlPath, async ({ page }) => {
+		return await getComponents(page);
+	});
 
 	for (let i = 0; i < components.length; i++) {
 		const componentName = components[i];
@@ -300,35 +341,33 @@ async function collectRuntimeRenderTimes({
 		for (let j = 0; j < RENDER_TIME_TRIES; j++) {
 			try {
 				debug('render-time', '\tOpening page');
-				const { page, browser } = await openPage(
+				await withBrowser(
 					port,
 					SLOWDOWN_FACTOR_RENDER_TIME,
-					urlPath
+					urlPath,
+					async ({ page }) => {
+						const performanceProfile = await collectComponentProfile(
+							componentName,
+							page,
+							numberOfComponents,
+							showComponent
+						);
+
+						debug('render-time', '\tExtracting render time');
+						const renderTime =
+							(await getProfileRenderTime(
+								componentName,
+								performanceProfile
+							)) / SLOWDOWN_FACTOR_RENDER_TIME;
+						times.set(componentName, renderTime);
+
+						debug(
+							'render-time',
+							`\tRender time for ${componentName} is ${renderTime}ms`
+						);
+						succeeded = true;
+					}
 				);
-
-				const performanceProfile = await collectComponentProfile(
-					componentName,
-					page,
-					numberOfComponents,
-					showComponent
-				);
-
-				debug('render-time', '\tExtracting render time');
-				const renderTime =
-					(await getProfileRenderTime(
-						componentName,
-						performanceProfile
-					)) / SLOWDOWN_FACTOR_RENDER_TIME;
-				times.set(componentName, renderTime);
-
-				await page.close();
-				await browser.close();
-
-				debug(
-					'render-time',
-					`\tRender time for ${componentName} is ${renderTime}ms`
-				);
-				succeeded = true;
 				break;
 			} catch (e) {
 				console.log(e);
