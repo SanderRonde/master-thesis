@@ -157,9 +157,7 @@ async function buildDemoRepo(
 	const frameworks = forBundles
 		.filter((b) => b.startsWith('cow-components-'))
 		.map((b) => b.slice('cow-components-'.length))
-		.map((b) =>
-			b.startsWith('basic-') ? b.slice('basic-'.length) : b
-		);
+		.map((b) => (b.startsWith('basic-') ? b.slice('basic-'.length) : b));
 	for (const framework of frameworks.filter((f) => f !== 'angular')) {
 		const frameworkDir = path.join(baseDir, 'dist/demo-repo', framework);
 		await execCwd(exec, 'npm install', frameworkDir);
@@ -419,7 +417,14 @@ cmd('metrics')
 						shuffled.length
 					} (bundle ${bundle})`
 				);
-				await fn();
+				try {
+					await fn();
+				} catch (e) {
+					console.log(
+						`ERROR while running timing test for bundle ${bundle}`,
+						e
+					);
+				}
 			}
 			await exec('? Done with timing-based tests');
 
