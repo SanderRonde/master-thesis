@@ -16,4 +16,4 @@ def generate_lines_of_code_plot():
         extra_dict={"hue": "framework"},
         figsize=(7, 5),
     )
-    write_plot(ax, "lines of code")
+    write_plot(ax, "lines-of-code")
