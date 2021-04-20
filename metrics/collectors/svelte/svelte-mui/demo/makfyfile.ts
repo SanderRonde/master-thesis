@@ -7,6 +7,7 @@ import { createCopies } from '../../../shared/files';
 
 const SYMLINK_PATHS = {
 	'demo.html': path.join(TEMPLATES_DIR, 'demo.html'),
+	'index.html': path.join(TEMPLATES_DIR, 'demo.html'),
 	'demo.js': path.join(SVELTE_TEMPLATES_DIR, 'demo.js'),
 	'rollup.config.js': path.join(SVELTE_TEMPLATES_DIR, 'rollup.config.js'),
 };
