@@ -7,6 +7,7 @@ def generate_cyclomatic_complexity_plot():
     data = get_data()
 
     ax = create_plot(
+        "Cyclomatic complexity - Lower is better",
         "boxen",
         data,
         lambda bundle_data: list(filter(lambda x: x != -1, bundle_data.cyclomatic_complexity.component_time_map.values())),

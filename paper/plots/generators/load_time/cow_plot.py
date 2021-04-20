@@ -7,11 +7,12 @@ def generate_load_time_cow_plot():
     data = get_data()
 
     ax = create_plot(
+        "Load time of main bundle (cow bundles only) - Lower is better",
         "boxen",
         data,
         lambda bundle_data: bundle_data.load_time.values if "cow-components" in bundle_data.framework else None,
         "UI Library",
-        "Load time of main bundle (ms)",
+        "Load time (ms)",
         rotate_labels=True,
         extra_dict={"hue": "framework"},
         figsize=(7, 5),

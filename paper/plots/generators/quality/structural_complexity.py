@@ -7,6 +7,7 @@ def generate_structural_complexity_plot():
     data = get_data()
 
     ax = create_plot(
+        "Structural complexity - Lower is better",
         "boxen",
         data,
         lambda bundle_data: list(filter(lambda x: x != -1, bundle_data.structural_complexity.component_time_map.values())),

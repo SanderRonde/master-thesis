@@ -8,11 +8,12 @@ def generate_load_time_all_plot():
     data = get_data()
 
     ax = create_plot(
+        "Load time of main bundle - Lower is better",
         "boxen",
         data,
         lambda bundle_data: bundle_data.load_time.values,
         "UI Library",
-        "Load time of main bundle (ms)",
+        "Load time (ms)",
         rotate_labels=True,
         extra_dict={"hue": "framework"},
         figsize=(7, 5),

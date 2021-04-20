@@ -7,6 +7,7 @@ def generate_lines_of_code_plot():
     data = get_data()
 
     ax = create_plot(
+        "Lines of code",
         "scatter",
         data,
         lambda bundle_data: list(bundle_data.lines_of_code.component_time_map.values()),

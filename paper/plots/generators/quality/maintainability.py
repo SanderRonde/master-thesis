@@ -7,6 +7,7 @@ def generate_maintainability_plot():
     data = get_data()
 
     ax = create_plot(
+        "Maintainability - Higher is better",
         "boxen",
         data,
         lambda bundle_data: list(filter(lambda x: x != -1, bundle_data.maintainability.component_time_map.values())),

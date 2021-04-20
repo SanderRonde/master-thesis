@@ -24,6 +24,7 @@ def generate_first_paint_plot():
 
     df = pd.DataFrame(obj)
     ax = create_plot(
+        "Page load time - Lower is better",
         "boxen",
         data,
         None,

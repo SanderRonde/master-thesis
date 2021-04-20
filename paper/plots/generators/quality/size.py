@@ -7,6 +7,7 @@ def generate_size_plot():
     data = get_data()
 
     ax = create_plot(
+        "Size - Lower is better",
         "scatter",
         data,
         lambda bundle_data: bundle_data.size / 1024,

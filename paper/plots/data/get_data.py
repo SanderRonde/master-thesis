@@ -183,6 +183,7 @@ def create_dataframe(
 
 
 def create_plot(
+    title: str,
     plot_type: Union[Literal["boxen"], Literal["scatter"]],
     data: Data,
     get_data: Callable[[BundleData], Any],
@@ -214,6 +215,7 @@ def create_plot(
         ax = sns.scatterplot(x=bundle_label, y=data_label, data=df, *extra, hue="framework")
     else:
         raise Exception(f'Unknown plot type "{plot_type}"')
+    ax.set_title(title)
     plt.tight_layout()
     return ax
 
