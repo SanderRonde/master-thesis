@@ -9,8 +9,11 @@ from generators import (
     generate_lines_of_code_plot,
     generate_load_time_all_plot,
     generate_load_time_cow_plot,
-    generate_render_time_all_plot,
+    generate_load_time_cow_plot_no_angular,
+    generate_load_time_all_plot_no_angular,
+    generate_render_time_all_plot_big,
     generate_render_time_cow_plot,
+    generate_render_time_all_plot,
     generate_maintainability_plot,
 )
 
@@ -24,8 +27,11 @@ def main():
     generate_lines_of_code_plot()
     generate_load_time_cow_plot()
     generate_load_time_all_plot()
-    # generate_render_time_all_plot()
-    # generate_render_time_cow_plot()
+    generate_load_time_cow_plot_no_angular()
+    generate_load_time_all_plot_no_angular()
+    generate_render_time_all_plot_big()
+    generate_render_time_cow_plot()
+    generate_render_time_all_plot()
 
 
 if __name__ == "__main__":

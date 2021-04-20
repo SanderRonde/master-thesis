@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 import pandas as pd
 
 from data import get_data, create_plot, create_dataframe

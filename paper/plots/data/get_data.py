@@ -53,7 +53,7 @@ class TimeData:
 
 
 class RenderTime:
-    component_time_map: Dict[str, Dict[int, ByComponentNumberStats]]
+    component_time_map: Dict[str, Dict[int, TimesAndStats]]
     stats_by_num_components: Dict[str, float]
 
     def __init__(self, data_obj: Dict[str, Any]):
@@ -196,7 +196,7 @@ def create_plot(
     extra: List[Any] = [],
     extra_dict: Dict[str, Any] = {},
     data_frame: Optional[Any] = None,
-    dodge: bool = False
+    dodge: bool = False,
 ) -> pd.DataFrame:
     sns = get_sns()
     df = data_frame if data_frame is not None else create_dataframe(data, get_data, bundle_label, data_label, framework_label)
@@ -208,6 +208,8 @@ def create_plot(
         plt.xticks(rotation=0)
     if plot_type == "boxen":
         ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, dodge=dodge)
+    elif plot_type == "box":
+        ax = sns.boxplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, dodge=dodge)
     elif plot_type == "boxen-dots":
         ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, showfliers=False, dodge=dodge)
         ax = sns.stripplot(x=bundle_label, y=data_label, data=df, size=2, color=".26")
