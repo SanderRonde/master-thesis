@@ -5,7 +5,7 @@
 		"**/.hg": true,
 		"**/CVS": true,
 		"**/.DS_Store": true,
-		"metrics/submodules/**": false
+		"metrics/submodules/**": true
 	},
 	"latex-workshop.latex.recipes": [
 		{
