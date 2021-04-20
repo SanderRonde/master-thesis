@@ -13,6 +13,7 @@ import {
 	collectLinesOfCode,
 	collectLoadTime,
 	collectMaintainability,
+	collectNumberOfComponents,
 	CollectorArgs,
 	collectSize,
 	collectStructuralComplexity,
@@ -244,6 +245,8 @@ export function createDashboardMetricsCommand(
 		};
 
 		await collectIsCSSFramework(collectorArgs, {});
+
+		await collectNumberOfComponents(collectorArgs);
 
 		await collectStructuralComplexity(collectorArgs, {
 			createComplexityFunction: createDashboardStructuralComplexityFunctionCreator(

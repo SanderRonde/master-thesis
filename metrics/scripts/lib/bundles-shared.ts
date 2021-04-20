@@ -230,6 +230,17 @@ export async function collectMaintainability({
 	);
 }
 
+export async function collectNumberOfComponents({
+	bundleCategory,
+	bundleName,
+	components,
+}: CollectorArgs) {
+	await storeData(
+		['metrics', bundleCategory, bundleName, 'number-of-components'],
+		components.length
+	);
+}
+
 export async function collectSize(
 	{ bundleCategory, bundleName, demoPath, basePath }: CollectorArgs,
 	overrides: BundleMetricsOverrides
@@ -427,6 +438,9 @@ function getBundleMetricsCommand<N extends string>(
 			};
 			await exec('? Collecting CSS framework status');
 			await collectIsCSSFramework(collectorArgs, overrides);
+
+			await exec('? Collecting number of components');
+			await collectNumberOfComponents(collectorArgs);
 
 			await exec('? Collecting structural complexity');
 			await collectStructuralComplexity(collectorArgs, overrides);

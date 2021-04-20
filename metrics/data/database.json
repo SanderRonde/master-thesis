@@ -2189,7 +2189,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 12
 			},
 			"cow-components-angular": {
 				"is-css-framework": false,
@@ -2271,7 +2272,7 @@
 						"avg": 64.93333333333334,
 						"total": 974,
 						"median": 25,
-						"stddev": 77.42649560855911
+						"stddev": 77.4264956085591
 					}
 				},
 				"maintainability": {
@@ -4379,7 +4380,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 12
 			},
 			"cow-components-react": {
 				"is-css-framework": false,
@@ -6569,7 +6571,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 12
 			},
 			"cow-components-native": {
 				"is-css-framework": false,
@@ -8759,7 +8762,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 12
 			},
 			"cow-components-svelte": {
 				"is-css-framework": false,
@@ -10949,7 +10953,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 12
 			}
 		},
 		"cow-components-basic": {
@@ -11867,7 +11872,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 3
 			},
 			"cow-components-basic-angular": {
 				"is-css-framework": false,
@@ -12783,7 +12789,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 3
 			},
 			"cow-components-basic-react": {
 				"is-css-framework": false,
@@ -13699,7 +13706,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 3
 			},
 			"cow-components-basic-native": {
 				"is-css-framework": false,
@@ -14615,7 +14623,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 3
 			},
 			"cow-components-basic-svelte": {
 				"is-css-framework": false,
@@ -15531,7 +15540,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 3
 			}
 		},
 		"svelte": {
@@ -16159,7 +16169,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 30
 			},
 			"smelte": {
 				"is-css-framework": false,
@@ -16767,7 +16778,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 25
 			},
 			"svelte-mui": {
 				"is-css-framework": false,
@@ -17338,7 +17350,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 16
 			}
 		},
 		"react": {
@@ -18348,7 +18361,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 125
 			},
 			"react-bootstrap": {
 				"is-css-framework": true,
@@ -18694,7 +18708,7 @@
 						"avg": 69.99029126213593,
 						"total": 7209,
 						"median": 42,
-						"stddev": 65.9353162209592
+						"stddev": 65.93531622095921
 					}
 				},
 				"maintainability": {
@@ -19268,7 +19282,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 103
 			},
 			"semantic-ui-react": {
 				"is-css-framework": false,
@@ -19840,7 +19855,8 @@
 						"median": 21.0834,
 						"stddev": 0.6733919031952258
 					}
-				}
+				},
+				"number-of-components": 16
 			}
 		},
 		"angular": {
@@ -20482,7 +20498,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 33
 			},
 			"ng-bootstrap": {
 				"is-css-framework": true,
@@ -21062,7 +21079,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 18
 			},
 			"ngx-bootstrap": {
 				"is-css-framework": true,
@@ -21074,7 +21092,7 @@
 						"carousel": 5,
 						"collapse": 1,
 						"datepicker": 10,
-						"dropdown": 5,
+						"dropdown": 6,
 						"modal": 6,
 						"pagination": 3,
 						"popover": 2,
@@ -21089,10 +21107,10 @@
 					"stats": {
 						"min": 1,
 						"max": 10,
-						"avg": 4,
-						"total": 68,
+						"avg": 4.0588235294117645,
+						"total": 69,
 						"median": 3,
-						"stddev": 2.700762419587999
+						"stddev": 2.7326046233733967
 					}
 				},
 				"cyclomatic-complexity": {
@@ -21128,29 +21146,29 @@
 					"components": {
 						"accordion": 60,
 						"alert": 50,
-						"buttons": 68,
+						"buttons": 144,
 						"carousel": 57,
 						"collapse": 147,
 						"datepicker": 92,
-						"dropdown": 18,
+						"dropdown": 288,
 						"modal": 338,
-						"pagination": 223,
+						"pagination": 213,
 						"popover": 176,
 						"progressbar": 71,
 						"rating": 104,
 						"sortable": 196,
 						"tabs": 88,
 						"timepicker": 295,
-						"tooltip": 68,
+						"tooltip": 261,
 						"typeahead": 497
 					},
 					"stats": {
-						"min": 18,
+						"min": 50,
 						"max": 497,
-						"avg": 149.88235294117646,
-						"total": 2548,
-						"median": 273.5,
-						"stddev": 123.21520263007139
+						"avg": 181,
+						"total": 3077,
+						"median": 316.5,
+						"stddev": 119.04670363793709
 					}
 				},
 				"maintainability": {
@@ -21638,7 +21656,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 44
 			}
 		},
 		"web-components": {
@@ -22248,7 +22267,8 @@
 						"median": 7.142600000000001,
 						"stddev": 0.4089696663024722
 					}
-				}
+				},
+				"number-of-components": 25
 			},
 			"clarity": {
 				"is-css-framework": false,
@@ -22354,7 +22374,7 @@
 						"avg": 41.34782608695652,
 						"total": 951,
 						"median": 36.5,
-						"stddev": 44.20565446386299
+						"stddev": 44.205654463862984
 					}
 				},
 				"maintainability": {
@@ -22848,7 +22868,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 23
 			},
 			"fast": {
 				"is-css-framework": false,
@@ -23516,7 +23537,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 40
 			}
 		},
 		"multi-framework": {
@@ -24226,7 +24248,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 50
 			},
 			"onsen-web-components": {
 				"is-css-framework": false,
@@ -24933,7 +24956,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 50
 			},
 			"onsen-angular": {
 				"is-css-framework": false,
@@ -25641,7 +25665,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 50
 			},
 			"prime-react": {
 				"is-css-framework": false,
@@ -26498,7 +26523,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 88
 			},
 			"prime-ng": {
 				"is-css-framework": false,
@@ -27370,7 +27396,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 91
 			},
 			"prime-vue": {
 				"is-css-framework": false,
@@ -27665,7 +27692,7 @@
 						"avg": 253.7674418604651,
 						"total": 21824,
 						"median": 314,
-						"stddev": 341.6183330144848
+						"stddev": 341.61833301448485
 					}
 				},
 				"maintainability": {
@@ -28222,7 +28249,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 86
 			}
 		},
 		"vue": {
@@ -29084,7 +29112,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 88
 			},
 			"vuetify": {
 				"is-css-framework": false,
@@ -29904,7 +29933,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 78
 			},
 			"quasar": {
 				"is-css-framework": false,
@@ -30728,7 +30758,8 @@
 							}
 						}
 					}
-				}
+				},
+				"number-of-components": 79
 			}
 		}
 	}
