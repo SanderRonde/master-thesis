@@ -7,6 +7,7 @@ metrics/cache
 metrics/collectors/**/demo/demo.*
 metrics/collectors/**/demo/rollup.config.js
 metrics/collectors/**/demo/yarn.lock
+metrics/collectors/svelte/svelte-mui/demo/index.html
 
 !metrics/collectors/svelte/smelte/demo/rollup.config.js
 !metrics/collectors/react/react-bootstrap/demo/demo.html
