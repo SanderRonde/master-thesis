@@ -4,6 +4,7 @@ node_modules
 metrics/temp
 metrics/cache
 **/__pycache__
+**/*.pyc
 
 metrics/collectors/**/demo/demo.*
 metrics/collectors/**/demo/rollup.config.js
