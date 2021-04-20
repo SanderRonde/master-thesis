@@ -1,4 +1,4 @@
-from .load_time import generate_load_time_all_plot, generate_load_time_cow_plot
+from .load_time import generate_load_time_all_plot, generate_load_time_all_plot_no_angular, generate_load_time_cow_plot, generate_load_time_cow_plot_no_angular
 from .page_load import generate_first_paint_plot
 from .render_time import generate_render_time_all_plot, generate_render_time_cow_plot
 from .quality import (

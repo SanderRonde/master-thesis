@@ -1,2 +1,2 @@
-from .all_plot import generate_load_time_all_plot
-from .cow_plot import generate_load_time_cow_plot
+from .all_plot import generate_load_time_all_plot, generate_load_time_all_plot_no_angular
+from .cow_plot import generate_load_time_cow_plot, generate_load_time_cow_plot_no_angular
