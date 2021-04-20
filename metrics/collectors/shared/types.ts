@@ -1,4 +1,3 @@
-import { Maintainability } from 'ts-complex';
 import { BundlesByFramework } from '../../scripts/lib/constants';
 import { BaseComponent } from './shapes';
 import { DatasetStats } from './stats';
@@ -45,7 +44,7 @@ export interface BundleData {
 	'is-css-framework': boolean;
 	'lines-of-code': LinesOfCode;
 	'cyclomatic-complexity': CyclomaticComplexity;
-	maintainability: Maintainability;
+	maintainability: ByComponentNumberStats;
 	'structural-complexity': StructuralComplexity;
 	size: Size;
 	'load-time': LoadTime;
