@@ -21,7 +21,7 @@ def main():
     generate_cyclomatic_complexity_plot()
     generate_maintainability_plot()
     generate_first_paint_plot()
-    # generate_lines_of_code_plot()
+    generate_lines_of_code_plot()
     # generate_load_time_all_plot()
     # generate_load_time_cow_plot()
     # generate_render_time_all_plot()
