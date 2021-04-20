@@ -50,6 +50,7 @@ export interface BundleData {
 	'load-time': LoadTime;
 	'number-of-components': NumberOfComponents;
 	'render-time': RenderTime;
+	'page-load-time': PageLoadTime;
 }
 
 export interface Data {
