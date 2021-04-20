@@ -3,6 +3,7 @@ node_modules
 !.vscode/settings.json
 metrics/temp
 metrics/cache
+**/__pycache__
 
 metrics/collectors/**/demo/demo.*
 metrics/collectors/**/demo/rollup.config.js

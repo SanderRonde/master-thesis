@@ -8,6 +8,7 @@ authors = ["Sander Ronde <awsdfgvhbjn@gmail.com>"]
 python = "^3.9"
 matplotlib = "^3.4.1"
 seaborn = "^0.11.1"
+pandas = "^1.2.4"
 
 [tool.poetry.dev-dependencies]
 

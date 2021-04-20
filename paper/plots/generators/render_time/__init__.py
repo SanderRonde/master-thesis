@@ -1,0 +1,2 @@
+from .all_plot import generate_render_time_all_plot
+from .cow_plot import generate_render_time_cow_plot

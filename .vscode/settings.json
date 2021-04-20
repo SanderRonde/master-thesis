@@ -5,7 +5,7 @@
 		"**/.hg": true,
 		"**/CVS": true,
 		"**/.DS_Store": true,
-		"metrics/submodules/**": true
+		"metrics/submodules/**": false
 	},
 	"latex-workshop.latex.recipes": [
 		{
@@ -36,5 +36,9 @@
 			"name": "tectonic",
 			"tools": ["tectonic"]
 		}
+	],
+	"python.pythonPath": "/usr/sbin/python",
+	"python.analysis.extraPaths": [
+		"paper/plots"
 	]
 }
