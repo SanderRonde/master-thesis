@@ -90,7 +90,7 @@ class BundleData:
     number_of_components: int
     load_time: TimeData
     render_time: RenderTime
-    page_load_time: PageLoadTime
+    page_load_time: Optional[PageLoadTime]
 
     def __init__(self, data_obj: Dict[str, Any], framework: str, bundle: str):
         self.framework = framework
@@ -171,6 +171,8 @@ def create_dataframe(
     obj = {bundle_label: [], data_label: [], framework_label: []}
     for bundle in data.iter_bundles():
         data = get_data(bundle)
+        if data == None:
+            continue
         data_list = data if type(data) == list else [data]
         for data_part in data_list:
             obj[bundle_label].append(bundle.bundle)
@@ -188,22 +190,25 @@ def create_plot(
     data_label: str,
     framework_label: str = "framework",
     rotate_labels: bool = False,
+    rotation: int = 90,
     figsize: Optional[Tuple[int, int]] = None,
     extra: List[Any] = [],
     extra_dict: Dict[str, Any] = {},
+    data_frame: Optional[Any] = None,
+    dodge: bool = False
 ) -> pd.DataFrame:
     sns = get_sns()
-    df = create_dataframe(data, get_data, bundle_label, data_label, framework_label)
+    df = data_frame if data_frame is not None else create_dataframe(data, get_data, bundle_label, data_label, framework_label)
     if figsize:
         plt.figure(figsize=figsize)
     if rotate_labels:
-        plt.xticks(rotation=90)
+        plt.xticks(rotation=rotation)
     else:
         plt.xticks(rotation=0)
     if plot_type == "boxen":
-        ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, dodge=False)
+        ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, dodge=dodge)
     elif plot_type == "boxen-dots":
-        ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, showfliers=False, dodge=False)
+        ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, showfliers=False, dodge=dodge)
         ax = sns.stripplot(x=bundle_label, y=data_label, data=df, size=2, color=".26")
     elif plot_type == "scatter":
         ax = sns.scatterplot(x=bundle_label, y=data_label, data=df, *extra, hue="framework")

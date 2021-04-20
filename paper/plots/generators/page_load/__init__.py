@@ -1,2 +1,1 @@
 from .first_paint import generate_first_paint_plot
-from .first_contentful_paint import generate_first_contentful_paint_plot
