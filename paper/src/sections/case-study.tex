@@ -1,4 +1,4 @@
-\chapter{Case Study}\label{sec:case-study}
+\chapter{Case Study}\label{chap:case-study}
 
 In this section we'll first be laying out the steps taken and the issues faced during the conversion from Angular components to Web Components. We'll be splitting this section up into two subsections. The first subsection will consist of issues faced that were not specific to Angular or Angular elements, while the second subsection will contain just Angular-specific issues. Note that because of this split the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities see Table~\ref{tab:case-study:chronological-issues}. After the issue sections we'll discuss the various JS framework wrappers and how they were created. Lastly we'll be listing optimizations performed along with their effectiveness.
 
@@ -30,7 +30,7 @@ In this section we'll first be laying out the steps taken and the issues faced d
 	\label{tab:case-study:chronological-issues}
 \end{table}
 
-\section{Web Component Issues}
+\section{Web Component Issues}~\label{sec:web-component-issues}
 
 \subsection{WC1: Global CSS}\label{sec:case-study:global-css}
 \cprotect\problemSolution{
