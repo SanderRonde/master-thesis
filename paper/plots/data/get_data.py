@@ -117,15 +117,35 @@ class FrameworkData:
 
     framework: str
 
+    @staticmethod
+    def find_in_arr(arr: List[Any], finder: Callable[[Any], bool]) -> Optional[Any]:
+        for item in arr:
+            if finder(item):
+                return item
+        return None
+
     def __init__(self, data_obj: Dict[str, Any], framework: str):
         self.framework = framework
 
         self._bundles = {}
         self._bundle_list = []
-        for bundle in data_obj:
+
+        def add_bundle_to_lists(bundle: str):
             bundle_data = BundleData(data_obj[bundle], framework, bundle)
             self._bundles[bundle] = bundle_data
             self._bundle_list.append(bundle_data)
+
+        if "cow-components" in framework:
+            dashboard_key = self.find_in_arr(data_obj.keys(), lambda key: "dashboard" in key)
+            if dashboard_key:
+                add_bundle_to_lists(dashboard_key)
+            add_bundle_to_lists(self.find_in_arr(data_obj.keys(), lambda key: "native" in key))
+            non_native_dashboard_keys = list(filter(lambda key: "dashboard" not in key and "native" not in key, data_obj.keys()))
+            for non_native_dashboard_key in non_native_dashboard_keys:
+                add_bundle_to_lists(non_native_dashboard_key)
+
+        for bundle in data_obj:
+            add_bundle_to_lists(bundle)
 
     def get_data_for_bundle(self, bundle: str) -> Optional[BundleData]:
         return self._bundles[bundle]
