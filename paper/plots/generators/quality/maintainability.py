@@ -10,11 +10,14 @@ def generate_maintainability_plot():
         "Maintainability\nHigher is better",
         "boxen",
         data,
-        lambda bundle_data: list(filter(lambda x: x != -1, bundle_data.maintainability.component_time_map.values())),
+        lambda bundle_data: list(filter(lambda x: x != -1, bundle_data.maintainability.component_time_map.values()))
+        if "cow" not in bundle_data.bundle
+        else None,
         "UI Library",
         "Maintainability",
         rotate_labels=True,
         extra_dict={"hue": "framework", "linewidth": 0.5},
         figsize=(8, 7),
+        rename_map="WEB_COMPONENTS_MAP"
     )
     write_plot(ax, "maintainability")

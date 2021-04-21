@@ -13,11 +13,11 @@ def generate_first_paint_plot():
         if not bundle.page_load_time:
             continue
         for value in bundle.page_load_time.first_paint.values:
-            obj["UI Library"].append(rewrite_bundle(bundle.bundle))
+            obj["UI Library"].append(rewrite_bundle(bundle.bundle, "DASHBOARD_MAP"))
             obj["Metric"].append("First Paint")
             obj["Time (ms)"].append(value)
         for value in bundle.page_load_time.first_contentful_paint.values:
-            obj["UI Library"].append(rewrite_bundle(bundle.bundle))
+            obj["UI Library"].append(rewrite_bundle(bundle.bundle, "DASHBOARD_MAP"))
             obj["Metric"].append("First Contentful Paint")
             obj["Time (ms)"].append(value)
 

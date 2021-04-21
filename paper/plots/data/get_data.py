@@ -140,7 +140,9 @@ class FrameworkData:
             if dashboard_key:
                 add_bundle_to_lists(dashboard_key)
             add_bundle_to_lists(self.find_in_arr(data_obj.keys(), lambda key: "native" in key))
-            non_native_dashboard_keys = list(filter(lambda key: "dashboard" not in key and "native" not in key, data_obj.keys()))
+            non_native_dashboard_keys = list(
+                filter(lambda key: "dashboard" not in key and "native" not in key, data_obj.keys())
+            )
             for non_native_dashboard_key in non_native_dashboard_keys:
                 add_bundle_to_lists(non_native_dashboard_key)
 
@@ -185,8 +187,7 @@ class Data:
         return bundles
 
 
-BUNDLE_RENAME_MAP = {
-    "dashboard": "original Angular components",
+DEFAULT_MAP = {
     "cow-components-native": "CC UI library (Web Components)",
     "cow-components-angular": "CC UI library (Angular wrapper)",
     "cow-components-react": "CC UI library (React wrapper)",
@@ -197,15 +198,29 @@ BUNDLE_RENAME_MAP = {
     "cow-components-basic-svelte": "CC UI library (reduced size, Svelte wrapper)",
 }
 
+BUNDLE_RENAME_MAPS = {
+    "DEFAULT_MAP": {
+        **DEFAULT_MAP,
+        "dashboard": "original Angular components",
+    },
+    "DASHBOARD_MAP": {**DEFAULT_MAP, "dashboard": "30MHz dashboard"},
+    "WEB_COMPONENTS_MAP": {**DEFAULT_MAP, "dashboard": "CC UI Library"},
+}
 
-def rewrite_bundle(bundle: str) -> str:
-    if bundle in BUNDLE_RENAME_MAP:
-        return BUNDLE_RENAME_MAP[bundle]
+
+def rewrite_bundle(bundle: str, map_name: str = "DEFAULT_MAP") -> str:
+    if bundle in BUNDLE_RENAME_MAPS[map_name]:
+        return BUNDLE_RENAME_MAPS[map_name][bundle]
     return bundle
 
 
 def create_dataframe(
-    data: Data, get_data: Callable[[BundleData], Any], bundle_label: str, data_label: str, framework_label: str
+    data: Data,
+    get_data: Callable[[BundleData], Any],
+    bundle_label: str,
+    data_label: str,
+    framework_label: str,
+    rename_map: str,
 ) -> pd.DataFrame:
     obj = {bundle_label: [], data_label: [], framework_label: []}
     for bundle in data.iter_bundles():
@@ -214,7 +229,7 @@ def create_dataframe(
             continue
         data_list = data if type(data) == list else [data]
         for data_part in data_list:
-            obj[bundle_label].append(rewrite_bundle(bundle.bundle))
+            obj[bundle_label].append(rewrite_bundle(bundle.bundle, rename_map))
             obj[framework_label].append(bundle.framework)
             obj[data_label].append(data_part)
 
@@ -236,12 +251,13 @@ def create_plot(
     extra_dict: Dict[str, Any] = {},
     data_frame: Optional[Any] = None,
     dodge: bool = False,
+    rename_map: str = "DEFAULT_MAP",
 ) -> pd.DataFrame:
     sns = get_sns()
     df = (
         data_frame
         if data_frame is not None
-        else create_dataframe(data, get_data, bundle_label, data_label, framework_label)
+        else create_dataframe(data, get_data, bundle_label, data_label, framework_label, rename_map)
     )
     if figsize:
         plt.figure(figsize=figsize)
