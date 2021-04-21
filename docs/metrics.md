@@ -15,7 +15,7 @@ Migrating a set of web components to various JS frameworks. Broken down into the
 -   M2: Number of hours spent doing the migration vs number of hours spent creating the components in the first place
 -   M3: Compare other design libraries with our resulting design library in the above metrics, performance, code quality, bundle size.
 -   M4: Compare our resulting design library with our regular Angular app in the metrics in M3
--   M5: Measure impact on 30MHz internal codebase. Metrics are lines of code in the main code base, number of total pull requests, number of pull requests affecting the main code base, number of additional things to keep in mind while developing. I think describing all changes that were needed here alongside the number is probably the best since the numbers aren't a perfect representation.
+-   M5: Measure impact on 30MHz internal codebase. Metrics are lines of code in the main codebase, number of total pull requests, number of pull requests affecting the main codebase, number of additional things to keep in mind while developing. I think describing all changes that were needed here alongside the number is probably the best since the numbers aren't a perfect representation.
 -   M6: Ask 30MHz about the disruption to the codebase and their workflow. This is meant to be mostly a bunch of quantative measures about their experiences. Measuring how much code they felt like was added, as well as how much they had to take into account the changes (were new requirements added while developing now, such as adding a required line of code for every component?).
 
 ### Metrics for RQ2:
