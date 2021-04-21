@@ -165,6 +165,25 @@ class Data:
         return bundles
 
 
+BUNDLE_RENAME_MAP = {
+    "dashboard": "original Angular components",
+    "cow-components-native": "CC UI library (Web Components)",
+    "cow-components-angular": "CC UI library (Angular wrapper)",
+    "cow-components-react": "CC UI library (React wrapper)",
+    "cow-components-svelte": "CC UI library (Svelte wrapper)",
+    "cow-components-basic-native": "CC UI library (reduced size, Web Components)",
+    "cow-components-basic-angular": "CC UI library (reduced size, Angular wrapper)",
+    "cow-components-basic-react": "CC UI library (reduced size, React wrapper)",
+    "cow-components-basic-svelte": "CC UI library (reduced size, Svelte wrapper)",
+}
+
+
+def rewrite_bundle(bundle: str) -> str:
+    if bundle in BUNDLE_RENAME_MAP:
+        return BUNDLE_RENAME_MAP[bundle]
+    return bundle
+
+
 def create_dataframe(
     data: Data, get_data: Callable[[BundleData], Any], bundle_label: str, data_label: str, framework_label: str
 ) -> pd.DataFrame:
@@ -175,7 +194,7 @@ def create_dataframe(
             continue
         data_list = data if type(data) == list else [data]
         for data_part in data_list:
-            obj[bundle_label].append(bundle.bundle)
+            obj[bundle_label].append(rewrite_bundle(bundle.bundle))
             obj[framework_label].append(bundle.framework)
             obj[data_label].append(data_part)
 
@@ -199,7 +218,11 @@ def create_plot(
     dodge: bool = False,
 ) -> pd.DataFrame:
     sns = get_sns()
-    df = data_frame if data_frame is not None else create_dataframe(data, get_data, bundle_label, data_label, framework_label)
+    df = (
+        data_frame
+        if data_frame is not None
+        else create_dataframe(data, get_data, bundle_label, data_label, framework_label)
+    )
     if figsize:
         plt.figure(figsize=figsize)
     if rotate_labels:

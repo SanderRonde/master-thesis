@@ -1,4 +1,4 @@
-from data import get_data, create_plot
+from data import get_data, create_plot, rewrite_bundle
 from figures import write_plot
 import pandas as pd
 
@@ -14,7 +14,7 @@ def generate_render_time_all_plot_big():
                 continue
             for component_count in bundle.render_time.component_time_map[component_name]:
                 for measurement in bundle.render_time.component_time_map[component_name][component_count].times:
-                    obj["UI Library"].append(bundle.bundle)
+                    obj["UI Library"].append(rewrite_bundle(bundle.bundle))
                     obj["component"].append(component_name)
                     obj["Render time (ms)"].append(int(measurement))
                     obj["framework"].append(bundle.framework)

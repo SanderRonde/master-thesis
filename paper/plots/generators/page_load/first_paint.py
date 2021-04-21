@@ -1,6 +1,6 @@
 import pandas as pd
 
-from data import get_data, create_plot, create_dataframe
+from data import get_data, create_plot, rewrite_bundle
 from figures import write_plot
 
 
@@ -13,11 +13,11 @@ def generate_first_paint_plot():
         if not bundle.page_load_time:
             continue
         for value in bundle.page_load_time.first_paint.values:
-            obj["UI Library"].append(bundle.bundle)
+            obj["UI Library"].append(rewrite_bundle(bundle.bundle))
             obj["Metric"].append("First Paint")
             obj["Time (ms)"].append(value)
         for value in bundle.page_load_time.first_contentful_paint.values:
-            obj["UI Library"].append(bundle.bundle)
+            obj["UI Library"].append(rewrite_bundle(bundle.bundle))
             obj["Metric"].append("First Contentful Paint")
             obj["Time (ms)"].append(value)
 
