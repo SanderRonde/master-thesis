@@ -13,7 +13,6 @@ import {
 	getAngularDirs,
 } from '../../../lib/cow-component-setups/angular/angular';
 import {
-	createDashboardMetricsCommand,
 	createDashboardStructuralComplexityFunctionCreator,
 	getComponents as getCowComponents,
 } from '../../../lib/cow-component-setups/dashboard/dashboard';
@@ -73,7 +72,6 @@ const metricsCreator = getBundleMetricsCommandCreator(
 
 // Bundles
 export const cowComponentBasicBundles = [
-	'basic-dashboard',
 	...COW_COMPONENT_BASIC_BUNDLES,
 ] as const;
 
@@ -139,13 +137,6 @@ export const cowComponentsBasicParallelBundleMap: ParallelBundleMap<CowComponent
 
 // Serial tasks
 export const cowComponentsBasicSerialBundleMap: SerialBundleMap<CowComponentBasicBundle> = {
-	'basic-dashboard': createDashboardMetricsCommand(
-		'basic-dashboard',
-		BASIC_DASHBOARD_DIR,
-		'cow-components-basic',
-		SUBMODULE_NAME,
-		false
-	),
 	'cow-components-basic-angular': metricsCreator(
 		'cow-components-basic-angular',
 		{

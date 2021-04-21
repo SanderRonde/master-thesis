@@ -293,7 +293,7 @@ cmd('metrics')
 
 			// First do angular stuff by itself if we need to
 			// because it's a bit of a special case
-			const fullSoloBundles: Bundle[] = ['dashboard', 'basic-dashboard'];
+			const fullSoloBundles: Bundle[] = ['dashboard'];
 			for (const soloBundle of fullSoloBundles) {
 				if (bundles.includes(soloBundle)) {
 					await exec(
