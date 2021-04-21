@@ -13,8 +13,8 @@ def generate_load_time_all_plot():
         "UI Library",
         "Load time (ms)",
         rotate_labels=True,
-        extra_dict={"hue": "framework"},
-        figsize=(7, 5),
+        extra_dict={"hue": "framework", "linewidth": 0.1},
+        figsize=(7, 8),
     )
 
     write_plot(ax, "load-time-all")
@@ -24,6 +24,7 @@ def generate_load_time_all_plot_no_angular():
     print("Generating Load Time all plot (no angular)")
     data = get_data()
 
+
     ax = create_plot(
         "Load time of main bundle (without cow-components-angular)\nLower is better",
         "boxen",
@@ -32,8 +33,8 @@ def generate_load_time_all_plot_no_angular():
         "UI Library",
         "Load time (ms)",
         rotate_labels=True,
-        extra_dict={"hue": "framework"},
-        figsize=(7, 5),
+        extra_dict={"hue": "framework", "linewidth": 0.1},
+        figsize=(7, 8),
     )
 
     write_plot(ax, "load-time-all-no-angular")

@@ -15,6 +15,6 @@ def generate_size_plot():
         "Bundle Size (KB)",
         rotate_labels=True,
         extra_dict={"hue": "framework"},
-        figsize=(7, 5),
+        figsize=(7, 7),
     )
     write_plot(ax, "size")
