@@ -7,7 +7,7 @@ def generate_load_time_cow_plot():
     data = get_data()
 
     ax = create_plot(
-        "Load time of main bundle (cow bundles only)\nLower is better",
+        "Load time of main bundle (CC UI only)\nLower is better",
         "boxen",
         data,
         lambda bundle_data: bundle_data.load_time.values if "cow-components" in bundle_data.framework else None,
@@ -25,7 +25,7 @@ def generate_load_time_cow_plot_no_angular():
     data = get_data()
 
     ax = create_plot(
-        "Load time of main bundle (cow bundles only, without cow-components-angular)\nLower is better",
+        "Load time of main bundle (CC UI only, without cow-components-angular)\nLower is better",
         "boxen",
         data,
         lambda bundle_data: bundle_data.load_time.values
