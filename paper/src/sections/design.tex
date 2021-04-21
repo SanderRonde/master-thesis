@@ -1,7 +1,26 @@
 \chapter{Study Design}\label{chap:design}
 
+\section{Research questions}
+Based on our goal in this paper, a single research question has been devised:
+\\
+\\
+\textbf{RQ1: How viable is the process of converting Angular components to Web Components?}
+\\
+In answering this research question, we aim to assess the feasibility of converting Angular components to Web Components. This research question can be boiled down to two sub-research questions.
+\\
+\\
+\textbf{SRQ1: How technically viable is the process of converting Angular components to Web Components?}
+\\
+With this research question we touch on the technical side of the issue, focusing on whether it's possible at all, what a possible performance impact could be, and how the result relates to other component libraries in the field.
+\\
+\\
+\textbf{SRQ2: How viable is the process of converting Angular components to Web Components for businesses?}
+\\
+This research question tackles the business side of the project. Here we focus on the impact on a business' existing codebase, the matter in which other engineers' duties are disrupted, and of course the time required to perform this migration at all.
+
+
 \section{Metric definitions}
-In order to evaluate the effectiveness of converting an existing set of Angular components to a Web Component UI library, we need to define some metrics. We will be measuring two aspects of this process. The first is measuring the effectiveness of the resulting CC UI library. In order to do this, we will compare the components in the CC UI library to the Angular components they originate from, as well as to various different UI libraries. We will make this comparison using various metrics at both component granularity and at UI library granularity. We have chosen the following metrics: structural complexity (SC), cyclomatic complexity (CC), lines of code (LOC), maintainability (MA), size (SI), load time (LT), number of components in the UI library (NOC), first paint (FP), first contentful paint (FCP), and render time (RT).  A brief description of these metrics can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
+In order to answer the above research questions, we need to define some metrics. We will be measuring two aspects of this process. The first is measuring the effectiveness of the resulting CC UI library. In order to do this, we will compare the components in the CC UI library to the Angular components they originate from, as well as to various different UI libraries. We will make this comparison using various metrics at both component granularity and at UI library granularity. We have chosen the following metrics: structural complexity (SC), cyclomatic complexity (CC), lines of code (LOC), maintainability (MA), size (SI), load time (LT), number of components in the UI library (NOC), first paint (FP), first contentful paint (FCP), and render time (RT).  A brief description of these metrics can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
 
 
 \begin{table}[h]
