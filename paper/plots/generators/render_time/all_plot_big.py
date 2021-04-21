@@ -24,7 +24,7 @@ def generate_render_time_all_plot_big():
 
     for count in [1, 10, 100]:
         ax = create_plot(
-            f"Render time of Button, Switch and Input (component count = {count})\nLower is better",
+            f"Render times of Button, Switch, and Input (component count = {count})\nLower is better",
             "boxen",
             data,
             None,
