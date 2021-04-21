@@ -33,7 +33,7 @@ def generate_render_time_all_plot():
                 "Render time (ms)",
                 rotate_labels=True,
                 extra_dict={"hue": "framework", "linewidth": 0.1, "showfliers": True},
-                figsize=(8, 6),
+                figsize=(8, 8),
                 data_frame=df[df["Count"] == count][df["component"] == component],
             )
             write_plot(ax, f"render-time-all-{count}-{component}")
