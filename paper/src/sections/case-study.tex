@@ -1,6 +1,6 @@
 \chapter{Case Study}\label{chap:case-study}
 
-In this section, we will be laying out the steps taken and the issues faced during the conversion from Angular components to Web Components. We will be splitting this section up into two subsections. The first subsection will consist of issues faced that were not specific to Angular or Angular elements, while the second subsection will contain just Angular-specific issues. Note that because of this split, the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities, see Table~\ref{tab:case-study:chronological-issues}. After the issue sections, we will discuss the various JS framework wrappers and how they were created. Lastly, we will be listing optimizations performed along with their effectiveness.
+In this chapter, we will be laying out the steps taken and the issues faced during the conversion from Angular components to Web Components. We will be splitting this section up into two subsections. The first subsection will consist of issues faced that were not specific to Angular or Angular elements, while the second subsection will contain just Angular-specific issues. Note that because of this split, the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities, see Table~\ref{tab:case-study:chronological-issues}. After the issue sections, we will discuss the various JS framework wrappers and how they were created. Lastly, we will be listing optimizations performed along with their effectiveness.
 
 \begin{table}[h]
   \begin{tabularx}{\textwidth}{l|X|l}
@@ -31,9 +31,10 @@ In this section, we will be laying out the steps taken and the issues faced duri
 \end{table}
 
 \section{Web Component Issues}~\label{sec:web-component-issues}
+We will start off by describing any Web Component issues we faced. These are issues that are not at all related to the Angular framework and, as such, are likely to be faced in other similar projects.
 
 \subsection{WC1: Global CSS}\label{sec:case-study:global-css}
-\cprotect\problemSolution{
+\problemSolution{
   Angular components have a property called \code{encapsulation}\footurl{https://angular.io/guide/view-encapsulation\#view-encapsulation}. This property determines how CSS styles are applied to the component. It has three possible values:
 
   \begin{itemize}
@@ -148,6 +149,8 @@ my-component {
 }
 
 \section{Angular Issues}
+In this section, we will be describing any Angular related issues we faced. These are issues that were specific to Angular and are unlikely to be faced in similar projects when a different JS framework is being targeted.
+
 \subsection{A1: ng-deep}\label{sec:case-study:ng-deep}
 \problemSolution{
   Angular provides the \code{ng-deep} CSS selectors~\footurl{https://angular.io/guide/component-styles\#deprecated-deep--and-ng-deep}. Where regular CSS selectors stop at the ShadowDom boundary, meaning that a component will never be able to have a selector apply to the DOM of another component, the ng-deep selector does allow for this. It is an emulated and deprecated selector that does not work outside of Angular environments (including the Web Components environment). As such, we need to remove it.
