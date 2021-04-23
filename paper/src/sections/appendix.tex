@@ -100,6 +100,64 @@
 	})
 		\end{lstlisting}
 
+	\section{Code used for render-on-demand functions for various JS frameworks}
+
+	\begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in ReactJS},label={lst:appendix:react-set-visible}]
+		const App = () => {
+			const [ visibleComponent, setVisibleComponent ] = React.useState(null);
+		
+			window.setVisibleComponent = (componentName) => {
+				setVisibleComponent(componentName);
+			}
+		
+			return (
+				{ visibleComponent === 'Button' && <Button />}
+			)
+		};
+		\end{lstlisting}
+		
+		\begin{lstlisting}[language={HTML},caption={The render-on-demand function in Angular (HTML file)},label={lst:appendix:angular-set-visible-html}]
+		<button *ngIf="visibleComponent == 'Button'" />
+		\end{lstlisting}
+		
+		\begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in Angular (JavaScript file)},label={lst:appendix:angular-set-visible-js}]
+		@Component({
+			...
+		})
+		export class AppComponent {
+			constructor(private _cd: ChangeDetectorRef) {
+				window.setVisibleComponent = (componentName) => {
+					this.visibleComponent = componentName;
+					this._cd.detectChanges();
+				}
+			}
+		
+			public visibleComponent = null;
+		}
+		\end{lstlisting}
+		
+		\begin{lstlisting}[language={HTML},caption={The render-on-demand function in Svelte},label={lst:appendix:svelte-set-visible}]
+		<script>
+			window.setVisibleComponent = (componentName) => {
+				visibleComponent = componentName;
+			}
+		
+			let visibleComponent = null;
+		</script>
+		
+		{#if visibleComponent === 'Button'}
+			<Button />
+		{/if}
+		\end{lstlisting}
+		
+		\begin{lstlisting}[language={JavaScript}, caption={The render-on-demand function in Web Components},label={lst:appendix:web-components-set-visible}]
+		window.setVisibleComponent = (componentName) => {
+			if (componentName === 'Button') {
+				document.body.appendChild(document.createElement('x-button'));
+			}
+		}
+		\end{lstlisting}
+
 	\section{Render times for all components}
 
 	\begin{figure}[h]
