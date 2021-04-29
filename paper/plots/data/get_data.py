@@ -267,7 +267,12 @@ def create_plot(
     else:
         plt.xticks(rotation=0)
 
-    print_data(df, bundle_label, data_label, getattr(extra_dict, "hue", None))
+    print_data(
+        df,
+        bundle_label,
+        data_label,
+        "framework" if plot_type == "scatter" else extra_dict["hue"] if "hue" in extra_dict else None,
+    )
 
     if plot_type == "boxen":
         ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, dodge=dodge)
