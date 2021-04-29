@@ -5,6 +5,7 @@ import json
 import os
 
 from figures.fig_config import get_sns
+from data.print_data import print_data
 
 DEFAULT_DATABASE_NAME = "database"
 
@@ -265,6 +266,9 @@ def create_plot(
         plt.xticks(rotation=rotation)
     else:
         plt.xticks(rotation=0)
+
+    print_data(df, bundle_label, data_label, getattr(extra_dict, "hue", None))
+
     if plot_type == "boxen":
         ax = sns.boxenplot(x=bundle_label, y=data_label, data=df, *extra, **extra_dict, dodge=dodge)
     elif plot_type == "box":

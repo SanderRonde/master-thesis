@@ -20,3 +20,7 @@ metrics-dev: submodules metrics_install
 plots:
 	cd $(MAKEFILE_DIR)/paper/plots && poetry install
 	cd $(MAKEFILE_DIR)/paper/plots && poetry run python3 ./generate-plots.py
+
+plots-print:
+	cd $(MAKEFILE_DIR)/paper/plots && poetry install
+	cd $(MAKEFILE_DIR)/paper/plots && poetry run python3 ./generate-plots.py --print-stats
