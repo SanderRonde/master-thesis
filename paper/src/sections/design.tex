@@ -10,24 +10,24 @@ In answering this research question, we assess whether the migration process is 
 \\
 
 \section{Metric definitions}
-In order to answer the above research questions, we need to define metrics. These allow us to compare the resulting Web Component library both to the UI library and to other UI libraries. This allows us to get a better understanding of the quality and performance of the created Web Component library relative to other UI libraries. We can divide the metrics used into two categories. The first is measuring the effectiveness of the resulting CC UI library. In order to do this, we compare the components in the CC UI library to the Angular components they originate from, as well as to various UI libraries. We perform this comparison using various metrics at both component granularity and at UI library granularity. A full list of these metrics, as well as a brief description, can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
+In order to answer the above research questions, we need to define metrics. These allow us to compare the resulting Web Component library both to the UI library and to other UI libraries. This allows us to get a better understanding of the quality and performance of the created Web Component library relative to other UI libraries. We can divide the metrics used into two categories. The first is measuring the quality of the resulting CC UI library. In order to do this, we compare the components in the CC UI library to the Angular components they originate from, as well as to various UI libraries. We perform this comparison using various metrics in three groups. These groups are \emph{complexity}, \emph{size}, and \emph{performance}. We perform this comparison both at component granularity and at UI library granularity. A full list of these metrics, as well as a brief description, can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
 
 
 \begin{table}[h]
   \tiny
-  \begin{tabularx}{\textwidth}{|l|l|l|X|}
+  \begin{tabularx}{\textwidth}{|l|l|l|l|X|}
     \toprule
-    \textbf{ID} & \textbf{Metric}        & \textbf{Granularity}             & \textbf{Description}                                                                                                              \\ \midrule
-    SC          & Structural complexity  & Component                        & The number of import statements for a component. Collected for a source file and all of its dependencies for up to two iterations \\ \hline
-    CC          & Cyclomatic complexity  & Component                        & A quantitative measure of the number of linearly independent paths through a program's~\cite{1702388}                             \\ \hline
-    LOC         & Lines of code          & Component                        & The number of lines of code in a given component's source file                                                                    \\ \hline
-    MA          & Maintainability        & Component                        & A derivative based on complexity, lines of code and Halstead volume~\cite{halstead1977elements}                                   \\ \hline
-    RT          & Render Time            & Component                        & The render time of a given component                                                                                              \\ \hline
-    SI          & Size                   & UI Library                       & The file size of the bundled up library                                                                                           \\ \hline
-    LT          & Load Time              & UI Library                       & Parsing and running time of the bundled up library in the browser (without download time)                                         \\ \hline
-    NOC         & Number of Components   & UI Library                       & The number of components in a UI library                                                                                          \\ \hline
-    FC          & First Paint            & UI Library (cow-components only) & First paint event of the browser                                                                                                  \\ \hline
-    FCP         & First Contentful Paint & UI Library (cow-components only) & First paint event of the browser that includes content for the user  (text, images, etc.)                                         \\
+    \textbf{ID} & \textbf{Group} \textbf{Metric} & \textbf{Granularity}   & \textbf{Description}                                                                                                                                                 \\ \midrule
+    SC          & Complexity                     & Structural complexity  & Component                        & The number of import statements for a component. Collected for a source file and all of its dependencies for up to two iterations \\ \hline
+    CC          & Complexity                     & Cyclomatic complexity  & Component                        & A quantitative measure of the number of linearly independent paths through a program's~\cite{1702388}                             \\ \hline
+    LOC         & Size                           & Lines of code          & Component                        & The number of lines of code in a given component's source file                                                                    \\ \hline
+    SI          & Size                           & Size                   & UI Library                       & The file size of the bundled up library                                                                                           \\ \hline
+    MA          & Performance                    & Maintainability        & Component                        & A derivative based on complexity, lines of code and Halstead volume~\cite{halstead1977elements}                                   \\ \hline
+    RT          & Performance                    & Render Time            & Component                        & The render time of a given component                                                                                              \\ \hline
+    LT          & Performance                    & Load Time              & UI Library                       & Parsing and running time of the bundled up library in the browser (without download time)                                         \\ \hline
+    NOC         & Performance                    & Number of Components   & UI Library                       & The number of components in a UI library                                                                                          \\ \hline
+    FC          & Performance                    & First Paint            & UI Library (cow-components only) & First paint event of the browser                                                                                                  \\ \hline
+    FCP         & Performance                    & First Contentful Paint & UI Library (cow-components only) & First paint event of the browser that includes content for the user  (text, images, etc.)                                         \\
   \end{tabularx}
   \caption{Metrics used in this study}
   \label{tab:design:metrics}
