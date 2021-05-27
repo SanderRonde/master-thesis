@@ -1,20 +1,20 @@
 \chapter{Study Design}\label{chap:design}
 
 \section{Research questions}
-Our goal in this paper is to evaluate the effectiveness of converting Angular components to Web Components. Based on this goal, a single research question has been devised:
+Our goal in this paper is to evaluate the effectiveness of migrating Angular components to Web Components. Based on this goal, a single research question has been devised:
 \\
 \\
-\textbf{RQ1: How viable is the process of converting Angular components to Web Components?}
+\textbf{RQ1: How viable is the process of migrating Angular components to Web Components?}
 \\
-In answering this research question, we aim to assess the feasibility of converting Angular components to Web Components. This research question can be boiled down to two sub-research questions.
+In answering this research question, we aim to assess the feasibility of migrating Angular components to Web Components. This research question can be boiled down to two sub-research questions.
 \\
 \\
-\textbf{SRQ1: How technically viable is the process of converting Angular components to Web Components?}
+\textbf{SRQ1: How technically viable is the process of migrating Angular components to Web Components?}
 \\
 With this research question, we touch on the technical side of the issue, focusing on whether it is possible at all, what a possible performance impact could be, and how the result relates to other component libraries in the field.
 \\
 \\
-\textbf{SRQ2: How viable is the process of converting Angular components to Web Components for businesses?}
+\textbf{SRQ2: How viable is the process of migrating Angular components to Web Components for businesses?}
 \\
 This research question tackles the business side of the project. Here we focus on the impact on a business' existing codebase, the matter in which other engineers' duties are disrupted, and of course, the time required to perform this migration at all.
 
@@ -56,7 +56,7 @@ The load time metric aims to provide a measure of the real impact of a UI librar
 The first paint metric, along with the FCP metric, are on just the cow-component UI libraries. These metrics give us an indication of the real-world load time of a page containing the CC UI library and the original components. We use these metrics to evaluate how the paint time of the UI libraries has changed after its conversion to Web Components and its later conversion to JS framework wrappers. While these metrics do not serve as a perfect way to measure the perceived load time of a page, as discussed in Section~\ref{sec:related-work:load-time}, they should serve as an excellent comparison between the various UI libraries. Since each of them contains the exact same content and is derived from the exact same source code, imperfections in these metrics are applied to all test subjects equally.
 
 \subsection{Render Time}
-Finally, the render time metric aims to capture the duration of the render cycle. We will define this render time as the time between setting the component's visibility to true and the browser being done with the rendering process. If the render time of components in the CC UI library is significantly higher than components in other UI libraries or the Angular components they originate from, the performance impact of converting Angular components to Web Components will be too significant. If it is slightly higher, the same, or lower, we can conclude that the performance impact is minimal.
+Finally, the render time metric aims to capture the duration of the render cycle. We will define this render time as the time between setting the component's visibility to true and the browser being done with the rendering process. If the render time of components in the CC UI library is significantly higher than components in other UI libraries or the Angular components they originate from, the performance impact of migrating Angular components to Web Components will be too significant. If it is slightly higher, the same, or lower, we can conclude that the performance impact is minimal.
 
 In order to obtain an objective measurement of the rendering time that is independent of user perception, we chose to measure the render time of individual components. Since the components we use in our comparisons all load in a single stage (they are either not visible or visible), there is no loading state that could cause ambiguity.
 
