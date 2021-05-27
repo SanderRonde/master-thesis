@@ -316,7 +316,7 @@ element.setAttribute('bar', 'baz');
 
   Angular Elements only supports the conversion of Components to Web Components, not the conversion of Directives. Since there are some elements in the 30MHz codebase that use Directives, we need to make sure that these are supported as well.
 }{
-  While this might sound like a challenging problem since these are entirely different elements, the fix for this issue is surprisingly easy. Under the hood, Angular stores the definition of a Component in the \code{\cmcrv{}cmp} property. This is also the property Angular Elements accesses to do the conversion from Angular components to Web Components. Similarly, the definition of Directives is stored in the \code{\cmcrv{}dir} property. By simply copying the value of the \code{\cmcrv{}dir} property to the \code{\cmcrv{}cmp} property, we are able to trick Angular Elements into thinking a directive is a component. Surprisingly, this works, and the directive works perfectly.
+  While this might sound like a challenging problem since these are entirely different elements, the fix for this issue is surprisingly easy. Under the hood, Angular stores the definition of a Component in the \code{\cmcrv{}cmp} property. This is also the property Angular Elements accesses to do the migration from Angular components to Web Components. Similarly, the definition of Directives is stored in the \code{\cmcrv{}dir} property. By simply copying the value of the \code{\cmcrv{}dir} property to the \code{\cmcrv{}cmp} property, we are able to trick Angular Elements into thinking a directive is a component. Surprisingly, this works, and the directive works perfectly.
 }
 
 \subsection{A8: <ng-content>}\label{sec:case-study:ng-content}
