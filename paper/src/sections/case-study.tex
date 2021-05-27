@@ -1,6 +1,6 @@
 \chapter{Case Study}\label{chap:case-study}
 
-In this chapter, we will be laying out the steps taken and the issues faced during the conversion from Angular components to Web Components. This chapter consists of five sections. The first section provides some information on the build process we are using. The second section describes issues faced that were not specific to Angular or Angular Elements, while the third section will contain just Angular-specific issues. The fourth section lists the various optimizations we applied, and the fifth section describes the JS framework wrappers. Note that because of the split between Angular and Web Components issues, the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities, see Table~\ref{tab:case-study:chronological-issues}. After the issue sections, we will discuss the various JS framework wrappers and how they were created. Lastly, we will be listing optimizations performed along with their effectiveness.
+In this chapter, we lay out the steps taken and the issues faced during the conversion from Angular components to Web Components. This chapter consists of five sections. The first section provides some information on the build process we are using. The second section describes issues faced that were not specific to Angular or Angular Elements, while the third section contains just Angular-specific issues. The fourth section lists the various optimizations we applied, and the fifth section describes the JS framework wrappers. Note that because of the split between Angular and Web Components issues, the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities, see Table~\ref{tab:case-study:chronological-issues}. After the issue sections, we discuss the various JS framework wrappers and how they were created. Lastly, we list optimizations performed along with their effectiveness.
 
 \begin{table}[h]
   \begin{tabularx}{\textwidth}{|l|X|l|}
@@ -36,11 +36,11 @@ The build process that eventually generates the Web Component library consists o
 \begin{itemize}
   \item \emph{Pre-build scripts:} Code is run that manipulates the source code and prepares it for the next process. An example of this is the pre-build script that copies the source code to a \code{build/} folder. This step allows us to transform the source code that is going to be used in the next stage without touching the original files. If we were to change the original files in place, we would also have to undo the replacements. This could prove problematic if a build fails, after which source control is the only way to recover the files.
         We build the Angular project. In this step, the code in the previously created \code{build/} directory is built into an Angular bundle. When this bundle is loaded on a page, the Web Component library is initialized, and the various Web Components are ready for use.  \item \emph{Bundling:} Build artifacts generated in the previous step are spread out over several files. Since we want to provide developers with a single bundle that contains all of the required code, we bundle these various files up into a single file.
-  \item \emph{Generating of wrappers:} The various wrappers for JS frameworks are generated. This process will be described further in Section~\ref{sec:js-framework-wrappers}.
+  \item \emph{Generating of wrappers:} The various wrappers for JS frameworks are generated. This process is described further in Section~\ref{sec:js-framework-wrappers}.
 \end{itemize}
 
 \section{Web Component Issues}~\label{sec:web-component-issues}
-In this section, we will be documenting issues faced that were related to Web Components, as well as our solutions to them. These are issues that are not at all related to the Angular framework and are likely to be faced in other similar projects.
+In this section, we document issues faced that were related to Web Components, as well as our solutions to them. These are issues that are not at all related to the Angular framework and are likely to be faced in other similar projects.
 
 \subsection{WC1: Global CSS}\label{sec:case-study:global-css}
 \problemSolution{
@@ -166,7 +166,7 @@ my-component {
 }
 
 \section{Angular Issues}
-In this section, we will be describing any Angular related issues we faced. These are issues that were specific to Angular and are unlikely to be faced in similar projects when a different JS framework is being targeted.
+In this section, we describe any Angular related issues we faced. These are issues that were specific to Angular and are unlikely to be faced in similar projects when a different JS framework is being targeted.
 
 \subsection{A1: ng-deep}\label{sec:case-study:ng-deep}
 \problemSolution{
@@ -382,10 +382,10 @@ element.setAttribute('bar', 'baz');
 }
 
 \section{Optimizations}
-After finishing the CC UI library, we started looking for performance optimization opportunities. By looking through the Chrome profiler trace, we were able to find some easy performance improvements. These will be discussed in detail below.
+After finishing the CC UI library, we started looking for performance optimization opportunities. By looking through the Chrome profiler trace, we were able to find some easy performance improvements. These are discussed in detail below.
 
 \subsection{O1: Reduce time searching for CSS}\label{sec:case-study:searching-for-css}
-We provide developers with a CSS file they should include in their final \code{index.html} file. This file contains the styles required to make the CC UI library work. We will be referring to this CSS file as the CC CSS file from now on.
+We provide developers with a CSS file they should include in their final \code{index.html} file. This file contains the styles required to make the CC UI library work. We refer to this CSS file as the CC CSS file from now on.
 
 As mentioned in Section~\ref{sec:case-study:global-css}, we find the CC CSS file on the page and copy it into every component instance. Since there can be many more stylesheets than just the CC CSS file, we need to scan every stylesheet and check whether it is the one. This searching process consists of the following steps.
 
