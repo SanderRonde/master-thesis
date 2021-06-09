@@ -13,7 +13,7 @@ In answering this research question, we assess whether the migration process is 
 In order to answer the above research questions, we need to define metrics. These allow us to compare the resulting Web Component library both to the UI library and to other UI libraries. This allows us to get a better understanding of the quality and performance of the created Web Component library relative to other UI libraries. We can divide the used metrics into two categories. The first is measuring the quality of the resulting CC UI library. In order to do measure the quality, we compare the components in the CC UI library to the Angular components they originate from, as well as to various UI libraries. We perform this comparison using various metrics divided into three groups. These groups are \emph{complexity}, \emph{size}, and \emph{performance}. We perform this comparison both at component granularity and at UI library granularity. A full list of these metrics, as well as a brief description, can be seen in Table~\ref{tab:design:metrics}. A detailed explanation of these metrics follows.
 
 
-\begin{table}[h]
+\begin{table}[htbp]
   \tiny
   \begin{tabularx}{\textwidth}{|l|l|l|l|X|}
     \toprule
@@ -64,17 +64,17 @@ Since the components included in the selected UI libraries vary greatly, we can 
     Smelte                  & 889                     & Svelte                & Yes               & 1.1.2            & \url{https://smeltejs.com/}                                                      \\ \hline
     Svelte-MUI              & 237                     & Svelte                & Yes               & 0.0.3-7          & \url{https://svelte-mui.ibbf.ru/}                                                \\ \hline
     Svelteit                & 51                      & Svelte                & No                & -                & \url{https://docs.svelteit.dev/}                                                 \\ \hline
-    Material UI             & 67.1k                   & ReactJS                 & Yes               & 5.0.0-alpha.28   & \url{https://material-ui.com/}                                                   \\ \hline
-    React Bootstrap         & 19.2k                   & ReactJS                 & Yes               & 1.5.2            & \url{https://react-bootstrap.github.io/}                                         \\ \hline
-    React Semantic UI       & 12.2k                   & ReactJS                 & Yes               & 2.0.3            & \url{https://react.semantic-ui.com/}                                             \\ \hline
-    Evergreen               & 10.6k                   & ReactJS                 & No                & -                & \url{https://evergreen.segment.com/}                                             \\ \hline
-    Rebass                  & 7.2k                    & ReactJS                 & No                & -                & \url{https://rebassjs.org/}                                                      \\ \hline
-    Grommet                 & 7.1k                    & ReactJS                 & No                & -                & \url{https://v2.grommet.io/}                                                     \\ \hline
-    Baseweb                 & 6.2k                    & ReactJS                 & No                & -                & \url{https://baseweb.design/}                                                    \\ \hline
-    Ant Design              & 5.3k                    & ReactJS                 & No                & -                & \url{https://ant.design/}                                                        \\ \hline
-    Elemental UI            & 4.3k                    & ReactJS                 & No                & -                & \url{http://elemental-ui.com/home }                                              \\ \hline
-    Zendesk Garden          & 858                     & ReactJS                 & No                & -                & \url{https://garden.zendesk.com/}                                                \\ \hline
-    Shards React            & 649                     & ReactJS                 & No                & -                & \url{https://designrevision.com/docs/shards-react/getting-started }              \\ \hline
+    Material UI             & 67.1k                   & ReactJS               & Yes               & 5.0.0-alpha.28   & \url{https://material-ui.com/}                                                   \\ \hline
+    React Bootstrap         & 19.2k                   & ReactJS               & Yes               & 1.5.2            & \url{https://react-bootstrap.github.io/}                                         \\ \hline
+    React Semantic UI       & 12.2k                   & ReactJS               & Yes               & 2.0.3            & \url{https://react.semantic-ui.com/}                                             \\ \hline
+    Evergreen               & 10.6k                   & ReactJS               & No                & -                & \url{https://evergreen.segment.com/}                                             \\ \hline
+    Rebass                  & 7.2k                    & ReactJS               & No                & -                & \url{https://rebassjs.org/}                                                      \\ \hline
+    Grommet                 & 7.1k                    & ReactJS               & No                & -                & \url{https://v2.grommet.io/}                                                     \\ \hline
+    Baseweb                 & 6.2k                    & ReactJS               & No                & -                & \url{https://baseweb.design/}                                                    \\ \hline
+    Ant Design              & 5.3k                    & ReactJS               & No                & -                & \url{https://ant.design/}                                                        \\ \hline
+    Elemental UI            & 4.3k                    & ReactJS               & No                & -                & \url{http://elemental-ui.com/home }                                              \\ \hline
+    Zendesk Garden          & 858                     & ReactJS               & No                & -                & \url{https://garden.zendesk.com/}                                                \\ \hline
+    Shards React            & 649                     & ReactJS               & No                & -                & \url{https://designrevision.com/docs/shards-react/getting-started }              \\ \hline
     Angular Material        & 21.3k                   & Angular               & Yes               & 12.0.0-next.5    & \url{https://material.angular.io/}                                               \\ \hline
     NG-Bootstrap            & 7.7k                    & Angular               & Yes               & 9.1.0            & \url{https://ng-bootstrap.github.io/\#/home }                                    \\ \hline
     NGX-Bootstrap           & 5.3k                    & Angular               & Yes               & 7.0.0-rc.0       & \url{https://valor-softw2are.com/ngx-bootstrap/\#/ }                             \\ \hline

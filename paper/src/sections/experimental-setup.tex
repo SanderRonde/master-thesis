@@ -33,7 +33,7 @@ After these factors are taken care of, the process of capturing the size metric 
 \section{Load Time}\label{sec:experimental-setup:load-time}
 For the load time metric, we capture the parse- and runtime of the JS bundle described in Section~\ref{sec:experimental-setup:size}. We explicitly exclude the network load time of the bundle. In order to collect this metric, we use the \ver{puppeteer}\footurl{https://github.com/puppeteer/puppeteer} JS package. This package allows the running of and programmatic control over a headless instance of the Google Chrome browser~\footurl{https://www.google.com/intl/en_us/chrome/} (a headless browser is a browser without a graphical user interface). We set up an empty webpage containing just the JS bundle whose load time we wish to measure. We then enable the Chrome profiler~\footurl{https://developer.chrome.com/docs/devtools/evaluate-performance/} for the page. The Chrome profiler is a profiler built into the Google Chrome browser that allows for the measuring of various metrics during page execution. For example, it is able to measure the run time of JavaScript code and various browser-specific tasks such as painting, compositing, and rendering. We now load the page, stop the profiler and collect the results. We then look for the \code{EvaluateScript} event in the resulting trace events. This contains the time taken evaluating the given bundle. An example of such a trace can be seen in Figure~\ref{fig:experimental-setup:load-time}.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \includegraphics[width=\columnwidth]{figures/experimental-setup/load-time.png}
   \caption{An example of a Chrome profiler trace performed during a bundle load. The orange bar labeled ``Evaluate Script'' indicates the total load time and spans 308.54ms.}
   \label{fig:experimental-setup:load-time}
@@ -45,7 +45,7 @@ We capture the render time metric by using the puppeteer package as well. We pre
 
 We chose the last composite event that has a paint event before it for the following reason. The chrome browser updates the view through a pipeline process. The complete pipeline can be seen in Figure~\ref{fig:experimental-setup:pipeline}. This process always starts with a JS, CSS, or HTML change. Then it performs a different set of pipeline events depending on what changed.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \includegraphics[width=\columnwidth]{figures/experimental-setup/render-pipeline.jpg}
   \caption{The render pipeline in chrome.}
   \source{\url{https://developers.google.com/web/fundamentals/performance/rendering}}
@@ -61,15 +61,17 @@ We chose the last composite event that has a paint event before it for the follo
 
 In capturing the render time, we want to capture the time until a component reaches its final state. We need to define this final state for all components. While this state is fairly simple to define and is static for most components, it can also be a dynamic final state. For example, a loading spinner or a component that contains a canvas will at some reach its final state but will still be visually changing. The time between the component not being visible and it reaching its final state are spent in the Layout and Paint stages, while the time after it is spent in the Animation stage. Since we want to capture only the time until the final state, we only care about the Layout and Paint stages. The only difference between these two stages and the Animation stage is that the Animation stage ends with a composite event without a paint event before it, and the other two do not. We use this to our advantage by looking for the last composite event that has a paint event before it. We can not just take the last paint event since the composite event is still part of the pipeline and is technically part of the render stage. When we take the time between the calling of the function that starts the rendering and this event, we are able to capture the time a component takes to render perfectly. A visual representation of this rendering process can be seen in Figure~\ref{fig:experimental-setup:render-time-start} and Figure~\ref{fig:experimental-setup:render-time-end}.
 
-\begin{figure}[h]
-  \includegraphics[width=\columnwidth]{figures/experimental-setup/render-time-highlighted.png}
+\begin{figure}[htbp]
+  \centering{}
+  \includegraphics[width=0.8\columnwidth]{figures/experimental-setup/render-time-highlighted.png}
   \caption{An example of a Chrome profiler trace performed during the render of a component. The bar labeled ``window.setVisibleComponent'' indicates our start time. The end time falls within the red circle, a zoomed in version of which can be seen in Figure~\ref{fig:experimental-setup:render-time-end}.}
   \label{fig:experimental-setup:render-time-start}
   \centering
 \end{figure}
 
-\begin{figure}[h]
-  \includegraphics[width=\columnwidth]{figures/experimental-setup/render-time-zoomed.png}
+\begin{figure}[htbp]
+  \centering{}
+  \includegraphics[width=0.8\columnwidth]{figures/experimental-setup/render-time-zoomed.png}
   \caption{An example of a Chrome profiler trace performed during the render of a component. The bar labeled ``composite layers'' signals our end time. Note that this falls just after a bar labeled ``paint'', signaling the paint event before the last composite event.}
   \label{fig:experimental-setup:render-time-end}
   \centering

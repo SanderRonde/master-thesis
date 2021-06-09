@@ -100,9 +100,9 @@
 	})
 		\end{lstlisting}
 
-	\section{Code used for render-on-demand functions for various JS frameworks}
+\section{Code used for render-on-demand functions for various JS frameworks}
 
-	\begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in ReactJS},label={lst:appendix:react-set-visible}]
+\begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in ReactJS},label={lst:appendix:react-set-visible}]
 		const App = () => {
 			const [ visibleComponent, setVisibleComponent ] = React.useState(null);
 		
@@ -115,12 +115,12 @@
 			)
 		};
 		\end{lstlisting}
-		
-		\begin{lstlisting}[language={HTML},caption={The render-on-demand function in Angular (HTML file)},label={lst:appendix:angular-set-visible-html}]
+
+\begin{lstlisting}[language={HTML},caption={The render-on-demand function in Angular (HTML file)},label={lst:appendix:angular-set-visible-html}]
 		<button *ngIf="visibleComponent == 'Button'" />
 		\end{lstlisting}
-		
-		\begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in Angular (JavaScript file)},label={lst:appendix:angular-set-visible-js}]
+
+\begin{lstlisting}[language={JavaScript},caption={The render-on-demand function in Angular (JavaScript file)},label={lst:appendix:angular-set-visible-js}]
 		@Component({
 			...
 		})
@@ -135,8 +135,8 @@
 			public visibleComponent = null;
 		}
 		\end{lstlisting}
-		
-		\begin{lstlisting}[language={HTML},caption={The render-on-demand function in Svelte},label={lst:appendix:svelte-set-visible}]
+
+\begin{lstlisting}[language={HTML},caption={The render-on-demand function in Svelte},label={lst:appendix:svelte-set-visible}]
 		<script>
 			window.setVisibleComponent = (componentName) => {
 				visibleComponent = componentName;
@@ -149,8 +149,8 @@
 			<Button />
 		{/if}
 		\end{lstlisting}
-		
-		\begin{lstlisting}[language={JavaScript}, caption={The render-on-demand function in Web Components},label={lst:appendix:web-components-set-visible}]
+
+\begin{lstlisting}[language={JavaScript}, caption={The render-on-demand function in Web Components},label={lst:appendix:web-components-set-visible}]
 		window.setVisibleComponent = (componentName) => {
 			if (componentName === 'Button') {
 				document.body.appendChild(document.createElement('x-button'));
@@ -158,25 +158,25 @@
 		}
 		\end{lstlisting}
 
-	\section{Render times for all components}
+\section{Render times for all components}
 
-	\begin{figure}[h]
-		\includegraphics[width=\columnwidth]{plots/render-time-all-big-1.png}
-		\caption{Render times of a single Button, Switch, or Input component}
-		\label{fig:appendix:render-time-cow-1}
-		\centering
-	\end{figure}
+\begin{figure}[htbp]
+  \includegraphics[width=\columnwidth]{plots/render-time-all-big-1.png}
+  \caption{Render times of a single Button, Switch, or Input component}
+  \label{fig:appendix:render-time-cow-1}
+  \centering
+\end{figure}
 
-	\begin{figure}[h]
-		\includegraphics[width=\columnwidth]{plots/render-time-all-big-10.png}
-		\caption{Render times of ten Button, Switch, or Input components}
-		\label{fig:appendix:render-time-cow-10}
-		\centering
-	\end{figure}
+\begin{figure}[htbp]
+  \includegraphics[width=\columnwidth]{plots/render-time-all-big-10.png}
+  \caption{Render times of ten Button, Switch, or Input components}
+  \label{fig:appendix:render-time-cow-10}
+  \centering
+\end{figure}
 
-	\begin{figure}[h]
-		\includegraphics[width=\columnwidth]{plots/render-time-all-big-100.png}
-		\caption{Render times of one hundred single Button, Switch, or Input components}
-		\label{fig:appendix:render-time-cow-100}
-		\centering
-	\end{figure}
+\begin{figure}[htbp]
+  \includegraphics[width=\columnwidth]{plots/render-time-all-big-100.png}
+  \caption{Render times of one hundred single Button, Switch, or Input components}
+  \label{fig:appendix:render-time-cow-100}
+  \centering
+\end{figure}

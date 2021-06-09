@@ -2,7 +2,7 @@
 
 In this chapter, we lay out the steps taken and the issues faced during the conversion from Angular components to Web Components. This chapter consists of five sections. The first section provides some information on the build process we are using. The second section describes issues faced that were not specific to Angular or Angular Elements, while the third section contains just Angular-specific issues. The fourth section lists the various optimizations we applied, and the fifth section describes the JS framework wrappers. Note that because of the split between Angular and Web Components issues, the issues are no longer listed out in chronological order. For a chronological overview of the various issues and their relative complexities, see Table~\ref{tab:case-study:chronological-issues}. After the issue sections, we discuss the various JS framework wrappers and how they were created. Lastly, we list optimizations performed along with their effectiveness.
 
-\begin{table}[h]
+\begin{table}[htbp]
   \begin{tabularx}{\textwidth}{|l|X|l|}
     \toprule
     \textbf{Section}                            & \textbf{Section Name}              & \textbf{Relative Complexity} \\ \midrule
@@ -35,7 +35,7 @@ The build process that eventually generates the Web Component library consists o
 
 \begin{itemize}
   \item \emph{Pre-build scripts:} Code runs that manipulates the source code and prepares it for the next process. An example of this is the pre-build script that copies the source code to a \code{build/} folder. This step allows us to transform the source code that is going to be used in the next stage without touching the original files. If we were to change the original files in place, we would also have to undo the replacements. This could prove problematic if a build fails, after which source control is the only way to recover the files.
-  \item \emph{Building:} We build the Angular project. In this step, the code in the previously created \code{build/} directory is built into an Angular bundle. When this bundle is loaded on a page, the Web Component library is initialized, and the various Web Components are ready for use.  
+  \item \emph{Building:} We build the Angular project. In this step, the code in the previously created \code{build/} directory is built into an Angular bundle. When this bundle is loaded on a page, the Web Component library is initialized, and the various Web Components are ready for use.
   \item \emph{Bundling:} Build artifacts generated in the previous step are spread out over several files. Since we want to provide developers with a single bundle that contains all of the required code, we bundle these various files up into a single file.
   \item \emph{Generating of wrappers:} The various wrappers for JS frameworks are generated. This process is described further in Section~\ref{sec:js-framework-wrappers}.
 \end{itemize}
@@ -140,7 +140,7 @@ my-component {
 }{
   There are a few approaches to solving this issue. These can be grouped into three categories, an visual representation of which can be seen in Figure~\ref{fig:case-study:complex-attributes-methods}. These categories are the following:
 
-  \begin{figure}[h]
+  \begin{figure}[htbp]
     \includegraphics[width=\columnwidth]{figures/case-study/complex-attributes-methods.png}
     \caption{Categories into which approaches to passing complex attributes can be grouped}
     \label{fig:case-study:complex-attributes-methods}

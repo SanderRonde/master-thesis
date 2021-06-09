@@ -11,15 +11,16 @@ This case study was performed at 30MHz, specifically within the context of their
   \item \emph{Image:} Image widgets display the value of a sensor on a specific location of an image. This widget can be used to, for example, display the temperature at various sites on a map. An example of an image widget can be found in Figure~\ref{fig:bg:dashboard-img}.
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \includegraphics[width=\columnwidth]{figures/background/dashboard.png}
   \caption{Widgets in the 30MHz dashboard}
   \label{fig:bg:dashboard}
   \centering
 \end{figure}
 
-\begin{figure}[h]
-  \includegraphics[width=\columnwidth]{figures/background/dashboard-img.png}
+\begin{figure}[htbp]
+  \centering{}
+  \includegraphics[width=0.6\columnwidth]{figures/background/dashboard-img.png}
   \caption{An image widget in the 30MHz dashboard}
   \label{fig:bg:dashboard-img}
   \centering
@@ -53,21 +54,21 @@ This brings us to another option, namely Web Components. Web Components (also kn
 \section{Angular Elements}\label{sec:bg:angularelements}
 To perform the migration of Angular components to Web Components, we use Angular Elements~\footurl{https://angular.io/guide/elements}. Angular Elements is a JS package that allows for the migration of Angular components to Web Components. It does this by changing the way in which components are mounted. Angular apps are typically mounted to the page by the user through a call to the \code{bootstrapModule} function. Consequently, the bootstrap component is mounted to the page. This bootstrap component is responsible for containing the rest of the application. After it is mounted, child components are mounted and rendered within its root recursively. Angular Elements works slightly differently. Components registered as Web Components through Angular Elements are instead rendered whenever an HTML element with the registered tag is added to the DOM\@ (document object model). The DOM is the model containing the elements on a page and how they are positioned relative to each other. Adding an element to the DOM adds it to the webpage. When such a component is rendered, a new root is created in place of this new HTML element. Instead of a single root in which everything is rendered (as is the case in a typical Angular app), components are all rendered in their own local root. We use Angular Elements for the migration to Web Components in this case study since it appears to be the only package providing this capability.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \caption{An example of a component that provides type hints (these hints are also referred to as intellisense)}
   \includegraphics[width=\columnwidth]{figures/background/hinting.png}
   \label{fig:bg:hinting}
   \centering
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \caption{An example of a component without type hints}
   \includegraphics[width=\columnwidth]{figures/background/no-hinting.png}
   \label{fig:bg:no-hinting}
   \centering
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \caption{A diagram representing the relationship between the JS framework and Web Components}
   \includegraphics[scale=0.3]{figures/background/wrapper-diagram.png}
   \label{fig:bg:wrapper-diagram}
