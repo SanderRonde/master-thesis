@@ -1,5 +1,7 @@
 # Master thesis
 
+The PDF file can be found [over here](https://github.com/SanderRonde/master-thesis/blob/master/paper/src/main.pdf).
+
 ## Generating results
 
 ### Generating metric results
