@@ -14,7 +14,7 @@ The results can be visualized by running `make plots`. The resulting plots will 
 
 ### Generating LaTeX PDF file
 
-The latex project can be built by running `latexmk` with `lualatex` as the compiler on `paper/src/main.text`.
+The latex project can be built by running `latexmk` with `lualatex` as the compiler on `paper/src/main.tex`.
 
 ## Results
 
